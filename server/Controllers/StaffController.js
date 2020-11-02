@@ -18,9 +18,18 @@ module.exports.redirectToStaffTab = (req, res) => {
 module.exports.saveStaff = (req, res) => {
     console.log('Post a staff: ' + JSON.stringify(req.body));
 
-    var myStaffLeaveEndDate = myMoment.utc(req.body.staffLeaveEndDate + '00:00:00', "YYYY-MM-DD  HH:mm:ss"),
-        myStaffLeaveStartDate = myMoment.utc(req.body.staffLeaveStartDate + '00:00:00', "YYYY-MM-DD  HH:mm:ss");
+    var myStaffLeaveEndDate,
+        myStaffLeaveStartDate;
 
+    if (req.body.staffLeaveStartDate == '') {
+        myStaffLeaveStartDate == '';
+        myStaffLeaveEndDate == '';
+    } else {
+        myStaffLeaveEndDate = myMoment(req.body.staffLeaveEndDate, "DD-MM-YYYY").add(1, 'days').startOf('day');
+        myStaffLeaveStartDate = myMoment(req.body.staffLeaveStartDate, "DD-MM-YYYY").add(1, 'days').startOf('day');
+    }
+
+    console.log('recx = ', myStaffLeaveStartDate)
     // Create a staff
     console.log(req.body);
 
@@ -163,7 +172,6 @@ module.exports.getMaxStaffId = (req, res) => {
     myStaffModel.findOne().sort({ staffId: -1 }).limit(1)
         .then(staff => {
             res.send(staff);
-            // console.log("max id = " + staff.staffId);
         }).catch(err => {
             res.status(500).send({
                 message: 'getMaxStaffId error: ' + err.message
@@ -202,13 +210,14 @@ module.exports.countTableAndRows = (req, res) => {
 };
 
 module.exports.fillStafOnLeaveTable = (req, res) => {
-    var myStaffLeaveEndDate = myMoment.utc();
-    console.log(myStaffLeaveEndDate)
+    var today = myMoment().toDate();
 
     myStaffModel.aggregate(
         [
             {
-                $match: { 'staffLeaveEndDate': { $lte: myStaffLeaveEndDate } }
+                $match: {
+                    'staffLeaveEndDate': { $gte: today }
+                }
             },
             {
                 $group: {
@@ -223,7 +232,7 @@ module.exports.fillStafOnLeaveTable = (req, res) => {
     )
         .then(staffOnLeave => {
             res.send(staffOnLeave);
-            console.log('staffOnLeave = ', staffOnLeave, myStaffLeaveEndDate);
+            console.log('staffOnLeave = ', staffOnLeave);
         }).catch(err => {
             res.status(500).send({
                 message: err.message

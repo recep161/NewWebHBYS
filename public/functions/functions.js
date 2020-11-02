@@ -3145,7 +3145,8 @@ var ListingMethods = {
         },
 
         saveStaff: function saveStaff() {
-            var btn = document.getElementById('saveStaff');
+            var btn = document.getElementById('saveStaff'),
+                leaveChkbx = document.getElementById('onLeaveChkbx').checked;
 
             if (btn.innerHTML == 'Update') {
                 AdministrationMethods.updateStaffData();
@@ -3158,10 +3159,16 @@ var ListingMethods = {
                         staffName: $("#staffName").val(),
                         staffSurname: $("#staffSurname").val(),
                         staffDiplomaNo: $("#staffDiplomaNo").val(),
-                        staffPhotoSrc: $('#userPhotoId')[0].src,
-                        staffLeaveStartDate: $('#staffLeaveStartDate').val() ,
-                        staffLeaveEndDate: $('#staffLeaveEndDate').val()
+                        staffPhotoSrc: $('#userPhotoId')[0].src
                     };
+
+                if (leaveChkbx == true) {
+                    myData.staffLeaveStartDate = $('#staffLeaveStartDate').val();
+                    myData.staffLeaveEndDate = $('#staffLeaveEndDate').val()
+                } else {
+                    myData.staffLeaveStartDate = '';
+                    myData.staffLeaveEndDate = '';
+                }
 
                 myData.staffMajorDicipline = myStaffMajorDicipline.options[myStaffMajorDicipline.selectedIndex].value;
                 myData.staffGroup = myStaffGroup.options[myStaffGroup.selectedIndex].value;
@@ -3219,8 +3226,8 @@ var ListingMethods = {
                 url: "/admin/staff/findAllStaffs",
                 success: function (result) {
                     $.each(result, function (i, staff) {
-                        staffListDiv.style.width = '268%'
-                        staffListDiv.style.maxWidth = '289%'
+                        staffListDiv.style.width = '274%'
+                        staffListDiv.style.maxWidth = '274%'
 
                         i++;
                         $("#staffList> tbody").append(
@@ -3229,8 +3236,8 @@ var ListingMethods = {
                             + staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>"
                             + staff.staffDiplomaNo + "</td><td>"
                             + staff.majorDicipline + "</td><td>" + staff.staffGroup + "<td class='photoSrcTd'>"
-                            + staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate + "</td><td>"
-                            + staff.staffLeaveEndDate + "</td><td>-</td></tr>");
+                            + staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate.substring(0, 10) + "</td><td>"
+                            + staff.staffLeaveEndDate.substring(0, 10) + "</td><td>-</td></tr>");
                     });
                 },
                 error: function (e) {
@@ -3257,16 +3264,16 @@ var ListingMethods = {
                     $("#staffSurname").val(staff.staffSurname);
                     $("#staffDiplomaNo").val(staff.staffDiplomaNo);
                     $('#staffPhotoId')[0].src = staff.staffPhotoSrc;
-                    staffListDiv.style.width = '311%'
-                    staffListDiv.style.maxWidth = '311%'
+                    staffListDiv.style.width = '280%'
+                    staffListDiv.style.maxWidth = '280%'
 
 
                     $("#staffList> tbody").append(
                         "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + staff.staffId + "</td><td>" + staff.staffIdNumber + "</td><td>"
                         + staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>" + staff.staffDiplomaNo + "</td><td>"
                         + staff.majorDicipline + "</td><td>" + staff.staffGroup + "</td><td class='photoSrcTd'>"
-                        + staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate + "</td><td>"
-                        + staff.staffLeaveEndDate + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteStaff()'>Delete</button></td></tr>");
+                        + staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate.substring(0, 10) + "</td><td>"
+                        + staff.staffLeaveEndDate.substring(0, 10) + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteStaff()'>Delete</button></td></tr>");
 
                     jQueryMethods.toastrOptions();
                     toastr.info('Staff who has - ' + staff.staffIdNumber + ' - id number found!', 'User Search');
@@ -3385,11 +3392,15 @@ var ListingMethods = {
                 type: "GET",
                 url: "/admin/staff/getMaxStaffId",
                 success: function (staff) {
-                    $("#staffId").val(staff.staffId + 1);
-                    // console.log(staff.staffId);
+                    if (staff.staffId == 0 || staff.staffId == 'NaN' || staff.staffId == 'undefined') {
+                        $("#staffId").val(1);
+                    } else {
+                        $("#staffId").val(staff.staffId + 1);
+                        // console.log(staff.staffId);
+                    }
                 },
-
                 error: function (e) {
+                    console.log(staff.staffId);
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max id from staff table! \n\n\n' + e.responseText, 'Error!")
                     console.log("ERROR: ", e.responseText);
@@ -3398,6 +3409,9 @@ var ListingMethods = {
         },
 
         fillStaffStatisticsTable: function fillStaffStatisticsTable() {
+            var total,
+                cardFrontHeader = document.getElementById('staffStatisticsCardFrontHeader');
+
             $('#staffStatisticsTable > tbody').empty();
 
             $.ajax({
@@ -3409,9 +3423,12 @@ var ListingMethods = {
                             "<tr class='staffStatisticsRow'><td class='staffGroup'>"
                             + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
 
+                        total += docs[i]["count"];
+                        console.log(total)
                         // jQueryMethods.toastrOptions();
                         // toastr.info('User group counted!', 'User Count');
                     })
+                    cardFrontHeader.innerHTML = 'Staff Statistics <br> Total = ' + total;
                 },
 
                 error: function (e) {
@@ -3475,14 +3492,21 @@ var ListingMethods = {
                 type: "GET",
                 url: "/admin/staff/fillStafOnLeaveTable",
                 success: function (docs) {
-                    $.each(docs, function (i) {
-                        $("#staffLeaveStatisticsTable> tbody").append(
-                            "<tr class='staffOnLeaveRow'><td class='staffGroup'>"
-                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                    if (docs.length > 0) {
+                        $.each(docs, function (i) {
+                            $("#staffLeaveStatisticsTable> tbody").append(
+                                "<tr class='staffOnLeaveRow'><td class='staffGroup'>"
+                                + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
 
-                        // jQueryMethods.toastrOptions();
-                        // toastr.info('User group counted!', 'User Count');
-                    })
+                            // jQueryMethods.toastrOptions();
+                            // toastr.info('User group counted!', 'User Count');
+                        })
+                    }
+                    else {
+                        $("#staffLeaveStatisticsTable> tbody").append(
+                            "<tr class='staffOnLeaveRow'><td class='staffGroup'>No Staff</td><td class='staffCount'>On Leave </td></tr>");
+                    }
+
                 },
 
                 error: function (e) {
