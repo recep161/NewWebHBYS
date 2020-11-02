@@ -232,7 +232,7 @@ module.exports.fillStafOnLeaveTable = (req, res) => {
     )
         .then(staffOnLeave => {
             res.send(staffOnLeave);
-            console.log('staffOnLeave = ', staffOnLeave);
+            // console.log('staffOnLeave = ', staffOnLeave);
         }).catch(err => {
             res.status(500).send({
                 message: err.message

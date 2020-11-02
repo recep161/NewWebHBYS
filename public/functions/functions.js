@@ -3423,14 +3423,16 @@ var ListingMethods = {
                             "<tr class='staffStatisticsRow'><td class='staffGroup'>"
                             + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
 
-                        total += docs[i]["count"];
-                        console.log(total)
+                        total += parseInt(docs[i]["count"]);
+                        console.log(docs[i]["count"]);
+
                         // jQueryMethods.toastrOptions();
                         // toastr.info('User group counted!', 'User Count');
-                    })
-                    cardFrontHeader.innerHTML = 'Staff Statistics <br> Total = ' + total;
-                },
+                    });
 
+                    console.log(total);
+                    cardFrontHeader.innerHTML = 'Staff Statistics: <br> Total Staff = ' + total;
+                },
                 error: function (e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff group couldnt count! \n\n\n' + e.responseText, 'Error!')
