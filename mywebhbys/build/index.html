@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=yes">
+  <meta charset='UTF-8'>
+  <title>HBYS Homepage</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"
+    type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="index style.css">
+  <link rel="shortcut icon" href="images/Insomnia.ico">
+</head>
+
+<body onload="listView(),hideColumnsByClass('card'),classColor();nightModeBySysTime();showUpLogin();scaleForMobile()">
+
+  <div id="btnContainer" class="btnContainer">
+    <div class="nav-wrapper">
+      <div class="left-side">
+        <div class="nav-title">
+          <h1 id="title" class="pageTitle" onclick="location.reload()"
+            style="color: black;font-family: Lato,sans-serif; cursor: pointer;"> Hastane Bilgi Yönetim Sistemi<a
+              id="engTitle" onclick="location.reload()"
+              style="color: black;font-family: Satisfy,Lato,sans-serif;font-size: 15px;padding: 0px 0px 0px 10px;">
+              (Hospital Medical Record System)</a></h1>
+
+          <h3 id="announcements" style="color: black;border-bottom:solid 0.5px;">Duyurular / Announcements</h3>
+          <marquee id="myMarquee" onMouseOver="this.stop();" OnMouseOut="this.start();" behavior="scrool" direction="up"
+            style="font-family: Lato; color:black" scrolldelay="400">Hover mouse on me for stop scroolling! </br>Lorem
+            ipsum dolor sit amet, consectetur adipisicing elit. Ullam unde excepturi iusto aliquid odit quo consequuntur
+            itaque officia? Natus cum distinctio porro quibusdam, facere maiores laudantium earum sunt libero quaerat!
+            ipsum dolor sit amet, consectetur adipiscing
+            elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</marquee>
+        </div>
+      </div>
+      <div class="right-side">
+        <button id="liste" class="btn" onclick="listView(),hideColumnsByClass('card'),classColor()"><i
+            class="fa fa-ellipsis-v"></i>
+          List</button>
+
+        <button id="kartlar" class="btn"
+          onclick="hideColumnsByClass('column');unHideColumnsByClass('card');cardColor();"><i class="fa fa-th"></i>
+          Cards</button>
+
+        <button id="grid" class="btn" onclick="gridView(),hideColumnsByClass('card'),cardColor();"><i
+            class="fa fa-th-large"></i>
+          Grid</button> <br>
+        <div class="login-line">
+          <button id="loginBtn" class="loginBtn" onclick="showUpLogin(),cardColor(),classColor()">Login</button>
+        </div>
+        <br><br>
+        <label for="colorSelect" style="color: black;font-size: 10px;">Choose a color palette</label>
+        <select name="colorSelect" id="chooseClassColor">
+          <option value="lightColors">Light Colors</option>
+          <option value="darkColors">Dark Colors</option>
+          <option value="allColors">All Colors</option>
+          <option value="nightMode">Night Mode</option>
+        </select>
+        <br>
+        <label for="colorChk" style="color: black;font-size: 11px;">Change color everytime </label>
+        <input type="checkbox" name="colorChk" id="colorChk" checked="1" onclick="return colorChangeChkbox();">
+        <br>
+        <img id="myLogo" class="logo" src="images/logo.jpg" style="width: 210px;height: 210px; justify-content: center;"
+          onclick="location.reload()">
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <!--------- columns --------->
+
+  <!-- first row  -->
+  <div class="row">
+    <div id="hastaKimlik" class="column" style="background-color: blueviolet;">
+      <h2>Hasta Kimlik Kayit Modulu <br /> (Patient Info Module)</h2>
+      <p> <a id="modulLink2" class="modulLink" onclick="openTab('b1');listView();scrollPage();"
+          style="color: black;border-bottom: solid 0.5px;"> Click
+          For Module </a></p>
+
+      <div id="b1" class="containerTab" style="display:none;background:inherit">
+        <iframe src="hastaKimlik.html" name="targetframe" id="iframe1" allowTransparency="true" frameborder="1">
+        </iframe>
+        <button id="myCloseBtnB1" class="closeBtn"
+          onclick="listView();classColor();checksBeforeExit('iframe1', 'input', 'b1');">Close Module X</button>
+        <input type="button" class="fixedCloseBtn" value="X" onclick="checksBeforeExit('iframe1', 'input', 'b1');">
+      </div>
+    </div>
+
+    <div id="polMuayene" class="column" style="background-color: cyan;">
+      <h2>Poliklinik Muayene Kayit Modulu <br />(Polyclinic Examination Registration Module)</h2>
+      <p> <a id="modulLink2" onclick="openTab('b2');listView();scrollPage();"
+          style="color: black;border-bottom: solid 0.5px;">Click
+          For Module</a></p>
+
+      <div id="b2" class="containerTab" style="display:none;background:inherit">
+        <button id="myCloseBtnB2" class="closeBtn" onclick="this.parentElement.style.display=
+        'none';listView();classColor();checksBeforeExit('iframe2', 'input', 'b2')"> Close Module X</button>
+        <iframe src="hastaKimlik.html" name="targetframe" id="iframe2" allowTransparency="true" frameborder="1">
+        </iframe>
+        <input type="button" class="fixedCloseBtn" value="X" onclick="checksBeforeExit('iframe2', 'input', 'b2');">
+      </div>
+    </div>
+  </div>
+
+  <!-- second row -->
+  <div class="row">
+    <div id="randevuKayit" class="column" style="display: '';background-color: green;">
+      <h2>Randevu Kayit Modulu <br />(Appointment Registration Module)</h2>
+      <p> <a id="modulLink3" onclick="openTab('b3');listView();scrollPage();"
+          style="color: black;border-bottom: solid 0.5px;">Click
+          For Module</a></p>
+
+      <div id="b3" class="containerTab" style="display:none;background:inherit">
+        <button id="myCloseBtnB3" class="closeBtn" onclick="this.parentElement.style.display=
+                'none';listView();classColor();checksBeforeExit('iframe3', 'input', 'b3')"> Close Module X</button>
+        <iframe src="hastaKimlik.html" name="targetframe" id="iframe3" allowTransparency="true" frameborder="1">
+        </iframe>
+        <input type="button" class="fixedCloseBtn" value="X" onclick="checksBeforeExit('iframe3', 'input', 'b3');">
+      </div>
+    </div>
+    <div id="randevuSorgu" class="column" style="display: '';background-color: greenyellow;">
+      <h2>Randevu Sorgulama Modulu<br /> (Appointment Search Module)</h2>
+      <p> <a id="modulLink4" onclick="openTab('b4');listView();scrollPage();"
+          style="color: black;border-bottom: solid 0.5px;">Click
+          For Module</a></p>
+
+      <div id="b4" class="containerTab" style="display:none;background:inherit">
+        <button id="myCloseBtnB4" class="closeBtn" onclick="this.parentElement.style.display=
+        'none';listView();classColor();checksBeforeExit('iframe4', 'input', 'b4')"> Close Module X</button>
+        <iframe src="hastaKimlik.html" name="targetframe" id="iframe4" allowTransparency="true" frameborder="1">
+        </iframe>
+        <input type="button" class="fixedCloseBtn" value="X" onclick="checksBeforeExit('iframe4', 'input', 'b4');">
+      </div>
+    </div>
+  </div>
+
+  <!-- third row-->
+  <div class="row">
+    <div id="polDefteri" class="column" style="display: '';background-color: green;">
+      <h2>Poliklinik Defteri <br />(Polyclinic Module)</h2>
+      <p> <a id="modulLink5" onclick="openTab('b5');listView();scrollPage();"
+          style="color: black;border-bottom: solid 0.5px;">Click
+          For Module</a></p>
+
+      <div id="b5" class="containerTab" style="display:none;background:inherit">
+        <button id="myCloseBtnB5" class="closeBtn" onclick="this.parentElement.style.display=
+        'none';listView();classColor();checksBeforeExit('iframe5', 'input', 'b5')"> Close Module X</button>
+        <iframe src="hastaKimlik.html" name="targetframe" id="iframe5" allowTransparency="true" frameborder="1">
+        </iframe>
+        <input type="button" class="fixedCloseBtn" value="X" onclick="checksBeforeExit('iframe5', 'input', 'b5');">
+      </div>
+    </div>
+    <div id="dietModulu" class="column" style="display: '';background-color: greenyellow;">
+      <h2>Diyet Modulu<br /> (Diet Module)</h2>
+      <p> <a id="modulLink5" onclick="openTab('b6');listView();scrollPage();"
+          style="color: black;border-bottom: solid 0.5px;">Click
+          For Module</a></p>
+
+      <div id="b6" class="containerTab" style="display:none;background:inherit">
+        <button id="myCloseBtnB6" class="closeBtn" onclick="this.parentElement.style.display=
+        'none';listView();classColor();checksBeforeExit('iframe6', 'input', 'b6')"> Close Module X</button>
+        <iframe src="hastaKimlik.html" name="targetframe" id="iframe6" allowTransparency="true" frameborder="1">
+        </iframe>
+        <input type="button" class="fixedCloseBtn" value="X" onclick="checksBeforeExit('iframe6', 'input', 'b6');">
+      </div>
+    </div>
+  </div>
+
+
+  <!-------------- login -------------->
+  <div id="loginPopup" class="modal">
+    <form class="modal-content animate" action="/action_page.php" method="post">
+      <div id="imgcontainer" class="imgcontainer">
+        <span onclick="document.getElementById('loginPopup').style.display='none'" id="loginCloseBtn" class="close"
+          title="Close Modal">&times;</span>
+        <img id="myAvatar" src="/images/img_avatar2.png" alt="Avatar" class="avatar">
+      </div>
+
+      <div id="loginContainer" class="container">
+        <label id="loginUserNameLbl" for="uname" style="color: black;">Username:</label>
+        <input type="text" id="loginUserName" name="uname" style="color: black;" placeholder="Enter Username" autofocus
+          required>
+        <br>
+        <label id="loginPasswordLbl" for="psw" style="color: black;">Password :</label>
+        <input type="password" id="loginPassword" name="psw" style="color: black;" placeholder="Enter Password"
+          required>
+      </div>
+
+      <div id="loginContainerBottom" class="containerBottom" style="background-color:#f1f1f1">
+        <button id="innerLoginBtn" type="submit">Login</button>
+        <label id="rememberChkbxlbl" style="color: black;margin: 15px;">
+          <input id="rememberChkbx" type="checkbox" checked="checked" name="remember"
+            style="color: black;float: right;margin: 3px 0px 0px 15px;"> Remember me
+        </label>
+        <a id="forgotPass" href="#" style="margin: 0px 0px 0px 220px;">Forgot password?</a>
+      </div>
+    </form>
+  </div>
+  <!----------------------------------->
+
+  <!----------- first row of flip-cards -------->
+
+  <div class="card-container">
+    <div class="card">
+      <div class="front" style="background-image: url('/images/id.png');background-size: 200px;">
+        <div class="card-title">
+          <header>
+            <h1>
+              Hasta Kimlik Kayit Modulu<br>(Patient Info Module)
+            </h1>
+          </header>
+        </div>
+      </div>
+      <div class="back">
+        <p>Lionel Andrés "Leo" Messi Cuccittini is an Argentine professional footballer who plays as a forward for
+          Spanish club FC Barcelona.</p>
+        <a id="cardLink1"
+          onclick="hideColumnsByClass('card');openTab('b1');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="front" style="background-image: url('/images/polyclinic-exam.png');background-size: 200px;">
+        <div class="card-title">
+          <header>
+            <h1>
+              Poliklinik Muayene Kayit Modulu<br>(Polyclinic Examination Registration Module)
+            </h1>
+          </header>
+        </div>
+      </div>
+      <div class="back">
+        <p>Dimitar Ivanov Berbatov; born 30 January 1981 is a Bulgarian professional footballer who plays as a striker
+          for AS Monaco.</p>
+        <a id="cardLink2"
+          onclick="hideColumnsByClass('card');openTab('b2');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="front" style="background-image:url('/images/randevu-kayit.png');background-size: 200px;">
+        <div class="card-title">
+          <header>
+            <h1>
+              Randevu Kayit Modulu<br>(Appointment Registration Module)
+            </h1>
+          </header>
+        </div>
+      </div>
+      <div class="back">
+        <p>Hristo Stoichkov Stoichkov is a retired Bulgarian footballer who is currently a football pundit for Univision
+          Deportes.</p>
+        <a id="cardLink3"
+          onclick="hideColumnsByClass('card');openTab('b3');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="front" style="background-image:url('/images/randevu-sorgu.png');background-size: 200px;">
+        <div class="card-title">
+          <header>
+            <h1>
+              Randevu Sorgulama Modulu<br>(Appointment Search Module)
+            </h1>
+          </header>
+        </div>
+      </div>
+      <div class="back">
+        <p>Recep CELIK.</p>
+        <a id="cardLink4"
+          onclick="hideColumnsByClass('card');openTab('b4');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a>
+      </div>
+    </div>
+  </div>
+
+  <!----------- second row of flip-cards -------->
+  <div class="card-container">
+    <div class="card">
+      <div class="front" style="background-image: url('/images/pol-defteri.png');background-size: 250px;">
+        <div class="card-title">
+          <header>
+            <h1>
+              Poliklinik Defteri<br>(Polyclinic Module)
+            </h1>
+          </header>
+        </div>
+      </div>
+      <div class="back">
+        <p>Lionel Andrés "Leo" Messi Cuccittini is an Argentine professional footballer who plays as a forward for
+          Spanish club FC Barcelona.</p>
+        <a id="cardLink5"
+          onclick="hideColumnsByClass('card');openTab('b5');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="front" style="background-image: url('/images/diet-pol.png');background-size: 250px;">
+        <div class="card-title">
+          <header>
+            <h1>
+              Diyet Modulu<br>(Diet Module)
+            </h1>
+          </header>
+        </div>
+      </div>
+      <div class="back">
+        <p>Dimitar Ivanov Berbatov; born 30 January 1981 is a Bulgarian professional footballer who plays as a striker
+          for AS Monaco.</p>
+        <a id="cardLink6"
+          onclick="hideColumnsByClass('card');openTab('b6');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="front">
+        <div class="card-title">
+          <header>
+            <h1>
+              Randevu Kayit Modulu<br>(Appointment Registration Module)
+            </h1>
+          </header>
+        </div>
+      </div>
+      <div class="back">
+        <p>Hristo Stoichkov Stoichkov is a retired Bulgarian footballer who is currently a football pundit for Univision
+          Deportes.</p>
+        <a id="cardLink7"
+          onclick="hideColumnsByClass('card');openTab('b7');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="front">
+        <div class="card-title">
+          <header>
+            <h1>
+              Randevu Sorgulama Modulu<br>(Appointment Search Module)
+            </h1>
+          </header>
+        </div>
+      </div>
+      <div class="back">
+        <p>Recep CELIK.</p>
+        <a id="cardLink8"
+          onclick="hideColumnsByClass('card');openTab('b8');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a>
+      </div>
+    </div>
+  </div>
+
+  <!--------- old cards --------->
+
+  <!-- first row of cards !!! not on use !!! -->
+  <!--   
+    <div class="cardRow">
+    <div class="col">
+      <div id="card1" class="card">
+        <h3>Hasta Kimlik Kayit Modulu <br />(Patient Info Module)</h3>
+        <p> <br>
+          <a id="modulLink6"
+            onclick="hideColumnsByClass('card');openTab('b1');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col">
+      <div id="card2" class="card">
+        <h3>Poliklinik Muayene Kayit Modulu <br />(Polyclinic Examination Registration Module)</h3>
+        <br>
+        <p> <a id="modulLink7"
+            onclick="hideColumnsByClass('card');openTab('b2');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+  
+
+    <div class="col">
+    <div id="card3" class="card">
+      <h3>Randevu Kayit Modulu <br />(Appointment Registration Module)</h3>
+      <p><br /> <a id="modulLink8"
+          onclick="hideColumnsByClass('card');openTab('b3');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+    </div>
+    </div>
+
+    <div class="col">
+    <div id="card4" class="card">
+      <h3>Randevu Sorgulama Modulu<br /> (Appointment Search Module) </h3>
+      <p> <br /><a id="modulLink9"
+          onclick="hideColumnsByClass('card');openTab('b4');listView();loadOtherPage('hastaKimlik.hmtl');"
+          style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+    </div>
+    </div>
+  </div>
+
+  <-- second row of cards -
+  <div class="cardRow">
+    <div class="col">
+      <div id="card5" class="card">
+        <h3>Poliklinik Defteri <br />(Polyclinic Module)</h3>
+        <p> <br><a id="modulLink10"
+            onclick="hideColumnsByClass('card');openTab('b5');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+
+    <div class="col">
+      <div id="card6" class="card">
+        <h3>Diyet Modulu<br /> (Diet Module)</h3>
+        <p> <br><a id="modulLink11"
+            onclick="hideColumnsByClass('card');openTab('b6');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+
+    <div class="col">
+      <div id="card7" class="card">
+        <h3>Recx Modulu <br />(Recx)</h3>
+        <p><br /> <a id="modulLink12"
+            onclick="hideColumnsByClass('card');openTab('b7');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+
+    <div class="col">
+      <div id="card8" class="card">
+        <h3>Recx 2<br /> (Recx 2) </h3>
+        <p> <br /><a id="modulLink13"
+            onclick="hideColumnsByClass('card');openTab('b8');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+  </div>
+
+  <-- thir row of cards 
+  <div class="cardRow">
+    <div class="col">
+      <div id="card9" class="card">
+        <h3>Poliklinik Defteri <br />(Polyclinic Module)</h3>
+        <p> <br><a id="modulLink14"
+            onclick="hideColumnsByClass('card');openTab('b9');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+
+    <div class="col">
+      <div id="card10" class="card">
+        <h3>Diyet Modulu<br /> (Diet Module)</h3>
+        <p> <br><a id="modulLink15"
+            onclick="hideColumnsByClass('card');openTab('b10');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+
+    <div class="col">
+      <div id="card11" class="card">
+        <h3>Recx Modulu <br />(Recx)</h3>
+        <p><br /> <a id="modulLink16"
+            onclick="hideColumnsByClass('card');openTab('b11');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+
+    <div class="col">
+      <div id="card12" class="card">
+        <h3>Recx 2<br /> (Recx 2) </h3>
+        <p> <br /><a id="modulLink17"
+            onclick="hideColumnsByClass('card');openTab('b12');listView();loadOtherPage('hastaKimlik.hmtl');"
+            style="color: black;border-bottom: solid 0.5px;">Click For Module</a></p>
+      </div>
+    </div>
+  </div> -->
+
+
+  <script type="text/javascript" src="function.js"></script>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+
+    <!-- Footer Elements -->
+    <div class="footer-container" style="padding: 10px; margin: 10px;">
+
+      <!-- Social buttons -->
+      <ul class="list-unstyled list-inline text-center">
+        <li class="list-inline-item">
+          <a class="btn-floating btn-fb fa-2x">
+            <i class="fa fa-facebook-square"> </i>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a class="btn-floating btn-tw fa-2x">
+            <i class="fa fa-twitter-square"> </i>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a class="btn-floating btn-gplus fa-2x">
+            <i class="fa fa-google-plus-square"> </i>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a class="btn-floating btn-li fa-2x">
+            <i class=" fa fa-linkedin-square"> </i>
+          </a>
+        </li>
+      </ul>
+      <!-- Social buttons -->
+
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center" style="font-size: large;color: black;padding: 10px;">© 2020
+      Copyright:<a href="https://Insomnia.com/"> Recep CELIK </a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  
+</body>
+
+
+</html>

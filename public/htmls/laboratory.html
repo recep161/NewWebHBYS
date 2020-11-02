@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=yes">
+    <title>Laboratory Module</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript"
+        src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
+    <link rel="stylesheet" media="all"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <link rel="stylesheet" href="/public/css/all-pages-style.css">
+    <link rel="shortcut icon" href="/public/images/Medical-icons/microscope.png">
+
+    <link id="themecss" rel="stylesheet" type="text/css"
+        href="//www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css" />
+    <script type="text/javascript" src="/public/plugins/shieldui.1.7.41/js/shieldui-all.min.js"></script>
+</head>
+
+<body id="laboratoryBody" onload="ShowOrHideMethods.myStickHeader('subHeadDiv');
+PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');
+                                  jQueryMethods.setCalenderValueToday('laboratoryDate');
+                                  jQueryMethods.getJqueryDatePicker();
+                                  jQueryMethods.toolTipFunction();
+                                  jQueryMethods.initializeTabs('laboratoryTabDiv');
+                                  jQueryMethods.initializeTabs('laboratoryPatientContainer');
+                                  LaboratoryMethods.showSelectedTable('testTable');
+                                  LaboratoryMethods.googleChartFunction();
+                                  InpatientMethods.animateTabDiv();
+                                  ShowOrHideMethods.showBackTotopButton();
+                                  InpatientMethods.colorSelectedPatient();
+                                  jQueryMethods.getPatientPhotoAndInfos('patientRecep');">
+
+    <div class="laboratoryNotify" id="laboratoryNotify">
+        <span id="laboratoryNotifyType" class=""></span>
+    </div>
+
+    <div class="generalNotify" id="generalNotify">
+        <span id="generalNotifyType" class=""></span>
+    </div>
+
+    <div class="mainContainer" id="mainContainer">
+        <div class="headerDiv" id="headerDiv">
+            <div class="subHeadDiv" id="subHeadDiv">
+                <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('laboratory')"
+                    title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab"
+                        src="/public/images/open-new-tab.png" alt=""></div>
+                <div id="modulNameText"> Laboratory Module </div>
+                <div>
+                    <img class="modulAvatar" src="/public/images/Medical-icons/microscope.png"
+                        title="Anasayfa için tıklayınız." onclick="window.location.href='/public/htmls/index.html'">
+                </div>
+            </div>
+            <select name="polyclinicSelect" id="polyclinicSelector" class="polyclinicPalette">
+                <option value="lab1">Central Laboratory</option>
+                <option value="lab2">Cardiology Laboratory</option>
+            </select>
+
+            <input type="text" id="laboratoryDate">
+
+            <button class="polyclinicButtons btn--swap" id="refresh">Refresh<span>Refresh the patients'
+                    list.</span></button>
+        </div>
+
+        <div class="bottomScrool">
+            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
+                Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
+                'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
+                yayımladı... &#164;&#164; it's not a mobile device.</p>
+        </div>
+
+        <div class="inpatientSubMainContainer" id="inpatientSubMainContainer">
+
+            <div class="laboratoryPatientContainer" id="laboratoryPatientContainer">
+
+                <div class="w3-bar w3-black">
+                    <button class="w3-bar-item w3-button tablink w3-red" onclick="LaboratoryMethods.openPatientListTab(event,'Awaiting');
+                        LaboratoryMethods.showSelectedTable('testTable');">Awaiting</button>
+                    <button class="w3-bar-item w3-button tablink" onclick="LaboratoryMethods.openPatientListTab(event,'Accepted');
+                        LaboratoryMethods.showSelectedTable('acceptedTestTable');">Accepted</button>
+                    <button class="w3-bar-item w3-button tablink" onclick="LaboratoryMethods.openPatientListTab(event,'AwaitingForConfirmations');
+                        LaboratoryMethods.showSelectedTable('resultedTestTable');">Resulted</button>
+                    <button class="w3-bar-item w3-button tablink" onclick="LaboratoryMethods.openPatientListTab(event,'Confirmed');
+                        LaboratoryMethods.showSelectedTable('confirmedTestTable');">Confirmed</button>
+                </div>
+
+                <div id="Awaiting" class="w3-container w3-border patientListTab">
+                    <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patients Awaiting Laboratory
+                        Admission</h10>
+                    <input class="searchInputs" type="text" id="searchInput1"
+                        onkeydown="PolyclinicMethods.searchInTable('searchInput1', 'patientTable1')"
+                        placeholder="Search for patients..."
+                        title="Search patients by name, surname, protocol or appointment status.">
+                    <table id="patientTable1" class="patientTable">
+                        <tr id="tableHeader">
+                            <th>Protocol No.</th>
+                            <th>Name Surname</th>
+                            <th>Appointment</th>
+                        </tr>
+                        <tr title="" id="patientRecep">
+                            <td>12345</td>
+                            <td>Recep CELiK</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 34, Dogum yeri: Diyarbakir">
+                            <td>45678</td>
+                            <td>Adnan YILDIRIM</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 44, Dogum yeri: Ankara">
+                            <td>91011</td>
+                            <td>Onder KARABULUT</td>
+                            <td>No</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Kadin, Yas: 22, Dogum yeri: Istanbul">
+                            <td>12131</td>
+                            <td>Ayse GENC</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 3, Dogum yeri: Malatya">
+                            <td>14151</td>
+                            <td>Ahmet MEHMET</td>
+                            <td>No</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="Accepted" class="w3-container w3-border patientListTab" style="display:none">
+                    <h10 class="historyHeaders" style="margin-bottom: 10px;">Patients Accepted to Laboratory
+                    </h10>
+                    <input class="searchInputs" type="text" id="searchInput2"
+                        onkeydown="PolyclinicMethods.searchInTable('searchInput2', 'patientTable2')"
+                        placeholder="Search for patients..."
+                        title="Search patients by name, surname, protocol or appointment status.">
+                    <table id="patientTable2" class="patientTable">
+                        <tr id="tableHeader">
+                            <th>Protocol No.</th>
+                            <th>Name Surname</th>
+                            <th>Appointment</th>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 34, Dogum yeri: Diyarbakir">
+                            <td>45678</td>
+                            <td>Adnan YILDIRIM</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 44, Dogum yeri: Ankara">
+                            <td>91011</td>
+                            <td>Onder KARABULUT</td>
+                            <td>No</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Kadin, Yas: 22, Dogum yeri: Istanbul">
+                            <td>12131</td>
+                            <td>Ayse GENC</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 3, Dogum yeri: Malatya">
+                            <td>14151</td>
+                            <td>Ahmet MEHMET</td>
+                            <td>No</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="AwaitingForConfirmations" class="w3-container w3-border patientListTab" style="display:none">
+                    <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patients Awaiting for
+                        Confirmations</h10>
+                    <input class="searchInputs" type="text" id="searchInput3"
+                        onkeydown="PolyclinicMethods.searchInTable('searchInput3', 'patientTable3')"
+                        placeholder="Search for patients..."
+                        title="Search patients by name, surname, protocol or appointment status.">
+                    <table id="patientTable3" class="patientTable">
+                        <tr id="tableHeader">
+                            <th>Protocol No.</th>
+                            <th>Name Surname</th>
+                            <th>Appointment</th>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 44, Dogum yeri: Ankara">
+                            <td>91011</td>
+                            <td>Onder KARABULUT</td>
+                            <td>No</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Kadin, Yas: 22, Dogum yeri: Istanbul">
+                            <td>12131</td>
+                            <td>Ayse GENC</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 3, Dogum yeri: Malatya">
+                            <td>14151</td>
+                            <td>Ahmet MEHMET</td>
+                            <td>No</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="Confirmed" class="w3-container w3-border patientListTab" style="display:none">
+                    <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patients Confirmed</h10>
+                    <input class="searchInputs" type="text" id="searchInput4"
+                        onkeydown="PolyclinicMethods.searchInTable('searchInput4', 'patientTable4')"
+                        placeholder="Search for patients..."
+                        title="Search patients by name, surname, protocol or appointment status.">
+                    <table id="patientTable4" class="patientTable">
+                        <tr id="tableHeader">
+                            <th>Protocol No.</th>
+                            <th>Name Surname</th>
+                            <th>Appointment</th>
+                        </tr>
+                        <tr title="Cinsiyeti: Kadin, Yas: 22, Dogum yeri: Istanbul">
+                            <td>12131</td>
+                            <td>Ayse GENC</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr title="Cinsiyeti: Erkek, Yas: 3, Dogum yeri: Malatya">
+                            <td>14151</td>
+                            <td>Ahmet MEHMET</td>
+                            <td>No</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="laboratoryTabDiv" id="laboratoryTabDiv">
+                <div id="tabs-bar">
+                    <ul id="tabs-nav">
+                        <li onclick="ShowOrHideMethods.showDiv('labConfirmationBtnDiv','block')">
+                            <a href="#th-tab-one" class="current" title="Patient tests.">
+                                <img src="/public/images/Medical-icons/stethoscope_no_sh.png" alt=""
+                                    style="width: 30px;height: 30px;">
+                                Tests
+                            </a>
+                        </li>
+                        <li onclick="ShowOrHideMethods.hideDiv('labConfirmationBtnDiv')">
+                            <a href="#th-tab-two" title="Patient Laboratory and Radiology detailed history.">
+                                <img src="/public/images/Medical-icons/microscopesp.png" alt=""
+                                    style="width: 30px;height: 30px;">
+                                Detailed History
+                            </a>
+                        </li>
+                        <li onclick="ShowOrHideMethods.hideDiv('labConfirmationBtnDiv')">
+                            <a href="#th-tab-three" title="Notes and alerts about patient.">
+                                <img src="/public/images/Medical-icons/BiologicalHazard_Symbol_Triangle.ico" alt=""
+                                    style="width: 30px;height: 30px;">
+                                Notes and Alerts
+                            </a>
+                        </li>
+                        <li onclick="ShowOrHideMethods.hideDiv('labConfirmationBtnDiv')">
+                            <a href="#th-tab-four" title="Graphics based on patient's results.">
+                                <img src="/public/images/statics-7.png" alt=""
+                                    style="width: 30px;height: 30px;">
+                                Graphics
+                            </a>
+                        </li>
+                        <li>
+                            <img src="/public/images/add-plus.png" alt="add button" title="Click and add your own tab !"
+                                style="width:40px; height:40px;cursor: pointer;" onclick="InpatientMethods.addNewTab()">
+                        </li>
+                    </ul>
+                    <div style="clear:both;"></div>
+                </div>
+
+                <div id="tabs-content-wrap">
+                    <ul id="tab-content-tabs">
+
+                        <li id="th-tab-one" class="tab-content">
+
+                            <h10 class="historyHeaders" id="labTestTableName" style="margin-bottom: 10px;">Tests</h10>
+                            <br>
+                            <input class="searchInputs" type="text" id="searchInputTest"
+                                onkeydown=" LaboratoryMethods.labSearchInTables('searchInputTest')"
+                                placeholder="Search tests by name, code, device or Requesting Unit."
+                                title="Search tests by name, code, device or Requesting Unit.">
+                            <br>
+                            <table id="testTable">
+                                <tr id="tableHeader" class="testTableHeader">
+                                    <th>#</th>
+                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1"
+                                            id="checkboxSelectAll1"
+                                            onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll1')">
+                                    </th>
+                                    <th>Code</th>
+                                    <th>Test Name</th>
+                                    <th>Result</th>
+                                    <th>Normal Range</th>
+                                    <th>Device</th>
+                                    <th>Test Group</th>
+                                    <th>Requesting Unit</th>
+                                    <th>Confirmed</th>
+                                </tr>
+                                <tr id="testRow1" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow1','resultCell1','resultText1')">
+                                    <td>1</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row1" id="checkbox1"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow1')"> WBC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell1" value="1" min="0"
+                                            style="display: block;">
+                                        <input type="text" id="resultText1" style="display: none;">
+                                    </td>
+                                    <td>4 - 11</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow2" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow2','resultCell2','resultText2')">
+                                    <td>2</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row2" id="checkbox2"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow2')">RBC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell2" value="1" min="0">
+                                        <input type="text" id="resultText2" style="display: none;">
+                                    </td>
+                                    <td>4 - 11</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow3" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow3','resultCell3','resultText3')">
+                                    <td>3</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row3" id="checkbox3"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow3')">HGB</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell3" value="1" min="0">
+                                        <input type="text" id="resultText3" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow4" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow4','resultCell4','resultText4')">
+                                    <td>4</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row4" id="checkbox4"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow4')">HCT</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell4" value="1" min="0">
+                                        <input type="text" id="resultText4" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow5" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow5','resultCell5','resultText5')">
+                                    <td>5</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row5" id="checkbox5"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow5')">MCV</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell5" value="1" min="0">
+                                        <input type="text" id="resultText5" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow6" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow6','resultCell6','resultText6')">
+                                    <td>6</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row6" id="checkbox6"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow6')">MCHC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell6" value="1" min="0">
+                                        <input type="text" id="resultText6" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow7" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow7','resultCell7','resultText7')">
+                                    <td>7</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row7" id="checkbox7"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow7')">RDW</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell7" value="1" min="0">
+                                        <input type="text" id="resultText7" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow8" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow8','resultCell8','resultText8')">
+                                    <td>8</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row8" id="checkbox8"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow8')">PLT</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell8" value="1" min="0">
+                                        <input type="text" id="resultText8" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow9" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow9','resultCell9','resultText9')">
+                                    <td>9</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row9" id="checkbox9"></th>
+                                    <td>900.200</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow9')">Alanin
+                                        Aminotransferaz (ALT)</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell9" value="1" min="0">
+                                        <input type="text" id="resultText9" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>FUJI DRI-CHEM NX500i</td>
+                                    <td>Biochemia</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                            </table>
+                            <br>
+
+                            <table id="acceptedTestTable">
+                                <tr id="tableHeader" class="testTableHeader">
+                                    <th>#</th>
+                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1"
+                                            id="checkboxSelectAll2"
+                                            onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll2')">
+                                    </th>
+                                    <th>Code</th>
+                                    <th>Test Name</th>
+                                    <th>Result</th>
+                                    <th>Normal Range</th>
+                                    <th>Device</th>
+                                    <th>Test Group</th>
+                                    <th>Requesting Unit</th>
+                                    <th>Confirmed</th>
+                                </tr>
+                                <tr id="testRow10" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow10','resultCell10','resultText10')">
+                                    <td>1</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row10" id="checkbox10"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow10')"> WBC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell10" value="1" min="0">
+                                        <input type="text" id="resultText10" style="display: none;">
+                                    </td>
+                                    <td>4 - 11</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow11" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow11','resultCell11','resultText11')">
+                                    <td>2</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row11" id="checkbox11"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow11')">RBC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell11" value="1" min="0">
+                                        <input type="text" id="resultText11" style="display: none;">
+                                    </td>
+                                    <td>4 - 11</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow12" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow12','resultCell12','resultText12')">
+                                    <td>3</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row12" id="checkbox12"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow12')">HGB</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell12" value="1" min="0">
+                                        <input type="text" id="resultText12" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow13" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow13','resultCell13','resultText13')">
+                                    <td>4</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row13" id="checkbox13"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow13')">HCT</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell13" value="1" min="0">
+                                        <input type="text" id="resultText13" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow14" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow14','resultCell14','resultText14')">
+                                    <td>5</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row14" id="checkbox14"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow14')">MCV</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell14" value="1" min="0">
+                                        <input type="text" id="resultText14" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow15" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow15','resultCell15','resultText15')">
+                                    <td>6</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row15" id="checkbox15"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow15')">MCHC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell15" value="1" min="0">
+                                        <input type="text" id="resultText15" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow16" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow16','resultCell16','resultText16')">
+                                    <td>7</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row16" id="checkbox16"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow16')">RDW</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell16" value="1" min="0">
+                                        <input type="text" id="resultText16" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow17" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow17','resultCell17','resultText17')">
+                                    <td>8</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row17" id="checkbox17"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow8')">PLT</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell" value="1" min="0">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                                <tr id="testRow18" title="Click test name for add extra information!"
+                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow18','resultCell18','resultText18')">
+                                    <td>9</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row18" id="checkbox18"></th>
+                                    <td>900.200</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow8')">Alanin
+                                        Aminotransferaz (ALT)</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell17" value="1" min="0">
+                                        <input type="text" id="resultText17" style="display: none;">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>FUJI DRI-CHEM NX500i</td>
+                                    <td>Biochemia</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="notConfirmedTest">&#10008;</td>
+                                </tr>
+                            </table>
+                            <br>
+
+                            <table id="resultedTestTable">
+                                <tr id="tableHeader" class="testTableHeader">
+                                    <th>#</th>
+                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1"
+                                            id="checkboxSelectAll3"
+                                            onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll3')">
+                                    </th>
+                                    <th>Code</th>
+                                    <th>Test Name</th>
+                                    <th>Result</th>
+                                    <th colspan="2">Normal Range</th>
+                                    <th>Device</th>
+                                    <th>Test Group</th>
+                                    <th>Requesting Unit</th>
+                                    <th>Confirmed</th>
+                                </tr>
+                                <tr id="testRow19" title="Click test name for add extra information!">
+                                    <td>1</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row19" id="checkbox19"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow19')"> WBC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell19" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell19', 'minRange19', 'maxRange19');">
+                                    </td>
+                                    <td id="minRange19">4</td>
+                                    <td id="maxRange19">11</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                                <tr id="testRow20" title="Click test name for add extra information!">
+                                    <td>2</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row20" id="checkbox20"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow20')">RBC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell20" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell20', 'minRange20', 'maxRange20');">
+                                    </td>
+                                    <td id="minRange20">4</td>
+                                    <td id="maxRange20">11</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                                <tr id="testRow21" title="Click test name for add extra information!">
+                                    <td>3</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row21" id="checkbox21"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow21')">HGB</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell21" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell21', 'minRange21', 'maxRange21');">
+                                    </td>
+                                    <td id="minRange21">11</td>
+                                    <td id="maxRange21">40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                                <tr id="testRow22" title="Click test name for add extra information!">
+                                    <td>4</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row22" id="checkbox22"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow22')">HCT</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell22" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell22', 'minRange22', 'maxRange22');">
+                                    </td>
+                                    <td id="minRange22">11</td>
+                                    <td id="maxRange22">40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                                <tr id="testRow23" title="Click test name for add extra information!">
+                                    <td>5</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row23" id="checkbox23"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow23')">MCV</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell23" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell23', 'minRange23', 'maxRange23');">
+                                    </td>
+                                    <td id="minRange23">11</td>
+                                    <td id="maxRange23">40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                                <tr id="testRow24" title="Click test name for add extra information!">
+                                    <td>6</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row24" id="checkbox24"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow24')">MCHC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell24" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell24', 'minRange24', 'maxRange24');">
+                                    </td>
+                                    <td id="minRange24">11</td>
+                                    <td id="maxRange24">40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                                <tr id="testRow25" title="Click test name for add extra information!">
+                                    <td>7</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row25" id="checkbox25"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow25')">RDW</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell25" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell25', 'minRange25', 'maxRange25');">
+                                    </td>
+                                    <td id="minRange25">11</td>
+                                    <td id="maxRange25">40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                                <tr id="testRow26" title="Click test name for add extra information!">
+                                    <td>8</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row26" id="checkbox26"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow26')">PLT</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell26" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell26', 'minRange26', 'maxRange26');">
+                                    </td>
+                                    <td id="minRange26">11</td>
+                                    <td id="maxRange26">40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                                <tr id="testRow27" title="Click test name for add extra information!">
+                                    <td>9</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row27" id="checkbox27"></th>
+                                    <td>900.200</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow27')">Alanin
+                                        Aminotransferaz (ALT)</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell27" value="1" min="0"
+                                            onchange="LaboratoryMethods.lowerOrHigherThanNormalRange('resultCell27', 'minRange27', 'maxRange27');">
+                                    </td>
+                                    <td id="minRange27">11</td>
+                                    <td id="maxRange27">40</td>
+                                    <td>FUJI DRI-CHEM NX500i</td>
+                                    <td>Biochemia</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
+                                </tr>
+                            </table>
+                            <br>
+
+                            <table id="confirmedTestTable">
+                                <tr id="tableHeader" class="testTableHeader">
+                                    <th>#</th>
+                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1"
+                                            id="checkboxSelectAll4"
+                                            onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll4')">
+                                    </th>
+                                    <th>Code</th>
+                                    <th>Test Name</th>
+                                    <th>Result</th>
+                                    <th>Normal Range</th>
+                                    <th>Device</th>
+                                    <th>Test Group</th>
+                                    <th>Requesting Unit</th>
+                                    <th>Confirmed</th>
+                                </tr>
+                                <tr id="testRow28" title="Click test name for add extra information!">
+                                    <td>1</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row28" id="checkbox28"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow28')"> WBC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell28" value="1" min="0">
+                                    </td>
+                                    <td>4 - 11</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                                <tr id="testRow11" title="Click test name for add extra information!">
+                                    <td>2</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row2" id="checkbox2"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow2')">RBC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell11" value="1" min="0">
+                                    </td>
+                                    <td>4 - 11</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                                <tr id="testRow12" title="Click test name for add extra information!">
+                                    <td>3</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row4" id="checkbox3"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow3')">HGB</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell12" value="1" min="0">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                                <tr id="testRow13" title="Click test name for add extra information!">
+                                    <td>4</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row4" id="checkbox4"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow4')">HCT</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell13" value="1" min="0">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                                <tr id="testRow14" title="Click test name for add extra information!">
+                                    <td>5</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row5" id="checkbox5"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow5')">MCV</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell14" value="1" min="0">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                                <tr id="testRow15" title="Click test name for add extra information!">
+                                    <td>6</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row6" id="checkbox6"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow6')">MCHC</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell15" value="1" min="0">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                                <tr id="testRow16" title="Click test name for add extra information!">
+                                    <td>7</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row7" id="checkbox7"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow7')">RDW</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell16" value="1" min="0">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                                <tr id="testRow17" title="Click test name for add extra information!">
+                                    <td>8</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row8" id="checkbox8"></th>
+                                    <td>901.620</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow8')">PLT</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell17" value="1" min="0">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>BC - 2300</td>
+                                    <td>Hemogram</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                                <tr id="testRow18" title="Click test name for add extra information!">
+                                    <td>9</td>
+                                    <th><input type="checkbox" class="testCheckbox" name="row8" id="checkbox8"></th>
+                                    <td>900.200</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow8')">Alanin
+                                        Aminotransferaz (ALT)</td>
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell18" value="1" min="0">
+                                    </td>
+                                    <td>11 - 40</td>
+                                    <td>FUJI DRI-CHEM NX500i</td>
+                                    <td>Biochemia</td>
+                                    <td>Emergency Polyclinic</td>
+                                    <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 12.08.2020 14:45
+                                    Confirmation 2: Dr. Ayse HAZAL - 12.08.2020 15:01">&#10004;</td>
+                                </tr>
+                            </table>
+                            <br><br>
+
+                            <div class="hastaTaniHistoryDiv">
+                                <h10 class="historyHeaders" style="margin-bottom: 10px;">Hasta Tani Gecmisi</h10>
+                                <table class="hastaTaniHistory">
+                                    <tr class="testTableHeader">
+                                        <th>ICD-10</th>
+                                        <th>Tani Tipi</th>
+                                        <th>Tani Adi</th>
+                                        <th>Kullanici</th>
+                                    </tr>
+                                    <tr>
+                                        <td>B05.0</td>
+                                        <td>On tani</td>
+                                        <td>- Kızamık, ensefalit komplikasyonlu (G05.1*)</td>
+                                        <td>Dr. Ahmet MEHMET</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </li>
+
+                        <li id="th-tab-two" class="tab-content">
+
+                            <div class="inpatientLabRadHistoryDiv">
+
+                                <div class="labRadHistory">
+                                    <h10 class="historyHeaders">
+                                        Patient Laboratory and Radiology History</h10>
+                                    <table id="patientLabHistoryTable">
+                                        <tr class="testTableHeader">
+                                            <th>No.</th>
+                                            <th>Protocol No.</th>
+                                            <th>Date</th>
+                                            <th>Lab. / Rad. </th>
+                                        </tr>
+                                        <tr title="WBC : 5.6 
+                                                    RBC: 6.2
+                                                    HGB: 13.1
+                                                    HCT: 39.9
+                                                    MCV: 30.1
+                                                    MCHC: 34.6
+                                                    RDW: 13.8
+                                                    PLT: 322"
+                                            onclick="InpatientMethods.showDetailTable('labHistoryDetails','radHistoryDetails')">
+                                            <td>1</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>Hematology Lab.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>45678</td>
+                                            <td>15/01/2020</td>
+                                            <td>Ultrasound - 1</td>
+                                        </tr>
+                                        <tr onclick="InpatientMethods.showDetailTable('radHistoryDetails','labHistoryDetails')"
+                                            title="ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non dui sapien.">
+                                            <td>3</td>
+                                            <td>91011</td>
+                                            <td>22/02/2020</td>
+                                            <td>ESWL - 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>12131</td>
+                                            <td>04/03/2020</td>
+                                            <td>Biochemistry Lab.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>14151</td>
+                                            <td>18/04/2020</td>
+                                            <td>Serology Lab.</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="labHistoryDetails" id="labHistoryDetails">
+                                    <h10 class="historyHeaders">Laboratory History Details</h10>
+                                    <table id="patientLabHistoryTable">
+                                        <tr class="testTableHeader">
+                                            <th>No.</th>
+                                            <th>Protocol No.</th>
+                                            <th>Date</th>
+                                            <th>Test</th>
+                                            <th>Result</th>
+                                            <th>Normal Range</th>
+                                        </tr>
+                                        <tr title="Onaylayan Kullanici: Dr. Fidan GENC.">
+                                            <td>1</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>WBC</td>
+                                            <td>5.6 </td>
+                                            <td>3 - 15</td>
+                                        </tr>
+                                        <tr title="Onaylayan Kullanici: Laborant Ahmet MEHMET.">
+                                            <td>2</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>RBC</td>
+                                            <td>6.2</td>
+                                            <td>4 - 25</td>
+                                        </tr>
+                                        <tr title="Kullanici: Dr. Fidan GENC.">
+                                            <td>3</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>RBC</td>
+                                            <td>6.2</td>
+                                            <td>4 - 25</td>
+                                        </tr>
+                                        <tr title="Kullanici: Laborant Ahmet MEHMET.">
+                                            <td>4</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>HGB</td>
+                                            <td>13.1</td>
+                                            <td>11 - 25</td>
+                                        </tr>
+                                        <tr title="Kullanici: Dr. Fidan GENC.">
+                                            <td>5</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>HCT</td>
+                                            <td>39.9</td>
+                                            <td>11 - 55</td>
+                                        </tr>
+                                        <tr title="Kullanici: Dr. Fidan GENC.">
+                                            <td>6</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>MCV</td>
+                                            <td>30.1</td>
+                                            <td>11 - 55</td>
+                                        </tr>
+                                        <tr title="Kullanici: Dr. Fidan GENC.">
+                                            <td>7</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>MCHC</td>
+                                            <td>34.6</td>
+                                            <td>11 - 44</td>
+                                        </tr>
+                                        <tr title="Kullanici: Dr. Fidan GENC.">
+                                            <td>8</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>RDW</td>
+                                            <td>13.8</td>
+                                            <td>11 - 55</td>
+                                        </tr>
+                                        <tr title="Kullanici: Dr. Fidan GENC.">
+                                            <td>9</td>
+                                            <td>12345</td>
+                                            <td>01/03/2019</td>
+                                            <td>PLT</td>
+                                            <td>322</td>
+                                            <td>300 - 500</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="radHistoryDetails" id="radHistoryDetails">
+                                <h10 class="historyHeaders">Radiology History Details</h10>
+                                <table id="patientLabHistoryTable">
+                                    <tr class="testTableHeader">
+                                        <th>No.</th>
+                                        <th>Protocol No.</th>
+                                        <th>Date</th>
+                                        <th>Test</th>
+                                        <th>Result</th>
+                                    </tr>
+                                    <tr
+                                        title="Onaylayan Kullanici: Dr. Fidan GENC.
+
+                                    SUT Kısıtları: SUT'un 2.4.4.A maddesine bakınız. İşlem puanlarına, tedavi sırasında yapılan tetkik,  tahlil ve röntgen için kullanılan ilaç ve her türlü malzeme bedeli dâhil olup, bunlar için ayrıca bir ödeme yapılmayacaktır">
+                                        <td>1</td>
+                                        <td>12345</td>
+                                        <td>01/03/2019</td>
+                                        <td>P618640</td>
+                                        <td>ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                            Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed,
+                                            faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam
+                                            libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent
+                                            eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in
+                                            lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non
+                                            dui sapien. </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </li>
+
+                        <li id="th-tab-three" class="tab-content" onload="ShowOrHideMethods.hideDiv()">
+                            <div class="alertNoteMainDiv">
+                                <h10 class="historyHeaders" style="margin: 0px 0px 5px 35%;">Notes and Alerts for
+                                    Patient</h10>
+                                <br>
+                                <div class="alertNoteDiv" id="alertNoteDiv">
+                                    <h10 class="historyHeaders">Notes</h10>
+                                    <br>
+                                    <div class="testNotesDiv" style="display: flex;">
+                                        <div>
+                                            <textarea name="testNotes" id="testNotes" cols="70" rows="10"></textarea>
+                                        </div>
+                                        <div style="margin: 5px;">
+                                            <button class="polyclinicButtons btn--swap" id="notesSablonBtn">Benim
+                                                Sablonum
+                                                <span>Kullanici tanimli sablon.</span></button>
+                                            <button class="polyclinicButtons btn--swap" id="notesSablonBtn2">Benim
+                                                Sablonum
+                                                2 <span>Kullanici tanimli sablon.</span></button>
+                                            <button onclick="ShowOrHideMethods.showPopUpModal('sablonOlustur');"
+                                                class="polyclinicButtons btn--swap" id="noteCreateSablon">Sablon
+                                                tanimlama ve duzenleme <span>Kullanici tanimli sablon
+                                                    olusturma.</span></button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <h10 class="historyHeaders">Alert</h10>
+                                    <br>
+                                    <div class="testAlertsDiv" style="display: flex;">
+                                        <div>
+                                            <textarea name="testAlerts" id="testAlerts" cols="70" rows="10"></textarea>
+                                        </div>
+                                        <div style="margin: 5px;">
+                                            <button class="polyclinicButtons btn--swap" id="alertSablonBtn">Benim
+                                                Sablonum
+                                                <span>Kullanici tanimli sablon.</span></button>
+                                            <button class="polyclinicButtons btn--swap" id="alertSablonBtn2">Benim
+                                                Sablonum
+                                                2 <span>Kullanici tanimli sablon.</span></button>
+                                            <button onclick="ShowOrHideMethods.showPopUpModal('sablonOlustur');"
+                                                class="polyclinicButtons btn--swap" id="alertCreateSablon">Sablon
+                                                tanimlama ve duzenleme <span>Kullanici tanimli sablon
+                                                    olusturma.</span></button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <h10 class="historyHeaders">Notes or Alerts Type</h10>
+                                    <br>
+                                    <select name="alertNoteType" id="alertNoteType">
+                                        <option value="alertNoteType1">Important (Show on every screen)</option>
+                                        <option value="alertNoteType2">Normal (Show only polyclinic and clinic screens)
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="patientNoteAndAlertHistoryDiv">
+                                    <h10 class="historyHeaders" style="margin-bottom: 10px;">Patient Note And Alert
+                                        History
+                                    </h10>
+                                    <table class="patientNoteAndAlertHistory">
+                                        <tr class="testTableHeader">
+                                            <th>#</th>
+                                            <th>Select</th>
+                                            <th>Username</th>
+                                            <th>Date</th>
+                                            <th>Note</th>
+                                            <th>Alert</th>
+                                            <th>Type</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td><input type="checkbox" name="alertNoteCheckbox" id="alertNoteCheckbox1">
+                                            </td>
+                                            <td>Laborant Ahmet MEHMET</td>
+                                            <td>13.08.2020 23:21</td>
+                                            <td>Hastaya ait tuplerden ikisi laboratuara gelmemistir.</td>
+                                            <td>----</td>
+                                            <td>Normal</td>
+                                        </tr>
+                                        <tr class="importantAlertNote">
+                                            <td>2</td>
+                                            <td><input type="checkbox" name="alertNoteCheckbox" id="alertNoteCheckbox2">
+                                            </td>
+                                            <td>Dr. Aysenur DINC</td>
+                                            <td>21.06.2020 10:43</td>
+                                            <td>----</td>
+                                            <td>Hepatit C + </td>
+                                            <td>Important</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="alertNoteBtnDiv">
+                                    <button class="labConfirmationBtn btn-danger" id="deleteAlertNote"
+                                        onclick="ShowOrHideMethods.generalFailureAlert('Alert or Note deleted!');"
+                                        title="Delete alert or note!">Delete</button>
+                                    <button class="labConfirmationBtn btn-success" id="alertNoteSave"
+                                        onclick="ShowOrHideMethods.generalSuccesAlert('Alert or Note saved!');"
+                                        title="Save alert or note!">Save</button>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li id="th-tab-four" class="tab-content">
+                            <div id="googlePieChart"></div>
+                            <br>
+                            <div id="googleComboBar"></div>
+                            <br>
+                            <div id="googleRegionChart"></div>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="labConfirmationBtnDiv" id="labConfirmationBtnDiv">
+                    <button class="labConfirmationBtn btn-danger" id="yeniHasta"
+                        title="Cancel Confirmation according to your authorization!"
+                        onclick="ShowOrHideMethods.laboratoryShowRemoveAlert();">Cancel Confirmations</button>
+                    <button class="labConfirmationBtn btn-info" id="guncelle"
+                        onclick="ShowOrHideMethods.laboratoryShowSuccesAlert()"
+                        title="Confirm results as lab technician.">Confirmation 1</button>
+                    <button class="labConfirmationBtn btn-success" id="kaydet"
+                        onclick="ShowOrHideMethods.laboratoryShowSuccesAlert()"
+                        title="Confirm results as laboratory supervisor or responsible doctor.">Confirmation 2</button>
+                </div>
+            </div>
+
+            <div class="labButtonContainer" id="labButtonContainer">
+                <button class="polyclinicButtons btn--swap">Button 1 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 2 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 3 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 4 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 5 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 6 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 7 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 8 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 9 <span>Primum non nocere.</span></button>
+                <button class="polyclinicButtons btn--swap">Button 10<span>Primum non nocere.</span></button>
+            </div>
+        </div>
+
+        <div class="patientHistoryMainContainer" id="patientHistoryMainContainer">
+            <div class="patientHistoryContainer" id="patientHistoryContainer">
+                <h10 class="historyHeaders"> Patient History</h10>
+                <table id="patientHistoryTable">
+                    <tr class="testTableHeader">
+                        <th>No.</th>
+                        <th>Protocol No.</th>
+                        <th>Date</th>
+                        <th>Polyclinic</th>
+                    </tr>
+                    <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
+                    
+                    Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
+                    ">
+                        <td>1</td>
+                        <td>12345</td>
+                        <td>01/03/2019</td>
+                        <td>Diet Pol.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>45678</td>
+                        <td>15/01/2020</td>
+                        <td>Cardiology Pol.</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>91011</td>
+                        <td>22/02/2020</td>
+                        <td>Urology Pol.</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>12131</td>
+                        <td>04/03/2020</td>
+                        <td>Emergency Pol.</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>14151</td>
+                        <td>18/04/2020</td>
+                        <td>Urology Pol.</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="patientLabHistoryContainer" id="patientLabHistoryContainer" style="text-align: center;">
+                <h10 class="historyHeaders">
+                    Patient Laboratory and Radiology History</h10>
+                <table id="patientLabHistoryTable">
+                    <tr class="testTableHeader">
+                        <th>No.</th>
+                        <th>Protocol No.</th>
+                        <th>Date</th>
+                        <th>Lab. / Rad. </th>
+                    </tr>
+                    <tr title="WBC : 5.6 
+                                RBC: 6.2
+                                HGB: 13.1
+                                HCT: 39.9
+                                MCV: 30.1
+                                MCHC: 34.6
+                                RDW: 13.8
+                                PLT: 322">
+                        <td>1</td>
+                        <td>12345</td>
+                        <td>01/03/2019</td>
+                        <td>Hematology Lab.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>45678</td>
+                        <td>15/01/2020</td>
+                        <td>Ultrasound - 1</td>
+                    </tr>
+                    <tr
+                        title="ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non dui sapien.">
+                        <td>3</td>
+                        <td>91011</td>
+                        <td>22/02/2020</td>
+                        <td>ESWL - 2</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>12131</td>
+                        <td>04/03/2020</td>
+                        <td>Biochemistry Lab.</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>14151</td>
+                        <td>18/04/2020</td>
+                        <td>Serology Lab.</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="statics">
+            <!-- cards -->
+            <div class="card-container" id="poly-card-container">
+                <div class="baseCard" id="statics1"
+                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
+                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                    <div class="card" id="staticsCard1">
+                        <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-1.png');
+                            background-size: cover;">
+                            <div class="card-title">
+                                <header>
+                                    <h4>
+                                        Hasta Randevu Durumu
+                                    </h4>
+                                </header>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                title="Randevulu hasta vs Normal Hasta"></button>
+                            <p class="cardP">
+                                Hastalarin basvuru turune gore istatistik. <br><br>
+                                Randevulu hasta : 4 <br>
+                                Normal hasta : 12
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="baseCard" id="statics2"
+                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
+                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                    <div class="card" id="staticsCard2">
+                        <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-2.png');
+                            background-size: cover; background-color: cornflowerblue;">
+                            <div class="card-title">
+                                <header>
+                                    <h4>
+                                        Hasta Kurum Turu
+                                    </h4>
+                                </header>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                title="Hasta Kurum Turu"></button>
+                            <p class="cardP">
+                                Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
+                                Yesilkart : 4 <br>
+                                SGK : 12 <br>
+                                Ucretli : 1
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="baseCard" id="statics3"
+                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
+                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                    <div class="card" id="staticsCard3">
+                        <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-3.png');
+                            background-size: cover; background-color: cornflowerblue;">
+                            <div class="card-title">
+                                <header>
+                                    <h4>
+                                        Hasta Cinsiyet Dagilimi
+                                    </h4>
+                                </header>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                title="Hasta Cinsiyet Dagilimi"></button>
+                            <p class="cardP">
+                                Hastalarin cinsiyetlerine gore istatistik. <br><br>
+                                Kadin : 4 <br>
+                                Erkek : 8
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="baseCard" id="statics4"
+                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
+                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                    <div class="card" id="staticsCard4">
+                        <div id="analytcStatics4" class="front" style="background-image: url('/public/images/statics-4.png');
+                        background-size: cover; background-color: cornflowerblue;">
+                            <div class="card-title">
+                                <header>
+                                    <h4>
+                                        Hasta Yas Dagilimi
+                                    </h4>
+                                </header>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                title="Hasta Yas Dagilimi"></button>
+                            <p class="cardP">
+                                Hastalarin yaslarina gore istatistik. <br><br>
+                                0 - 12 : 3 <br>
+                                12 - 18 : 5 <br>
+                                18+ : 4
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="baseCard" id="statics5"
+                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
+                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                    <div class="card" id="staticsCard5">
+                        <div id="analytcStatics5" class="front" style="background-image: url('/public/images/statics-5.png');
+                        background-size: cover; background-color: cornflowerblue;">
+                            <div class="card-title">
+                                <header>
+                                    <h4>
+                                        Muayene olan hasta vs Bekleyen hasta
+                                    </h4>
+                                </header>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                title="Hasta Yas Dagilimi"></button>
+                            <p class="cardP">
+                                Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br>
+                                Muayene olan : 4 <br>
+                                Bekleyen : 6
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <button onclick="ShowOrHideMethods.backtoTopFunction();" id="goTotop" title="Go to top"></button>
+
+
+    <div id="sablonOlustur" class="modal" style="padding: 60px;">
+        <form id="sablonOlustur-modal-content" class="sablonOlusturContent animate" action="none" method="none">
+            <div id="sablonOlusturImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('sablonOlustur').style.display='none'" id="sablonOlusturCloseBtn"
+                    class="close" title="Close Modal">&times;</span>
+                <img id="mysablonOlusturAvatar" src="/public/images/template-header-icon.png" alt="Avatar"
+                    class="avatar">
+            </div>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;">Sablon Olusturma</h11>
+            <br><br>
+            <div style="display: flex;">
+                <div id="sablonOlusturLabelsDiv">
+                    <label class="sablonOlusturLabels" for="sablonAdi">Sablon Adi:</label><br>
+                    <label for="sablonKullanicilari">Sablon Kullanicilari:</label>
+                </div>
+
+                <div id="sablonOlusturInputSelectsDiv">
+                    <input class="sablonOlusturInputSelects" type="text" name="sablonAdi" id="sablonAdi"><br><br>
+                    <select class="sablonOlusturInputSelects" name="sablonKullanicilari" id="sablonKullanicilari">
+                        <option value="sadeceBen">Sadece Ben</option>
+                        <option value="tumAnabilimdali">Tum Anabilimdali</option>
+                    </select>
+                </div>
+
+                <div id="sablonLogoDiv">
+                    <img id="sablonLogo" src="/public/images/template-icon.png" alt="sablon logo">
+                </div>
+            </div>
+            <div id="sarfIstemEkraniContainer" class="sarfIstemEkraniContainer">
+                <textarea name="" id="sablonIcerik" cols="110" rows="10"></textarea>
+            </div>
+
+            <div id="sablonOlusturBottom" class="sablonOlusturBottom">
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="sablonOlusturKaydet"
+                        title="Sablonu kaydetmek icin tiklayin.">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <ul class='custom-menu' id="context-menu">
+        <li data-action="number"><i class="fas fa-sort-numeric-up-alt"></i> - Number Result</li>
+        <li data-action="text"><i class="fas fa-text-height"></i> - Text Result</li>
+    </ul>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+
+        <!-- Footer Elements -->
+        <div class="footer-container" style="padding: 10px; margin: 10px;">
+
+            <!-- Social buttons -->
+            <ul class="list-unstyled list-inline text-center">
+                <li class="list-inline-item">
+                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page"
+                        onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
+                        <a class="btn-floating btn-fb fa-2x">
+                            <i class="fa fa-facebook-square"> </i>
+                        </a>
+                    </button>
+                </li>
+                <li class="list-inline-item">
+                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page"
+                        onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
+                        <a class="btn-floating btn-tw fa-2x">
+                            <i class="fa fa-twitter-square"> </i>
+                        </a>
+                    </button>
+                </li>
+                <li class="list-inline-item">
+                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page"
+                        onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
+                        <a id="googlePlusBtn" class="btn-floating btn-gplus fa-2x">
+                            <i class="fa fa-google-plus-square"> </i>
+                        </a>
+                    </button>
+                </li>
+                <li class="list-inline-item">
+                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page"
+                        onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
+                        <a id="linkedinBtn" class="btn-floating btn-li fa-2x">
+                            <i class=" fa fa-linkedin-square"> </i>
+                        </a>
+                    </button>
+                </li>
+            </ul>
+            <!-- Social buttons -->
+
+        </div>
+        <!-- Footer Elements -->
+        <!-- Copyright -->
+        <div class="footer-copyright text-center" style="font-size: large;color: black;padding: 10px;">
+            © 2020
+            Copyright:
+            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')"
+                title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
+                <span>R</span><span>e</span><span>c</span><span>e</span><span>p</span>
+                <span>C</span><span>e</span><span>l</span><span>i</span><span>k</span>
+            </div>
+        </div>
+        </a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+
+    <div class="bottomScrool">
+        <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
+            Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
+            'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
+            yayımladı... &#164;&#164; it's not a mobile device.</p>
+    </div>
+    <!-- end of Footer -->
+
+    <div id="userStatistics" class="modal" style="padding: 60px;">
+        <div id="userStatistics-modal-content" class="userStatisticsContent animate" action="?action=add" method="post">
+            <div id="userStatisticsImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('userStatistics').style.display='none'"
+                    id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/statistics-12.png" alt="Avatar" class="avatar">
+            </div>
+            <div id="userStatisticsContainer" class="userStatisticsContainer">
+                <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
+                <table id="userLoginStatsTable">
+                    <tr id="tableHeader">
+                        <th>#</th>
+                        <th>Ip Adress</th>
+                        <th>Login Date</th>
+                        <th>Login Duration</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>192.168.1.11</td>
+                        <td>03.09.2020 14:10</td>
+                        <td>22 minutes 17 seconds</td>
+                    </tr>
+                </table>
+                <br><br>
+                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
+                    - 192.168.1.11</h11>
+                <br><br>
+                <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
+                <br>
+                <table id="userMessageStatsTable">
+                    <tr id="tableHeader">
+                        <th>Inbox Messages</th>
+                        <th>Read Messages</th>
+                        <th>Unread Messages</th>
+                        <th>Sent Messages</th>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="userTraining" class="modal" style="padding: 60px;">
+        <div id="userTraining-modal-content" class="userTrainingContent animate" action="?action=add" method="post">
+            <div id="userTrainingImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn"
+                    class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/training-4.png" alt="Avatar" class="avatar">
+            </div>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Incoming Trainings</h11>
+            <div id="userTrainingContainer" class="userTrainingContainer">
+                <table id="userTrainingTable">
+                    <tr class="testTableHeader">
+                        <th>#</th>
+                        <th>Training</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Document</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>CPR Training</td>
+                        <td>01.10.2020 14:00</td>
+                        <td>Central Conferece Room</td>
+                        <td>
+                            <a id="documentOpenLink1" class="modulLink"
+                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Safety and Hygen Training</td>
+                        <td>12.10.2020 14:00</td>
+                        <td>Central Conferece Room</td>
+                        <td>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
+                                target="_blank">Open File</a>
+                        </td>
+                    </tr>
+                </table>
+                <br><br>
+
+                <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Old Trainings</h11><br>
+                <table id="userOldTrainingTable">
+                    <tr class="testTableHeader">
+                        <th>#</th>
+                        <th>Training</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Document</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>HBYS Training</td>
+                        <td>01.03.2020 09:00</td>
+                        <td>Central Conferece Room</td>
+                        <td>
+                            <a id="documentOpenLink1" class="modulLink"
+                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Covid-19 Training</td>
+                        <td>12.01.2020 14:00</td>
+                        <td>Central Conferece Room</td>
+                        <td>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
+                                target="_blank">Open File</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="userSettings" class="modal" style="padding: 60px;">
+        <div id="userSettings-modal-content" class="userSettingsContent animate" action="?action=add" method="post">
+            <div id="userSettingsImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn"
+                    class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar"
+                    class="avatar">
+            </div>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Settings</h11>
+            <div id="userSettingsContainer" class="userSettingsContainer">
+                Old Password: <br>
+                <input type="password" name="userOldPassword" id="userOldPassword"
+                    placeholder="Please enter your current password."
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <br>
+                New Password: <br>
+                <input type="password" name="userNewPassword" id="userNewPassword"
+                    placeholder="Please enter your new password."
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <span for='userNewPassword' class="p-viewer">
+                    <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
+                        title="Show password!"
+                        onclick="ShowOrHideMethods.showPassword('userNewPassword','showPasswordIcon1')">
+                    </i>
+                </span>
+                <br>
+                New Password Repeat: <br>
+                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
+                    placeholder="Please re-enter your new password."
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
+                    CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
+                <span for='userNewPasswordRepeat' class="p-viewer">
+                    <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
+                        title="Show password!"
+                        onclick="ShowOrHideMethods.showPassword('userNewPasswordRepeat','showPasswordIcon2')">
+                    </i>
+                </span>
+                <br>
+                <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
+                <br>
+                <button class="inpatientBtn btn-success" id="changePassword"
+                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
+                    title="Change password!">Change
+                    Password
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="userMessaging" class="modal" style="padding: 60px;">
+        <div id="userMessaging-modal-content" class="userMessagingContent animate">
+            <div id="userMessagingImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn"
+                    class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/message-2.png" alt="Avatar" class="avatar">
+            </div>
+            <div id="userMessageSubContainer">
+                <div id="userMessageHistory">
+                    <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Inbox</h11>
+                    <div id="userMessagingContainer" class="userMessagingContainer">
+                        <table id="userInboxTable">
+                            <tr class="testTableHeader">
+                                <th>#</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>From</th>
+                                <th>Message</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>HBYS Training</td>
+                                <td>01.03.2020 09:00</td>
+                                <td>Central Conferece Room</td>
+                                <td>
+                                    <a id="documentOpenLink1" class="modulLink"
+                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                        Message</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Covid-19 Training</td>
+                                <td>12.01.2020 14:00</td>
+                                <td>Central Conferece Room</td>
+                                <td>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
+                                        target="_blank">Open Message</a>
+                                </td>
+                            </tr>
+                        </table>
+                        <br><br>
+
+                        <h11 class="historyHeaders"> User Sent</h11><br>
+                        <table id="userSentMessagesTable">
+                            <tr class="testTableHeader">
+                                <th>#</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>From</th>
+                                <th>Message</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>HBYS Training</td>
+                                <td>01.03.2020 09:00</td>
+                                <td>Central Conferece Room</td>
+                                <td>
+                                    <a id="documentOpenLink1" class="modulLink"
+                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                        Message</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Covid-19 Training</td>
+                                <td>12.01.2020 14:00</td>
+                                <td>Central Conferece Room</td>
+                                <td>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
+                                        target="_blank">Open Message</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="userNewMessageDiv">
+                    <h11 class="historyHeaders" style="margin: 5px;color: white;">Send Message</h11>
+                    <br><br>
+                    Subject: <br>
+                    <input type="text" name="userMessageSubject" id="userMessageSubject">
+                    <br>
+                    To: <br>
+                    <input type="text" name="userMessageTo" id="userMessageTo">
+                    <br>
+                    <!-- kisiler -->
+                    <div class="dropdown">
+                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')"
+                            class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
+                                style="font-size: 16px;">Add person!</span></button>
+                        <div id="userMessagePerson" class="dropdown-content"
+                            onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
+                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus
+                                onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
+                            <a>Recep CELIK</a>
+                            <a>Adnan YILDIRIM</a>
+                            <a>Onder KARABULUT</a>
+                            <a>Ayse FATMA</a>
+                            <a>John QUERY</a>
+                        </div>
+                    </div>
+                    Message: <br>
+                    <textarea name="userMessageBody" id="userMessageBody" cols="87" rows="7"></textarea>
+                    <br>
+                    <button class="inpatientBtn btn-primary" id="userMessageSend"
+                        onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
+                    </button>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- bottom user menu -->
+    <div class="bottomUserMenu">
+        <nav class="menu">
+            <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
+            <label class="menu-open-button" for="menu-open" title="User Menu">
+                <span class="hamburger hamburger-1"></span>
+                <span class="hamburger hamburger-2"></span>
+                <span class="hamburger hamburger-3"></span>
+            </label>
+
+            <a href="#" class="menu-item" title="User Statistics."
+                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Trainings."
+                onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
+            <a href="#" class="menu-item" title="User Settings."
+                onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
+            <a href="#" class="menu-item" title="User Messages."
+                onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
+            <a href="#" class="menu-item"> <i class="fa fa-cog"></i> </a>
+
+        </nav>
+
+        <!-- filters -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <filter id="shadowed-goo">
+
+                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                        result="goo" />
+                    <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+                    <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
+                        result="shadow" />
+                    <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+                    <feBlend in2="shadow" in="goo" result="goo" />
+                    <feBlend in2="goo" in="SourceGraphic" result="mix" />
+                </filter>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                        result="goo" />
+                    <feBlend in2="goo" in="SourceGraphic" result="mix" />
+                </filter>
+            </defs>
+        </svg>
+    </div>
+    <!-- end of bottom user menu  -->
+
+
+    <!--back to top button -->
+    <button onclick="ShowOrHideMethods.backtoTopFunction();" id="goTotop" title="Go to top"></button>
+    <!--end of back to top button -->
+
+    <!-- -----------scripts----------------------------- -->
+
+    <script type=" text/javascript" src="/public/functions/functions.js"></script>
+
+    <!-- -----------end of scripts----------------------------- -->
+
+</body>
+
+</html>

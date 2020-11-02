@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+}
+
+a {
+  cursor: pointer;
+  text-align: center;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  margin: 10px;
+  color: black;
+  background-color: inherit;
+}
+
+.nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.veriler {
+  float: left;
+  padding: inherit;
+  justify-content: space-between;
+}
+
+.labels {
+  padding-top: 7px;
+  padding-right: 10px;
+  font-size: 15px;
+  text-align: right;
+
+}
+
+.inputs {
+  padding-right: 10px;
+  font-size: 15px;
+}
+
+.buttons {
+  border-radius: 15px;
+  background-color: inherit;
+  border-color: darkgray;
+  box-shadow: 8px 8px 8px 4px rgba(0, 0, 0, 0.2);
+  color: whitesmoke;
+  padding: 11px;
+  margin: 0px 15px 0px 0px;
+  width: 90px;
+}
+
+.buttons:hover {
+  background-color: lightgrey;
+  color:black;
+}

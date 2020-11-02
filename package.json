@@ -1,0 +1,33 @@
+{
+    "name": "webhbys",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "nodemon /Desktop/Created_by_me/WebHBYS/server/ServerFunctions/app.js"
+    },
+    "dependencies": {
+        "@popperjs/core": "^2.5.3",
+        "async": "^3.2.0",
+        "body-parser": "^1.19.0",
+        "buffer": "^5.6.0",
+        "connect-flash": "^0.1.1",
+        "cookie-parser": "^1.4.5",
+        "ejs": "^3.1.5",
+        "express": "4.17.1",
+        "express-ejs-layouts": "^2.5.0",
+        "express-session": "^1.17.1",
+        "express-toastr": "^2.0.2",
+        "extend": "^3.0.2",
+        "jQuery": "^1.7.4",
+        "jquery-toasts": "0.0.1",
+        "loadsh": "0.0.4",
+        "moment": "^2.29.1",
+        "mongoose": "^5.10.4",
+        "popper.js": "^1.16.1",
+        "pug": "^3.0.0",
+        "toastr": "^2.1.4"
+    },
+    "devDependencies": {
+        "jsdom": "16.4.0",
+        "jsdom-global": "3.0.2"
+    }
+}

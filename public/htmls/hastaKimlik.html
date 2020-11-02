@@ -1,0 +1,639 @@
+<html lang="en">
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=yes">
+    <title>Patient Id Module</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript"
+        src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
+    <link rel="stylesheet" media="all"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="/public/css/hastakimlik.css" type="text/css">
+    <link rel="shortcut icon" href="/images/id-3.png">
+</head>
+
+
+<body id="patientIdBody" onload="
+    ShowOrHideMethods.myStickHeader('hastaKimlikSubHeadDiv');
+    jQueryMethods.setCalenderValueToday('dogumTarihi');
+    jQueryMethods.getJqueryDatePicker();
+    jQueryMethods.toolTipFunction();
+    ShowOrHideMethods.showBackTotopButton();">
+
+    <div class="hastaKimlikNotify" id="hastaKimlikNotify">
+        <span id="hastaKimlikNotifyType" class=""></span>
+    </div>
+
+    <div class="generalNotify" id="generalNotify">
+        <span id="generalNotifyType" class=""></span>
+    </div>
+
+    <div class="hastaKimlikHeaderDiv" id="hastaKimlikHeaderDiv">
+        <div class="hastaKimlikSubHeadDiv" id="hastaKimlikSubHeadDiv">
+            <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('hastakimlik')"
+                title="Click for open in new tab."><img class="openInNewTab" id="hastaKimlikOpenInNewTab"
+                    src="/public/images/open-new-tab.png" alt=""></div>
+            <div id="hastaKimlikModulNameText"> Patient ID Module </div>
+            <div>
+                <img class="modulAvatar" src="/public/images/id-3.png" title="Anasayfa için tıklayınız."
+                    onclick="window.location.href='/public/htmls/index.html'">
+            </div>
+        </div>
+    </div>
+
+    <div class="generalContainer">
+        <div class="mainContainer">
+            <div class="veriler">
+                <div class="nav-wrapper">
+
+                    <div class="labels">
+                        <label for="idTxt">Hasta Id </label><br><br>
+                        <label for="hastaNo">Hasta no</label><br><br>
+                        <label for="tcKimlik">TC Kimlik No</label><br><br>
+                        <label for="adi">Adi</label><br><br>
+                        <label for="soyadi">Soyadi</label><br><br>
+                        <label for="babaAdi">Baba adi</label><br><br>
+                        <label for="anaAdi">Anne adi</label><br><br>
+                        <label for="cinsiyeti">Cinsiyeti</label><br><br>
+                        <label for="dogumYeri">Dogum yeri</label><br><br>
+                        <label for="dogumTarihi">Dogum tarihi</label><br><br>
+                        <label for="phone">Telefon</label><br><br>
+                        <label for="adress">Adres</label><br><br>
+                    </div>
+
+                    <div class="inputs">
+                        <input type="number" name="idTxt" id="idTxt"><br><br>
+                        <input type="number" name="hastaNo" id="hastaNo"><br><br>
+                        <input type="number" name="tcKimlik" id="tcKimlik" maxlength="11"><br><br>
+                        <input type="text" name="adi" id="adi"><br><br>
+                        <input type="text" name="soyadi" id="soyadi"><br><br>
+                        <input type="text" name="babaAdi" id="babaAdi"><br><br>
+                        <input type="text" name="anaAdi" id="anaAdi"><br><br>
+                        <select name="cinsiyeti" id="cinsiyetiId" style="width: 160;height: 28;">
+                            <option value="bos" selected></option>
+                            <option value="erkek">Erkek</option>
+                            <option value="kadin">Kadin</option>
+                        </select><br><br>
+                        <input type="text" name="dogumYeri" id="dogumYeri"><br><br>
+                        <input type="text" id="dogumTarihi" name="dogumTarihi" style="width: 160;" value=""><br><br>
+                        <input type="phone" name="phone" id="phone"><br><br>
+                        <textarea id="adress" name="adress" cols="40" rows="5" style="resize: none;"></textarea><br><br>
+
+                    </div>
+
+                </div>
+
+                <div class="patientPhoto">
+                    <img id="patientPhotoId" src="/public/images/cv photo - office background.jpg" alt="Patient Photo">
+
+                    <button class="polyclinicButtons btn--swap" id="changeImage"
+                        onclick="document.getElementById('getFile').click()">
+                        <pDegis>Degistir</pDegis> <span id="degistirSpan">Hasta fotografini <br> degistir.</span>
+                    </button>
+
+                    <input type='file' id="getFile"
+                        onchange="HastaKimlikMethods.changePatientPhoto('getFile','patientPhotoId')"
+                        style="display:none">
+                </div>
+
+            </div>
+
+            <div class="btnDiv">
+                <button class="btn btn-primary" id="hastaAra">Hasta Ara</button>
+                <button class="btn btn-success" id="kaydet"
+                    onclick="ShowOrHideMethods.hastaKimlikShowSuccesAlert();">Kaydet</button>
+                <button class="btn btn-info" id="guncelle"
+                    onclick="ShowOrHideMethods.hastaKimlikShowSuccesAlert();">Guncelle</button>
+                <button class="btn btn-danger" id="yeniHasta" onclick="CheckAndClearMethods.checksBeforeExit();">Yeni
+                    Hasta</button>
+            </div>
+
+        </div>
+
+        <div class="historyContainer">
+            <div class="medicalHistory">
+                <div class="patientHistoryContainer" id="patientHistoryContainer">
+                    <h10 class="historyHeaders"> Patient History</h10>
+                    <table id="patientHistoryTable">
+                        <tr>
+                            <th>No.</th>
+                            <th>Protocol No.</th>
+                            <th>Date</th>
+                            <th>Polyclinic</th>
+                        </tr>
+                        <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
+                        
+                        Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
+                        ">
+                            <td>1</td>
+                            <td>12345</td>
+                            <td>01/03/2019</td>
+                            <td>Diet Pol.</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>45678</td>
+                            <td>15/01/2020</td>
+                            <td>Cardiology Pol.</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>91011</td>
+                            <td>22/02/2020</td>
+                            <td>Urology Pol.</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>12131</td>
+                            <td>04/03/2020</td>
+                            <td>Emergency Pol.</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>14151</td>
+                            <td>18/04/2020</td>
+                            <td>Urology Pol.</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="appointmentHistory">
+                <div class="appointmentSearchHistory">
+                    <h10 class="historyHeaders" id="appRegPatientHistory">Patient Appointment History</h10>
+                    <div style="box-shadow: 2px 2px 10px #555;">
+                        <table id="appSearchPatientHistoryTable">
+                            <tr style="background-color: #49A7BC;">
+                                <th>#</th>
+                                <th>Protocol No.</th>
+                                <th>Appiontment Date</th>
+                                <th>Polyclinic</th>
+                                <th>Doctor</th>
+                                <th>Status</th>
+                            </tr>
+                            <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
+                    
+                    Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
+                    ">
+                                <td>1</td>
+                                <td>12345</td>
+                                <td>01/03/2019</td>
+                                <td>Diet Pol.</td>
+                                <td>Prof. Dr. Ahmet MEHMET</td>
+                                <td class="gecerliAppointment">Gecerli</td>
+                            <tr>
+                                <td>2</td>
+                                <td>45678</td>
+                                <td>15/01/2020</td>
+                                <td>Cardiology Pol.</td>
+                                <td>Doc. Dr. Ayse SARMASIK</td>
+                                <td class="iptalAppointment">Iptal - Doktor Acil Ameliyat</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>91011</td>
+                                <td>22/02/2020</td>
+                                <td>Urology Pol.</td>
+                                <td>Uzm. Dr. Hasan HUSEYIN</td>
+                                <td class="gecerliAppointment">Gecerli</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>12131</td>
+                                <td>04/03/2020</td>
+                                <td>Emergency Pol.</td>
+                                <td>Prof. Dr. Ridvan CELIK</td>
+                                <td class="gecerliAppointment">Gecerli</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>14151</td>
+                                <td>18/04/2020</td>
+                                <td>Urology Pol.</td>
+                                <td>Prof. Dr. Ahmet MEHMET</td>
+                                <td class="iptalAppointment">Iptal - Hasta Gelmedi</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+
+        <!-- Footer Elements -->
+        <div class="footer-container" style="padding: 10px; margin: 10px;">
+
+            <!-- Social buttons -->
+            <ul class="list-unstyled list-inline text-center">
+                <li class="list-inline-item">
+                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page"
+                        onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
+                        <a class="btn-floating btn-fb fa-2x">
+                            <i class="fa fa-facebook-square"> </i>
+                        </a>
+                    </button>
+                </li>
+                <li class="list-inline-item">
+                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page"
+                        onclick="ShowOrHideMethods.socialMediaNewTab ('twitterBtn');">
+                        <a class="btn-floating btn-tw fa-2x">
+                            <i class="fa fa-twitter-square"> </i>
+                        </a>
+                    </button>
+                </li>
+                <li class="list-inline-item">
+                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page"
+                        onclick="ShowOrHideMethods.socialMediaNewTab ('googlePlusBtn');">
+                        <a id="googlePlusBtn" class="btn-floating btn-gplus fa-2x">
+                            <i class="fa fa-google-plus-square"> </i>
+                        </a>
+                    </button>
+                </li>
+                <li class="list-inline-item">
+                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page"
+                        onclick="ShowOrHideMethods.socialMediaNewTab ('linkedinBtn');">
+                        <a id="linkedinBtn" class="btn-floating btn-li fa-2x">
+                            <i class=" fa fa-linkedin-square"> </i>
+                        </a>
+                    </button>
+                </li>
+            </ul>
+            <!-- Social buttons -->
+
+        </div>
+        <!-- Footer Elements -->
+        <!-- Copyright -->
+        <div class="footer-copyright text-center" style="font-size: large;color: black;padding: 10px;">
+            © 2020
+            Copyright:
+            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')"
+                title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
+                <span>R</span><span>e</span><span>c</span><span>e</span><span>p</span>
+                <span>C</span><span>e</span><span>l</span><span>i</span><span>k</span>
+            </div>
+        </div>
+        </a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+
+
+    <div id="userStatistics" class="modal" style="padding: 60px;">
+        <div id="userStatistics-modal-content" class="userStatisticsContent animate" action="?action=add" method="post">
+            <div id="userStatisticsImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('userStatistics').style.display='none'"
+                    id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/statistics-12.png" alt="Avatar" class="avatar">
+            </div>
+            <div id="userStatisticsContainer" class="userStatisticsContainer">
+                <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
+                <table id="userLoginStatsTable">
+                    <tr id="tableHeader">
+                        <th>#</th>
+                        <th>Ip Adress</th>
+                        <th>Login Date</th>
+                        <th>Login Duration</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>192.168.1.11</td>
+                        <td>03.09.2020 14:10</td>
+                        <td>22 minutes 17 seconds</td>
+                    </tr>
+                </table>
+                <br><br>
+                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
+                    - 192.168.1.11</h11>
+                <br><br>
+                <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
+                <br>
+                <table id="userMessageStatsTable">
+                    <tr id="tableHeader">
+                        <th>Inbox Messages</th>
+                        <th>Read Messages</th>
+                        <th>Unread Messages</th>
+                        <th>Sent Messages</th>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="userTraining" class="modal" style="padding: 60px;">
+        <div id="userTraining-modal-content" class="userTrainingContent animate" action="?action=add" method="post">
+            <div id="userTrainingImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn"
+                    class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/training-4.png" alt="Avatar" class="avatar">
+            </div>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Incoming Trainings</h11>
+            <div id="userTrainingContainer" class="userTrainingContainer">
+                <table id="userTrainingTable">
+                    <tr class="testTableHeader">
+                        <th>#</th>
+                        <th>Training</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Document</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>CPR Training</td>
+                        <td>01.10.2020 14:00</td>
+                        <td>Central Conferece Room</td>
+                        <td>
+                            <a id="documentOpenLink1" class="modulLink"
+                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Safety and Hygen Training</td>
+                        <td>12.10.2020 14:00</td>
+                        <td>Central Conferece Room</td>
+                        <td>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
+                                target="_blank">Open File</a>
+                        </td>
+                    </tr>
+                </table>
+                <br><br>
+
+                <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Old Trainings</h11><br>
+                <table id="userOldTrainingTable">
+                    <tr class="testTableHeader">
+                        <th>#</th>
+                        <th>Training</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Document</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>HBYS Training</td>
+                        <td>01.03.2020 09:00</td>
+                        <td>Central Conferece Room</td>
+                        <td>
+                            <a id="documentOpenLink1" class="modulLink"
+                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Covid-19 Training</td>
+                        <td>12.01.2020 14:00</td>
+                        <td>Central Conferece Room</td>
+                        <td>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
+                                target="_blank">Open File</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="userSettings" class="modal" style="padding: 60px;">
+        <div id="userSettings-modal-content" class="userSettingsContent animate" action="?action=add" method="post">
+            <div id="userSettingsImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn"
+                    class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar"
+                    class="avatar">
+            </div>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Settings</h11>
+            <div id="userSettingsContainer" class="userSettingsContainer">
+                Old Password: <br>
+                <input type="password" name="userOldPassword" id="userOldPassword"
+                    placeholder="Please enter your current password."
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <br>
+                New Password: <br>
+                <input type="password" name="userNewPassword" id="userNewPassword"
+                    placeholder="Please enter your new password."
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <br>
+                New Password Repeat: <br>
+                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
+                    placeholder="Please re-enter your new password."
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
+                    CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
+                <br>
+                <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
+                <br>
+                <button class="inpatientBtn btn-success" id="changePassword"
+                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
+                    title="Change password!">Change
+                    Password
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="userMessaging" class="modal" style="padding: 60px;">
+        <div id="userMessaging-modal-content" class="userMessagingContent animate">
+            <div id="userMessagingImgcontainer" class="imgcontainer">
+                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn"
+                    class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/message-2.png" alt="Avatar" class="avatar">
+            </div>
+            <div id="userMessageSubContainer">
+                <div id="userMessageHistory">
+                    <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Inbox</h11>
+                    <div id="userMessagingContainer" class="userMessagingContainer">
+                        <table id="userInboxTable">
+                            <tr class="testTableHeader">
+                                <th>#</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>From</th>
+                                <th>Message</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>HBYS Training</td>
+                                <td>01.03.2020 09:00</td>
+                                <td>Central Conferece Room</td>
+                                <td>
+                                    <a id="documentOpenLink1" class="modulLink"
+                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                        Message</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Covid-19 Training</td>
+                                <td>12.01.2020 14:00</td>
+                                <td>Central Conferece Room</td>
+                                <td>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
+                                        target="_blank">Open Message</a>
+                                </td>
+                            </tr>
+                        </table>
+                        <br><br>
+
+                        <h11 class="historyHeaders"> User Sent</h11><br>
+                        <table id="userSentMessagesTable">
+                            <tr class="testTableHeader">
+                                <th>#</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>From</th>
+                                <th>Message</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>HBYS Training</td>
+                                <td>01.03.2020 09:00</td>
+                                <td>Central Conferece Room</td>
+                                <td>
+                                    <a id="documentOpenLink1" class="modulLink"
+                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                        Message</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Covid-19 Training</td>
+                                <td>12.01.2020 14:00</td>
+                                <td>Central Conferece Room</td>
+                                <td>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
+                                        target="_blank">Open Message</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="userNewMessageDiv">
+                    <h11 class="historyHeaders" style="margin: 5px;color: white;">Send Message</h11>
+                    <br><br>
+                    Subject: <br>
+                    <input type="text" name="userMessageSubject" id="userMessageSubject">
+                    <br>
+                    To: <br>
+                    <input type="text" name="userMessageTo" id="userMessageTo">
+                    <br>
+                    <!-- kisiler -->
+                    <div class="dropdown">
+                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')"
+                            class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
+                                style="font-size: 16px;">Add person!</span></button>
+                        <div id="userMessagePerson" class="dropdown-content"
+                            onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
+                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus
+                                onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
+                            <a>Recep CELIK</a>
+                            <a>Adnan YILDIRIM</a>
+                            <a>Onder KARABULUT</a>
+                            <a>Ayse FATMA</a>
+                            <a>John QUERY</a>
+                        </div>
+                    </div>
+                    Message: <br>
+                    <textarea name="userMessageBody" id="userMessageBody" cols="87" rows="7"></textarea>
+                    <br>
+                    <button class="inpatientBtn btn-primary" id="userMessageSend"
+                        onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
+                    </button>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- bottom user menu -->
+    <div class="bottomUserMenu">
+        <nav class="menu">
+            <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
+            <label class="menu-open-button" for="menu-open" title="User Menu">
+                <span class="hamburger hamburger-1"></span>
+                <span class="hamburger hamburger-2"></span>
+                <span class="hamburger hamburger-3"></span>
+            </label>
+
+            <a href="#" class="menu-item" title="User Statistics."
+                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Trainings."
+                onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
+            <a href="#" class="menu-item" title="User Settings."
+                onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
+            <a href="#" class="menu-item" title="User Messages."
+                onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
+            <a href="#" class="menu-item"> <i class="fa fa-cog"></i> </a>
+
+        </nav>
+
+        <!-- filters -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <filter id="shadowed-goo">
+
+                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                        result="goo" />
+                    <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+                    <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
+                        result="shadow" />
+                    <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+                    <feBlend in2="shadow" in="goo" result="goo" />
+                    <feBlend in2="goo" in="SourceGraphic" result="mix" />
+                </filter>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                        result="goo" />
+                    <feBlend in2="goo" in="SourceGraphic" result="mix" />
+                </filter>
+            </defs>
+        </svg>
+    </div>
+    <!-- end of bottom user menu  -->
+
+
+    <!--back to top button -->
+    <button onclick="ShowOrHideMethods.backtoTopFunction();" id="goTotop" title="Go to top"></button>
+    <!--end of back to top button -->
+
+    <div class="bottomScrool">
+        <p id="bottomScrollP4">News about your hospital --- it's not a mobile device.</p>
+    </div><br>
+    <!-- end of Footer -->
+
+
+    <script src="/public/functions/functions.js"></script>
+</body>
+
+</html>

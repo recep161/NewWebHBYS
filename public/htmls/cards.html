@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+
+<head>
+
+  <head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=yes">
+    <title>Web HBYS Homepage</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript"
+      src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
+    <link rel="stylesheet" media="all"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
+    <link rel="stylesheet" media="all"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+
+    <link rel="stylesheet" href="/public/css/cards.css">
+    <link rel="shortcut icon" href="/public/images/Insomnia.ico">
+  </head>
+
+<body>
+
+
+  <!-- <div class="mywrapper">
+    <div class="mycols">
+      <div class="mycol">
+        <div class="mycontainer">
+          <div class="myfront" style="background-image: url(https://unsplash.it/500/500/)">
+            <div class="myinner">
+              <p>Recep Celik</p>
+              <span>Modul icin tiklayiniz</span>
+            </div>
+          </div>
+          <div class="myback">
+            <div class="myinner">
+              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias cum repellat velit quae suscipit c.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br><br><br><br> -->
+
+
+  <!-- <nav>
+    <input class="toggle" id="nav" type="checkbox" />
+    <label class="label" for="nav">
+      <p>Menu</p><span class="hum"></span>
+      <ul class="list">
+        <li class="list__home"><a href="#0">Home</a></li>
+        <li class="list__about"><a href="#0">About</a></li>
+        <li class="list__clients"><a href="#0"><span>Clients</span></a>
+          <ul class="list__clientsItems">
+            <li><a href="#0">Burger King</a></li>
+            <li><a href="#0">Southwest Airlines</a></li>
+            <li><a href="#0">Levi Strauss</a></li>
+          </ul>
+        </li>
+        <li class="list__strauss"><a href="#0"><span>Services</span></a>
+          <ul class="list__straussItem">
+            <li><a href="#0">Print Design</a></li>
+            <li><a href="#0">Web Design</a></li>
+            <li><a href="#0">Mobile App Development</a></li>
+          </ul>
+        </li>
+        <li class="list__contact"><a href="#0">Contact</a></li>
+      </ul>
+    </label>
+  </nav> -->
+
+  <!-- 
+
+  <nav class="menu">
+    <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
+    <label class="menu-open-button" for="menu-open" title="User Menu">
+      <span class="hamburger hamburger-1"></span>
+      <span class="hamburger hamburger-2"></span>
+      <span class="hamburger hamburger-3"></span>
+    </label>
+
+    <a href="#" class="menu-item"> <i class="fa fa-bar-chart"></i> </a>
+    <a href="#" class="menu-item"> <i class="fa fa-plus"></i> </a>
+    <a href="#" class="menu-item"> <i class="fa fa-heart"></i> </a>
+    <a href="#" class="menu-item"> <i class="fa fa-envelope"></i> </a>
+    <a href="#" class="menu-item"> <i class="fa fa-cog"></i> </a>
+
+  </nav>
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs>
+      <filter id="shadowed-goo">
+
+        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+        <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+        <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
+          result="shadow" />
+        <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+        <feBlend in2="shadow" in="goo" result="goo" />
+        <feBlend in2="goo" in="SourceGraphic" result="mix" />
+      </filter>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+        <feBlend in2="goo" in="SourceGraphic" result="mix" />
+      </filter>
+    </defs>
+  </svg> -->
+
+
+  <div>
+    <h1>Animated Graphs</h1>
+    <h2>Scroll Triggered, Responsive, Data-driven</h2>
+    <p>&nbsp;</p>
+
+    <div class="chartBarsWrap">
+      <div class="chartBars chartBars1">
+        <ul class="numbers">
+          <li><span>100%</span></li>
+          <li><span>80%</span></li>
+          <li><span>60%</span></li>
+          <li><span>40%</span></li>
+          <li><span>20%</span></li>
+          <li><span>0%</span></li>
+        </ul>
+        <ul class="bars">
+          <li>
+            <span class="tooltip">
+              <span class="tooltipContent">Very important info that you should read!</span>
+              <div data-percentage="52" class="bar greenBar trigger"></div>
+            </span>
+            <b>Alpha</b>
+          </li>
+          <li>
+            <span class="tooltip">
+              <span class="tooltipContent">This one is trending well.</span>
+              <div data-percentage="83" class="bar blueBar trigger"></div>
+            </span>
+            <b>Beta</b>
+          </li>
+          <li>
+            <span class="tooltip">
+              <span class="tooltipContent">I like cheese!</span>
+              <div data-percentage="94" class="bar orangeBar trigger"></div>
+            </span>
+            <b>Gamma</b>
+          </li>
+          <li>
+            <span class="tooltip">
+              <span class="tooltipContent">Monkey's are funny!</span>
+              <div data-percentage="64" class="bar purpleBar trigger"></div>
+            </span>
+            <b>Delta</b>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p>Bacon ipsum do lor amet porchetta jowl jerky short loin, tri-tip flank c ow. Strip steak meat ball picanha t-bone
+      pork loin filet mignon, pancetta jerky kielba sa sirloin ball t ip hamburger turkey pork belly ham hock. Chicken
+      swine tail s pa re ribs,pork loin tongue picanha strip steak ribeye pancetta bresaola landjaeger flank ham shank.
+      Picanha t-bone meatball, corned beef tail tri-tip flank capicola alcatra spare ribs. Flank tail pork loin pork
+      belly
+      sirloin tri-tip.</p>
+
+    <h3>Responsive? Yep.</h3>
+
+    <div class="chartBarsWrap">
+      <div class="chartBars chartBars2">
+        <ul class="numbers">
+          <li><span>100%</span></li>
+          <li><span>80%</span></li>
+          <li><span>60%</span></li>
+          <li><span>40%</span></li>
+          <li><span>20%</span></li>
+          <li><span>0%</span></li>
+        </ul>
+        <ul class="bars">
+          <li>
+            <div data-percentage="92" class="bar greenBar trigger"></div><b>Alpha</b>
+          </li>
+          <li>
+            <div data-percentage="33" class="bar orangeBar trigger"></div><b>Beta</b>
+          </li>
+          <li>
+            <div data-percentage="64" class="bar blueBar trigger"></div><b>Gamma</b>
+          </li>
+          <li>
+            <div data-percentage="44" class="bar purpleBar trigger"></div>
+            <b>Delta</b>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p>Bacon ipsum do lor amet porchetta jowl jerky short loin, tri-tip flank c ow. Strip steak meat ball picanha t-bone
+      pork loin filet mignon, pancetta jerky kielba sa sirloin ball t ip hamburger turkey pork belly ham hock. Chicken
+      swine tail s pa re ribs, pork loin tongue picanha strip steak ribeye pancetta bresaola landjaeger flank ham shank.
+      Picanha t-bone meatball, corned beef tail tri-tip flank capicola alcatra spare ribs. Flank tail pork loin pork
+      belly
+      sirloin tri-tip. Bresaola salmi.</p>
+
+    <h3>Radial Graphs</h3>
+
+    <div class="box-piesite">
+      <ul>
+        <li class="design">
+          <div class="piesite" id="pie_0" data-pie="82"></div>
+        </li>
+        <li class="usability">
+          <div class="piesite" id="pie_2" data-pie="55"></div>
+        </li>
+        <li class="creativity">
+          <div class="piesite" id="pie_1" data-pie="33"></div>
+        </li>
+      </ul>
+    </div>
+
+    <p>Bacon ipsum do lor amet porchetta jowl jerky short loin, tri-tip flank c ow. Strip steak meat ball picanha t-bone
+      pork loin filet mignon, pancetta jerky kielba sa sirloin ball t ip hamburger turkey pork belly ham hock. Chicken
+      swine tail s pa re ribs,pork loin tongue picanha strip steak ribeye pancetta bresaola landjaeger flank ham shank.
+      Picanha t-bone meatball, corned beef tail tri-tip flank capicola alcatra spare ribs. Flank tail pork loin pork
+      belly
+      sirloin tri-tip..</p>
+    <!-- <p>&nbsp;</p>  -->
+
+    <h3>Horizontal</h3>
+
+    <div class="chartBarsWrap chartBarsHorizontal">
+      <div class="chartBars">
+        <ul class="bars">
+          <li>
+            <div data-percentage="92" class="bar greenBarFlat"></div><b>Alpha</b>
+          </li>
+          <li>
+            <div data-percentage="33" class="bar orangeBarFlat"></div><b>Beta</b>
+          </li>
+          <li>
+            <div data-percentage="64" class="bar blueBarFlat"></div><b>Gamma</b>
+          </li>
+          <li>
+            <div data-percentage="44" class="bar purpleBarFlat"></div><b>Delta</b>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+    <p>Bacon ipsum do lor amet porchetta jowl jerky short loin, tri-tip flank c ow. Strip steak meat ball picanha t-bone
+      pork loin filet mignon, pancetta jerky kielba sa sirloin ball t ip hamburger turkey pork belly ham hock. Chicken
+      swine tail s pa re ribs,pork loin tongue picanha strip steak ribeye pancetta bresaola landjaeger flank ham shank.
+    </p>
+
+    <h3>Just add more bars, they sqeeze in. Sweet!</h3>
+
+    <div class="chartBarsWrap">
+      <div class="chartBars chartBars3">
+        <ul class="numbers">
+          <li><span>100%</span></li>
+          <li><span>80%</span></li>
+          <li><span>60%</span></li>
+          <li><span>40%</span></li>
+          <li><span>20%</span></li>
+          <li><span>0%</span></li>
+        </ul>
+        <ul class="bars">
+          <li>
+            <div data-percentage="92" class="bar greenBar trigger"></div><b>Alpha</b>
+          </li>
+          <li>
+            <div data-percentage="33" class="bar blueBar trigger"></div><b>Beta</b>
+          </li>
+          <li>
+            <div data-percentage="64" class="bar orangeBar trigger"></div><b>Gamma</b>
+          </li>
+          <li>
+            <div data-percentage="41" class="bar purpleBar trigger"></div><b>Delta</b>
+          </li>
+          <li>
+            <div data-percentage="52" class="bar greenBar trigger"></div><b>Epsilon</b>
+          </li>
+          <li>
+            <div data-percentage="58" class="bar blueBar trigger"></div><b>Zeta</b>
+          </li>
+          <li>
+            <div data-percentage="65" class="bar orangeBar trigger"></div><b>Eta</b>
+          </li>
+          <li>
+            <div data-percentage="91" class="bar purpleBar trigger"></div><b>Theta</b>
+          </li>
+          <li>
+            <div data-percentage="32" class="bar greenBar trigger"></div><b>Iota</b>
+          </li>
+          <li>
+            <div data-percentage="68" class="bar blueBar trigger"></div><b>Kappa</b>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p>Bacon ipsum do lor amet porchetta jowl jerky short loin, tri-tip flank c ow. Strip steak meat ball picanha t-bone
+      pork loin filet mignon, pancetta jerky kielba sa sirloin ball t ip hamburger turkey pork belly ham hock. Chicken
+      swine tail s pa re ribs,pork loin tongue picanha strip steak ribeye pancetta bresaola landjaeger flank ham shank.
+    </p>
+  </div>
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="/public/functions/functions.js"></script>
+  <script>
+    
+    function charts() {
+      var piesiteFired = 0;
+      $(document).ready(function () {
+        var $win = $(window),
+          $win_height = $(window).height(),
+          // - A multiple of viewport height - The higher this number the sooner triggered.
+          windowPercentage = $(window).height() * 0.9;
+        $win.on("scroll", scrollReveal);
+        function scrollReveal() {
+          var scrolled = $win.scrollTop();
+
+          ///////////////////////////////////////
+          // Bar Charts scroll activate, looking for .trigger class to fire.
+          $(".trigger").each(function () {
+            var $this = $(this),
+              offsetTop = $this.offset().top;
+            if (
+              scrolled + windowPercentage > offsetTop ||
+              $win_height > offsetTop
+            ) {
+              $(this).each(function (key, bar) {
+                var percentage = $(this).data("percentage");
+                $(this).css("height", percentage + "%");
+
+                ///////////////////////////////////////
+                //        Animated numbers
+                $(this).prop("Counter", 0).animate(
+                  {
+                    Counter: $(this).data("percentage")
+                  },
+                  {
+                    duration: 2000,
+                    easing: "swing",
+                    step: function (now) {
+                      $(this).text(Math.ceil(now));
+                    }
+                  }
+                );
+                //        Animated numbers
+                ///////////////////////////////////////
+              });
+
+            } else {
+              ///////////////////////////////////////
+              // To keep them triggered, lose this block.
+              $(this).each(function (key, bar) {
+                $(this).css("height", 0);
+              });
+            }
+
+          });
+
+          ///////////////////////////////////////
+          // Horizontal Chart
+          $(".chartBarsHorizontal .bar").each(function () {
+            var $this = $(this),
+              offsetTop = $this.offset().top;
+            if (
+              scrolled + windowPercentage > offsetTop ||
+              $win_height > offsetTop
+            ) {
+              $(this).each(function (key, bar) {
+                var percentage = $(this).data("percentage");
+                $(this).css("width", percentage + "%");
+                ///////////////////////////////////////
+                //        Animated numbers
+                $(this).prop("Counter", 0).animate(
+                  {
+                    Counter: $(this).data("percentage")
+                  },
+                  {
+                    duration: 2000,
+                    easing: "swing",
+                    step: function (now) {
+                      $(this).text(Math.ceil(now));
+                    }
+                  }
+                );
+                //        Animated numbers
+                ///////////////////////////////////////
+              });
+
+            } else {
+              ///////////////////////////////////////
+              // To keep them triggered, lose this block.
+              $(this).each(function (key, bar) {
+                $(this).css("width", 0);
+              });
+            }
+
+          });
+
+          ///////////////////////////////////////
+          // Radial Graphs - scroll activate
+          $(".piesite").each(function () {
+            var $this = $(this),
+              offsetTop = $this.offset().top;
+            if (
+              scrolled + windowPercentage > offsetTop ||
+              $win_height > offsetTop
+            ) {
+              if (piesiteFired == 0) {
+                timerSeconds = 3;
+                timerFinish = new Date().getTime() + timerSeconds * 1000;
+                $(".piesite").each(function (a) {
+                  pie = $("#pie_" + a).data("pie");
+                  timer = setInterval(
+                    "stoppie(" + a + ", " + pie + ")",
+                    0
+                  );
+                });
+                piesiteFired = 1;
+              }
+            } else {
+              // To keep them triggered, lose this block.
+              $(".piesite").each(function () {
+                piesiteFired = 0;
+              });
+            }
+          });
+        }
+        scrollReveal();
+      });
+
+
+
+      ///////////////////////////////////////
+      //        The Radial Graphs
+      ///////////////////////////////////////
+
+      // The following code is originally from the excellent pen:
+      // https://codepen.io/StephenScaff/pen/VYaQGB by Stephen Scaff
+
+      var timer;
+      var timerFinish;
+      var timerSeconds;
+
+      function drawTimer(c, a) {
+        $("#pie_" + c).html(
+          '<div class="percent"></div><div id="slice"' +
+          (a > 50 ? ' class="gt50"' : "") +
+          '><div class="pie"></div>' +
+          (a > 50 ? '<div class="pie fill"></div>' : "") +
+          "</div>"
+        );
+        var b = 360 / 100 * a;
+        $("#pie_" + c + " #slice .pie").css({
+          "-moz-transform": "rotate(" + b + "deg)",
+          "-webkit-transform": "rotate(" + b + "deg)",
+          "-o-transform": "rotate(" + b + "deg)",
+          transform: "rotate(" + b + "deg)"
+        });
+        a = Math.floor(a * 100) / 100;
+        arr = a.toString().split(".");
+        intPart = arr[0];
+        $("#pie_" + c + " .percent").html(
+          '<span class="int">' +
+          intPart +
+          "</span>" +
+          '<span class="symbol">%</span>'
+        );
+      }
+      function stoppie(d, b) {
+        var c = (timerFinish - new Date().getTime()) / 1000;
+        var a = 100 - c / timerSeconds * 100;
+        a = Math.floor(a * 100) / 100;
+        if (a <= b) {
+          drawTimer(d, a);
+        } else {
+          b = $("#pie_" + d).data("pie");
+          arr = b.toString().split(".");
+          $("#pie_" + d + " .percent .int").html(arr[0]);
+        }
+      }
+    }
+
+  </script>
+</body>
+
+</html>

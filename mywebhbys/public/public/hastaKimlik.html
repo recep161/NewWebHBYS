@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset='UTF-8'>
+    <title>Hasta Kimlik Modulu</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"
+        type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/public/hastakimlik.css">
+    <div id="paragraph"></div>
+</head>
+
+<body>
+    <div class="veriler">
+        <div class="nav-wrapper">
+            <div class="labels">
+                <label for="idTxt">Hasta Id</label><br><br>
+                <label for="hastaNo">Hasta no</label><br><br>
+                <label for="tcKimlik">TC Kimlik No</label><br><br>
+                <label for="adi">Adi</label><br><br>
+                <label for="soyadi">Soyadi</label><br><br>
+                <label for="babaAdi">Baba adi</label><br><br>
+                <label for="anaAdi">Anne adi</label><br><br>
+                <label for="cinsiyeti">Cinsiyeti</label><br><br>
+                <label for="dogumYeri">Dogum yeri</label><br><br>
+                <label for="dogumTarihi">Dogum tarihi</label><br><br>
+                <label for="phone">Telefon</label><br><br>
+                <label for="adress">Adres</label><br><br>
+            </div>
+            <div class="inputs">
+                <input type="text" name="idTxt" id="idTxt"><br><br>
+                <input type="text" name="hastaNo" id="hastaNo"><br><br>
+                <input type="text" name="tcKimlik" id="tcKimlik"><br><br>
+                <input type="text" name="adi" id="adi"><br><br>
+                <input type="text" name="soyadi" id="soyadi"><br><br>
+                <input type="text" name="babaAdi" id="babaAdi"><br><br>
+                <input type="text" name="anaAdi" id="anaAdi"><br><br>
+                <select name="cinsiyeti" id="cinsiyetiId" style="width: 160;height: 28;">
+                    <option value="bos" selected></option>
+                    <option value="erkek">Erkek</option>
+                    <option value="kadin">Kadin</option>
+                </select><br><br>
+                <input type="text" name="dogumYeri" id="dogumYeri"><br><br>
+                <input type="date" id="dogumTarihi" name="dogumTarihi" style="width: 160;" value=""><br><br>
+                <input type="phone" name="phone" id="phone"><br><br>
+                <textarea id="adress" name="adress" cols="40" rows="5"></textarea><br><br>
+                <button class="buttons" id="hastaAra">Hasta Ara</button>
+                <button class="buttons" id="kaydet">Kaydet</button>
+                <button class="buttons" id="guncelle">Guncelle</button>
+                <button class="buttons" id="vazgec" onclick="checksBeforeExit();">Vazgec</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="function.js"></script>
+</body>
+
+</html>

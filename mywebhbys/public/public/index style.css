@@ -1,0 +1,704 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  cursor: pointer;
+  text-align: center;
+  transition: box-shadow 0.4s linear;
+  /* margin: 15px; */
+  padding: 5px;
+  border-radius: 10px;
+  background: linear-gradient(40deg, white, transparent);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all .2s ease-out;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* animation for 'click for module' button */
+
+a:hover {
+  /* box-shadow: 0px 0px 5px 10px #FC5185; */
+  animation: growButtonShadow 1.5s infinite;
+  animation-delay: 0.2s;
+  -webkit-animation: growButtonShadow 1.5s infinite;
+  -webkit-animation-delay: 0.2s;
+  border-radius: 10px;
+  background-position: left bottom;
+}
+
+@keyframes growButtonShadow {
+  0% {
+    box-shadow: 0px 0px 5px 0px white;
+  }
+  10% {
+    box-shadow: 0px 0px 5px 2px white;
+  }
+  25% {
+    box-shadow: 0px 0px 5px 4px white;
+  }
+  40% {
+    box-shadow: 0px 0px 5px 6px white;
+  }
+  50% {
+    box-shadow: 0px 0px 5px 7px white;
+  }
+  60% {
+    box-shadow: 0px 0px 5px 6px white;
+  }
+  75% {
+    box-shadow: 0px 0px 5px 4px white;
+  }
+  90% {
+    box-shadow: 0px 0px 5px 2px white;
+  }
+  100% {
+    box-shadow: 0px 0px 5px 0px white;
+  }
+}
+
+@-webkit-keyframes growButtonShadow {
+  0% {
+    box-shadow: 0px 0px 5px 0px white;
+  }
+  10% {
+    box-shadow: 0px 0px 5px 2px white;
+  }
+  25% {
+    box-shadow: 0px 0px 5px 4px white;
+  }
+  40% {
+    box-shadow: 0px 0px 5px 6px white;
+  }
+  50% {
+    box-shadow: 0px 0px 5px 7px white;
+  }
+  60% {
+    box-shadow: 0px 0px 5px 6px white;
+  }
+  75% {
+    box-shadow: 0px 0px 5px 4px white;
+  }
+  90% {
+    box-shadow: 0px 0px 5px 2px white;
+  }
+  100% {
+    box-shadow: 0px 0px 5px 0px white;
+  }
+}
+
+/*================================================ */
+
+body {
+  font-family: "Lato", sans-serif;
+  margin: 15px;
+  color: white;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+  font-size: 15px;
+  cursor: default;
+  color: white;
+  display: '';
+  border-style: none none solid solid;
+  border-width: 1px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.containerTab {
+  display: flex;
+  padding: 50%;
+  color: white;
+  cursor: auto;
+}
+
+.closeBtn {
+  position: fixed;
+  top: 300px;
+  right: 690px;
+  z-index: 99;
+  font-size: 15px;
+  border: 2px solid #c2c2c2;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 1px 5px;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+.closeBtn:hover {
+  background-color: #555;
+}
+
+.fixedCloseBtn {
+  position: absolute;
+  margin: -1100px 0px 0px 340px;
+  background-color: red;
+  border-radius: 50px;
+}
+
+.fixedCloseBtn:hover {
+  background-color: inherit;
+  border-color: red;
+}
+
+.row {
+  display: flex;
+  margin: 0px 0px 0px -15px;
+}
+
+/* not on use 
+
+.closebtn {
+  border: 2px solid #c2c2c2;
+  position: relative;
+  padding: 1px 5px;
+  top: -510px;
+  right: -700px;
+  background-color: red;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  display: none;
+}
+
+.closebtn:hover {
+  background-color: #555;
+}
+*/
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.btnContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.nav-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.nav-title {
+  height: 330px;
+  margin: -15px -5px -5px -15px;
+}
+
+.right-side {
+  margin: 0px -25px 10px 0px;
+}
+
+.left-side {
+  margin: 0px 10px 10px -10px;
+}
+
+/* ===================== right side buttons ==================== */
+
+.btn {
+  border: none;
+  outline: none;
+  padding: 13px 12px 10px 10px;
+  font-size: 12px;
+  width: 30%;
+  background-color: transparent;
+  cursor: pointer;
+  border-color: cornflowerblue;
+  box-shadow: 0 0 40px 40px rgb(100, 139, 211) inset, 0 0 0 0 rgb(100, 139, 211);
+  transition: all 150ms ease-in-out;
+  text-align: center;
+  color: white;
+}
+
+.btn:hover {
+  box-shadow: 0 0 10px 0 rgb(100, 139, 211) inset, 0 0 10px 4px rgb(100, 139, 211);
+  color: red;
+}
+
+/* =================================================== */
+
+iframe {
+  position: relative;
+  width: 725px;
+  height: 750px;
+  top: -330px;
+  left: -365px;
+  color: white;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+  border-radius: 12px;
+  -moz-box-shadow: 4px 4px 14px #000;
+  -webkit-box-shadow: 4px 4px 14px #000;
+  box-shadow: 4px 4px #000;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=.2);
+}
+
+/* -------------------- cards !!! not on use !!! -------------------------- */
+/* 
+.col {
+  float: left;
+  padding: 0 10px;
+  cursor: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.cardRow {
+  margin: 30px 5px 10px -5px;
+  display: flex;
+}
+
+
+.cardRow:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/* @media screen and (max-width: 600px) {
+  .col {
+    width: 30%;
+    display: block;
+    margin-bottom: 20px;
+  }
+} 
+
+
+.card {
+  box-shadow: 8px 8px 8px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  text-align: center;
+  background-color: red;
+  border-radius: 10px;
+  font-size: 16px;
+  font-size: 1.5vw;
+} */
+
+/*======================= cards !!! not on use !!!========================== */
+
+marquee {
+  /* Scrool announcement */
+  font-size: 20px;
+  color: black;
+  width: 1220px;
+  height: 250px;
+  margin-top: -5px;
+}
+
+/* ==========logo and logo animation============ */
+
+.logo {
+  margin-top: 15px;
+  margin-right: 10px;
+  float: left;
+  border: 2px solid #c2c2c2;
+  box-shadow: 3px 3px 10px 3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  border-radius: 20px;
+  /* spin effect 3 times repeat*/
+  animation-name: logoSpin, bounceLogo;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-duration: 3s, 2s;
+  animation-delay: 60s, 120s;
+  -webkit-animation-name: logoSpin, bounceLogo;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-delay: 60s, 120s;
+  -webkit-animation-duration: 3s, 2s;
+}
+
+.logo:hover {
+  animation: bounceLogo 3s infinite;
+}
+
+@keyframes logoSpin {
+  from {
+    transform: rotateY(0deg);
+    moz-transform: rotateY(0deg);
+    ms-transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+    -moz-transform: rotateY(360deg);
+    -ms-transform: rotateY(360deg);
+  }
+}
+
+@-webkit-keyframes logoSpin {
+  from {
+    -webkit-transform: rotateY(0deg);
+  }
+  to {
+    -webkit-transform: rotateY(360deg);
+  }
+}
+
+@keyframes bounceLogo {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(1.1, .9) translateY(0);
+  }
+  30% {
+    transform: scale(.9, 1.1) translateY(-100px);
+  }
+  50% {
+    transform: scale(1.05, .95) translateY(0);
+  }
+  57% {
+    transform: scale(1, 1) translateY(-7px);
+  }
+  64% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}
+
+/* ============================================== */
+
+#chooseClassColor {
+  color: black;
+}
+
+/* ==========title animation (hbys) ============ */
+
+#title {
+  animation: text-shadow 1.5s ease-in-out 1;
+  font-weight: 900;
+  line-height: 1;
+  animation-delay: 100s;
+}
+
+#title:hover {
+  animation: text-shadow 1.5s ease-in-out infinite;
+}
+
+@keyframes text-shadow {
+  0% {
+    transform: translateY(0);
+    text-shadow: 0 0 0 #0c2ffb, 0 0 0 #2cfcfd, 0 0 0 #fb203b, 0 0 0 #fefc4b;
+  }
+  20% {
+    transform: translateY(-1em);
+    text-shadow: 0 0.125em 0 #0c2ffb, 0 0.25em 0 #2cfcfd, 0 -0.125em 0 #fb203b, 0 -0.25em 0 #fefc4b;
+  }
+  40% {
+    transform: translateY(0.5em);
+    text-shadow: 0 -0.0625em 0 #0c2ffb, 0 -0.125em 0 #2cfcfd, 0 0.0625em 0 #fb203b, 0 0.125em 0 #fefc4b;
+  }
+  60% {
+    transform: translateY(-0.25em);
+    text-shadow: 0 0.03125em 0 #0c2ffb, 0 0.0625em 0 #2cfcfd, 0 -0.03125em 0 #fb203b, 0 -0.0625em 0 #fefc4b;
+  }
+  80% {
+    transform: translateY(0);
+    text-shadow: 0 0 0 #0c2ffb, 0 0 0 #2cfcfd, 0 0 0 #fb203b, 0 0 0 #fefc4b;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* =========================================== */
+
+/* ==================== login pop up ====================*/
+
+/* Full-width input fields */
+
+input[type=text], input[type=password] {
+  width: 130%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.loginBtn {
+  border: none;
+  outline: none;
+  padding: 13px 12px 10px 10px;
+  margin: 5px 5px 5px 0px;
+  font-size: 12px;
+  width: 203px;
+  float: left;
+  background-color: transparent;
+  cursor: pointer;
+  border-color: cornflowerblue;
+  box-shadow: 0 0 40px 40px rgb(100, 139, 211) inset, 0 0 0 0 rgb(100, 139, 211);
+  transition: all 150ms ease-in-out;
+  text-align: center;
+  border-radius: 3px;
+}
+
+button:hover {
+  box-shadow: 0 0 10px 0 rgb(100, 139, 211) inset, 0 0 10px 4px rgb(100, 139, 211);
+  color: red;
+}
+
+#innerLoginBtn {
+  border: none;
+  outline: none;
+  font-size: 20px;
+  width: 150px;
+  height: 50px;
+  background-color: transparent;
+  cursor: pointer;
+  border-color: cornflowerblue;
+  box-shadow: 0 0 40px 40px rgb(100, 139, 211) inset, 0 0 0 0 rgb(100, 139, 211);
+  transition: all 150ms ease-in-out;
+  text-align: center;
+  border-radius: 3px;
+  margin: 0px 0px 0px 27px;
+}
+
+#innerLoginBtn:hover {
+  box-shadow: 0 0 10px 0 rgb(100, 139, 211) inset, 0 0 10px 4px rgb(100, 139, 211);
+  color: red;
+}
+/* Center the image and position the close button */
+
+.imgcontainer {
+  text-align: center;
+  margin: -140px 0 12px 0;
+  position: relative;
+}
+
+img.avatar {
+  width: 20%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 10px;
+  width: 70%;
+  margin: 10px 30px;
+}
+
+.containerBottom {
+  padding: 10px;
+  width: 100%;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* The Modal (background) */
+
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  /* overflow: auto; Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+  padding-top: 110px;
+}
+
+/* Modal Content/Box */
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto;
+  /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 50%;
+  /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+
+.close {
+  position: relative;
+  right: 5px;
+  bottom: -140px;
+  color: black;
+  font-size: 30px;
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+.close:hover, .close:focus {
+  color: red;
+}
+
+/* Add Zoom Animation */
+
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {
+    -webkit-transform: scale(0)
+  }
+  to {
+    -webkit-transform: scale(1)
+  }
+}
+
+@keyframes animatezoom {
+  from {
+    transform: scale(0)
+  }
+  to {
+    transform: scale(1)
+  }
+}
+
+/* Change styles for span and cancel button on extra small screens */
+
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+}
+
+/* ================================================================*/
+
+/* ============= flip cards ==================== */
+
+.card-container {
+  text-align: left;
+  background-color: transparent;
+  width: auto;
+  display: flex;
+}
+
+.card {
+  background-color: transparent;
+  position: relative;
+  height: 300px;
+  width: 300px;
+  display: inline-block;
+  margin: 10px 10px;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card:hover  {
+  transform: rotateY(180deg);
+}
+
+.front, .back {
+  overflow: hidden;
+  text-align: left;
+  box-shadow: rgba(0, 0, 0, 0.7) 0 2px 6px -2px;
+  background:transparent;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  background-color: #222;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: all .3s ease-in-out;
+  background-color: inherit;
+}
+
+.front {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: rotateY(0);
+  z-index: 2;
+}
+
+.back {
+  background:lightgray;
+  transform: rotateY(-180deg);
+  padding: 20px;
+  color: black;
+}
+
+.card-title > header {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 10px;
+  background: inherit;
+  background-attachment: fixed;
+  text-align: center;
+}
+
+.card-title > header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  background-attachment: fixed;
+  -webkit-filter: blur(12px);
+  filter: blur(12px);
+  transform: scale(2) translateY(20px);
+  
+}
+
+.card-title > header > h1 {
+  margin: 10px 0px;
+  color: white;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(75deg,rgb(167, 71, 71), transparent);
+  font-size: 20px;
+}
+
+/* ============= ========== ==================== */
