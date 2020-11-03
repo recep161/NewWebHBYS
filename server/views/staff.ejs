@@ -87,7 +87,7 @@
 
             <div id="listOfOperations">
                 <button class="polyclinicButtons btn--swap"
-                    onclick="AdministrationMethods.redirectToAdminTab('admin/unit');
+                    onclick="AdministrationMethods.redirectToAdminTab('admin/units');
                     AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'staffDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'userDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'administrationStatisticsDiv');">
@@ -236,7 +236,7 @@
                         <table id="staffList" class="patientTable">
                             <thead>
                                 <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
-                                    <td style="border-top-left-radius: 8px !important;">Id</td>
+                                    <td style="border-top-left-radius: 8px !important;">#</td>
                                     <td>ID Number</td>
                                     <td>Name</td>
                                     <td>Surname</td>
@@ -522,7 +522,7 @@
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                             title="Randevulu hasta vs Normal Hasta"></button>
 
-                        <p class="cardP">
+                        <p class="cardP" id="userStatisticsCardBack">
                             User Statistics. <br><br>
 
                         <table id="userStatisticsTable" style="width: 100%;line-height: 15px;cursor: default;">
@@ -600,7 +600,7 @@
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                             title="Staff Statistics"></button>
-                        <p class="cardP"  id="staffStatisticsCardFrontHeader" >
+                        <p class="cardP" id="staffStatisticsCardFrontHeader">
                             Staff Statistics. <br><br>
 
                         <table id="staffStatisticsTable" style="width: 100%;line-height: 15px;cursor: default;">
@@ -639,7 +639,7 @@
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                             title="Hasta Yas Dagilimi"></button>
-                        <p class="cardP">
+                        <p class="cardP" id="staffOnLeaveBackCard">
                             Staff on Leave. <br><br>
 
                         <table id="staffLeaveStatisticsTable">

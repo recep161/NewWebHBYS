@@ -1,36 +1,29 @@
-const userSaveSchema = require('../models/usersModel');
+const unitSaveSchema = require('../models/unitsModel');
 const myMongoose = require('mongoose');
 
 myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: false });
 
-var myUsersModel = myMongoose.model('users');
+var myUnitsModel = myMongoose.model('units');
 
-module.exports.redirectToUserTab = (req, res) => {
-    res.render('users')
-    console.log('redirectToUserTab')
+module.exports.redirectToUnitTab = (req, res) => {
+    res.render('units')
 };
 
 // Save FormData - User to MongoDB
-module.exports.saveUser = (req, res) => {
-    console.log('Post a User: ' + JSON.stringify(req.body));
+module.exports.saveUnit = (req, res) => {
+    console.log('Post a Unit: ' + JSON.stringify(req.body));
 
-    // Create a Customer
     console.log(req.body);
 
-    const newUser = new userSaveSchema({
-        userId: req.body.userId,
-        userName: req.body.userNickname,
-        password: req.body.userPassword,
-        name: req.body.userName,
-        surname: req.body.userSurname,
-        personalIdNumber: req.body.userTc,
-        majorDicipline: req.body.userMajorDicipline,
-        userGroup: req.body.userGroup,
-        userPhotoSrc: req.body.userPhotoSrc
+    const newUnit = new unitSaveSchema({
+        unitId: req.body.unitId,
+        unitName: req.body.unitName,
+        unitType: req.body.unitType,
+        unitMajorDicipline: req.body.unitMajorDicipline,
+        unitActivePassive: req.body.unitActivePassive
     })
 
-    // Save a Customer in the MongoDB
-    newUser.save()
+    newUnit.save()
         .then(data => {
             res.send(data);
         }).catch(err => {
@@ -42,11 +35,11 @@ module.exports.saveUser = (req, res) => {
 };
 
 // Fetch all Users
-module.exports.findAllUsers = (req, res) => {
-    userSaveSchema.find().sort({ 'userId': 1 })
-        .then(users => {
-            res.send(users);
-            // console.log("All Users Listed!");
+module.exports.findAllUnits = (req, res) => {
+    unitSaveSchema.find().sort({ 'unitId': 1 })
+        .then(units => {
+            res.send(units);
+            console.log("All Units Listed!");
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -55,13 +48,13 @@ module.exports.findAllUsers = (req, res) => {
 };
 
 // Find one user
-module.exports.findOneUser = (req, res) => {
+module.exports.findOneUnit = (req, res) => {
 
-    myUsersModel.findOne(req.query)
-        .then(users => {
-            res.send(users);
-            console.log("User found! = " + users);
-            console.log(req.query);
+    myUnitsModel.findOne(req.query)
+        .then(unit => {
+            res.send(unit);
+            console.log("User found! = " + unit);
+            // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -69,12 +62,12 @@ module.exports.findOneUser = (req, res) => {
         });
 };
 
-module.exports.checkUserFromDatabase = (req, res) => {
+module.exports.checkUnitFromDatabase = (req, res) => {
 
-    myUsersModel.findOne(req.query)
-        .then(users => {
-            res.send(users);
-            console.log("User found! = " + users);
+    myUnitsModel.findOne(req.query)
+        .then(units => {
+            res.send(units);
+            console.log("User found! = " + units);
             // console.log(req.query);
         }).catch(err => {
             res.status(500).send({

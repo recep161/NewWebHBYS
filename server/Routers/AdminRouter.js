@@ -2,7 +2,9 @@ var express = require('express'),
     router = express.Router(),
     controllerAdmin = require('../Controllers/AdminController.js'),
     controllerStaff = require('../Controllers/StaffController'),
-    controllerUsers = require('../Controllers/userController');
+    controllerUsers = require('../Controllers/userController'),
+    controllerUnits = require('../Controllers/unitController')
+    ;
 
 
 router.use(function (req, res, next) {
@@ -25,7 +27,6 @@ router.put('/user/updatePhoto', controllerUsers.updatePhoto);
 router.get('/user/getMaxUserId', controllerUsers.getMaxUserId);
 router.get('/user/all', controllerUsers.findAllUsers);
 router.get('/user/fillUserStatisticsTable', controllerUsers.fillUserStatisticsTable);
-router.get('/user/fillStaffStatisticsTable', controllerStaff.fillStaffStatisticsTable); // for staff statistic table
 router.get('/user/countTableAndRows', controllerStaff.countTableAndRows);
 
 // staff routes
@@ -41,5 +42,12 @@ router.get('/staff/getMaxStaffId', controllerStaff.getMaxStaffId);
 router.get('/staff/fillStaffStatisticsTable', controllerStaff.fillStaffStatisticsTable);
 router.get('/staff/countTableAndRows', controllerStaff.countTableAndRows);
 router.get('/staff/fillStafOnLeaveTable', controllerStaff.fillStafOnLeaveTable);
+
+// units routes
+router.get('/units', controllerUnits.redirectToUnitTab);
+router.post('/units/save', controllerUnits.saveUnit);
+router.get('/units/findAllUnits', controllerUnits.findAllUnits);
+router.get('/units/findOneUnit', controllerUnits.findOneUnit);
+router.get('/units/checkUnitFromDatabase', controllerUnits.checkUnitFromDatabase);
 
 module.exports = router;

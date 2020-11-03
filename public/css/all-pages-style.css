@@ -5701,7 +5701,7 @@ tr:hover, tr.selected {
 }
 
 #administrationBody .historyHeaders {
-  width: 12%;
+  width: 15%;
   color: white !important;
   border-radius: 8px;
   padding-top: 9px;
@@ -5783,6 +5783,15 @@ pName {
   border-radius: 8px;
 }
 
+#unitListDiv{
+  margin: 20px 0px 10px 0px;
+  padding: 10px 4px;
+  box-shadow: 2px 2px 10px #555;
+  width: 289%;
+  max-width: 311%;
+  border-radius: 8px;
+}
+
 #staffListDiv .patientTable>tbody>tr:first-child {
   background-color: inherit;
 }
@@ -5795,6 +5804,11 @@ pName {
 
 #staffLeaveStatisticsTable {
   width: 100%;
+  font-size: smaller;
+}
+
+#staffStatisticsTable {
+  font-size: smaller;
 }
 
 #userListDiv .patientTable>tbody>tr:first-child {
@@ -5802,6 +5816,15 @@ pName {
 }
 
 #userListDiv .patientTable>tbody>tr:last-child {
+  border-bottom-left-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+#unitListTable .patientTable>tbody>tr:first-child {
+  background-color: inherit;
+}
+
+#unitListTable .patientTable>tbody>tr:last-child {
   border-bottom-left-radius: 8px !important;
   border-bottom-right-radius: 8px !important;
 }

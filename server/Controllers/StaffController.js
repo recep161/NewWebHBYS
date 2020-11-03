@@ -22,16 +22,16 @@ module.exports.saveStaff = (req, res) => {
         myStaffLeaveStartDate;
 
     if (req.body.staffLeaveStartDate == '') {
-        myStaffLeaveStartDate == '';
-        myStaffLeaveEndDate == '';
+        myStaffLeaveStartDate == '-----------';
+        myStaffLeaveEndDate == '-----------';
     } else {
         myStaffLeaveEndDate = myMoment(req.body.staffLeaveEndDate, "DD-MM-YYYY").add(1, 'days').startOf('day');
         myStaffLeaveStartDate = myMoment(req.body.staffLeaveStartDate, "DD-MM-YYYY").add(1, 'days').startOf('day');
     }
 
-    console.log('recx = ', myStaffLeaveStartDate)
+    // console.log('recx = ', myStaffLeaveStartDate)
     // Create a staff
-    console.log(req.body);
+    // console.log(req.body);
 
     const newStaff = new staffSaveSchema({
         staffId: req.body.staffId,
@@ -50,7 +50,7 @@ module.exports.saveStaff = (req, res) => {
     newStaff.save()
         .then(data => {
             res.send(data);
-            console.log(data)
+            // console.log(data)
         }).catch(err => {
             res.status(500).send({
                 message: err.message,
@@ -78,8 +78,8 @@ module.exports.findOneStaff = (req, res) => {
     myStaffModel.findOne(req.query)
         .then(staff => {
             res.send(staff);
-            console.log("Staff found! = " + staff);
-            console.log(req.query);
+            // console.log("Staff found! = " + staff);
+            // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -106,8 +106,8 @@ module.exports.deleteStaff = (req, res) => {
     myStaffModel.deleteOne(req.query)
         .then(staff => {
             res.send(staff);
-            console.log("Staff deleted! = " + staff);
-            console.log(req.query);
+            // console.log("Staff deleted! = " + staff);
+            // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -122,8 +122,8 @@ module.exports.updatePhoto = (req, res) => {
     myStaffModel.findOneAndUpdate({ staffId: myStaffId }, { $set: { "staffPhotoSrc": myStaffPhoto } })
         .then(staff => {
             res.send(staff);
-            console.log("Photo updated! = " + staff);
-            console.log(myStaffId, myStaffPhoto);
+            // console.log("Photo updated! = " + staff);
+            // console.log(myStaffId, myStaffPhoto);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -132,16 +132,26 @@ module.exports.updatePhoto = (req, res) => {
 };
 
 module.exports.updateStaffData = (req, res) => {
+    var myStaffLeaveEndDate,
+        myStaffLeaveStartDate;
+
+    if (req.body.staffLeaveStartDate == '') {
+        myStaffLeaveStartDate == '-----------';
+        myStaffLeaveEndDate == '-----------';
+    } else {
+        myStaffLeaveEndDate = myMoment(req.body.staffLeaveEndDate, "DD-MM-YYYY").add(1, 'days').startOf('day');
+        myStaffLeaveStartDate = myMoment(req.body.staffLeaveStartDate, "DD-MM-YYYY").add(1, 'days').startOf('day');
+    }
+
     var myStaffId = req.body.staffId,
         myStaffTc = req.body.staffTc,
         myStaffName = req.body.staffName,
         myStaffSurname = req.body.staffSurname,
         myStaffDiplomaNo = req.body.staffDiplomaNo,
-        myStaffLeaveStartDate = req.body.staffLeaveStartDate,
-        myStaffLeaveEndDate = req.body.staffLeaveEndDate,
+        myStaffLeaveStartDate = myStaffLeaveStartDate,
+        myStaffLeaveEndDate = myStaffLeaveEndDate,
         myStaffMajorDicipline = req.body.staffMajorDicipline,
-        myStaffGroup = req.body.staffGroup
-        ;
+        myStaffGroup = req.body.staffGroup;
 
     myStaffModel.findOneAndUpdate(
         { staffId: myStaffId },
@@ -159,8 +169,8 @@ module.exports.updateStaffData = (req, res) => {
         })
         .then(staff => {
             res.send(staff);
-            console.log("User data updated! = " + staff);
-            console.log(myStaffId);
+            // console.log("User data updated! = " + staff);
+            // console.log(myStaffId);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -215,9 +225,7 @@ module.exports.fillStafOnLeaveTable = (req, res) => {
     myStaffModel.aggregate(
         [
             {
-                $match: {
-                    'staffLeaveEndDate': { $gte: today }
-                }
+                $match: { 'staffLeaveEndDate': { $gte: today } }
             },
             {
                 $group: {

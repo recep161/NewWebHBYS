@@ -2802,7 +2802,7 @@ var ListingMethods = {
                 url: "/admin/user/all",
                 success: function (result) {
                     $.each(result, function (i, users) {
-                        userListDiv.style.width = '273%'
+                        userListDiv.style.width = '266%'
                         i++;
                         $("#usersList> tbody").append(
                             "<tr class='userRow' id='userRowId" + i + "' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRowId" + i + "\")' title=''><td class='idTd' title=''>" + users.userId + "</td><td>" + users.userName + "</td><td>"
@@ -2846,7 +2846,7 @@ var ListingMethods = {
                     userGroup = user.userGroup;
                     userSearchInput.style.maxWidth = '93%';
                     userListDiv.style.maxWidth = '311%';
-                    userListDiv.style.width = '307%';
+                    userListDiv.style.width = '300% !important';
 
                     $("#usersList> tbody").append(
                         "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + user.userId + "</td><td>" + user.userName + "</td><td>"
@@ -3016,7 +3016,7 @@ var ListingMethods = {
                 url: "/admin/user/getMaxUserId",
                 success: function (user) {
                     $("#userId").val(user.userId + 1);
-                    console.log(user.userId);
+                    // console.log(user.userId);
                 },
 
                 error: function (e) {
@@ -3063,6 +3063,9 @@ var ListingMethods = {
         },
 
         fillUserStatisticsTable: function fillUserStatisticsTable() {
+            var total = 0,
+                userStatisticsCardBack = document.getElementById('userStatisticsCardBack');
+
             $('#userStatisticsTable > tbody').empty();
 
             $.ajax({
@@ -3074,9 +3077,13 @@ var ListingMethods = {
                             "<tr class='userStatisticsRow'><td class='userGroup'>"
                             + docs[i]["_id"] + "</td><td class='userCount'>" + docs[i]["count"] + "</td></tr>");
 
+                        total += docs[i]['count'];
+
                         // jQueryMethods.toastrOptions();
                         // toastr.info('User group counted!', 'User Count');
-                    })
+                    });
+
+                    userStatisticsCardBack.innerHTML = 'User Statistics: <br> Total Staff = ' + total;
                 },
 
                 error: function (e) {
@@ -3105,6 +3112,11 @@ var ListingMethods = {
                         onShown: function (toast) {
                             $("#clearConfirmBtn").on('click', function () {
                                 document.getElementById('saveStaff').innerHTML = 'Save';
+                                document.getElementById('onLeaveChkbx').checked = false;
+                                document.getElementById('staffLeaveStartDate').style.display = 'none';
+                                document.getElementById('staffLeaveEndDate').style.display = 'none';
+                                document.getElementById('staffLeaveStartDateLbl').style.display = 'none';
+                                document.getElementById('staffLeaveEndDateLbl').style.display = 'none';
 
                                 $("#staffTc").val('');
                                 $("#staffName").val('');
@@ -3219,7 +3231,8 @@ var ListingMethods = {
 
         findAllStaffs: function findAllStaffs() {
             $('#staffList > tbody').empty();
-            var staffListDiv = document.getElementById('staffListDiv');
+            var staffListDiv = document.getElementById('staffListDiv'),
+                x = '---------';
 
             $.ajax({
                 type: "GET",
@@ -3229,9 +3242,16 @@ var ListingMethods = {
                         staffListDiv.style.width = '274%'
                         staffListDiv.style.maxWidth = '274%'
 
+                        if (staff.staffLeaveStartDate == ''
+                            || staff.staffLeaveStartDate == undefined
+                            || staff.staffLeaveStartDate == 'undefined') {
+                            staff.staffLeaveStartDate = x;
+                            staff.staffLeaveEndDate = x;
+                        }
+
                         i++;
                         $("#staffList> tbody").append(
-                            "<tr class='staffRow' id='staffRowId" + i + "' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"staffRowId" + i + "\")' title='' style='background-color=''><td class='idTd' title=''>" + staff.staffId + "</td><td>"
+                            "<tr class='staffRow' id='staffRowId" + i + "' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"staffRowId" + i + "\")' title='' style='background-color=''><td class='idTd' title=''>" + i + "</td><td>"
                             + staff.staffIdNumber + "</td><td>"
                             + staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>"
                             + staff.staffDiplomaNo + "</td><td>"
@@ -3242,8 +3262,7 @@ var ListingMethods = {
                 },
                 error: function (e) {
                     jQueryMethods.toastrOptions();
-                    toastr.error('Staff couldnt list! \n' + message.err
-                        , 'Error!')
+                    toastr.error('Staff couldnt list! \n' + message.err, 'Error!')
                     console.log("ERROR: ", e);
                 }
             });
@@ -3251,7 +3270,8 @@ var ListingMethods = {
 
         findOneStaff: function findOneStaff() {
             $('#staffList > tbody').empty();
-            var staffListDiv = document.getElementById('staffListDiv');
+            var staffListDiv = document.getElementById('staffListDiv'),
+                x = '-----------';
 
             $.ajax({
                 type: "GET",
@@ -3267,6 +3287,12 @@ var ListingMethods = {
                     staffListDiv.style.width = '280%'
                     staffListDiv.style.maxWidth = '280%'
 
+                    if (staff.staffLeaveStartDate == ''
+                        || staff.staffLeaveStartDate == undefined
+                        || staff.staffLeaveStartDate == 'undefined') {
+                        staff.staffLeaveStartDate = x;
+                        staff.staffLeaveEndDate = x;
+                    }
 
                     $("#staffList> tbody").append(
                         "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + staff.staffId + "</td><td>" + staff.staffIdNumber + "</td><td>"
@@ -3320,6 +3346,7 @@ var ListingMethods = {
 
         updateStaffData: function updateStaffData() {
             var myStaffMajorDicipline = document.getElementById('staffMajorDicipline'),
+                leaveChkbx = document.getElementById('onLeaveChkbx').checked,
                 myStaffGroup = document.getElementById('staffGroup'),
                 myData = {
                     staffId: $("#staffId").val(),
@@ -3330,6 +3357,14 @@ var ListingMethods = {
                     staffLeaveStartDate: $('#staffLeaveStartDate').val(),
                     staffLeaveEndDate: $('#staffLeaveEndDate').val()
                 };
+
+            if (leaveChkbx == true) {
+                myData.staffLeaveStartDate = $('#staffLeaveStartDate').val();
+                myData.staffLeaveEndDate = $('#staffLeaveEndDate').val();
+            } else {
+                myData.staffLeaveStartDate = '';
+                myData.staffLeaveEndDate = '';
+            }
 
             myData.staffMajorDicipline = myStaffMajorDicipline.options[myStaffMajorDicipline.selectedIndex].value;
             myData.staffGroup = myStaffGroup.options[myStaffGroup.selectedIndex].value;
@@ -3409,7 +3444,7 @@ var ListingMethods = {
         },
 
         fillStaffStatisticsTable: function fillStaffStatisticsTable() {
-            var total,
+            var total = 0,
                 cardFrontHeader = document.getElementById('staffStatisticsCardFrontHeader');
 
             $('#staffStatisticsTable > tbody').empty();
@@ -3423,14 +3458,11 @@ var ListingMethods = {
                             "<tr class='staffStatisticsRow'><td class='staffGroup'>"
                             + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
 
-                        total += parseInt(docs[i]["count"]);
-                        console.log(docs[i]["count"]);
+                        total += docs[i]["count"];
 
                         // jQueryMethods.toastrOptions();
                         // toastr.info('User group counted!', 'User Count');
                     });
-
-                    console.log(total);
                     cardFrontHeader.innerHTML = 'Staff Statistics: <br> Total Staff = ' + total;
                 },
                 error: function (e) {
@@ -3488,6 +3520,9 @@ var ListingMethods = {
         },
 
         fillStafOnLeaveTable: function fillStafOnLeaveTable() {
+            var total = 0,
+                staffOnLeaveBackCard = document.getElementById('staffOnLeaveBackCard');
+
             $('#staffLeaveStatisticsTable > tbody').empty();
 
             $.ajax({
@@ -3500,9 +3535,11 @@ var ListingMethods = {
                                 "<tr class='staffOnLeaveRow'><td class='staffGroup'>"
                                 + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
 
+                            total += docs[i]['count'];
                             // jQueryMethods.toastrOptions();
                             // toastr.info('User group counted!', 'User Count');
-                        })
+                        });
+                        staffOnLeaveBackCard.innerHTML = 'Staff on Leave Statistics: <br> Total = ' + total;
                     }
                     else {
                         $("#staffLeaveStatisticsTable> tbody").append(
@@ -3514,6 +3551,230 @@ var ListingMethods = {
                 error: function (e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff on leave couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        // ========================== unit functions =============================
+        clearForNewUnit: function clearForNewUnit() {
+            AdministrationMethods.getMaxStaffId();
+            AdministrationMethods.fillStaffStatisticsTable();
+            AdministrationMethods.findAllStaffs();
+
+            var unitName = $('#unitName').val();
+
+            if (unitName != '' || unitName > 0) {
+                toastr.warning(
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 210px !important;'>Yes</button>", 'Do you want to CLEAR form?',
+                    {
+                        allowHtml: true,
+                        progressBar: true,
+                        timeOut: 10000,
+                        onShown: function (toast) {
+                            $("#clearConfirmBtn").on('click', function () {
+                                document.getElementById('saveUnit').innerHTML = 'Save';
+
+                                $("#unitName").val('');
+
+                                jQueryMethods.toastrOptions();
+                                toastr.info('Form cleared for new unit!', 'Form Cleared');
+                            });
+                        }
+                    });
+            }
+        },
+
+        updateOrSaveUnitBtn: function updateOrSaveUnitBtn() {
+
+            $.ajax({
+                type: "GET",
+                url: "/admin/units/checkUnitFromDatabase",
+                data: { unitId: $("#unitId").val() },
+                success: function (unit) {
+                    if (unit.length != 0 || unit != null) {
+                        var btn = document.getElementById('saveUnit');
+                        btn.innerHTML = 'Update';
+                        console.log('update')
+                    }
+                    else {
+                        btn.innerHTML = 'Save';
+                    }
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Unit couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        saveUnit: function saveUnit() {
+            var btn = document.getElementById('saveUnit');
+
+            if (btn.innerHTML == 'Update') {
+                AdministrationMethods.updateStaffData();
+            } else {
+                var myUnitMajorDicipline = document.getElementById('unitMajorDicipline'),
+                    myUnitActivePassive = document.getElementById('unitActivePassive'),
+                    myUnitType = document.getElementById('unitType'),
+                    myData = {
+                        unitId: $("#unitId").val(),
+                        unitName: $("#unitName").val(),
+                        unitType: myUnitType.options[myUnitType.selectedIndex].value,
+                        unitMajorDicipline: myUnitMajorDicipline.options[myUnitMajorDicipline.selectedIndex].value,
+                        unitActivePassive: myUnitActivePassive.options[myUnitActivePassive.selectedIndex].value
+                    };
+
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/admin/units/save',
+                    success: function () {
+                        jQueryMethods.toastrOptions();
+                        toastr.success('Unit successfully saved!', 'Staff Save');
+
+                        AdministrationMethods.findAllUnits();
+                        AdministrationMethods.getMaxStaffId();
+                        AdministrationMethods.fillStaffStatisticsTable();
+
+                        // reset form data
+                        $("#unitName").val('');
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Unit couldnt save! \n' + e, 'Error!')
+                        console.log("ERROR: ", e);
+                    }
+                });
+            }
+        },
+
+        findUnitsAtOnce: function findUnitsAtOnce() {
+            var userTc = $('#unitName').val();
+
+            if (userTc == '' || userTc == null) {
+                AdministrationMethods.findAllUnits();
+                AdministrationMethods.fillUnitsStatisticsTable();
+                AdministrationMethods.updateOrSaveUnitBtn();
+            } else {
+                AdministrationMethods.findOneUnit();
+                AdministrationMethods.fillUnitsStatisticsTable();
+                AdministrationMethods.updateOrSaveUnitBtn();
+            }
+        },
+
+        findAllUnits: function findAllUnits() {
+            $('#unitListTable > tbody').empty();
+            var unitListDiv = document.getElementById('unitListDiv'),
+                x = '---------';
+
+            $.ajax({
+                type: "GET",
+                url: "/admin/units/findAllUnits",
+                success: function (result) {
+                    $.each(result, function (i, units) {
+                        unitListDiv.style.width = '274%'
+                        unitListDiv.style.maxWidth = '274%'
+
+                        i++;
+                        $("#unitListTable> tbody").append(
+                            "<tr class='unitRow' id='unitRowId" + i + "title='' style='background-color=''><td class='idTd' title=''>"
+                            + i + "</td><td>"
+                            + units.unitId + "</td><td>"
+                            + units.unitName + "</td><td>" + staff.staffSurname + "</td><td>"
+                            + units.unitType + "</td><td>"
+                            + staff.unitMajorDicipline + "</td><td>" + staff.unitActivePassive + "</td><td>-</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Unit couldnt list! \n' + message.err, 'Error!')
+                    console.log("ERROR: ", e);
+                }
+            });
+        },
+
+        findOneUnit: function findOneUnit() {
+            $('#unitListTable > tbody').empty();
+            var unitListDiv = document.getElementById('unitListDiv'),
+                x = '-----------';
+
+            $.ajax({
+                type: "GET",
+                url: "/admin/units/findOneUnit",
+                data: { unitName: $("#unitName").val() },
+                success: function (units) {
+                    $("#unitId").val(units.unitId);
+                    $("#unitName").val(units.unitName);
+                    $("#unitType").val(units.unitType);
+                    $("#unitMajorDicipline").val(units.unitMajorDicipline);
+                    $("#unitActivePassive").val(units.unitActivePassive);
+                    unitListDiv.style.width = '280%'
+                    unitListDiv.style.maxWidth = '280%'
+
+
+                    $("#unitListTable> tbody").append(
+                        "<tr class='unitRow' id='unitRow1' title=''><td class='idTd' title=''>"
+                        + units.unitId + "</td><td>" + units.unitName + "</td><td>"
+                        + units.unitType + "</td><td>" + units.unitMajorDicipline + "</td><td>"
+                        + units.unitActivePassive + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete unit.' onclick='AdministrationMethods.deleteStaff()'>Delete</button></td></tr>");
+
+                    jQueryMethods.toastrOptions();
+                    toastr.info('Unit who has - ' + units.unitName + ' -  found!', 'Unit Search');
+                },
+
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Unit couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        updateStaffData: function updateStaffData() {
+            var myStaffMajorDicipline = document.getElementById('staffMajorDicipline'),
+                leaveChkbx = document.getElementById('onLeaveChkbx').checked,
+                myStaffGroup = document.getElementById('staffGroup'),
+                myData = {
+                    staffId: $("#staffId").val(),
+                    staffTc: $("#staffTc").val(),
+                    staffName: $("#staffName").val(),
+                    staffSurname: $("#staffSurname").val(),
+                    staffDiplomaNo: $("#staffDiplomaNo").val(),
+                    staffLeaveStartDate: $('#staffLeaveStartDate').val(),
+                    staffLeaveEndDate: $('#staffLeaveEndDate').val()
+                };
+
+            if (leaveChkbx == true) {
+                myData.staffLeaveStartDate = $('#staffLeaveStartDate').val();
+                myData.staffLeaveEndDate = $('#staffLeaveEndDate').val();
+            } else {
+                myData.staffLeaveStartDate = '';
+                myData.staffLeaveEndDate = '';
+            }
+
+            myData.staffMajorDicipline = myStaffMajorDicipline.options[myStaffMajorDicipline.selectedIndex].value;
+            myData.staffGroup = myStaffGroup.options[myStaffGroup.selectedIndex].value;
+
+            $.ajax({
+                type: 'PUT',
+                data: JSON.stringify(myData),
+                cache: false,
+                contentType: 'application/json',
+                datatype: "json",
+                url: '/admin/staff/updateStaffData',
+                success: function () {
+                    jQueryMethods.toastrOptions();
+                    toastr.success('Staff data updated!', 'Stafa Data Update');
+                    AdministrationMethods.findOneStaff();
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Staff couldnt save! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });
