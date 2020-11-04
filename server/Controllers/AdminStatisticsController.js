@@ -5,15 +5,15 @@ myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: fals
 
 var myUnitsModel = myMongoose.model('units');
 
-module.exports.redirectToUnitTab = (req, res) => {
-    res.render('units')
+module.exports.redirectToStatisticsTab = (req, res) => {
+    res.render('adminStatistics')
 };
 
 // Save FormData - User to MongoDB
 module.exports.saveUnit = (req, res) => {
-    // console.log('Post a Unit: ' + JSON.stringify(req.body));
+    console.log('Post a Unit: ' + JSON.stringify(req.body));
 
-    // console.log(req.body);
+    console.log(req.body);
 
     const newUnit = new unitSaveSchema({
         unitId: req.body.unitId,
@@ -28,8 +28,8 @@ module.exports.saveUnit = (req, res) => {
             res.send(data);
         }).catch(err => {
             res.status(500).send({
-                message: err.message
-                // , myerr: console.log(err.message)
+                message: err.message,
+                myerr: console.log(err.message)
             });
         });
 };
@@ -39,7 +39,7 @@ module.exports.findAllUnits = (req, res) => {
     unitSaveSchema.find().sort({ 'unitId': 1 })
         .then(units => {
             res.send(units);
-            // console.log("All Units Listed!");
+            console.log("All Units Listed!");
         }).catch(err => {
             res.status(500).send({
                 message: err.message

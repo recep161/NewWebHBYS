@@ -35,6 +35,7 @@
 <body id="administrationBody"
     onload="
         AdministrationMethods.fillUserStatisticsTable(),
+        AdministrationMethods.fillUnitStatisticsTable(),
         AdministrationMethods.fillStaffStatisticsTable(),
         AdministrationMethods.fillDatabaseStatusTable(),
         AdministrationMethods.fillStafOnLeaveTable(),
@@ -501,7 +502,7 @@
                     </div>
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Randevulu hasta vs Normal Hasta"></button>
+                            title="User statistics shows details of staff."></button>
 
                         <p class="cardP" id="userStatisticsCardBack">
                             User Statistics. <br><br>
@@ -539,18 +540,21 @@
                             </header>
                         </div>
                     </div>
-                    <div class="back">
+                    <div class="back" style="font-size: smaller;">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Unit Statistics"></button>
-                        <p class="cardP">
+                            title="This statistics shows details of units by to unit type and status."></button>
+                        <p class="cardP" id="unitStatisticBackCardHeader">
                             Unit Statistics. <br><br>
 
-                        <table id="unitStatisticsTable" style="width: 100%;">
+                        <table id="unitStatisticsTable" style="width: 100%;font-size: smaller;">
                             <thead>
                                 <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
                                     <td
                                         style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                        Unit Group
+                                        Units Group
+                                    </td>
+                                    <td style="border-top: none; border-right: 1px solid #b9c8d2 !important;">
+                                        Units Status
                                     </td>
                                     <td style="border-top-right-radius: 8px;">Count</td>
                                 </tr>
@@ -580,7 +584,7 @@
                     </div>
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Staff Statistics"></button>
+                            title="This statistics shows count of staff by to staff group."></button>
                         <p class="cardP" id="staffStatisticsCardFrontHeader">
                             Staff Statistics. <br><br>
 
@@ -619,7 +623,7 @@
                     </div>
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Hasta Yas Dagilimi"></button>
+                            title="These statistics show the personnel who are still on leave today by personnel group."></button>
                         <p class="cardP" id="staffOnLeaveBackCard">
                             Staff on Leave. <br><br>
 
@@ -658,7 +662,7 @@
                     </div>
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Hasta Yas Dagilimi"></button>
+                            title="These statistics show status of database."></button>
                         <p class="cardP">
                             Database Status. <br><br>
                         <table id="databaseStatusTable" style="width: 100%;">

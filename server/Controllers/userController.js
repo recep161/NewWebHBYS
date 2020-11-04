@@ -7,7 +7,7 @@ var myUsersModel = myMongoose.model('users');
 
 module.exports.redirectToUserTab = (req, res) => {
     res.render('users')
-    console.log('redirectToUserTab')
+    // console.log('redirectToUserTab')
 };
 
 // Save FormData - User to MongoDB
@@ -60,8 +60,8 @@ module.exports.findOneUser = (req, res) => {
     myUsersModel.findOne(req.query)
         .then(users => {
             res.send(users);
-            console.log("User found! = " + users);
-            console.log(req.query);
+            // console.log("User found! = " + users);
+            // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -74,7 +74,7 @@ module.exports.checkUserFromDatabase = (req, res) => {
     myUsersModel.findOne(req.query)
         .then(users => {
             res.send(users);
-            console.log("User found! = " + users);
+            // console.log("User found! = " + users);
             // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
@@ -89,8 +89,8 @@ module.exports.deleteUser = (req, res) => {
     myUsersModel.deleteOne(req.query)
         .then(user => {
             res.send(user);
-            console.log("User deleted! = " + user);
-            console.log(req.query);
+            // console.log("User deleted! = " + user);
+            // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -105,8 +105,8 @@ module.exports.resetPassword = (req, res) => {
     myUsersModel.findOneAndUpdate({ userId: myUserId }, { $set: { "password": myPassword } })
         .then(user => {
             res.send(user);
-            console.log("Password updated! = " + user);
-            console.log(userId, password);
+            // console.log("Password updated! = " + user);
+            // console.log(userId, password);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -138,8 +138,8 @@ module.exports.updateUserData = (req, res) => {
         })
         .then(user => {
             res.send(user);
-            console.log("User data updated! = " + user);
-            console.log(myUserId);
+            // console.log("User data updated! = " + user);
+            // console.log(myUserId);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -154,8 +154,8 @@ module.exports.updatePhoto = (req, res) => {
     myUsersModel.findOneAndUpdate({ userId: myUserId }, { $set: { "userPhotoSrc": myUserPhoto } })
         .then(user => {
             res.send(user);
-            console.log("Password updated! = " + user);
-            console.log(userId, password);
+            // console.log("Password updated! = " + user);
+            // console.log(userId, password);
         }).catch(err => {
             res.status(500).send({
                 message: err.message

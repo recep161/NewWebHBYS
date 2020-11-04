@@ -3,12 +3,13 @@ var express = require('express'),
     controllerAdmin = require('../Controllers/AdminController.js'),
     controllerStaff = require('../Controllers/StaffController'),
     controllerUsers = require('../Controllers/userController'),
-    controllerUnits = require('../Controllers/unitController')
+    controllerUnits = require('../Controllers/unitController'),
+    controllerAdminStatistics = require('../Controllers/AdminStatisticsController')
     ;
 
 
 router.use(function (req, res, next) {
-    console.log('adminRouter answer: ' + "/" + req.method);
+    console.log('adminRouter answer: ' + "/" + req.method, req.url);
     next();
 });
 
@@ -49,5 +50,11 @@ router.post('/units/save', controllerUnits.saveUnit);
 router.get('/units/findAllUnits', controllerUnits.findAllUnits);
 router.get('/units/findOneUnit', controllerUnits.findOneUnit);
 router.get('/units/checkUnitFromDatabase', controllerUnits.checkUnitFromDatabase);
+router.put('/units/updateUnitData', controllerUnits.updateUnitData);
+router.get('/units/getMaxUnitId', controllerUnits.getMaxUnitId);
+router.get('/units/fillUnitStatisticsTable', controllerUnits.fillUnitStatisticsTable);
+
+// adminStatistics routes
+router.get('/statistics', controllerAdminStatistics.redirectToStatisticsTab);
 
 module.exports = router;

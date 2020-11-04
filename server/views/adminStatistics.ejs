@@ -39,12 +39,10 @@
         AdministrationMethods.fillStaffStatisticsTable(),
         AdministrationMethods.fillDatabaseStatusTable(),
         AdministrationMethods.fillStafOnLeaveTable(),
-        AdministrationMethods.findAllUnits(),
-        AdministrationMethods.getMaxUnitId(),
-        // ShowOrHideMethods.hideDiv('unitDefinitionDiv');
+        ShowOrHideMethods.hideDiv('unitDefinitionDiv');
         ShowOrHideMethods.hideDiv('staffDefinitionDiv');
         ShowOrHideMethods.hideDiv('userDefinitionDiv');
-        ShowOrHideMethods.hideDiv('administrationStatisticsDiv');
+        // ShowOrHideMethods.hideDiv('administrationStatisticsDiv');
         ShowOrHideMethods.openInNewTabAndAdjustForViews('administrationBody');
         jQueryMethods.setCalenderValueToday('polyclinicExamStatisticsStartDate');
         jQueryMethods.setCalenderValueToday('polyclinicExamStatisticsEndDate');
@@ -126,70 +124,33 @@
 
                 <div id="unitDefinitionInputsDiv">
                     Id:<br>
-                    <input class="unitDefinitionInputs" type="text" name="unitId" id="unitId" readonly
-                        style="background-color: lightgrey; cursor: not-allowed;"><br>
+                    <input class="unitDefinitionInputs" type="text" name="unitId" id="unitId"><br>
                     Unit Name:
                     <input class="unitDefinitionInputs" type="text" name="unitName" id="unitName"
                         placeholder="Unit name"><br>
                     Unit Type:
                     <select class="unitDefinitionInputs" name="unitType" id="unitType"><br>
-                        <option value="Polyclinic">Polyclinic</option>
-                        <option value="Clinic">Clinic</option>
-                        <option value="Pharmacy">Pharmacy</option>
-                        <option value="Laboratory">Laboratory</option>
-                        <option value="Radiology">Radiology</option>
+                        <option value="unitType1">Polyclinic</option>
+                        <option value="unitType2">Clinic</option>
+                        <option value="unitType3">Pharmacy</option>
+                        <option value="unitType4">Laboratory</option>
+                        <option value="unitType5">Radiology</option>
                     </select><br>
                     Unit Major Dicipline:
                     <select class="unitDefinitionInputs" name="unitMajorDicipline" id="unitMajorDicipline">
-                        <option value="Emergency">Emergency</option>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Urology">Urology</option>
-                        <option value="Biochemistry">Biochemistry</option>
-                    </select><br>
-                    Active / Passive:
-                    <select class="unitDefinitionInputs" name="unitActivePassive" id="unitActivePassive">
-                        <option value="Active">Active</option>
-                        <option value="Passive">Passive</option>
+                        <option value="majorDicipline1">Emergency</option>
+                        <option value="majorDicipline1">Cardiology</option>
+                        <option value="majorDicipline1">Urology</option>
+                        <option value="majorDicipline1">Biochemistry</option>
                     </select>
                     <br><br><br><br>
 
-                    <button class="inpatientBtn btn-success" id="saveUnit" title="Click for save unit."
-                        onclick="AdministrationMethods.saveUnit();">Save
-                    </button>
-
-                    <button type="button" class="inpatientBtn btn-primary" id="newUnit" title="Click for new unit."
-                        onclick="AdministrationMethods.findAllUnits();AdministrationMethods.clearForNewUnit()">
-                        New Unit
-                    </button>
-
-                    <button class="inpatientBtn btn-info" title="Click for search unit or units."
-                        onclick="AdministrationMethods.findUnitsAtOnce()" id="searchUnitBtn">Search
-                    </button>
-
-                    <div id="unitListDiv">
-                        <h11 class="historyHeaders">Unit List</h11><br><br>
-                        <input class="searchInputs" type="text" id="unitSearchInput"
-                            style="width: 100%;margin: 5px 0px 10px 0px;"
-                            onkeydown="PolyclinicMethods.searchInTable('unitSearchInput', 'unitListTable')"
-                            placeholder="Search for users..."
-                            title="Search unit by name, ID, major dicipline or status.">
-                        <table id="unitListTable" class="patientTable">
-                            <thead>
-                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
-                                    <td style="border-top-left-radius: 8px !important;">#</td>
-                                    <td>Unit Id</td>
-                                    <td>Unit Name</td>
-                                    <td>Unit Type</td>
-                                    <td>Unit Major Dicipline</td>
-                                    <td>Unit Status</td>
-                                    <td style="border-top-right-radius: 8px;">Delete</td>
-                                </tr>
-                            </thead>
-                            <tbody style="background-color: inherit !important;">
-
-                            </tbody>
-                        </table>
-                    </div>
+                    <button class="inpatientBtn btn-danger" id="yeniHasta"
+                        title="Seçili kayıtları silmek için tıklayınız."
+                        onclick="ShowOrHideMethods.generalFailureAlert('Successfully Deleted!');">Delete</button>
+                    <button class="inpatientBtn btn-success" id="kaydet"
+                        onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Saved!')"
+                        title="Verilerinizi kaydetmek  için tıklayınız..">Save</button>
                 </div>
             </div>
 
@@ -400,7 +361,7 @@
             </div>
 
             <div id="administrationStatisticsDiv">
-                <h11 class="historyHeaders">
+                <h11 class="historyHeaders" style="width: 20% !important;">
                     <pName>Administration Statistics</pName>
                 </h11>
 

@@ -16,7 +16,7 @@ module.exports.redirectToStaffTab = (req, res) => {
 
 // Save FormData - staff to MongoDB
 module.exports.saveStaff = (req, res) => {
-    console.log('Post a staff: ' + JSON.stringify(req.body));
+    // console.log('Post a staff: ' + JSON.stringify(req.body));
 
     var myStaffLeaveEndDate,
         myStaffLeaveStartDate;
@@ -53,8 +53,8 @@ module.exports.saveStaff = (req, res) => {
             // console.log(data)
         }).catch(err => {
             res.status(500).send({
-                message: err.message,
-                myerr: console.log(err.message)
+                message: err.message
+                // , myerr: console.log(err.message)
             });
         });
 };
@@ -92,7 +92,7 @@ module.exports.checkStaffFromDatabase = (req, res) => {
     myStaffModel.findOne(req.query)
         .then(staff => {
             res.send(staff);
-            console.log("Staff found! = " + staff);
+            // console.log("Staff found! = " + staff);
             // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
