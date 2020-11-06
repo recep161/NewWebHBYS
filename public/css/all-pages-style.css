@@ -448,6 +448,14 @@ input[type=checkbox] {
 .nav-wrapper.myNewSticky {
   background-color: white;
   opacity: 0.9;
+  height: 110px;
+}
+
+#hUserName {
+  color: white;
+  margin: 10px 0px 20px 30px;
+  font-size: large;
+  border-radius: 8px;
 }
 
 .nav-title {
@@ -1083,7 +1091,7 @@ span.psw {
 
 .cardP {
   text-shadow: -4px -3px 6px rgba(150, 150, 151, 1);
-  margin: 5px 10px 5px 10px;
+  margin: 5px 10px 15px 10px;
   text-align: justify;
 }
 
@@ -1330,10 +1338,10 @@ span.psw {
 #navCloseBtn {
   margin: 20px -15px 30px 180px;
   background: none;
-  border-radius: 50px;
+  border-radius: 8px;
   font-size: 25px;
   width: 40px;
-  border-style: none;
+  border-style: 1px solid gray;
   z-index: 9;
 }
 

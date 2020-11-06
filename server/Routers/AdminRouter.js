@@ -16,6 +16,7 @@ router.use(function (req, res, next) {
 // admin main page
 router.get('/', controllerAdmin.adminControllerGet);
 
+
 // user routes
 router.get('/user', controllerUsers.redirectToUserTab);
 router.post('/user/save', controllerUsers.saveUser);

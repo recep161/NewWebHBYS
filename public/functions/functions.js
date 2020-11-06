@@ -1,10 +1,5 @@
 "use Strict"
 
-// exports.allFunctions = {
-//     ListingMethods, ShowOrHideMethods, ColorAndAdjustmentMethods, TabProcess, LoginProcess, myClockMethods, CardAnimationAndAdjustmentMethods, HastaKimlikMethods, PolyclinicMethods, AppointmentMethods, AnnouncementMethods,
-//     InpatientMethods, LaboratoryMethods, AdministrationMethods, jQueryMethods
-// };
-
 var ListingMethods = {
     Listview: function listView() {
         ShowOrHideMethods.HideColumn('card-container');
@@ -1815,35 +1810,52 @@ var ListingMethods = {
     },
 
     LoginProcess = {
-        showUpLogin: function showUpLogin() { // popup login onload
-            document.getElementById('loginPopup').style.display = 'block';
-            var selectElem = document.getElementById('languageChange'),
-                index = selectElem.selectedIndex,
-                myloginUserNameLbl = document.getElementById('loginUserNameLbl'),
-                myloginUserName = document.getElementById('loginUserName'),
-                myloginPasswordLbl = document.getElementById('loginPasswordLbl'),
-                myloginPassword = document.getElementById('loginPassword'),
-                myinnerLoginBtn = document.getElementById('innerLoginBtn'),
-                myrememberChkbxlbl = document.getElementById('rememberChkbxlbl'),
-                myforgotPass = document.getElementById('forgotPass')
-                ;
-            if (index == 1) {
-                myloginUserNameLbl.innerHTML = 'Kullanıcı adı'
-                myloginUserName.placeholder = 'Kullanıcı adını giriniz'
-                myloginPasswordLbl.innerHTML = 'Şifre'
-                myloginPassword.placeholder = 'Şifrenizi giriniz'
-                myinnerLoginBtn.innerHTML = 'Giriş';
-                myrememberChkbxlbl.innerHTML = '<input id="rememberChkbx" type="checkbox" checked="checked" name="remember" style="color: black;float: right;margin: 3px 0px 0px 15px;"> Beni hatırla';
-                myforgotPass.innerHTML = 'Şifrenizi mi unuttunuz?';
+        popupLoginModal: function popupLoginModal() {
+            var loginBtn = document.getElementById('loginBtn').innerHTML;
+
+            if (loginBtn == 'Login') {
+                document.getElementById('loginPopup').style.display = 'block';
+                document.getElementById('modal-content').style.display = 'block';
+
+                var selectElem = document.getElementById('languageChange'),
+                    index = selectElem.selectedIndex,
+                    myloginUserNameLbl = document.getElementById('loginUserNameLbl'),
+                    myloginUserName = document.getElementById('loginUserName'),
+                    myloginPasswordLbl = document.getElementById('loginPasswordLbl'),
+                    myloginPassword = document.getElementById('loginPassword'),
+                    myinnerLoginBtn = document.getElementById('innerLoginBtn'),
+                    myrememberChkbxlbl = document.getElementById('rememberChkbxlbl'),
+                    myforgotPass = document.getElementById('forgotPass')
+                    ;
+                if (index == 1) {
+                    myloginUserNameLbl.innerHTML = 'Kullanıcı adı'
+                    myloginUserName.placeholder = 'Kullanıcı adını giriniz'
+                    myloginPasswordLbl.innerHTML = 'Şifre'
+                    myloginPassword.placeholder = 'Şifrenizi giriniz'
+                    myinnerLoginBtn.innerHTML = 'Giriş';
+                    myrememberChkbxlbl.innerHTML = '<input id="rememberChkbx" type="checkbox" checked="checked" name="remember" style="color: black;float: right;margin: 3px 0px 0px 15px;"> Beni hatırla';
+                    myforgotPass.innerHTML = 'Şifrenizi mi unuttunuz?';
+                }
+                else {
+                    myloginUserNameLbl.innerHTML = 'Username'
+                    myloginUserName.placeholder = 'Enter username'
+                    myloginPasswordLbl.innerHTML = 'Password'
+                    myloginPassword.placeholder = 'Enter password'
+                    myinnerLoginBtn.innerHTML = 'Login';
+                    myrememberChkbxlbl.innerHTML = '<input id="rememberChkbx" type="checkbox" checked="checked" name="remember" style="color: black;float: right;margin: 3px 0px 0px 15px;"> Remember me';
+                    myforgotPass.innerHTML = 'Forgot password?';
+                }
             }
-            else {
-                myloginUserNameLbl.innerHTML = 'Username'
-                myloginUserName.placeholder = 'Enter username'
-                myloginPasswordLbl.innerHTML = 'Password'
-                myloginPassword.placeholder = 'Enter password'
-                myinnerLoginBtn.innerHTML = 'Login';
-                myrememberChkbxlbl.innerHTML = '<input id="rememberChkbx" type="checkbox" checked="checked" name="remember" style="color: black;float: right;margin: 3px 0px 0px 15px;"> Remember me';
-                myforgotPass.innerHTML = 'Forgot password?';
+        },
+
+        showUpLogin: function showUpLogin() { // popup login onload
+
+            var loginBtn = document.getElementById('loginBtn').innerHTML;
+
+            if (loginBtn == 'Login') {
+                LoginProcess.popupLoginModal();
+            } else {
+                LoginProcess.closeUserLoginSession();
             }
         },
 
@@ -1854,6 +1866,173 @@ var ListingMethods = {
                     modal.style.display = "none";
                 }
             }
+        },
+
+        checkIfUserLoggedInByCookie: function checkIfUserLoggedInByCookie() {
+            var remember = $.cookie('remember');
+            if (remember == 'true') {
+                var userName = $.cookie('username'),
+                    name = $.cookie('name'),
+                    surname = $.cookie('surname');
+
+                // autofill the fields
+                document.getElementById('loginBtn').innerHTML = 'Log out - ' + userName
+                document.getElementById('hUserName').innerHTML = name + ' ' + surname + ' - ' + userName;
+
+                // fill userBottomMenu user login statistics
+                LoginProcess.userLoginStatistics();
+            }
+        },
+
+        findUser: function findUser() {
+            var loginUserName = $("#loginUserName").val(),
+                loginPassword = $("#loginPassword").val(),
+                userNameTextArea = document.getElementById('hUserName'),
+                loginPopup = document.getElementById('loginPopup'),
+                modalContent = document.getElementById('modal-content'),
+                loginBtn = document.getElementById('loginBtn');
+
+            $.ajax({
+                type: "GET",
+                url: "/findLoginUser",
+                data: { userName: loginUserName, password: loginPassword },
+                success: function (user) {
+                    jQueryMethods.toastrOptions();
+                    if (user.userId == '' || user.userId == null || user.userId == 'undefind') {
+                        toastr.error('Incorrect username or password, please check your data! \n\n\n', 'Error!')
+                    } else {
+                        userNameTextArea.innerHTML = user.name + ' ' + user.surname + ' - ' + loginUserName;
+                        loginPopup.style.display = 'none';
+                        modalContent.style.display = 'none';
+                        loginBtn.innerHTML = 'Log out' + ' - ' + loginUserName;
+                        toastr.success('Welcome ' + user.name + ' ' + user.surname + ' !', 'User Login');
+
+                        // fill userBottomMenu user login statistics
+                        LoginProcess.userLoginStatistics();
+
+                        // save login session
+                        var
+                            myData = {
+                                userId: user.userId,
+                                userName: loginUserName
+                            };
+
+                        $.ajax({
+                            type: 'POST',
+                            data: JSON.stringify(myData),
+                            cache: false,
+                            contentType: 'application/json',
+                            datatype: "json",
+                            url: '/userLoginSessionSave',
+                            success: function () {
+                                $("#loginUserName").val('');
+                                $("#loginPassword").val('')
+                            },
+                            error: function (e) {
+                                jQueryMethods.toastrOptions();
+                                toastr.error('User session couldnt save! \n' + e, 'Error!')
+                                console.log("ERROR: ", e);
+                            }
+                        });
+
+                        // write cookie for remember across entire site and expire in 1 day
+                        if ($('#rememberChkbx').attr('checked')) {
+                            $.cookie('username', loginUserName, { expires: 1, path: '/' });
+                            $.cookie('name', user.name, { expires: 1, path: '/' });
+                            $.cookie('surname', user.surname, { expires: 1, path: '/' });
+                            $.cookie('remember', true, { expires: 1, path: '/' });
+                        } else {
+                            // reset cookies
+                            $.cookie('username', null);
+                            $.cookie('name', null);
+                            $.cookie('surname', null);
+                            $.cookie('remember', null);
+                        }
+                    }
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('User couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        closeUserLoginSession: function closeUserLoginSession() {
+
+            var hUserName = document.getElementById('hUserName').innerHTML,
+                myData = {
+                    userName: hUserName.substring(hUserName.lastIndexOf('-') + 2, 50),
+                    sessionEndDate: Date.now()
+                },
+                loginBtn = document.getElementById('loginBtn');
+
+            $.ajax({
+                type: 'PUT',
+                data: JSON.stringify(myData),
+                cache: false,
+                contentType: 'application/json',
+                datatype: "json",
+                url: '/closeUserLoginSession',
+                success: function () {
+                    jQueryMethods.toastrOptions();
+                    toastr.success('User logged out!', 'User Logout');
+                    loginBtn.innerHTML = 'Login';
+                    document.getElementById('hUserName').innerHTML = 'Please log in!'
+
+                    // destroy cookie
+                    $.cookie('username', null);
+                    $.cookie('name', null);
+                    $.cookie('surname', null);
+                    $.cookie('remember', null);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('User session couldnt closed! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        userLoginStatistics: function userLoginStatistics() {
+            var x = '---------';
+
+            $('#userLoginStatsTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { userName: $.cookie('username') },
+                url: "/userLoginStatistics",
+                success: function (result) {
+                    $.each(result, function (i, myData) {
+                        var endDate = new Date(myData.sessionEndDate),
+                            startDate = new Date(myData.sessionStartDate),
+                            loginDuration = Math.abs(endDate - startDate) / 36e5;
+
+                        if (myData.sessionStartDate == ''
+                            || myData.sessionStartDate == undefined
+                            || myData.sessionStartDate == null
+                            || myData.sessionStartDate == 'undefined') {
+                            myData.sessionStartDate = x;
+                        }
+
+                        i++;
+                        $("#userLoginStatsTable> tbody").append(
+                            "<tr class='userRow' id='userRowId" + i + "' title=''><td class='idTd' title=''>"
+                            + i + "</td><td>"
+                            + myData.ipAdress + "</td><td>"
+                            + myData.computerName + "</td><td>"
+                            + myData.sessionStartDate + "</td><td>"
+                            + loginDuration + "</td></tr>");
+                    });
+
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Users couldnt list! \n' + message.err, 'Error!')
+                    console.log("ERROR: ", e);
+                }
+            });
         }
     },
 
@@ -2671,6 +2850,18 @@ var ListingMethods = {
             document.location = 'http://localhost:161/' + pageName;
         },
 
+        takeUserInfoFromCookie: function takeUserInfoFromCookie() {
+            var remember = $.cookie('remember');
+            if (remember == 'true') {
+                var userName = $.cookie('username'),
+                    name = $.cookie('name'),
+                    surname = $.cookie('surname');
+
+                // autofill the fields
+                document.getElementById('hUserName').innerHTML = name + ' ' + surname + ' - ' + userName;
+            }
+        },
+
         clearForNewUser: function clearForNewUser() {
             AdministrationMethods.fillUserStatisticsTable();
 
@@ -2678,7 +2869,7 @@ var ListingMethods = {
 
             if (userId != '' || userId > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 210px !important;'>Yes</button>", 'Do you want to CLEAR form?',
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?',
                     {
                         allowHtml: true,
                         progressBar: true,
@@ -2787,17 +2978,19 @@ var ListingMethods = {
                 AdministrationMethods.findAllUsers();
                 AdministrationMethods.fillUserStatisticsTable();
                 AdministrationMethods.updateOrSaveUserBtn();
-                userListDiv.style.width = '266%'
+                userListDiv.style.width = '266%';
             } else {
                 AdministrationMethods.findOneUser();
                 AdministrationMethods.fillUserStatisticsTable();
                 AdministrationMethods.updateOrSaveUserBtn();
                 userListDiv.style.maxWidth = '300%';
-                userListDiv.style.width = '300%'
+                userListDiv.style.width = '300%';
             }
         },
 
         findAllUsers: function findAllUsers() {
+            document.getElementById('usersList').style.fontSize = '13.5px';
+
             $('#usersList > tbody').empty();
             $.ajax({
                 type: "GET",
@@ -2811,11 +3004,11 @@ var ListingMethods = {
                             + users.majorDicipline + "</td><td>" + users.userGroup + "<td class='photoSrcTd'>"
                             + users.userPhotoSrc + "</td><td>-</td></tr>");
                     });
+
                 },
                 error: function (e) {
                     jQueryMethods.toastrOptions();
-                    toastr.error('Users couldnt list! \n' + message.err
-                        , 'Error!')
+                    toastr.error('Users couldnt list! \n' + message.err, 'Error!')
                     console.log("ERROR: ", e);
                 }
             });
@@ -2835,24 +3028,28 @@ var ListingMethods = {
                 url: "/admin/user/findOneUser",
                 data: { personalIdNumber: $("#userTc").val() },
                 success: function (user) {
-                    $("#userId").val(user.userId);
-                    $("#userNickname").val(user.userName);
-                    $("#userPassword").val(user.userPassword);
-                    $("#userName").val(user.name);
-                    $("#userSurname").val(user.surname);
-                    $("#userTc").val(user.personalIdNumber);
-                    $('#userPhotoId')[0].src = user.userPhotoSrc;
-                    userMajorDicipline = user.majorDicipline;
-                    userGroup = user.userGroup;
-                    userSearchInput.style.maxWidth = '93%';
-
-                    $("#usersList> tbody").append(
-                        "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + user.userId + "</td><td>" + user.userName + "</td><td>"
-                        + user.name + "</td><td>" + user.surname + "</td><td>" + user.personalIdNumber + "</td><td>"
-                        + user.majorDicipline + "</td><td>" + user.userGroup + "</td><td class='photoSrcTd'>" + user.userPhotoSrc + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteUser()'>Delete</button></td></tr>");
-
                     jQueryMethods.toastrOptions();
-                    toastr.info('User who has - ' + user.personalIdNumber + ' - id number found!', 'User Search');
+                    if (user.userId == '' || user.userId == null || user.userId == 'undefind') {
+                        toastr.error('User couldnt find! \n\n\n', 'Error!')
+                    } else {
+                        $("#userId").val(user.userId);
+                        $("#userNickname").val(user.userName);
+                        $("#userPassword").val(user.userPassword);
+                        $("#userName").val(user.name);
+                        $("#userSurname").val(user.surname);
+                        $("#userTc").val(user.personalIdNumber);
+                        $('#userPhotoId')[0].src = user.userPhotoSrc;
+                        userMajorDicipline = user.majorDicipline;
+                        userGroup = user.userGroup;
+                        userSearchInput.style.maxWidth = '93%';
+
+                        $("#usersList> tbody").append(
+                            "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + user.userId + "</td><td>" + user.userName + "</td><td>"
+                            + user.name + "</td><td>" + user.surname + "</td><td>" + user.personalIdNumber + "</td><td>"
+                            + user.majorDicipline + "</td><td>" + user.userGroup + "</td><td class='photoSrcTd'>" + user.userPhotoSrc + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteUser()'>Delete</button></td></tr>");
+
+                        toastr.info('User who has - ' + user.personalIdNumber + ' - id number found!', 'User Search');
+                    }
                 },
 
                 error: function (e) {
@@ -3100,7 +3297,7 @@ var ListingMethods = {
 
             if (staffId != '' || staffId > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 210px !important;'>Yes</button>", 'Do you want to CLEAR form?',
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?',
                     {
                         allowHtml: true,
                         progressBar: true,
@@ -3238,8 +3435,8 @@ var ListingMethods = {
                 url: "/admin/staff/findAllStaffs",
                 success: function (result) {
                     $.each(result, function (i, staff) {
-                        staffListDiv.style.width = '264%%'
-                        staffListDiv.style.maxWidth = '264%%'
+                        staffListDiv.style.width = '264%'
+                        staffListDiv.style.maxWidth = '264%'
 
                         if (staff.staffLeaveStartDate == ''
                             || staff.staffLeaveStartDate == undefined
@@ -3277,33 +3474,38 @@ var ListingMethods = {
                 url: "/admin/staff/findOneStaff",
                 data: { staffIdNumber: $("#staffTc").val() },
                 success: function (staff) {
-                    $("#staffId").val(staff.staffId);
-                    $("#staffTc").val(staff.staffIdNumber);
-                    $("#staffName").val(staff.staffName);
-                    $("#staffSurname").val(staff.staffSurname);
-                    $("#staffDiplomaNo").val(staff.staffDiplomaNo);
-                    $('#staffPhotoId')[0].src = staff.staffPhotoSrc;
-                    staffListDiv.style.width = '273%'
-                    staffListDiv.style.maxWidth = '273%'
-
-                    if (staff.staffLeaveStartDate == ''
-                        || staff.staffLeaveStartDate == undefined
-                        || staff.staffLeaveStartDate == 'undefined') {
-                        staff.staffLeaveStartDate = x;
-                        staff.staffLeaveEndDate = x;
-                    }
-
-                    $("#staffList> tbody").append(
-                        "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + staff.staffId + "</td><td>" + staff.staffIdNumber + "</td><td>"
-                        + staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>" + staff.staffDiplomaNo + "</td><td>"
-                        + staff.majorDicipline + "</td><td>" + staff.staffGroup + "</td><td class='photoSrcTd'>"
-                        + staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate.substring(0, 10) + "</td><td>"
-                        + staff.staffLeaveEndDate.substring(0, 10) + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteStaff()'>Delete</button></td></tr>");
-
                     jQueryMethods.toastrOptions();
-                    toastr.info('Staff who has - ' + staff.staffIdNumber + ' - id number found!', 'User Search');
-                },
+                    if (staff.staffName == '' || staff.staffName == null || staff.staffName == 'undefined') {
+                        toastr.error('Staff couldnt find! \n\n\n', 'Error!')
+                    } else {
 
+
+                        $("#staffId").val(staff.staffId);
+                        $("#staffTc").val(staff.staffIdNumber);
+                        $("#staffName").val(staff.staffName);
+                        $("#staffSurname").val(staff.staffSurname);
+                        $("#staffDiplomaNo").val(staff.staffDiplomaNo);
+                        $('#staffPhotoId')[0].src = staff.staffPhotoSrc;
+                        staffListDiv.style.width = '273%'
+                        staffListDiv.style.maxWidth = '273%'
+
+                        if (staff.staffLeaveStartDate == ''
+                            || staff.staffLeaveStartDate == undefined
+                            || staff.staffLeaveStartDate == 'undefined') {
+                            staff.staffLeaveStartDate = x;
+                            staff.staffLeaveEndDate = x;
+                        }
+
+                        $("#staffList> tbody").append(
+                            "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + staff.staffId + "</td><td>" + staff.staffIdNumber + "</td><td>"
+                            + staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>" + staff.staffDiplomaNo + "</td><td>"
+                            + staff.majorDicipline + "</td><td>" + staff.staffGroup + "</td><td class='photoSrcTd'>"
+                            + staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate.substring(0, 10) + "</td><td>"
+                            + staff.staffLeaveEndDate.substring(0, 10) + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteStaff()'>Delete</button></td></tr>");
+
+                        toastr.info('Staff who has - ' + staff.staffIdNumber + ' - id number found!', 'User Search');
+                    }
+                },
                 error: function (e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff couldnt find! \n\n\n' + e.responseText, 'Error!')
@@ -3563,7 +3765,7 @@ var ListingMethods = {
 
             if (unitName != '' || unitName > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 210px !important;'>Yes</button>", 'Do you want to CLEAR form?',
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?',
                     {
                         allowHtml: true,
                         progressBar: true,
@@ -3680,7 +3882,7 @@ var ListingMethods = {
                             + units.unitName + "</td><td>"
                             + units.unitType + "</td><td>"
                             + units.unitMajorDicipline + "</td><td>"
-                            + units.unitActivePassive + "</td><td>-</td></tr>");
+                            + units.unitActivePassive + "</td></tr>");
                     });
                 },
                 error: function (e) {
@@ -3700,25 +3902,26 @@ var ListingMethods = {
                 url: "/admin/units/findOneUnit",
                 data: { unitName: searchName },
                 success: function (unit) {
-                    $("#unitId").val(unit.unitId);
-                    $("#unitName").val(unit.unitName);
-                    $("#unitType").val(unit.unitType);
-                    $("#unitMajorDicipline").val(unit.unitMajorDicipline);
-                    $("#unitActivePassive").val(unit.unitActivePassive);
-
-                    $("#unitListTable> tbody").append(
-                        "<tr class='unitRow' id='unitRow1' title=''><td class='idTd' title=''>"
-                        + "#" + "</td><td id='idTd1'>"
-                        + unit.unitId + "</td><td>"
-                        + unit.unitName + "</td><td>"
-                        + unit.unitType + "</td><td>"
-                        + unit.unitMajorDicipline + "</td><td>"
-                        + unit.unitActivePassive + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete unit.' onclick='AdministrationMethods.deleteStaff()'>Delete</button></td></tr>");
-
                     jQueryMethods.toastrOptions();
-                    if (document.getElementById('idTd1').innerHTML == 'undefined') {
+                    if (unit.unitName == '' || unit.unitName == null || unit.unitName == 'undefined') {
+                        $("#unitId").val('');
                         toastr.error('Unit couldnt find! \n\n\n', 'Error!')
                     } else {
+                        $("#unitId").val(unit.unitId);
+                        $("#unitName").val(unit.unitName);
+                        $("#unitType").val(unit.unitType);
+                        $("#unitMajorDicipline").val(unit.unitMajorDicipline);
+                        $("#unitActivePassive").val(unit.unitActivePassive);
+
+                        $("#unitListTable> tbody").append(
+                            "<tr class='unitRow' id='unitRow1' title=''><td class='idTd' title=''>"
+                            + "#" + "</td><td id='idTd1'>"
+                            + unit.unitId + "</td><td>"
+                            + unit.unitName + "</td><td>"
+                            + unit.unitType + "</td><td>"
+                            + unit.unitMajorDicipline + "</td><td>"
+                            + unit.unitActivePassive + "</td></tr>");
+
                         toastr.info('Unit - ' + unit.unitName + ' -  found!', 'Unit Search');
                     }
                 },
@@ -3820,7 +4023,51 @@ var ListingMethods = {
                     console.log("ERROR: ", e.responseText);
                 }
             });
-        }
+        },
+
+        // ========================== user bottom menu functions =============================
+        changePassword: function changePassword() {
+            var myData =
+            {
+                userId: $("#userId").val(),
+                userPassword: $("#userPassword").val()
+            },
+                myUserPassword = $("#userPassword").val(),
+                myUserTc = $("#userTc").val();
+
+            if (myUserTc == '' || myUserTc.length <= 0) {
+                jQueryMethods.toastrOptions();
+                toastr.warning('Please select an user!', 'Select an user');
+            } else {
+                if (myUserPassword == '' || myUserPassword.length <= 0) {
+                    jQueryMethods.toastrOptions();
+                    toastr.warning('Please enter your new password!', 'Enter new password');
+                } else {
+                    $.ajax({
+                        type: 'PUT',
+                        data: JSON.stringify(myData),
+                        cache: false,
+                        contentType: 'application/json',
+                        datatype: "json",
+                        url: '/admin/user/resetPassword',
+                        success: function () {
+                            jQueryMethods.toastrOptions();
+                            toastr.success('Password reseted!', 'Password Reset');
+                            // AdministrationMethods.findOneUser();
+                        },
+                        error: function (e) {
+                            jQueryMethods.toastrOptions();
+                            toastr.error('User couldnt save! \n\n\n' + e.responseText, 'Error!')
+                            console.log("ERROR: ", e.responseText);
+                        }
+                    });
+                }
+            }
+        },
+    },
+
+    indexMethods = {
+
     },
 
     jQueryMethods = {
@@ -3831,6 +4078,26 @@ var ListingMethods = {
                 "newestOnTop": true,
                 "progressBar": true,
                 "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        },
+
+        toastrOptionsFulWidth: function toastrOptionsFulWidth() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-bottom-full-width",
                 "preventDuplicates": false,
                 "onclick": null,
                 "showDuration": "300",

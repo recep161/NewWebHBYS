@@ -72,6 +72,8 @@
                             - Primum non nocere!
                         </a>
                     </h1>
+
+                    <hUserName style="color: black; margin: 10px 0px 20px 30px;font-size: large;"></hUserName>
                 </div>
             </div>
             <div class="right-side">
@@ -744,7 +746,7 @@
                     ShowOrHideMethods.myStickHeader('nav-wrapper');">
                     Close Module X
                 </button>
-                <iframe src="../../server/views/adminModule.ejs" name="targetframe" id="iframe11"
+                <iframe src="/public/htmls/administration.html" name="targetframe" id="iframe11"
                     allowTransparency="true" frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
                 </iframe>
                 <input type="button" class="fixedCloseBtn" value="X" onclick="
@@ -760,7 +762,8 @@
     <!----------------------- login -------------->
     <div id="loginPopup" class="modal">
 
-        <form action="/server/views/index" method="POST" id="modal-content" class="modal-content animate">
+        <!-- <form action="/server/views/index" method="POST" id="modal-content" class="modal-content animate"> -->
+        <div id="modal-content" class="modal-content animate">
             <div id="imgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('loginPopup').style.display='none'" id="loginCloseBtn"
                     class="close" title="Close Modal">&times;</span>
@@ -788,14 +791,15 @@
             </div>
 
             <div id="loginContainerBottom" class="containerBottom">
-                <button id="innerLoginBtn" type="submit">Login</button>
+                <button id="innerLoginBtn" onclick="LoginProcess.findUser()">Login</button>
                 <label id="rememberChkbxlbl" style="color: black;margin: 15px;">
                     <input id="rememberChkbx" type="checkbox" checked="checked" name="remember"
                         style="color: black;float: right;margin: 3px 0px 0px 15px;"> Remember me
                 </label>
                 <a id="forgotPass" onclick="ShowOrHideMethods.showPopUpModal('helpAndDocument');">Forgot password?</a>
             </div>
-        </form>
+            <!-- </form> -->
+        </div>
     </div>
     <!---------------------- end of login--------->
 

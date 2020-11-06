@@ -30,6 +30,8 @@
     <link rel="shortcut icon" href="/public/images/settings-1.png">
 
     <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
 </head>
 
 <body id="administrationBody"
@@ -41,6 +43,7 @@
         AdministrationMethods.fillStafOnLeaveTable(),
         AdministrationMethods.findAllUnits(),
         AdministrationMethods.getMaxUnitId(),
+        AdministrationMethods.takeUserInfoFromCookie(),
         // ShowOrHideMethods.hideDiv('unitDefinitionDiv');
         ShowOrHideMethods.hideDiv('staffDefinitionDiv');
         ShowOrHideMethods.hideDiv('userDefinitionDiv');
@@ -70,12 +73,15 @@
                 <div id="modulNameText"> Administration Module </div>
                 <div>
                     <img class="modulAvatar" src="/public/images/settings-1.png" title="Anasayfa için tıklayınız."
-                        onclick="window.location.href='./index.ejs'">
+                        onclick="AdministrationMethods.redirectToAdminTab('')">
                 </div>
             </div>
         </div>
 
-        <div class="bottomScrool">
+        <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;">
+            Please Login from main page!</hUserName>
+
+        <div class="bottomScrool" style="margin-top: 10px">
             <p id="bottomScrollP4" style="color: white;">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke
                 Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı...
                 &#164;&#164; Sağlık Bakanlığı;'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI'
@@ -158,7 +164,7 @@
                     </button>
 
                     <button type="button" class="inpatientBtn btn-primary" id="newUnit" title="Click for new unit."
-                        onclick="AdministrationMethods.findAllUnits();AdministrationMethods.clearForNewUnit()">
+                        onclick="AdministrationMethods.clearForNewUnit()">
                         New Unit
                     </button>
 
@@ -181,8 +187,7 @@
                                     <td>Unit Name</td>
                                     <td>Unit Type</td>
                                     <td>Unit Major Dicipline</td>
-                                    <td>Unit Status</td>
-                                    <td style="border-top-right-radius: 8px;">Delete</td>
+                                    <td style="border-top-right-radius: 8px;">Unit Status</td>
                                 </tr>
                             </thead>
                             <tbody style="background-color: inherit !important;">
@@ -583,7 +588,7 @@
                         <p class="cardP" id="unitStatisticBackCardHeader">
                             Unit Statistics. <br><br>
 
-                        <table id="unitStatisticsTable" style="width: 100%;font-size: smaller;">
+                        <table id="unitStatisticsTable" style="width: 100%;font-size: smaller;line-height: 10px;">
                             <thead>
                                 <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
                                     <td
@@ -1256,9 +1261,7 @@
     <!--end of back to top button -->
 
     <!-- -----------scripts----------------------------- -->
-    <script> var exports = {}; </script>
     <script type=" text/javascript" src="../../public/functions/functions.js"></script>
-    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
     <!-- -----------end of scripts----------------------------- -->
 
 </body>

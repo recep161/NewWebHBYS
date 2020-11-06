@@ -1,15 +1,18 @@
 
-    var express = require('express'),
-        router = express.Router(),
-        controllerIndex = require('../Controllers/IndexController.js');
+var express = require('express'),
+    router = express.Router(),
+    controllerIndex = require('../Controllers/IndexController.js');
 
-    router.use(function (req, res, next) {
-        console.log('userRouter answer: ' + "/" + req.method);
-        next();
-    });
+router.use(function (req, res, next) {
+    console.log('indexRouter answer: ' + "/" + req.method, req.url);
+    next();
+});
 
 
-    router.get('/', controllerIndex.indexControllerGet);
-    router.post('/server/views/index', controllerIndex.indexControllerPost);
+router.get('/', controllerIndex.indexControllerGet);
+router.get('/findLoginUser', controllerIndex.findLoginUser);
+router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
+router.put('/closeUserLoginSession', controllerIndex.closeUserLoginSession);
+router.get('/userLoginStatistics', controllerIndex.userLoginStatistics);
 
-    module.exports = router;
+module.exports = router;
