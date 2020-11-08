@@ -10,7 +10,11 @@ var mongoose = require('mongoose'),
         personalIdNumber: { type: Number, required: true, unique: true },
         majorDicipline: String,
         userGroup: String,
-        userPhotoSrc: String
+        userPhotoSrc: String,
+        userOldPassword: String,
+        passwordChangeDate: Date,
+        passwordChangeMachineName: String,
+        passwordChangeMachineIp: String
     }),
 
     userSaveSchema = mongoose.model('users', userSchema);

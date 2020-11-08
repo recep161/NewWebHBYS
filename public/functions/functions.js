@@ -1,30 +1,31 @@
 "use Strict"
 
-var ListingMethods = {
-    Listview: function listView() {
-        ShowOrHideMethods.HideColumn('card-container');
-        ShowOrHideMethods.HideColumn('card-container2');
-        ShowOrHideMethods.HideColumn('card-container3');
+var
+    ListingMethods = {
+        Listview: function listView() {
+            ShowOrHideMethods.HideColumn('card-container');
+            ShowOrHideMethods.HideColumn('card-container2');
+            ShowOrHideMethods.HideColumn('card-container3');
 
-        var elements = document.getElementsByClassName("column");
-        let id;
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].style.width = "50%";
-            id = elements[i].id;
-            document.getElementById(id).style.display = '';
+            var elements = document.getElementsByClassName("column");
+            let id;
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.width = "50%";
+                id = elements[i].id;
+                document.getElementById(id).style.display = '';
+            }
+        },
+
+        GridView: function gridView() {
+            var elements = document.getElementsByClassName("column");
+            let id;
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.width = "33.33%";
+                id = elements[i].id;
+                document.getElementById(id).style.display = '';
+            }
         }
     },
-
-    GridView: function gridView() {
-        var elements = document.getElementsByClassName("column");
-        let id;
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].style.width = "33.33%";
-            id = elements[i].id;
-            document.getElementById(id).style.display = '';
-        }
-    }
-},
 
     ShowOrHideMethods = {
         HideColumn: function hideColumnsByClass(par) {
@@ -2005,15 +2006,39 @@ var ListingMethods = {
                 url: "/userLoginStatistics",
                 success: function (result) {
                     $.each(result, function (i, myData) {
+
                         var endDate = new Date(myData.sessionEndDate),
                             startDate = new Date(myData.sessionStartDate),
-                            loginDuration = Math.abs(endDate - startDate) / 36e5;
+                            seconds = Math.floor((endDate - (startDate)) / 1000),
+                            minutes = Math.floor(seconds / 60),
+                            hours = Math.floor(minutes / 60),
+                            days = Math.floor(hours / 24),
+                            loginDuration;
+
+                        hours = hours - (days * 24);
+                        minutes = minutes - (days * 24 * 60) - (hours * 60);
+                        seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
+
+                        if (days <= 0 && hours <= 0 && minutes <= 0) {
+                            loginDuration = seconds + ' second(s)';
+                        } else if (days <= 0 && hours <= 0) {
+                            loginDuration = minutes + ' minute(s) ' + seconds + ' second(s)';
+                        } else if (days <= 0) {
+                            loginDuration = hours + ' hour(s) ' + minutes + ' minute(s) ' + seconds + ' second(s)';
+                        } else {
+                            loginDuration = days + ' day(s) ' + hours + ' hour(s) ' + minutes + ' minute(s) ' + seconds + ' second(s)';
+                        }
 
                         if (myData.sessionStartDate == ''
                             || myData.sessionStartDate == undefined
                             || myData.sessionStartDate == null
                             || myData.sessionStartDate == 'undefined') {
                             myData.sessionStartDate = x;
+                        } else if (myData.sessionEndDate == ''
+                            || myData.sessionEndDate == undefined
+                            || myData.sessionEndDate == null
+                            || myData.sessionEndDate == 'undefined') {
+                            loginDuration = 'still loged..';
                         }
 
                         i++;
@@ -2025,7 +2050,6 @@ var ListingMethods = {
                             + myData.sessionStartDate + "</td><td>"
                             + loginDuration + "</td></tr>");
                     });
-
                 },
                 error: function (e) {
                     jQueryMethods.toastrOptions();
@@ -2033,6 +2057,89 @@ var ListingMethods = {
                     console.log("ERROR: ", e);
                 }
             });
+        },
+
+        getLastPasswordChangeStatistics: function getLastPasswordChangeStatistics() {
+            $.ajax({
+                type: "GET",
+                data: { userName: $.cookie('username') },
+                url: "/getLastPasswordChangeStatistics",
+                success: function (result) {
+                    document.getElementById('lastPasswordChangeStatistics').innerHTML =
+                        'Last password change details = ' +
+                        result.passwordChangeDate + ' - ' +
+                        result.passwordChangeMachineName + ' - ' +
+                        result.passwordChangeMachineIp
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Users couldnt list! \n' + message.err, 'Error!')
+                    console.log("ERROR: ", e);
+                }
+            });
+        },
+
+        changeUserPassword: function changeUserPassword() {
+            jQueryMethods.toastrOptions();
+            var myData =
+            {
+                userName: $.cookie('username'),
+                userOldPassword: $("#userOldPassword").val(),
+                userNewPassword: $("#userNewPassword").val()
+            };
+
+            if ($.cookie('username') == null
+                || $.cookie('username') == ''
+                || $.cookie('username') == undefined
+                || $.cookie('username') == 'undefined') {
+                toastr.warning('Please login!', 'Login Error');
+            } else {
+                if ($("#userNewPassword").val() != $("#userNewPasswordRepeat").val()) {
+                    toastr.warning('New password and new password repeat are not same, please check your data!', 'Password Match');
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "/checkUserPassword",
+                        data: { userName: $.cookie('username'), password: $("#userOldPassword").val() },
+                        success: function (user) {
+                            if (user.length <= 0) {
+                                toastr.error('Incorrect user old password! \n\n\n', 'Error!')
+                            } else {
+                                $.ajax({
+                                    type: 'PUT',
+                                    data: JSON.stringify(myData),
+                                    cache: false,
+                                    contentType: 'application/json',
+                                    datatype: "json",
+                                    url: '/changeUserPassword',
+                                    success: function () {
+                                        toastr.info('User password has changed!', 'Password Change');
+                                        $("#userOldPassword").val('');
+                                        $("#userNewPassword").val('');
+                                        $("#userNewPasswordRepeat").val('');
+
+                                    },
+                                    error: function (e) {
+                                        jQueryMethods.toastrOptions();
+                                        toastr.error('User password couldnt change! \n\n\n' + e.responseText, 'Error!')
+                                        console.log("ERROR: ", e.responseText);
+                                    }
+                                });
+
+
+
+                            }
+                        },
+
+                        error: function (e) {
+                            jQueryMethods.toastrOptions();
+                            toastr.error('User couldnt find! \n\n\n' + e.responseText, 'Error!')
+                            console.log("ERROR: ", e.responseText);
+                        }
+                    });
+
+                }
+            }
         }
     },
 

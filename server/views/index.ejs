@@ -1406,8 +1406,7 @@
                     </tbody>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 id="lastPasswordChangeStatistics" class="historyHeaders" style="margin: 5px;color: white;">-</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -1546,10 +1545,8 @@
                 <br>
                 <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
-                    Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
+                    title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -1679,8 +1676,11 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Statistics." onclick="
+                ShowOrHideMethods.showPopUpModal('userStatistics'); 
+                LoginProcess.userLoginStatistics();
+                LoginProcess.getLastPasswordChangeStatistics();">
+                <i class="fa fa-bar-chart"></i> </a>
             <a href="#" class="menu-item" title="User Trainings."
                 onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
             <a href="#" class="menu-item" title="User Settings."

@@ -89,6 +89,65 @@ module.exports.userLoginStatistics = (req, res) => {
         });
 };
 
+module.exports.getLastPasswordChangeStatistics = (req, res) => {
+
+    myUsersModel.findOne(req.query)
+        .then(user => {
+            res.send(user);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.checkUserPassword = (req, res) => {
+
+    myUsersModel.findOne(req.query)
+        .then(user => {
+            res.send(user);
+            // console.log("User found! = " + user);
+            // console.log('checkUserPassword req.query = ', req.query);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.changeUserPassword = (req, res) => {
+
+    var myUserName = req.body.userName,
+        myUserOldPassword = req.body.userOldPassword,
+        myUserNewPassword = req.body.userNewPassword,
+        myIpAdress = myip.getLocalIP4(),
+        myComputerName = computerName(),
+        myPasswordChangeDate = myMoment(Date.now()).format('DD/MM/YYYY hh:mm:ss');
+
+    myUsersModel.findOneAndUpdate(
+        { userName: myUserName },
+        {
+            $set: {
+                'password': myUserNewPassword,
+                'userOldPassword': myUserOldPassword,
+                'passwordChangeDate': myPasswordChangeDate,
+                'passwordChangeMachineName': myComputerName,
+                'passwordChangeMachineIp': myIpAdress
+            }
+        },
+        { useFindAndModify: false }
+    )
+        .then(user => {
+            res.send(user);
+            // console.log("Password changed! = " + user);
+            // console.log(myUserName, myUserNewPassword);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
 module.exports.indexNotFound = function (app) {
     app.use("*", (req, res) => {
         res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));

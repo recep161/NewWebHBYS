@@ -14,5 +14,8 @@ router.get('/findLoginUser', controllerIndex.findLoginUser);
 router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
 router.put('/closeUserLoginSession', controllerIndex.closeUserLoginSession);
 router.get('/userLoginStatistics', controllerIndex.userLoginStatistics);
+router.get('/getLastPasswordChangeStatistics', controllerIndex.getLastPasswordChangeStatistics);
+router.get('/checkUserPassword', controllerIndex.checkUserPassword);
+router.put('/changeUserPassword', controllerIndex.changeUserPassword);
 
 module.exports = router;
