@@ -26,14 +26,13 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
-    <link rel="stylesheet" media="all"
-        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+
     <link rel="stylesheet" href="/public/css/all-pages-style.css">
     <link rel="shortcut icon" href="/public/images/Insomnia.ico">
+
+    <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
 </head>
 
 <body onload="
@@ -42,9 +41,10 @@
             ListingMethods.Listview();
             ColorAndAdjustmentMethods.classColor();
             ColorAndAdjustmentMethods.nightModeBySysTime();
-            LoginProcess.showUpLogin();
-            myClockMethods.myClock();
+            LoginProcess.checkIfUserLoggedInByCookie();
+            LoginProcess.popupLoginModal();
             LoginProcess.closeLoginByClickOut();
+            myClockMethods.myClock();
             ShowOrHideMethods.showBackTotopButton();
             ColorAndAdjustmentMethods.stabledColorsChange();
             jQueryMethods.toolTipFunction();
@@ -73,7 +73,9 @@
                         </a>
                     </h1>
 
-                    <hUserName style="color: black; margin: 10px 0px 20px 30px;font-size: large;"></hUserName>
+                    <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
+                        style="cursor: default;">
+                    </hUserName>
                 </div>
             </div>
             <div class="right-side">
@@ -773,7 +775,8 @@
             <div id="loginContainer" class="container">
                 <label id="loginUserNameLbl" for="username" style="color: black;">Username:</label>
                 <input type="text" id="loginUserName" name="username" style="color: black;" placeholder="Enter Username"
-                    autofocus required onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator',event)"
+                    autocomplete="off" autofocus required
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator',event)"
                     onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator',event)">
                 <br>
                 <label id="loginPasswordLbl" for="password" style="color: black;">Password :</label>
@@ -1391,22 +1394,21 @@
             <div id="userStatisticsContainer" class="userStatisticsContainer">
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
                 <table id="userLoginStatsTable">
-                    <tr id="tableHeader">
-                        <th>#</th>
-                        <th>Ip Adress</th>
-                        <th>Login Date</th>
-                        <th>Login Duration</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>192.168.1.11</td>
-                        <td>03.09.2020 14:10</td>
-                        <td>22 minutes 17 seconds</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader">
+                            <th>#</th>
+                            <th>Ip Adress</th>
+                            <th>Local Machine</th>
+                            <th>Login Date</th>
+                            <th>Login Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 id="lastPasswordChangeStatistics" class="historyHeaders" style="margin: 5px;color: white;">-</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -1545,10 +1547,8 @@
                 <br>
                 <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
-                    Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
+                    title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -1678,8 +1678,11 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Statistics." onclick="
+                ShowOrHideMethods.showPopUpModal('userStatistics'); 
+                LoginProcess.userLoginStatistics();
+                LoginProcess.getLastPasswordChangeStatistics();">
+                <i class="fa fa-bar-chart"></i> </a>
             <a href="#" class="menu-item" title="User Trainings."
                 onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
             <a href="#" class="menu-item" title="User Settings."

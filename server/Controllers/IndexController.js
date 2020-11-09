@@ -16,6 +16,11 @@ module.exports.indexControllerGet = function (req, res) {
     res.render('index');
 }
 
+module.exports.indexRedirectToHastaKimlik = function (req, res) {
+    res.sendFile(path.join(__dirname, '../../public/htmls', 'hastaKimlik.html'))
+    // res.render('index');
+}
+
 module.exports.findLoginUser = (req, res) => {
     var myUserName = req.query.userName,
         myPassword = req.query.password;
@@ -77,7 +82,7 @@ module.exports.closeUserLoginSession = (req, res) => {
 };
 
 module.exports.userLoginStatistics = (req, res) => {
-    myUserLoginSessionModel.find(req.query).sort({ 'sessionStartDate': 1 }).limit(5)
+    myUserLoginSessionModel.find(req.query).sort({ 'sessionStartDate': -1 }).limit(5)
         .then(myData => {
             res.send(myData);
             // console.log(req.query);

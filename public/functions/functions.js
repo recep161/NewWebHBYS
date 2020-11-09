@@ -758,6 +758,15 @@ var
             win.style.margin = "0px";
         },
 
+        adjustHtmlsBackground: function adjustHtmlsBackground(pageBodyId) {
+            var win = document.getElementById(pageBodyId);
+
+            win.style.background = 'linear-gradient(90deg,' +
+                ColorAndAdjustmentMethods.randomDarkColor() +
+                ',' + ColorAndAdjustmentMethods.getSoftColor() + ')';
+            win.style.margin = "0px";
+        },
+
         myStickHeader: function myStickHeader(subHeadDivId) {
             window.onscroll = function () { stickHeader() };
             var path = window.location.pathname,
@@ -1941,6 +1950,10 @@ var
                             $.cookie('username', loginUserName, { expires: 1, path: '/' });
                             $.cookie('name', user.name, { expires: 1, path: '/' });
                             $.cookie('surname', user.surname, { expires: 1, path: '/' });
+                            $.cookie('personalIdNumber', user.personalIdNumber, { expires: 1, path: '/' });
+                            $.cookie('majorDicipline', user.majorDicipline, { expires: 1, path: '/' });
+                            $.cookie('userGroup', user.userGroup, { expires: 1, path: '/' });
+                            $.cookie('userPhotoSrc', user.userPhotoSrc, { expires: 1, path: '/' });
                             $.cookie('remember', true, { expires: 1, path: '/' });
                         } else {
                             // reset cookies
@@ -1959,8 +1972,35 @@ var
             });
         },
 
-        closeUserLoginSession: function closeUserLoginSession() {
+        showUserDataOnHover: function showUserDataOnHover() {
+            var userNameSurname = $.cookie('name') + ' ' + $.cookie('surname'),
+                userPersonalIdNumber = $.cookie('personalIdNumber'),
+                userMajorDicipline = $.cookie('majorDicipline'),
+                userGroup = $.cookie('userGroup'),
+                myPhotoSrc = $.cookie('userPhotoSrc');
 
+            $(function () {
+                s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">';
+                s += '<tr style="border-style:ridge;border:5px solid #761c54;"><img src="' + myPhotoSrc + '" style="width:200px; height:200px;align-items:center;box-shadow:"/> </td><td valign="top">' + userNameSurname + '</td></tr>';
+                s += '<td class="Text">' + userMajorDicipline + ' - ' + userGroup + ' <br/>' + userPersonalIdNumber + '</td>';
+                s += '</table>';
+                $('#hUserName').tooltip({
+                    content: s,
+                    position: {
+                        my: "center top",
+                        at: "center bottom-5",
+                    },
+                    show: {
+                        effect: "slideDown",
+                        delay: 250,
+                        track: true
+                    }
+                });
+            });
+        },
+
+        closeUserLoginSession: function closeUserLoginSession() {
+            jQueryMethods.toastrOptions();
             var hUserName = document.getElementById('hUserName').innerHTML,
                 myData = {
                     userName: hUserName.substring(hUserName.lastIndexOf('-') + 2, 50),
@@ -1976,19 +2016,28 @@ var
                 datatype: "json",
                 url: '/closeUserLoginSession',
                 success: function () {
-                    jQueryMethods.toastrOptions();
-                    toastr.success('User logged out!', 'User Logout');
-                    loginBtn.innerHTML = 'Login';
-                    document.getElementById('hUserName').innerHTML = 'Please log in!'
+                    toastr.warning(
+                        "<br/><br/><button type='button' id='logOutConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to log out? <br><br> You will sign out from entire system if you click YES.',
+                        {
+                            allowHtml: true,
+                            progressBar: false,
+                            timeOut: 10000,
+                            onShown: function (toast) {
+                                $("#logOutConfirmBtn").on('click', function () {
+                                    toastr.success('User logged out!', 'User Logout');
+                                    loginBtn.innerHTML = 'Login';
+                                    document.getElementById('hUserName').innerHTML = 'Please log in!'
 
-                    // destroy cookie
-                    $.cookie('username', null);
-                    $.cookie('name', null);
-                    $.cookie('surname', null);
-                    $.cookie('remember', null);
+                                    // destroy cookie
+                                    $.cookie('username', null);
+                                    $.cookie('name', null);
+                                    $.cookie('surname', null);
+                                    $.cookie('remember', null);
+                                });
+                            }
+                        });
                 },
                 error: function (e) {
-                    jQueryMethods.toastrOptions();
                     toastr.error('User session couldnt closed! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -2332,6 +2381,240 @@ var
                 myPatientPhotoId = document.getElementById(patientPhotoId);
             myPatientPhotoId.src = '/public/images/' + selectedFileName.files.item(0).name
 
+        },
+
+        clearFormDataForNewPatient: function clearFormDataForNewPatient() {
+            jQueryMethods.toastrOptions();
+            var myPatientId = $("#patientId").val();
+
+            if (myPatientId != '' || myPatientId > 0) {
+                toastr.warning(
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
+                    {
+                        allowHtml: true,
+                        progressBar: true,
+                        timeOut: 10000,
+                        onShown: function (toast) {
+                            $("#clearConfirmBtn").on('click', function () {
+                                HastaKimlikMethods.getMaxPatientId();
+                                $("#patientId").val('');
+                                $("#patientName").val('');
+                                $("#patientSurname").val('');
+                                $("#patientFatherName").val('');
+                                $("#patientMotherName").val('');
+                                $("#patientGender").val('');
+                                $("#patientBirthPlace").val('');
+                                $("#patientBirthDate").val('');
+                                $("#patientPhone").val('');
+                                $("#patientAdress").val('');
+                                $('#patientPhotoId')[0].src = 'http://localhost:161/public/images/Patient_Female.ico';
+
+                                toastr.info('Form cleared for new patient!', 'Form Cleared');
+                            });
+                        }
+                    });
+            }
+        },
+
+        patientPhotoSrcByGender: function patientPhotoSrcByGender() {
+            var photoId = document.getElementById('patientPhotoId'),
+                patientGender = document.getElementById('patientGender'),
+                win = document.getElementById('patientIdBody');
+
+            if (patientGender.selectedIndex == 2) {
+                photoId.src = '/public/images/Patient_Female.ico';
+                win.style.background = 'linear-gradient(90deg,' +
+                    '#76217c' + ',' + ColorAndAdjustmentMethods.getSoftColor() + ')';
+            } else {
+                photoId.src = '/public/images/Patient_Male.ico';
+                win.style.background = 'linear-gradient(90deg,' +
+                    '#262694' + ',' + ColorAndAdjustmentMethods.getSoftColor() + ')';
+            }
+        },
+
+        getMaxPatientId: function getMaxPatientId() {
+            $.ajax({
+                type: "GET",
+                url: "/hastakimlik/getMaxPatientId",
+                success: function (patient) {
+                    $("#patientId").val(patient.patientId + 1);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error("Couldn't get max id!", "Error!")
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        updateOrSavePatientBtn: function updateOrSavePatientBtn() {
+            var btn = document.getElementById('savePatient');
+            if (btn.innerHTML == 'Update') {
+                HastaKimlikMethods.updatePatientData();
+            }
+            else {
+                HastaKimlikMethods.savePatient();
+            }
+        },
+
+        savePatient: function savePatient() {
+            jQueryMethods.toastrOptions();
+            var btn = document.getElementById('savePatient');
+
+            if ($.cookie('username') == null
+                || $.cookie('username') == ''
+                || $.cookie('username') == undefined
+                || $.cookie('username') == 'undefined') {
+                toastr.error('Please Login from main page! ! \n' + e, 'Error!')
+            } else {
+                if (btn.innerHTML == 'Update') {
+                    AdministrationMethods.updateUserData();
+                } else {
+                    var myPatientGender = document.getElementById('patientGender'),
+                        myData = {
+                            patientId: $("#patientId").val(),
+                            patientIdNo: $("#patientIdNo").val(),
+                            patientName: $("#patientName").val(),
+                            patientSurname: $("#patientSurname").val(),
+                            patientFatherName: $("#patientFatherName").val(),
+                            patientMotherName: $("#patientMotherName").val(),
+                            patientGender: myPatientGender.options[myPatientGender.selectedIndex].value,
+                            patientBirthPlace: $("#patientBirthPlace").val(),
+                            patientBirthDate: $("#patientBirthDate").val(),
+                            patientPhone: $("#patientPhone").val(),
+                            patientAdress: $("#patientAdress").val(),
+                            patientPhotoSrc: $('#patientPhotoId')[0].src,
+                            patientSavedUser: $.cookie('username')
+                        };
+
+                    $.ajax({
+                        type: 'POST',
+                        data: JSON.stringify(myData),
+                        cache: false,
+                        contentType: 'application/json',
+                        datatype: "json",
+                        url: '/hastakimlik/savePatient',
+                        success: function () {
+                            toastr.success('Patient successfully saved!', 'Patient Save');
+                            // AdministrationMethods.findOneUser();
+                            // AdministrationMethods.getMaxUserId();
+
+                            // reset form data
+                            $("#patientIdNo").val('');
+                            $("#patientName").val('');
+                            $("#patientSurname").val('');
+                            $("#patientFatherName").val('');
+                            $("#patientMotherName").val('');
+                            $("#patientBirthPlace").val('');
+                            $("#patientBirthDate").val('');
+                            $("#patientPhone").val('');
+                            $("#patientAdress").val('');
+                        },
+                        error: function (e) {
+                            jQueryMethods.toastrOptions();
+                            toastr.error('User couldnt list! \n' + e, 'Error!');
+                            console.log("ERROR: ", e);
+                        }
+                    });
+                }
+            }
+        },
+
+        findOnePatient: function findOnePatient() {
+            jQueryMethods.toastrOptions();
+
+            var savePatientBtn = document.getElementById('savePatient');
+
+            $('#patientHistoryTable > tbody').empty();
+
+            if ($("#patientIdNo").val() == '') {
+                toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
+            }
+            else {
+                $.ajax({
+                    type: "GET",
+                    url: "/hastakimlik/findOnePatient",
+                    data: { patientIdNo: $("#patientIdNo").val() },
+                    success: function (patient) {
+                        var x = '----------';
+                        if (patient.patientBirthDate == ''
+                            || patient.patientBirthDate == undefined
+                            || patient.patientBirthDate == 'undefined') {
+                            patient.patientBirthDate = x;
+                            patient.patientBirthDate = x;
+                        }
+
+
+                        if (patient.length <= 0) {
+                            toastr.error('Patient couldnt find! \n\n\n', 'Error!')
+                        } else {
+                            $("#patientId").val(patient.patientId);
+                            $("#patientIdNo").val(patient.patientIdNo);
+                            $("#patientName").val(patient.patientName);
+                            $("#patientSurname").val(patient.patientSurname);
+                            $("#patientFatherName").val(patient.patientFatherName);
+                            $("#patientMotherName").val(patient.patientMotherName);
+                            $("#patientGender").val(patient.patientGender);
+                            $("#patientBirthPlace").val(patient.patientBirthPlace);
+                            $("#patientBirthDate").val(patient.patientBirthDate.substring(0, 10));
+                            $("#patientPhone").val(patient.patientPhone);
+                            $("#patientAdress").val(patient.patientAdress);
+                            $('#patientPhotoId')[0].src = patient.patientPhotoSrc;
+                            savePatientBtn.innerHTML = 'Update'
+
+                            toastr.info('Patient - ' + patient.patientIdNo + ' -  found!', 'Patient Search');
+                        }
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Patient couldnt find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        updatePatientData: function updatePatientData() {
+            jQueryMethods.toastrOptions();
+            var myData = {
+                patientId: $("#patientId").val(),
+                patientIdNo: $("#patientIdNo").val(),
+                patientName: $("#patientName").val(),
+                patientSurname: $("#patientSurname").val(),
+                patientFatherName: $("#patientFatherName").val(),
+                patientMotherName: $("#patientMotherName").val(),
+                patientGender: $("#patientGender").val(),
+                patientBirthPlace: $("#patientBirthPlace").val(),
+                patientBirthDate: $("#patientBirthDate").val(),
+                patientPhone: $("#patientPhone").val(),
+                patientAdress: $("#patientAdress").val(),
+                patientPhotoSrc: $('#patientPhotoId')[0].src
+            };
+
+            $('#patientHistoryTable > tbody').empty();
+
+            if ($("#patientIdNo").val() == '') {
+                toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
+            }
+            else {
+                $.ajax({
+                    type: 'PUT',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/hastakimlik/updatePatientData',
+                    success: function (patient) {
+                        toastr.success('Patient updated! \n\n\n', 'Patient Update');
+                        HastaKimlikMethods.findOnePatient();
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Patient couldnt update! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
         }
     },
 
@@ -3345,20 +3628,15 @@ var
                 s += '<td class="Text">' + userMajorDicipline + ' - ' + userGroup + ' <br/>' + userIDText + '</td>';
                 s += '</table>';
                 $('#' + userRowid + '').tooltip({
-                    content: s
-                });
-                $('#' + userRowid + '').tooltip({
-                    position: {
-                        my: "center top",
-                        at: "center bottom-5",
-                    }
-                });
-
-                $('#' + userRowid + '').tooltip({
+                    content: s,
                     show: {
                         effect: "slideDown",
                         delay: 250,
                         track: true
+                    },
+                    position: {
+                        my: "center top",
+                        at: "center bottom-5",
                     }
                 });
             });
@@ -4130,51 +4408,7 @@ var
                     console.log("ERROR: ", e.responseText);
                 }
             });
-        },
-
-        // ========================== user bottom menu functions =============================
-        changePassword: function changePassword() {
-            var myData =
-            {
-                userId: $("#userId").val(),
-                userPassword: $("#userPassword").val()
-            },
-                myUserPassword = $("#userPassword").val(),
-                myUserTc = $("#userTc").val();
-
-            if (myUserTc == '' || myUserTc.length <= 0) {
-                jQueryMethods.toastrOptions();
-                toastr.warning('Please select an user!', 'Select an user');
-            } else {
-                if (myUserPassword == '' || myUserPassword.length <= 0) {
-                    jQueryMethods.toastrOptions();
-                    toastr.warning('Please enter your new password!', 'Enter new password');
-                } else {
-                    $.ajax({
-                        type: 'PUT',
-                        data: JSON.stringify(myData),
-                        cache: false,
-                        contentType: 'application/json',
-                        datatype: "json",
-                        url: '/admin/user/resetPassword',
-                        success: function () {
-                            jQueryMethods.toastrOptions();
-                            toastr.success('Password reseted!', 'Password Reset');
-                            // AdministrationMethods.findOneUser();
-                        },
-                        error: function (e) {
-                            jQueryMethods.toastrOptions();
-                            toastr.error('User couldnt save! \n\n\n' + e.responseText, 'Error!')
-                            console.log("ERROR: ", e.responseText);
-                        }
-                    });
-                }
-            }
-        },
-    },
-
-    indexMethods = {
-
+        }
     },
 
     jQueryMethods = {
@@ -4259,17 +4493,11 @@ var
                 s += '<td class="Text">Cinsiyeti: Erkek, Yas: 34 <br/>Dogum yeri: Diyarbakir</td>';
                 s += '</table>';
                 $('#' + hastaId + '').tooltip({
-                    content: s
-                });
-
-                $('#' + hastaId + '').tooltip({
+                    content: s,
                     position: {
                         my: "center top",
                         at: "center bottom-5",
-                    }
-                });
-
-                $('#' + hastaId + '').tooltip({
+                    },
                     show: {
                         effect: "slideDown",
                         delay: 250,

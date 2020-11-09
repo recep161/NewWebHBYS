@@ -8,8 +8,8 @@ router.use(function (req, res, next) {
     next();
 });
 
-
 router.get('/', controllerIndex.indexControllerGet);
+router.get('/hastakimlik', controllerIndex.indexRedirectToHastaKimlik);
 router.get('/findLoginUser', controllerIndex.findLoginUser);
 router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
 router.put('/closeUserLoginSession', controllerIndex.closeUserLoginSession);

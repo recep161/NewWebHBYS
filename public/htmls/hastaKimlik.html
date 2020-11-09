@@ -26,13 +26,20 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <link rel="stylesheet" href="/public/css/hastakimlik.css" type="text/css">
-    <link rel="shortcut icon" href="/images/id-3.png">
+    <link rel="shortcut icon" href="/public/images/id-3.png">
+
+    <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
 </head>
 
 
 <body id="patientIdBody" onload="
-    ShowOrHideMethods.myStickHeader('hastaKimlikSubHeadDiv');
-    jQueryMethods.setCalenderValueToday('dogumTarihi');
+    ShowOrHideMethods.adjustHtmlsBackground('patientIdBody');
+    AdministrationMethods.takeUserInfoFromCookie();
+    HastaKimlikMethods.getMaxPatientId();
+    // ShowOrHideMethods.myStickHeader('hastaKimlikSubHeadDiv');
+    jQueryMethods.setCalenderValueToday('patientBirthDate');
     jQueryMethods.getJqueryDatePicker();
     jQueryMethods.toolTipFunction();
     ShowOrHideMethods.showBackTotopButton();">
@@ -56,6 +63,16 @@
                     onclick="window.location.href='/public/htmls/index.html'">
             </div>
         </div>
+        <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;"
+            onmouseover="LoginProcess.showUserDataOnHover();" title="">Please Login from main page!
+        </hUserName>
+    </div>
+
+    <div class="bottomScrool" style="margin-top: 10px">
+        <p id="bottomScrollP4" style="color: white;">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke
+            Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı...
+            &#164;&#164; Sağlık Bakanlığı;'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI'
+            adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
     </div>
 
     <div class="generalContainer">
@@ -64,48 +81,51 @@
                 <div class="nav-wrapper">
 
                     <div class="labels">
-                        <label for="idTxt">Hasta Id </label><br><br>
-                        <label for="hastaNo">Hasta no</label><br><br>
-                        <label for="tcKimlik">TC Kimlik No</label><br><br>
-                        <label for="adi">Adi</label><br><br>
-                        <label for="soyadi">Soyadi</label><br><br>
-                        <label for="babaAdi">Baba adi</label><br><br>
-                        <label for="anaAdi">Anne adi</label><br><br>
-                        <label for="cinsiyeti">Cinsiyeti</label><br><br>
-                        <label for="dogumYeri">Dogum yeri</label><br><br>
-                        <label for="dogumTarihi">Dogum tarihi</label><br><br>
-                        <label for="phone">Telefon</label><br><br>
-                        <label for="adress">Adres</label><br><br>
+                        <label for="patientId">Patient Id </label><br><br>
+                        <label for="patientIdNo">Patient ID No</label><br><br>
+                        <label for="patientName">Name</label><br><br>
+                        <label for="patientSurname">Surname</label><br><br><br>
+                        <label for="patientFatherName">Father Name</label><br><br>
+                        <label for="patientMotherName">Mother Name</label><br><br>
+                        <label for="patientGender">Gender</label><br><br>
+                        <label for="patientBirthPlace">Birth Place</label><br><br><br>
+                        <label for="patientBirthDate">Birth Date</label><br><br>
+                        <label for="patientPhone">Phone</label><br><br>
+                        <label for="patientAdress">Adress</label><br><br>
                     </div>
 
                     <div class="inputs">
-                        <input type="number" name="idTxt" id="idTxt"><br><br>
-                        <input type="number" name="hastaNo" id="hastaNo"><br><br>
-                        <input type="number" name="tcKimlik" id="tcKimlik" maxlength="11"><br><br>
-                        <input type="text" name="adi" id="adi"><br><br>
-                        <input type="text" name="soyadi" id="soyadi"><br><br>
-                        <input type="text" name="babaAdi" id="babaAdi"><br><br>
-                        <input type="text" name="anaAdi" id="anaAdi"><br><br>
-                        <select name="cinsiyeti" id="cinsiyetiId" style="width: 160;height: 28;">
+                        <input type="number" name="patientId" id="patientId" style="background-color: lightgray;"
+                            readonly><br><br>
+                        <input type="number" name="patientIdNo" id="patientIdNo"
+                            oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}"
+                            maxlength="11" minlength="11" required placeholder="Must be 11 digits"><br><br>
+                        <input type="text" name="patientName" id="patientName"><br><br>
+                        <input type="text" name="patientSurname" id="patientSurname"><br><br>
+                        <input type="text" name="patientFatherName" id="patientFatherName"><br><br>
+                        <input type="text" name="patientMotherName" id="patientMotherName"><br><br>
+                        <select name="patientGender" id="patientGender" style="width: 160;height: 28;"
+                            onchange="HastaKimlikMethods.patientPhotoSrcByGender()">
                             <option value="bos" selected></option>
-                            <option value="erkek">Erkek</option>
-                            <option value="kadin">Kadin</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select><br><br>
-                        <input type="text" name="dogumYeri" id="dogumYeri"><br><br>
-                        <input type="text" id="dogumTarihi" name="dogumTarihi" style="width: 160;" value=""><br><br>
-                        <input type="phone" name="phone" id="phone"><br><br>
-                        <textarea id="adress" name="adress" cols="40" rows="5" style="resize: none;"></textarea><br><br>
-
+                        <input type="text" name="patientBirthPlace" id="patientBirthPlace"><br><br>
+                        <input type="text" id="patientBirthDate" name="patientBirthDate" style="width: 160;"
+                            value=""><br><br>
+                        <input type="phone" name="patientPhone" id="patientPhone"><br><br>
+                        <textarea id="patientAdress" name="patientAdress" cols="40" rows="5"
+                            style="resize: none;"></textarea><br><br>
                     </div>
 
                 </div>
 
                 <div class="patientPhoto">
-                    <img id="patientPhotoId" src="/public/images/cv photo - office background.jpg" alt="Patient Photo">
+                    <img id="patientPhotoId" src="/public/images/Patient_Female.ico" alt="Patient Photo">
 
                     <button class="polyclinicButtons btn--swap" id="changeImage"
                         onclick="document.getElementById('getFile').click()">
-                        <pDegis>Degistir</pDegis> <span id="degistirSpan">Hasta fotografini <br> degistir.</span>
+                        <pDegis>Change</pDegis> <span id="degistirSpan">Change patient <br> photo.</span>
                     </button>
 
                     <input type='file' id="getFile"
@@ -116,13 +136,14 @@
             </div>
 
             <div class="btnDiv">
-                <button class="btn btn-primary" id="hastaAra">Hasta Ara</button>
-                <button class="btn btn-success" id="kaydet"
-                    onclick="ShowOrHideMethods.hastaKimlikShowSuccesAlert();">Kaydet</button>
-                <button class="btn btn-info" id="guncelle"
-                    onclick="ShowOrHideMethods.hastaKimlikShowSuccesAlert();">Guncelle</button>
-                <button class="btn btn-danger" id="yeniHasta" onclick="CheckAndClearMethods.checksBeforeExit();">Yeni
-                    Hasta</button>
+                <button class="btn btn-primary" id="searchPatient"
+                    onclick="HastaKimlikMethods.findOnePatient()">Search</button>
+                <button class="btn btn-success" id="savePatient" onclick="HastaKimlikMethods.updateOrSavePatientBtn()">
+                    Save
+                </button>
+                <button class="btn btn-info" id="newPatient" onclick="HastaKimlikMethods.clearFormDataForNewPatient();">
+                    New Patient
+                </button>
             </div>
 
         </div>
@@ -131,46 +152,23 @@
             <div class="medicalHistory">
                 <div class="patientHistoryContainer" id="patientHistoryContainer">
                     <h10 class="historyHeaders"> Patient History</h10>
-                    <table id="patientHistoryTable">
-                        <tr>
-                            <th>No.</th>
-                            <th>Protocol No.</th>
-                            <th>Date</th>
-                            <th>Polyclinic</th>
-                        </tr>
-                        <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
-                        
-                        Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
-                        ">
-                            <td>1</td>
-                            <td>12345</td>
-                            <td>01/03/2019</td>
-                            <td>Diet Pol.</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>45678</td>
-                            <td>15/01/2020</td>
-                            <td>Cardiology Pol.</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>91011</td>
-                            <td>22/02/2020</td>
-                            <td>Urology Pol.</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>12131</td>
-                            <td>04/03/2020</td>
-                            <td>Emergency Pol.</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>14151</td>
-                            <td>18/04/2020</td>
-                            <td>Urology Pol.</td>
-                        </tr>
+                    <table id="patientHistoryTable" class="patientTable">
+                        <thead>
+                            <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                <td style="border-top-left-radius: 8px !important;">No.</td>
+                                <td>Protocol No.</td>
+                                <td>Date</td>
+                                <td style="border-top-right-radius: 8px;">Polyclinic</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1123123</td>
+                                <td>01/11/2020</td>
+                                <td>Urology</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
