@@ -2102,6 +2102,7 @@ span.psw {
   color: white;
   font-size: 15px;
   padding: 5px;
+  border-radius: 8px;
 }
 
 #newTabButton {
@@ -2827,6 +2828,16 @@ input:focus, textarea:focus, text:focus {
   margin-bottom: 20px;
 }
 
+.inputAndImageDiv {
+  display: flex;
+  width: 30%;
+  margin: 5px 15px;
+}
+
+.statisticsDiv {
+  width: 70%;
+}
+
 .patientInputs {
   margin: 8px;
   text-align: center;
@@ -2870,7 +2881,7 @@ input:focus, textarea:focus, text:focus {
 #patientPhotoId {
   width: 270px;
   height: 348px;
-  margin: 5px;
+  margin: 5px -98px 5px 0px;
   border: 5px;
   border-radius: 8px;
   border-style: double;
@@ -2887,7 +2898,7 @@ input:focus, textarea:focus, text:focus {
 }
 
 .polExamStatics, .polExamStatics2 {
-  width: 65%;
+  width: 73%;
   height: 48%;
 }
 

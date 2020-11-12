@@ -2397,7 +2397,7 @@ var
                         onShown: function (toast) {
                             $("#clearConfirmBtn").on('click', function () {
                                 HastaKimlikMethods.getMaxPatientId();
-                                $("#patientId").val('');
+                                $("#patientIdNo").val('');
                                 $("#patientName").val('');
                                 $("#patientSurname").val('');
                                 $("#patientFatherName").val('');
@@ -2616,6 +2616,10 @@ var
                 });
             }
         }
+    },
+
+    PolyclinicExamMethods = {
+        
     },
 
     PolyclinicMethods = {
@@ -4509,7 +4513,7 @@ var
 
         getJqueryDatePicker: function myGetJqueryDatePicker() {
             $(function getJqueryDatePicker() {
-                $("#examDate,#clinicDate,#konsDate,#dogumTarihi,#appointmentDate,#randevuTarihi,#randevuTarihi2,#laboratoryDate,#announcementStartDate,#imagingRadiologyDate,#polyclinicExamStatisticsStartDate,#polyclinicExamStatisticsEndDate,#doctorExamStatisticsStartDate,#doctorExamStatisticsEndDate,#staffLeaveStartDate,#staffLeaveEndDate").datepicker({ dateFormat: 'dd-mm-yy' });
+                $("#examDate,#clinicDate,#konsDate,#dogumTarihi,#appointmentDate,#randevuTarihi,#randevuTarihi2,#laboratoryDate,#announcementStartDate,#imagingRadiologyDate,#polyclinicExamStatisticsStartDate,#polyclinicExamStatisticsEndDate,#doctorExamStatisticsStartDate,#doctorExamStatisticsEndDate,#staffLeaveStartDate,#staffLeaveEndDate,#patientBirthDate").datepicker({ dateFormat: 'dd-mm-yy' });
             });
         },
 

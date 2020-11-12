@@ -10,6 +10,7 @@ router.use(function (req, res, next) {
 
 router.get('/', controllerIndex.indexControllerGet);
 router.get('/hastakimlik', controllerIndex.indexRedirectToHastaKimlik);
+router.get('/polExam', controllerIndex.indexRedirectToPolExam);
 router.get('/findLoginUser', controllerIndex.findLoginUser);
 router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
 router.put('/closeUserLoginSession', controllerIndex.closeUserLoginSession);

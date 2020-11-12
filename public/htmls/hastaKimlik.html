@@ -79,43 +79,44 @@
         <div class="mainContainer">
             <div class="veriler">
                 <div class="nav-wrapper">
-
-                    <div class="labels">
-                        <label for="patientId">Patient Id </label><br><br>
-                        <label for="patientIdNo">Patient ID No</label><br><br>
-                        <label for="patientName">Name</label><br><br>
-                        <label for="patientSurname">Surname</label><br><br><br>
-                        <label for="patientFatherName">Father Name</label><br><br>
-                        <label for="patientMotherName">Mother Name</label><br><br>
-                        <label for="patientGender">Gender</label><br><br>
-                        <label for="patientBirthPlace">Birth Place</label><br><br><br>
-                        <label for="patientBirthDate">Birth Date</label><br><br>
-                        <label for="patientPhone">Phone</label><br><br>
-                        <label for="patientAdress">Adress</label><br><br>
-                    </div>
-
                     <div class="inputs">
+                        Patient Id <br>
                         <input type="number" name="patientId" id="patientId" style="background-color: lightgray;"
                             readonly><br><br>
+                        Patient ID No <br>
                         <input type="number" name="patientIdNo" id="patientIdNo"
                             oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}"
                             maxlength="11" minlength="11" required placeholder="Must be 11 digits"><br><br>
-                        <input type="text" name="patientName" id="patientName"><br><br>
-                        <input type="text" name="patientSurname" id="patientSurname"><br><br>
-                        <input type="text" name="patientFatherName" id="patientFatherName"><br><br>
-                        <input type="text" name="patientMotherName" id="patientMotherName"><br><br>
-                        <select name="patientGender" id="patientGender" style="width: 160;height: 28;"
+                        Name <br>
+                        <input type="text" name="patientName" id="patientName" placeholder="Patient's name"><br><br>
+                        Surname<br>
+                        <input type="text" name="patientSurname" id="patientSurname"
+                            placeholder="Patient's surname"><br><br>
+                        Father Name<br>
+                        <input type="text" name="patientFatherName" id="patientFatherName"
+                            placeholder="Patient's father's name"><br><br>
+                        Mother Name<br>
+                        <input type="text" name="patientMotherName" id="patientMotherName"
+                            placeholder="Patient's mother's name"><br><br>
+                        Gender<br>
+                        <select name="patientGender" id="patientGender"
+                            style="text-align-last:center;width: 200px;height: 35px;color: black;"
                             onchange="HastaKimlikMethods.patientPhotoSrcByGender()">
                             <option value="bos" selected></option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select><br><br>
-                        <input type="text" name="patientBirthPlace" id="patientBirthPlace"><br><br>
-                        <input type="text" id="patientBirthDate" name="patientBirthDate" style="width: 160;"
-                            value=""><br><br>
-                        <input type="phone" name="patientPhone" id="patientPhone"><br><br>
-                        <textarea id="patientAdress" name="patientAdress" cols="40" rows="5"
-                            style="resize: none;"></textarea><br><br>
+                        Birth Place<br>
+                        <input type="text" name="patientBirthPlace" id="patientBirthPlace"
+                            placeholder="Patient's birth place"><br><br>
+                        Birth Date<br>
+                        <input type="text" id="patientBirthDate" name="patientBirthDate" value=""><br><br>
+                        Phone<br>
+                        <input type="phone" name="patientPhone" id="patientPhone"
+                            placeholder="(XXX) XXX XXX XXX"><br><br>
+                        Adress<br>
+                        <textarea id="patientAdress" name="patientAdress" cols="50" rows="5"
+                            style="resize: vertical;color: black;" placeholder="Patient's adress"></textarea><br><br>
                     </div>
 
                 </div>
@@ -136,13 +137,14 @@
             </div>
 
             <div class="btnDiv">
-                <button class="btn btn-primary" id="searchPatient"
-                    onclick="HastaKimlikMethods.findOnePatient()">Search</button>
-                <button class="btn btn-success" id="savePatient" onclick="HastaKimlikMethods.updateOrSavePatientBtn()">
-                    Save
+                <button class="inpatientBtn btn-primary" id="searchPatient"
+                    onclick="HastaKimlikMethods.findOnePatient()">Search
                 </button>
-                <button class="btn btn-info" id="newPatient" onclick="HastaKimlikMethods.clearFormDataForNewPatient();">
-                    New Patient
+                <button class="inpatientBtn btn-success" id="savePatient"
+                    onclick="HastaKimlikMethods.updateOrSavePatientBtn()">Save
+                </button>
+                <button class="inpatientBtn btn-info" id="newPatient"
+                    onclick="HastaKimlikMethods.clearFormDataForNewPatient();">New Patient
                 </button>
             </div>
 
@@ -177,57 +179,62 @@
                 <div class="appointmentSearchHistory">
                     <h10 class="historyHeaders" id="appRegPatientHistory">Patient Appointment History</h10>
                     <div style="box-shadow: 2px 2px 10px #555;">
-                        <table id="appSearchPatientHistoryTable">
-                            <tr style="background-color: #49A7BC;">
-                                <th>#</th>
-                                <th>Protocol No.</th>
-                                <th>Appiontment Date</th>
-                                <th>Polyclinic</th>
-                                <th>Doctor</th>
-                                <th>Status</th>
-                            </tr>
-                            <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
+                        <table id="appSearchPatientHistoryTable" class="patientTable">
+                            <thead>
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                    <td style="border-top-left-radius: 8px !important;">#</td>
+                                    <td>Protocol No.</td>
+                                    <td>Appiontment Date</td>
+                                    <td>Polyclinic</td>
+                                    <td>Doctor</td>
+                                    <td style="border-top-right-radius: 8px;">Status</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
                     
-                    Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
-                    ">
-                                <td>1</td>
-                                <td>12345</td>
-                                <td>01/03/2019</td>
-                                <td>Diet Pol.</td>
-                                <td>Prof. Dr. Ahmet MEHMET</td>
-                                <td class="gecerliAppointment">Gecerli</td>
-                            <tr>
-                                <td>2</td>
-                                <td>45678</td>
-                                <td>15/01/2020</td>
-                                <td>Cardiology Pol.</td>
-                                <td>Doc. Dr. Ayse SARMASIK</td>
-                                <td class="iptalAppointment">Iptal - Doktor Acil Ameliyat</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>91011</td>
-                                <td>22/02/2020</td>
-                                <td>Urology Pol.</td>
-                                <td>Uzm. Dr. Hasan HUSEYIN</td>
-                                <td class="gecerliAppointment">Gecerli</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>12131</td>
-                                <td>04/03/2020</td>
-                                <td>Emergency Pol.</td>
-                                <td>Prof. Dr. Ridvan CELIK</td>
-                                <td class="gecerliAppointment">Gecerli</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>14151</td>
-                                <td>18/04/2020</td>
-                                <td>Urology Pol.</td>
-                                <td>Prof. Dr. Ahmet MEHMET</td>
-                                <td class="iptalAppointment">Iptal - Hasta Gelmedi</td>
-                            </tr>
+                                Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
+                                ">
+                                    <td>1</td>
+                                    <td>12345</td>
+                                    <td>01/03/2019</td>
+                                    <td>Diet Pol.</td>
+                                    <td>Prof. Dr. Ahmet MEHMET</td>
+                                    <td class="gecerliAppointment">Gecerli</td>
+                                <tr>
+                                    <td>2</td>
+                                    <td>45678</td>
+                                    <td>15/01/2020</td>
+                                    <td>Cardiology Pol.</td>
+                                    <td>Doc. Dr. Ayse SARMASIK</td>
+                                    <td class="iptalAppointment">Iptal - Doktor Acil Ameliyat</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>91011</td>
+                                    <td>22/02/2020</td>
+                                    <td>Urology Pol.</td>
+                                    <td>Uzm. Dr. Hasan HUSEYIN</td>
+                                    <td class="gecerliAppointment">Gecerli</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>12131</td>
+                                    <td>04/03/2020</td>
+                                    <td>Emergency Pol.</td>
+                                    <td>Prof. Dr. Ridvan CELIK</td>
+                                    <td class="gecerliAppointment">Gecerli</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>14151</td>
+                                    <td>18/04/2020</td>
+                                    <td>Urology Pol.</td>
+                                    <td>Prof. Dr. Ahmet MEHMET</td>
+                                    <td class="iptalAppointment">Iptal - Hasta Gelmedi</td>
+                                </tr>
+                            </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -307,22 +314,21 @@
             <div id="userStatisticsContainer" class="userStatisticsContainer">
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
                 <table id="userLoginStatsTable">
-                    <tr id="tableHeader">
-                        <th>#</th>
-                        <th>Ip Adress</th>
-                        <th>Login Date</th>
-                        <th>Login Duration</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>192.168.1.11</td>
-                        <td>03.09.2020 14:10</td>
-                        <td>22 minutes 17 seconds</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader">
+                            <th>#</th>
+                            <th>Ip Adress</th>
+                            <th>Local Machine</th>
+                            <th>Login Date</th>
+                            <th>Login Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 id="lastPasswordChangeStatistics" class="historyHeaders" style="margin: 5px;color: white;">-</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -439,6 +445,12 @@
                     placeholder="Please enter your new password."
                     onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
                     onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <span for='userNewPassword' class="p-viewer">
+                    <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
+                        title="Show password!"
+                        onclick="ShowOrHideMethods.showPassword('userNewPassword','showPasswordIcon1')">
+                    </i>
+                </span>
                 <br>
                 New Password Repeat: <br>
                 <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
@@ -446,13 +458,17 @@
                     onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
                     onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
                     CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
+                <span for='userNewPasswordRepeat' class="p-viewer">
+                    <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
+                        title="Show password!"
+                        onclick="ShowOrHideMethods.showPassword('userNewPasswordRepeat','showPasswordIcon2')">
+                    </i>
+                </span>
                 <br>
                 <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
-                    Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
+                    title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -582,8 +598,11 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Statistics." onclick="
+                ShowOrHideMethods.showPopUpModal('userStatistics'); 
+                LoginProcess.userLoginStatistics();
+                LoginProcess.getLastPasswordChangeStatistics();">
+                <i class="fa fa-bar-chart"></i> </a>
             <a href="#" class="menu-item" title="User Trainings."
                 onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
             <a href="#" class="menu-item" title="User Settings."
@@ -618,7 +637,6 @@
             </defs>
         </svg>
     </div>
-    <!-- end of bottom user menu  -->
 
 
     <!--back to top button -->

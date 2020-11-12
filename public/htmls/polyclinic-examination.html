@@ -28,14 +28,22 @@
 
     <link rel="stylesheet" href="/public/css/all-pages-style.css">
     <link rel="shortcut icon" href="/public/images/exam_2.png">
+
+    <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
 </head>
 
-<body id="polyclinicExaminationBody" onload="ShowOrHideMethods.myStickHeader('polyclinicExamSubHeadDiv');
+<body id="polyclinicExaminationBody" onload="
 PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');
                                              jQueryMethods.setCalenderValueToday('dogumTarihi');
                                              jQueryMethods.getJqueryDatePicker();
                                              jQueryMethods.toolTipFunction();
-                                             ShowOrHideMethods.showBackTotopButton();">
+                                             ShowOrHideMethods.showBackTotopButton();
+                                             ShowOrHideMethods.adjustHtmlsBackground('polyclinicExaminationBody');
+                                             AdministrationMethods.takeUserInfoFromCookie();
+                                            //  ShowOrHideMethods.myStickHeader('polyclinicExamSubHeadDiv');
+                                             ">
     <div class="polyclinicExamNotify" id="polyclinicExamNotify">
         <span id="polyclinicExamNotifyType" class=""></span>
     </div>
@@ -56,9 +64,10 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
                         onclick="window.location.href='/public/htmls/index.html'">
                 </div>
             </div>
+            <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;"
+                onmouseover="LoginProcess.showUserDataOnHover();" title="">Please Login from main page!
+            </hUserName>
         </div>
-
-
 
         <div class="bottomScrool" id="polExamTopScrool" style="margin-bottom: 20px;">
             <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
@@ -69,33 +78,30 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
 
         <div class="subMainContainer" id="subMainContainer">
             <div class="dataDiv">
-                <div class="labelDiv" style="text-align: right;width: 7%;">
-                    <label class="patientLabels" for="tcKimlikNo">TC Kimlik No:</label><br>
-                    <label class="patientLabels" for="hastaNo">Hasta No:</label><br>
-                    <label class="patientLabels" for="adiSoyadi">Adi Soyadi:</label><br>
-                    <label class="patientLabels" for="babaAdi">Baba Adi:</label><br>
-                    <label class="patientLabels" for="anneAdi">Ana Adi:</label><br>
-                    <label class="patientLabels" for="dogumYeri">Dogum Yeri:</label><br>
-                    <label class="patientLabels" for="dogumTarihi">Dogum Tarihi:</label>
-                    <label class="patientLabels" for="dogumTarihi">Poliklinik:</label>
-                    <label class="patientLabels" for="dogumTarihi">Doktor:</label>
-                </div>
-
-                <div class="inputAndImageDiv" style="display: flex;width: 24%;">
+                <div class="inputAndImageDiv">
                     <div class="patientInputsMain">
+                        Patient ID No <br>
                         <input class="patientInputs" type="number" name="tcKimlikNo" id="tcKimlikNo" maxlength="11"><br>
+                        Patient No <br>
                         <input class="patientInputs" type="number" name="hastaNo" id="hastaNo"><br>
+                        Name Surname <br>
                         <input class="patientInputs" type="text" name="adiSoyadi" id="adiSoyadi"><br>
+                        Father Name <br>
                         <input class="patientInputs" type="text" name="babaAdi" id="babaAdi"><br>
+                        Mother Name <br>
                         <input class="patientInputs" type="text" name="anneAdi" id="anneAdi"><br>
+                        Birt Place <br>
                         <input class="patientInputs" type="text" name="dogumYeri" id="dogumYeri"><br>
-                        <input class="patientInputs" type="text" name="dogumTarihi" id="dogumTarihi">
+                        Birth Date <br>
+                        <input class="patientInputs" type="text" name="dogumTarihi" id="dogumTarihi"> <br>
+                        Polyclinic <br>
                         <select name="polyclinicSelect" id="polyclinicSelect" class="polyclinicExamSelect">
                             <option value="clinic1">General Surgery Polyclinic</option>
                             <option value="clinic2">Orthopedic Polyclinic</option>
                             <option value="clinic3">Cardiology Polyclinic</option>
                             <option value="clinic4">Urology Polyclinic</option>
-                        </select>
+                        </select> <br>
+                        Doctor <br>
                         <select name="doctorSelect" id="doctorSelector" class="polyclinicExamSelect">
                             <option value="clinic1">Prof. Dr. Ahmet SAYLAN</option>
                             <option value="clinic2">Doc. Dr. Huseyin IKIRCIKLI</option>
@@ -103,25 +109,23 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
                         </select>
                         <button class="anamnezBtns btn-success" id="polExamKaydet"
                             onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip"
-                            title="Verilerinizi kaydetmek icin tiklayin.">Save</button>
+                            title="Click for save.">Save</button>
                     </div>
 
                     <div class="patientPhoto">
-                        <img id="patientPhotoId" src="/public/images/cv photo - office background.jpg"
-                            alt="Patient Photo">
+                        <img id="patientPhotoId" src="/public/images/Patient_Male.ico" alt="Patient Photo">
                         <button class="polyclinicButtons btn--swap" id="changeImage"
                             onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">
-                            Degistir <span id="degistirSpan">Hasta fotografini <br> degistir.</span></button>
-
+                            Degistir <span id="degistirSpan">Change patient <br> photo.</span>
+                        </button>
                         <button class="polyclinicButtons btn--swap" id="polExamIdDetails"
-                            onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">Kimlik
-                            Bilgileri <span id="polExamIdDetailsSpan">Primum non nocere.</span></button>
-
+                            onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">Patient Id Info <span
+                                id="polExamIdDetailsSpan">Primum non nocere.</span>
+                        </button>
                     </div>
-
                 </div>
 
-                <div class="statisticsDiv" style="width: 69%;">
+                <div class="statisticsDiv">
                     <div class="polExamStatics">
                         <!-- cards -->
                         <div class="card-container" id="poly-exam-card-container">
@@ -520,12 +524,11 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
                     id="polExamIframeCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="polExamAvatar" src="/public/images/id-3.png" alt="Avatar" class="avatar">
             </div>
-            <iframe src="/public/htmls/hastaKimlik.html" name="polExamIframe" id="polExamIframe" allowTransparency="true"
-                frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
+            <iframe src="/public/htmls/hastaKimlik.html" name="polExamIframe" id="polExamIframe"
+                allowTransparency="true" frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
             </iframe>
         </form>
     </div>
-
 
 
     <!-- Footer -->

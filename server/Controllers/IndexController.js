@@ -14,12 +14,15 @@ var path = require('path'),
 module.exports.indexControllerGet = function (req, res) {
     // res.sendFile(path.join(__dirname, '../public/htmls', 'index.html'))
     res.render('index');
-}
+};
 
 module.exports.indexRedirectToHastaKimlik = function (req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'hastaKimlik.html'))
-    // res.render('index');
-}
+};
+
+module.exports.indexRedirectToPolExam = function (req, res) {
+    res.sendFile(path.join(__dirname, '../../public/htmls', 'polyclinic-examination.html'))
+};
 
 module.exports.findLoginUser = (req, res) => {
     var myUserName = req.query.userName,
