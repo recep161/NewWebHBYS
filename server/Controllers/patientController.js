@@ -13,7 +13,7 @@ module.exports.savePatient = (req, res) => {
     if (req.body.patientBirthDate == '') {
         myPatientBirthDate == '-----------';
     } else {
-        myPatientBirthDate = myMoment(req.body.patientBirthDate, "DD-MM-YYYY").startOf('day');
+        myPatientBirthDate = myMoment(req.body.patientBirthDate).format('DD/MM/YYYY').toString();
     }
 
     // Create a Customer
@@ -58,19 +58,6 @@ module.exports.getMaxPatientId = (req, res) => {
         });
 };
 
-// Fetch all Users
-module.exports.findAllUsers = (req, res) => {
-    userSaveSchema.find().sort({ 'userId': 1 })
-        .then(users => {
-            res.send(users);
-            // console.log("All Users Listed!");
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
-};
-
 // Find one user
 module.exports.findOnePatient = (req, res) => {
 
@@ -79,6 +66,19 @@ module.exports.findOnePatient = (req, res) => {
             res.send(patient);
             // console.log("User found! = " + users);
             // console.log(req.query);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+// Fetch all Users
+module.exports.findAllUsers = (req, res) => {
+    userSaveSchema.find().sort({ 'userId': 1 })
+        .then(users => {
+            res.send(users);
+            // console.log("All Users Listed!");
         }).catch(err => {
             res.status(500).send({
                 message: err.message

@@ -34,16 +34,19 @@
     <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
 </head>
 
-<body id="polyclinicExaminationBody" onload="
-PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');
-                                             jQueryMethods.setCalenderValueToday('dogumTarihi');
-                                             jQueryMethods.getJqueryDatePicker();
-                                             jQueryMethods.toolTipFunction();
-                                             ShowOrHideMethods.showBackTotopButton();
-                                             ShowOrHideMethods.adjustHtmlsBackground('polyclinicExaminationBody');
-                                             AdministrationMethods.takeUserInfoFromCookie();
-                                            //  ShowOrHideMethods.myStickHeader('polyclinicExamSubHeadDiv');
-                                             ">
+<body id="polyclinicExaminationBody" onload=" PolyclinicExamMethods.getMaxProtocolNo();
+    PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');
+    LoginProcess.checkIfThereIsAUserLoggedIn('polExamSave', 'polSearch');
+    jQueryMethods.setCalenderValueToday('patientBirthDate');
+    jQueryMethods.setCalenderValueToday('patientPolExamDate');
+    jQueryMethods.getJqueryDatePicker();
+    jQueryMethods.toolTipFunction();
+    jQueryMethods.bottomUserMenuDrag();
+    ShowOrHideMethods.showBackTotopButton();
+    ShowOrHideMethods.adjustHtmlsBackground('polyclinicExaminationBody');
+    AdministrationMethods.takeUserInfoFromCookie();
+//  ShowOrHideMethods.myStickHeader('polyclinicExamSubHeadDiv');
+    ">
     <div class="polyclinicExamNotify" id="polyclinicExamNotify">
         <span id="polyclinicExamNotifyType" class=""></span>
     </div>
@@ -65,8 +68,7 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
                 </div>
             </div>
             <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;"
-                onmouseover="LoginProcess.showUserDataOnHover();" title="">Please Login from main page!
-            </hUserName>
+                onmouseover="LoginProcess.showUserDataOnHover();" title="">Please Login from main page!</hUserName>
         </div>
 
         <div class="bottomScrool" id="polExamTopScrool" style="margin-bottom: 20px;">
@@ -80,36 +82,73 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
             <div class="dataDiv">
                 <div class="inputAndImageDiv">
                     <div class="patientInputsMain">
+                        Protocol No <br>
+                        <input class="patientInputs" type="number" name="patientProtocolNo" id="patientProtocolNo"
+                            style="width: 105%;" readonly><br>
                         Patient ID No <br>
-                        <input class="patientInputs" type="number" name="tcKimlikNo" id="tcKimlikNo" maxlength="11"><br>
+                        <input class="patientInputs" type="number" name="patientIdNo" id="patientIdNo"
+                            oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}"
+                            style="width: 105%;" onkeydown="PolyclinicExamMethods.searchByEnter('patientIdNo');"
+                            maxlength="11" minlength="11"><br>
                         Patient No <br>
-                        <input class="patientInputs" type="number" name="hastaNo" id="hastaNo"><br>
+                        <input class="patientInputs" type="number" name="patientId" id="patientId" style="width: 105%;"
+                            onkeydown="PolyclinicExamMethods.searchByEnter('patientId');"><br>
                         Name Surname <br>
-                        <input class="patientInputs" type="text" name="adiSoyadi" id="adiSoyadi"><br>
+                        <input class="patientInputs" type="text" name="patientNameSurname" id="patientNameSurname"
+                            style="width: 105%;" readonly><br>
                         Father Name <br>
-                        <input class="patientInputs" type="text" name="babaAdi" id="babaAdi"><br>
+                        <input class="patientInputs" type="text" name="patientFatherName" id="patientFatherName"
+                            style="width: 105%;" readonly><br>
                         Mother Name <br>
-                        <input class="patientInputs" type="text" name="anneAdi" id="anneAdi"><br>
+                        <input class="patientInputs" type="text" name="patientMotherName" id="patientMotherName"
+                            style="width: 105%;" readonly><br>
+                        Gender <br>
+                        <input class="patientInputs" type="text" name="patientGender" id="patientGender" readonly><br>
                         Birt Place <br>
-                        <input class="patientInputs" type="text" name="dogumYeri" id="dogumYeri"><br>
+                        <input class="patientInputs" type="text" name="patientBirthPlace" id="patientBirthPlace"
+                            readonly><br>
                         Birth Date <br>
-                        <input class="patientInputs" type="text" name="dogumTarihi" id="dogumTarihi"> <br>
+                        <input class="patientInputs" type="text" name="patientBirthDate" id="patientBirthDate" readonly>
+                        <br>
+                        Polyclinic Examination Date <br>
+                        <input class="patientInputs" type="text" name="patientPolExamDate" id="patientPolExamDate"
+                            readonly>
+                        <br>
                         Polyclinic <br>
                         <select name="polyclinicSelect" id="polyclinicSelect" class="polyclinicExamSelect">
-                            <option value="clinic1">General Surgery Polyclinic</option>
-                            <option value="clinic2">Orthopedic Polyclinic</option>
-                            <option value="clinic3">Cardiology Polyclinic</option>
-                            <option value="clinic4">Urology Polyclinic</option>
+                            <option value="GeneralSurgeryPolyclinic">General Surgery Polyclinic</option>
+                            <option value="OrthopedicPolyclinic">Orthopedic Polyclinic</option>
+                            <option value="CardiologyPolyclinic">Cardiology Polyclinic</option>
+                            <option value="UrologyPolyclinic">Urology Polyclinic</option>
                         </select> <br>
                         Doctor <br>
                         <select name="doctorSelect" id="doctorSelector" class="polyclinicExamSelect">
-                            <option value="clinic1">Prof. Dr. Ahmet SAYLAN</option>
-                            <option value="clinic2">Doc. Dr. Huseyin IKIRCIKLI</option>
-                            <option value="clinic3">Uzm. Dr. Hulya BULUT</option>
-                        </select>
-                        <button class="anamnezBtns btn-success" id="polExamKaydet"
-                            onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip"
-                            title="Click for save.">Save</button>
+                            <option value="ProfDrAhmetSAYLAN">Prof. Dr. Ahmet SAYLAN</option>
+                            <option value="DocDrHuseyinIKIRCIKLI">Doc. Dr. Huseyin IKIRCIKLI</option>
+                            <option value="UzmDrHulyaBULUT">Uzm. Dr. Hulya BULUT</option>
+                        </select> <br>
+                        Status <br>
+                        <select name="statusSelect" id="statusSelect" class="polyclinicExamSelect">
+                            <option value="Valid">Valid</option>
+                            <option value="Canceled">Canceled</option>
+                        </select> <br>
+
+                        <div id="polExamButtonDiv">
+                            <button class="anamnezBtns btn-success" id="polExamSave"
+                                onclick="PolyclinicExamMethods.savePolExam()" data-toggle="tooltip"
+                                title="Click for save.">Save
+                            </button>
+
+                            <button class="anamnezBtns btn-danger" id="polNewPatient"
+                                onclick="PolyclinicExamMethods.clearForNewPatient()" data-toggle="tooltip"
+                                title="Click for new patient.">New Patient
+                            </button>
+
+                            <button class="anamnezBtns btn-info" id="polSearch"
+                                onclick="PolyclinicExamMethods.findPatient()" data-toggle="tooltip"
+                                title="Click for new patient.">Search
+                            </button>
+                        </div>
                     </div>
 
                     <div class="patientPhoto">
@@ -118,9 +157,9 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
                             onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">
                             Degistir <span id="degistirSpan">Change patient <br> photo.</span>
                         </button>
-                        <button class="polyclinicButtons btn--swap" id="polExamIdDetails"
-                            onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">Patient Id Info <span
-                                id="polExamIdDetailsSpan">Primum non nocere.</span>
+                        <button class="polyclinicButtons btn--swap" id="polExamIdDetails" onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');
+                            PolyclinicExamMethods.getPatientIdFromPreviousPage();">Patient
+                            Id Info <span id="polExamIdDetailsSpan">Click for detailed information.</span>
                         </button>
                     </div>
                 </div>
@@ -207,60 +246,6 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="baseCard" id="statics4"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
-                                <div class="card" id="polExamStatics4">
-                                    <div id="analytcStatics4" class="front" style="background-image: url('/public/images/statics-4.png');
-                                    background-size: cover; background-color: cornflowerblue;">
-                                        <div class="card-title">
-                                            <header>
-                                                <h4>
-                                                    Hasta Yas Dagilimi
-                                                </h4>
-                                            </header>
-                                        </div>
-                                    </div>
-                                    <div class="back">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Yas Dagilimi"></button>
-                                        <p class="cardP">
-                                            Hastalarin yaslarina gore istatistik. <br><br>
-                                            0 - 12 : 3 <br>
-                                            12 - 18 : 5 <br>
-                                            18+ : 4
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="baseCard" id="statics5"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
-                                <div class="card" id="polExamStatics5">
-                                    <div id="analytcStatics5" class="front" style="background-image: url('/public/images/statics-5.png');
-                                    background-size: cover; background-color: cornflowerblue;">
-                                        <div class="card-title">
-                                            <header>
-                                                <h4>
-                                                    Muayene olan hasta vs Bekleyen hasta
-                                                </h4>
-                                            </header>
-                                        </div>
-                                    </div>
-                                    <div class="back">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Yas Dagilimi"></button>
-                                        <p class="cardP">
-                                            Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br>
-                                            Muayene olan : 4 <br>
-                                            Bekleyen : 6
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                     <br>
@@ -345,6 +330,64 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="polExamStatics3">
+                        <!-- cards -->
+                        <div class="card-container" id="poly-exam-card-container">
+                            <div class="baseCard" id="statics4"
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                <div class="card" id="polExamStatics4">
+                                    <div id="analytcStatics4" class="front" style="background-image: url('/public/images/statics-4.png');
+                                    background-size: cover; background-color: cornflowerblue;">
+                                        <div class="card-title">
+                                            <header>
+                                                <h4>
+                                                    Hasta Yas Dagilimi
+                                                </h4>
+                                            </header>
+                                        </div>
+                                    </div>
+                                    <div class="back">
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                            title="Hasta Yas Dagilimi"></button>
+                                        <p class="cardP">
+                                            Hastalarin yaslarina gore istatistik. <br><br>
+                                            0 - 12 : 3 <br>
+                                            12 - 18 : 5 <br>
+                                            18+ : 4
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="baseCard" id="statics5"
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                <div class="card" id="polExamStatics5">
+                                    <div id="analytcStatics5" class="front" style="background-image: url('/public/images/statics-5.png');
+                                    background-size: cover; background-color: cornflowerblue;">
+                                        <div class="card-title">
+                                            <header>
+                                                <h4>
+                                                    Muayene olan hasta vs Bekleyen hasta
+                                                </h4>
+                                            </header>
+                                        </div>
+                                    </div>
+                                    <div class="back">
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                            title="Hasta Yas Dagilimi"></button>
+                                        <p class="cardP">
+                                            Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br>
+                                            Muayene olan : 4 <br>
+                                            Bekleyen : 6
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="baseCard" id="statics9"
                                 onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
@@ -398,61 +441,27 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
-        <h10 class="historyHeaders" style="margin: 25px 0px 5px 15px;"> Patient History</h10>
+
         <div class="historyDiv">
+            <h10 class="historyHeaders" style="margin: 25px 0px 5px 15px;"> Patient History</h10>
             <table id="polExamPatientHistoryTable">
-                <tr style="background-color: #49A7BC;">
-                    <th>No.</th>
-                    <th>Protocol No.</th>
-                    <th>Date</th>
-                    <th>Polyclinic</th>
-                    <th>Doctor</th>
-                </tr>
-                <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
-                
-                Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
-                ">
-                    <td>1</td>
-                    <td>12345</td>
-                    <td>01/03/2019</td>
-                    <td>Diet Pol.</td>
-                    <td>Prof. Dr. Ahmet MEHMET</td>
-                <tr>
-                    <td>2</td>
-                    <td>45678</td>
-                    <td>15/01/2020</td>
-                    <td>Cardiology Pol.</td>
-                    <td>Doc. Dr. Ayse SARMASIK</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>91011</td>
-                    <td>22/02/2020</td>
-                    <td>Urology Pol.</td>
-                    <td>Uzm. Dr. Hasan HUSEYIN</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>12131</td>
-                    <td>04/03/2020</td>
-                    <td>Emergency Pol.</td>
-                    <td>Prof. Dr. Ridvan CELIK</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>14151</td>
-                    <td>18/04/2020</td>
-                    <td>Urology Pol.</td>
-                    <td>Prof. Dr. Ahmet MEHMET</td>
-                </tr>
+                <thead>
+                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                        <td>No.</td>
+                        <td>Protocol No.</td>
+                        <td>Date</td>
+                        <td>Polyclinic</td>
+                        <td>Doctor</td>
+                        <td>Status</td>
+                        <td style="border-top-right-radius: 8px;">-</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
         </div>
 
@@ -520,8 +529,9 @@ PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExam
     <div id="polExamIframeContainer" class="modal" style="padding: 60px;">
         <form id="polExam-modal-content" class="polExamIframeContent animate" action="?action=add" method="post">
             <div id="polExamIframeImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('polExamIframeContainer').style.display='none'"
-                    id="polExamIframeCloseBtn" class="close" title="Close Modal">&times;</span>
+                <span onclick="document.getElementById('polExamIframeContainer').style.display='none'; 
+                document.getElementById('polSearch').click();" id="polExamIframeCloseBtn" class="close"
+                    title="Close Modal">&times;</span>
                 <img id="polExamAvatar" src="/public/images/id-3.png" alt="Avatar" class="avatar">
             </div>
             <iframe src="/public/htmls/hastaKimlik.html" name="polExamIframe" id="polExamIframe"

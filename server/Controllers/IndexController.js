@@ -1,7 +1,8 @@
 const userSaveSchema = require('../models/usersModel');
 const userLoginSessionSchema = require('../models/userLoginSessionModel');
 const myMongoose = require('mongoose');
-const myMoment = require('moment');
+const myMoment = require('moment-timezone');
+myMoment.tz.setDefault("Europe/Warsaw");
 
 myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: false });
 
@@ -39,6 +40,7 @@ module.exports.findLoginUser = (req, res) => {
 };
 
 module.exports.userLoginSessionSave = (req, res) => {
+    var mySessionStartDate = myMoment(Date.now()).format('MM/DD/YYYY HH:mm:ss').toString();
 
     // Create a session
     const newSession = new userLoginSessionSchema({
@@ -46,7 +48,7 @@ module.exports.userLoginSessionSave = (req, res) => {
         userName: req.body.userName,
         ipAdress: myip.getLocalIP4(),
         computerName: computerName(),
-        sessionStartDate: myMoment(Date.now()).format('DD/MM/YYYY hh:mm:ss'),
+        sessionStartDate: mySessionStartDate,
         sessionEndDate: ''
     })
 
@@ -54,6 +56,7 @@ module.exports.userLoginSessionSave = (req, res) => {
     newSession.save()
         .then(sessionData => {
             res.send(sessionData);
+            // console.log(sessionData)
         }).catch(err => {
             res.status(500).send({
                 message: err.message,
@@ -63,13 +66,14 @@ module.exports.userLoginSessionSave = (req, res) => {
 };
 
 module.exports.closeUserLoginSession = (req, res) => {
-    var myUserName = req.body.userName;
+    var myUserName = req.body.userName,
+        mySessionEndDate = myMoment(Date.now()).format('MM/DD/YYYY HH:mm:ss').toString();
 
     myUserLoginSessionModel.findOneAndUpdate(
-        { userName: myUserName, sessionEndDate: null },
+        { userName: myUserName, sessionEndDate: '' },
         {
             $set: {
-                "sessionEndDate": myMoment(Date.now()).format('DD/MM/YYYY hh:mm:ss')
+                "sessionEndDate": mySessionEndDate
             }
         },
         { useFindAndModify: false })

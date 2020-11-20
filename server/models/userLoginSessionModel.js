@@ -6,8 +6,8 @@ var mongoose = require('mongoose'),
         userName: { type: String, required: true },
         ipAdress: { type: String, required: true },
         computerName: String,
-        sessionStartDate: Date,
-        sessionEndDate: Date
+        sessionStartDate: String,
+        sessionEndDate: String
     }),
 
     userLoginSessionSchema = mongoose.model('userLoginSession', userLoginSchema);

@@ -1,4 +1,3 @@
-
 var express = require('express'),
     router = express.Router(),
     controllerPatient = require('../Controllers/patientController');

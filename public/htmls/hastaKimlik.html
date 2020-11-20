@@ -36,12 +36,14 @@
 
 <body id="patientIdBody" onload="
     ShowOrHideMethods.adjustHtmlsBackground('patientIdBody');
+    LoginProcess.checkIfThereIsAUserLoggedIn('savePatient', 'searchPatient');
     AdministrationMethods.takeUserInfoFromCookie();
     HastaKimlikMethods.getMaxPatientId();
     // ShowOrHideMethods.myStickHeader('hastaKimlikSubHeadDiv');
     jQueryMethods.setCalenderValueToday('patientBirthDate');
     jQueryMethods.getJqueryDatePicker();
     jQueryMethods.toolTipFunction();
+    jQueryMethods.bottomUserMenuDrag();
     ShowOrHideMethods.showBackTotopButton();">
 
     <div class="hastaKimlikNotify" id="hastaKimlikNotify">
@@ -138,7 +140,7 @@
 
             <div class="btnDiv">
                 <button class="inpatientBtn btn-primary" id="searchPatient"
-                    onclick="HastaKimlikMethods.findOnePatient()">Search
+                    onclick="HastaKimlikMethods.findOnePatient();PolyclinicExamMethods.findPatientHistory()">Search
                 </button>
                 <button class="inpatientBtn btn-success" id="savePatient"
                     onclick="HastaKimlikMethods.updateOrSavePatientBtn()">Save
@@ -154,23 +156,19 @@
             <div class="medicalHistory">
                 <div class="patientHistoryContainer" id="patientHistoryContainer">
                     <h10 class="historyHeaders"> Patient History</h10>
-                    <table id="patientHistoryTable" class="patientTable">
+                    <table id="polExamPatientHistoryTable" class="patientTable" style="margin-top:10px;">
                         <thead>
                             <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
-                                <td style="border-top-left-radius: 8px !important;">No.</td>
+                                <td>No.</td>
                                 <td>Protocol No.</td>
                                 <td>Date</td>
-                                <td style="border-top-right-radius: 8px;">Polyclinic</td>
+                                <td>Polyclinic</td>
+                                <td>Doctor</td>
+                                <td>Status</td>
+                                <td style="border-top-right-radius: 8px;">-</td>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>1123123</td>
-                                <td>01/11/2020</td>
-                                <td>Urology</td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

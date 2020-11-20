@@ -1,5 +1,3 @@
-// module.exports = function (app) {
-
 var express = require("express"),
     router = express.Router(),
     path = require('path');
@@ -10,10 +8,6 @@ router.use(function (req, res, next) {
     console.log('userRouter answer: ' + "/" + req.method);
     next();
 });
-
-// router.get('/user', (req, res) => {
-//     res.render('users');
-// });
 
 // Save a User to MongoDB
 router.post('/user/save', userControls.saveUser);
@@ -46,4 +40,3 @@ router.use("*", (req, res) => {
 });
 
 module.exports = router;
-// }

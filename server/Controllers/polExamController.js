@@ -5,39 +5,31 @@ const myMoment = require('moment');
 myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: false });
 
 var myPolExamModel = myMongoose.model('polyclinicExam');
+var myPatientsModel = myMongoose.model('patients');
 
 // Save FormData - User to MongoDB
-module.exports.savePatient = (req, res) => {
-    var myPatientBirthDate;
+module.exports.savePolExam = (req, res) => {
 
-    if (req.body.patientBirthDate == '') {
-        myPatientBirthDate == '-----------';
-    } else {
-        myPatientBirthDate = myMoment(req.body.patientBirthDate, "DD-MM-YYYY").startOf('day');
-    }
-
-    // Create a Customer
-
-    const newUser = new patientSaveSchema({
+    const newPolExam = new polExamSaveSchema({
+        patientProtocolNo: req.body.patientProtocolNo,
         patientId: req.body.patientId,
         patientIdNo: req.body.patientIdNo,
-        patientName: req.body.patientName,
-        patientSurname: req.body.patientSurname,
+        patientNameSurname: req.body.patientNameSurname,
         patientFatherName: req.body.patientFatherName,
         patientMotherName: req.body.patientMotherName,
         patientGender: req.body.patientGender,
         patientBirthPlace: req.body.patientBirthPlace,
-        patientBirthDate: myPatientBirthDate,
-        patientPhone: req.body.patientPhone,
-        patientAdress: req.body.patientAdress,
-        patientPhotoSrc: req.body.patientPhotoSrc,
-        patientSavedUser: req.body.patientSavedUser
+        patientBirthDate: req.body.patientBirthDate,
+        patientSavedUser: req.body.patientSavedUser,
+        patientPolExamDate: req.body.patientPolExamDate,
+        polyclinicSelect: req.body.polyclinicSelect,
+        doctorSelector: req.body.doctorSelector,
+        statusSelect: req.body.statusSelect
     })
 
-    // Save a Customer in the MongoDB
-    newUser.save()
-        .then(patient => {
-            res.send(patient);
+    newPolExam.save()
+        .then(polExam => {
+            res.send(polExam);
         }).catch(err => {
             res.status(500).send({
                 message: err.message,
@@ -46,24 +38,23 @@ module.exports.savePatient = (req, res) => {
         });
 };
 
-module.exports.getMaxPatientId = (req, res) => {
-    myPatientsModel.findOne().sort({ patientId: -1 }).limit(1)
+module.exports.getMaxProtocolNo = (req, res) => {
+    myPolExamModel.findOne().sort({ patientProtocolNo: -1 }).limit(1)
         .then(patient => {
             res.send(patient);
             // console.log("max id = " + user.userId);
         }).catch(err => {
             res.status(500).send({
-                message: 'getMaxPatientId error: ' + err.message
+                message: 'getMaxProtocolNo error: ' + err.message
             });
         });
 };
 
-// Fetch all Users
-module.exports.findAllUsers = (req, res) => {
-    userSaveSchema.find().sort({ 'userId': 1 })
-        .then(users => {
-            res.send(users);
-            // console.log("All Users Listed!");
+module.exports.findPatientHistory = (req, res) => {
+    myPolExamModel.find(req.query)
+        .then(patientData => {
+            res.send(patientData);
+            // console.log("patient found! = " + patientData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -71,14 +62,24 @@ module.exports.findAllUsers = (req, res) => {
         });
 };
 
-// Find one user
-module.exports.findOnePatient = (req, res) => {
+module.exports.findPatient = (req, res) => {
 
     myPatientsModel.findOne(req.query)
         .then(patient => {
             res.send(patient);
-            // console.log("User found! = " + users);
-            // console.log(req.query);
+            // console.log("patient found! = " + patient);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.findByProtocol = (req, res) => {
+    myPolExamModel.find(req.query)
+        .then(patientData => {
+            res.send(patientData);
+            // console.log("patient found! = " + patientData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -147,7 +148,6 @@ module.exports.checkUserFromDatabase = (req, res) => {
         });
 };
 
-// Delete user
 module.exports.deleteUser = (req, res) => {
 
     myUsersModel.deleteOne(req.query)

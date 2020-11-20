@@ -1,4 +1,3 @@
-
 var express = require('express'),
     router = express.Router(),
     controllerPolExam = require('../Controllers/polExamController');
@@ -9,10 +8,12 @@ router.use(function (req, res, next) {
 });
 
 
-router.post('/savePatient', controllerPolExam.savePatient);
-router.get('/getMaxPatientId', controllerPolExam.getMaxPatientId);
-router.get('/findOnePatient', controllerPolExam.findOnePatient);
-router.put('/updatePatientData', controllerPolExam.updatePatientData);
+router.post('/savePolExam', controllerPolExam.savePolExam);
+router.get('/getMaxProtocolNo', controllerPolExam.getMaxProtocolNo);
+router.get('/findPatient', controllerPolExam.findPatient);
+router.get('/findPatientHistory', controllerPolExam.findPatientHistory);
+router.get('/findByProtocol', controllerPolExam.findByProtocol);
+// router.put('/updatePatientData', controllerPolExam.updatePatientData);
 // router.get('/findLoginUser', controllerIndex.findLoginUser);
 // router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
 // router.put('/closeUserLoginSession', controllerIndex.closeUserLoginSession);

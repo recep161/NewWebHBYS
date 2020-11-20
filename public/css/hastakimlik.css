@@ -787,6 +787,7 @@ tr:hover, tr.selected {
   margin: 10px 0px 20px 30px;
   font-size: large;
   border-radius: 8px;
+  box-shadow: 2px 2px 10px white;
 }
 
 #appRegPatientHistory {
