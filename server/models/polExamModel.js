@@ -13,6 +13,7 @@ var mongoose = require('mongoose'),
         patientBirthDate: String,
         patientSavedUser: String,
         patientPolExamDate: String,
+        insuranceSelect: String,
         polyclinicSelect: String,
         doctorSelector: String,
         statusSelect: String

@@ -35,13 +35,18 @@
 </head>
 
 <body id="polyclinicExaminationBody" onload=" PolyclinicExamMethods.getMaxProtocolNo();
-    PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');
+    PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );
     LoginProcess.checkIfThereIsAUserLoggedIn('polExamSave', 'polSearch');
     jQueryMethods.setCalenderValueToday('patientBirthDate');
     jQueryMethods.setCalenderValueToday('patientPolExamDate');
     jQueryMethods.getJqueryDatePicker();
     jQueryMethods.toolTipFunction();
     jQueryMethods.bottomUserMenuDrag();
+    PolyclinicExamMethods.fillPolyclinicPatientCountTable();
+    PolyclinicExamMethods.fillPatientHealtInsuranceTable();
+    PolyclinicExamMethods.fillPatientGenderTable();
+    PolyclinicExamMethods.fillDoctorPatientTable();
+    PolyclinicExamMethods.fillDoctorOnLeaveTable();
     ShowOrHideMethods.showBackTotopButton();
     ShowOrHideMethods.adjustHtmlsBackground('polyclinicExaminationBody');
     AdministrationMethods.takeUserInfoFromCookie();
@@ -56,6 +61,7 @@
     </div>
 
     <div class="polyclinicExamMainContainer" id="polyclinicExamMainContainer">
+        
         <div class="polyclinicExamHeaderDiv" id="polyclinicExamHeaderDiv">
             <div class="polyclinicExamSubHeadDiv" id="polyclinicExamSubHeadDiv">
                 <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('polyclinic-examination')"
@@ -64,7 +70,7 @@
                 <div id="polyclinicExamModulNameText"> Polyclinic Examination Module </div>
                 <div>
                     <img class="modulAvatar" src="/public/images/exam_2.png" title="Anasayfa için tıklayınız."
-                        onclick="window.location.href='/public/htmls/index.html'">
+                        onclick="AdministrationMethods.redirectToAdminTab('')">
                 </div>
             </div>
             <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;"
@@ -114,6 +120,12 @@
                         <input class="patientInputs" type="text" name="patientPolExamDate" id="patientPolExamDate"
                             readonly>
                         <br>
+                        Insurance <br>
+                        <select name="insuranceSelect" id="insuranceSelect" class="polyclinicExamSelect">
+                            <option value="GeneralInsurance">General Insurance</option>
+                            <option value="PrivateInsurance">Private Insurance</option>
+                            <option value="Non-Insurance">Non-Insurance</option>
+                        </select> <br>
                         Polyclinic <br>
                         <select name="polyclinicSelect" id="polyclinicSelect" class="polyclinicExamSelect">
                             <option value="GeneralSurgeryPolyclinic">General Surgery Polyclinic</option>
@@ -167,81 +179,122 @@
                 <div class="statisticsDiv">
                     <div class="polExamStatics">
                         <!-- cards -->
+                        <h10 class="historyHeaders" id="patientStatisticsHeader">Patient Statistics</h10> <br>
                         <div class="card-container" id="poly-exam-card-container">
+
                             <div class="baseCard" id="statics1"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics1">
-                                    <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-1.png');
-                                        background-size: cover;">
+                                    <div id="analytcStatics1" class="front"
+                                        style="background-image: url('/public/images/statics-6.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Hasta Randevu Durumu
+                                                    Patient Polyclinic Statistics
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Randevulu hasta vs Normal Hasta"></button>
+                                            title="This statistic shows which polyclinics and how many times the patient visited.">
+                                        </button>
                                         <p class="cardP">
-                                            Hastalarin basvuru turune gore istatistik. <br><br>
-                                            Randevulu hasta : 4 <br>
-                                            Normal hasta : 12
+                                        <table id="patientVisitStatisticsTable">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Polyclinic
+                                                    </td>
+                                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: inherit !important;">
+
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="baseCard" id="statics2"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics2">
-                                    <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-2.png');
-                                        background-size: cover; background-color: cornflowerblue;">
+                                    <div id="analytcStatics2" class="front"
+                                        style="background-image: url('/public/images/patient-appointment-statistics.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Hasta Kurum Turu
+                                                    Patient Appointment Status
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Kurum Turu"></button>
+                                            title="This statistic shows status of patient's appointment."></button>
                                         <p class="cardP">
-                                            Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
-                                            Yesilkart : 4 <br>
-                                            SGK : 12 <br>
-                                            Ucretli : 1
+                                        <table id="patientAppointmentStatusTable">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Polyclinic
+                                                    </td>
+                                                    <td
+                                                        style="border-right: 1px solid #b9c8d2 !important;border-top:none;border-bottom:none;">
+                                                        Date</td>
+                                                    <td style="border-top-right-radius: 8px;">Status</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: inherit !important;">
+
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="baseCard" id="statics3"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics3">
-                                    <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-3.png');
-                                        background-size: cover; background-color: cornflowerblue;">
+                                    <div id="analytcStatics3" class="front"
+                                        style="background-image: url('/public/images/patient-appointment-statistics-2.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Hasta Cinsiyet Dagilimi
+                                                    Patient's Upcoming Appointments
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Cinsiyet Dagilimi"></button>
+                                            title="This statistic shows patient's upcoming appointments."></button>
                                         <p class="cardP">
-                                            Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                            Kadin : 4 <br>
-                                            Erkek : 8
+                                        <table id="patientUpcominAppointmentTable">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Polyclinic
+                                                    </td>
+                                                    <td style="border-top-right-radius: 8px;">Date</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: inherit !important;">
+
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
@@ -249,83 +302,126 @@
                         </div>
                     </div>
                     <br>
-                    <div class="polExamStatics2">
+                    <div class="polExamStatics2" style="margin-top:15px">
                         <!-- cards -->
+                        <h10 class="historyHeaders" id="patientStatisticsHeader">Polyclinic Statistics</h10> <br>
                         <div class="card-container" id="poly-exam-card-container">
+
                             <div class="baseCard" id="statics6"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics1">
-                                    <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-6.png');
-                                        background-size: cover;">
+                                    <div id="analytcStatics1" class="front"
+                                        style="background-image: url('/public/images/polyclinic-statistics.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Hasta Randevu Durumu
+                                                    Polyclinic Patient Count
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Randevulu hasta vs Normal Hasta"></button>
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows how many patients were examined or awaited in the
+                                            polyclinic."></button>
                                         <p class="cardP">
-                                            Hastalarin basvuru turune gore istatistik. <br><br>
-                                            Randevulu hasta : 4 <br>
-                                            Normal hasta : 12
+                                        <table id="polyclinicPatientCountTable">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Polyclinic
+                                                    </td>
+                                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: inherit !important;">
+
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="baseCard" id="statics7"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics2">
-                                    <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-7.png');
-                                        background-size: cover; background-color: cornflowerblue;">
+                                    <div id="analytcStatics2" class="front"
+                                        style="background-image: url('/public/images/polyclinic-healt-insurance.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Hasta Kurum Turu
+                                                    Polyclinic Patients' Healt Insurance
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Kurum Turu"></button>
+                                            title="This statistic shows which health insurance the patients in the polyclinic belong to."></button>
                                         <p class="cardP">
-                                            Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
-                                            Yesilkart : 4 <br>
-                                            SGK : 12 <br>
-                                            Ucretli : 1
+                                        <table id="patientHealtInsuranceTable" style="margin-left: -16px;">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Polyclinic
+                                                    </td>
+                                                    <td
+                                                        style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                                        Insurance</td>
+                                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: inherit !important;font-size: 8px;">
+
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="baseCard" id="statics8"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics3">
-                                    <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-8.png');
-                                        background-size: cover; background-color: cornflowerblue;">
+                                    <div id="analytcStatics3" class="front"
+                                        style="background-image: url('/public/images/polyclinic-gender.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Hasta Cinsiyet Dagilimi
+                                                    Polyclinic Patients' Gender Distribution
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Cinsiyet Dagilimi"></button>
+                                            title="This statistic shows the gender distribution of patients in the polyclinic."></button>
                                         <p class="cardP">
-                                            Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                            Kadin : 4 <br>
-                                            Erkek : 8
+                                        <table id="patientGenderTable" style="margin-left: -15px;">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Polyclinic
+                                                    </td>
+                                                    <td
+                                                        style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                                        Gender</td>
+                                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: inherit !important;font-size: 9px;">
+
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
@@ -333,110 +429,129 @@
                         </div>
                     </div>
                     <br>
-                    <div class="polExamStatics3">
+                    <div class="polExamStatics3" style="margin-top:15px">
                         <!-- cards -->
+                        <h10 class="historyHeaders" id="patientStatisticsHeader">Doctor Statistics</h10> <br>
                         <div class="card-container" id="poly-exam-card-container">
+
                             <div class="baseCard" id="statics4"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics4">
-                                    <div id="analytcStatics4" class="front" style="background-image: url('/public/images/statics-4.png');
-                                    background-size: cover; background-color: cornflowerblue;">
+                                    <div id="analytcStatics4" class="front"
+                                        style="background-image: url('/public/images/patient-visit-2.png');background-size: contain; ">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Hasta Yas Dagilimi
+                                                    Doctor Patient Count
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Yas Dagilimi"></button>
+                                            title="This statistic shows the doctors' examined patient count."></button>
                                         <p class="cardP">
-                                            Hastalarin yaslarina gore istatistik. <br><br>
-                                            0 - 12 : 3 <br>
-                                            12 - 18 : 5 <br>
-                                            18+ : 4
+                                        <table id="doctorPatientTable" style="margin-left: -13px;">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Doctor
+                                                    </td>
+                                                    <td
+                                                        style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                                        Polyclinic
+                                                    </td>
+                                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: inherit !important;font-size: 7px;">
+
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="baseCard" id="statics5"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics5">
-                                    <div id="analytcStatics5" class="front" style="background-image: url('/public/images/statics-5.png');
-                                    background-size: cover; background-color: cornflowerblue;">
+                                    <div id="analytcStatics5" class="front"
+                                        style="background-image: url('/public/images/polyclinic-doctor-appointment-2.png');background-size: contain;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Muayene olan hasta vs Bekleyen hasta
+                                                    Doctor Appointment Status
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Yas Dagilimi"></button>
+                                            title="This statistic shows the doctors' appointment patient count."></button>
                                         <p class="cardP">
-                                            Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br>
-                                            Muayene olan : 4 <br>
-                                            Bekleyen : 6
+                                        <table id="doctorAppointmentTable">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Doctor
+                                                    </td>
+                                                    <td
+                                                        style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                                        Status</td>
+                                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: inherit !important;">
+
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="baseCard" id="statics9"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
+                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics4">
-                                    <div id="analytcStatics4" class="front" style="background-image: url('/public/images/statics-9.png');
-                                    background-size: cover; background-color: cornflowerblue;">
+                                    <div id="analytcStatics4" class="front"
+                                        style="background-image: url('/public/images/staff-leave.png');background-size: contain;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
-                                                    Hasta Yas Dagilimi
+                                                    Doctors On Leave
                                                 </h4>
                                             </header>
                                         </div>
                                     </div>
                                     <div class="back">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Yas Dagilimi"></button>
+                                            title="This statistic shows the doctors on leave."></button>
                                         <p class="cardP">
-                                            Hastalarin yaslarina gore istatistik. <br><br>
-                                            0 - 12 : 3 <br>
-                                            12 - 18 : 5 <br>
-                                            18+ : 4
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                                        <table id="doctorOnLeaveTable"
+                                            style="margin: -35px 0px 0px -14px !important;width: 113% !important;">
+                                            <thead>
+                                                <tr id="tableHeader"
+                                                    style="background-color: #49A681 !important; color: white;font-size: smaller;">
+                                                    <td
+                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                        Doctor
+                                                    </td>
+                                                    <td style="border-top-right-radius: 8px;">Return Date</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody
+                                                style="background-color: inherit !important;font-size: small !important  ;">
 
-                            <div class="baseCard" id="statics10"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');"
-                                onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9', 'polExamStatics10');">
-                                <div class="card" id="polExamStatics5">
-                                    <div id="analytcStatics5" class="front" style="background-image: url('/public/images/statics-10.png');
-                                    background-size: cover; background-color: cornflowerblue;">
-                                        <div class="card-title">
-                                            <header>
-                                                <h4>
-                                                    Muayene olan hasta vs Bekleyen hasta
-                                                </h4>
-                                            </header>
-                                        </div>
-                                    </div>
-                                    <div class="back">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="Hasta Yas Dagilimi"></button>
-                                        <p class="cardP">
-                                            Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br>
-                                            Muayene olan : 4 <br>
-                                            Bekleyen : 6
+                                            </tbody>
+                                        </table>
                                         </p>
                                     </div>
                                 </div>
@@ -612,22 +727,21 @@
             <div id="userStatisticsContainer" class="userStatisticsContainer">
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
                 <table id="userLoginStatsTable">
-                    <tr id="tableHeader">
-                        <th>#</th>
-                        <th>Ip Adress</th>
-                        <th>Login Date</th>
-                        <th>Login Duration</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>192.168.1.11</td>
-                        <td>03.09.2020 14:10</td>
-                        <td>22 minutes 17 seconds</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader">
+                            <th>#</th>
+                            <th>Ip Adress</th>
+                            <th>Local Machine</th>
+                            <th>Login Date</th>
+                            <th>Login Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 id="lastPasswordChangeStatistics" class="historyHeaders" style="margin: 5px;color: white;">-</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -766,10 +880,8 @@
                 <br>
                 <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
-                    Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
+                    title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -899,8 +1011,11 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Statistics." onclick="
+                ShowOrHideMethods.showPopUpModal('userStatistics'); 
+                LoginProcess.userLoginStatistics();
+                LoginProcess.getLastPasswordChangeStatistics();">
+                <i class="fa fa-bar-chart"></i> </a>
             <a href="#" class="menu-item" title="User Trainings."
                 onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
             <a href="#" class="menu-item" title="User Settings."

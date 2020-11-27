@@ -79,6 +79,7 @@ body {
 .historyContainer {
   display: table-caption;
   width: 55%;
+  height: fit-content;
   padding: 5px 15px 5px 5px;
   margin: 0px 5px 0px 15px;
   box-shadow: 2px 2px 10px #555;

@@ -33,7 +33,6 @@
     <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
 </head>
 
-
 <body id="patientIdBody" onload="
     ShowOrHideMethods.adjustHtmlsBackground('patientIdBody');
     LoginProcess.checkIfThereIsAUserLoggedIn('savePatient', 'searchPatient');
@@ -62,7 +61,7 @@
             <div id="hastaKimlikModulNameText"> Patient ID Module </div>
             <div>
                 <img class="modulAvatar" src="/public/images/id-3.png" title="Anasayfa için tıklayınız."
-                    onclick="window.location.href='/public/htmls/index.html'">
+                    onclick="AdministrationMethods.redirectToAdminTab('')">
             </div>
         </div>
         <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;"
