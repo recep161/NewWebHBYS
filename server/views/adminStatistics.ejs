@@ -36,6 +36,7 @@
 
 <body id="administrationBody"
     onload="
+        myClockMethods.myClock();
         AdministrationMethods.fillUserStatisticsTable(),
         AdministrationMethods.fillUnitStatisticsTable(),
         AdministrationMethods.fillStaffStatisticsTable(),
@@ -66,7 +67,7 @@
     <div class="mainContainer" id="mainContainer">
         <div class="headerDiv" id="headerDiv">
             <div class="subHeadDiv" id="subHeadDiv">
-                <div id="newTabButton" onclick="window.location.href='./adminModule.ejs'"
+                <div id="newTabButton" onclick="window.open('\http:\/\/localhost:161/admin/statistics', '_blank');"
                     title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab"
                         src="/public/images/open-new-tab.png" alt=""></div>
                 <div id="modulNameText"> Administration Module </div>
@@ -79,6 +80,7 @@
 
         <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
             style="margin: 10px ;cursor: default;" title="">Please Login from main page!</hUserName>
+        <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!</p>
 
         <div class="bottomScrool" style="margin-top: 10px">
             <p id="bottomScrollP4" style="color: white;">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke

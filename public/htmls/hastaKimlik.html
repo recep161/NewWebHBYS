@@ -34,6 +34,7 @@
 </head>
 
 <body id="patientIdBody" onload="
+    myClockMethods.myClock();
     ShowOrHideMethods.adjustHtmlsBackground('patientIdBody');
     LoginProcess.checkIfThereIsAUserLoggedIn('savePatient', 'searchPatient');
     AdministrationMethods.takeUserInfoFromCookie();
@@ -55,7 +56,7 @@
 
     <div class="hastaKimlikHeaderDiv" id="hastaKimlikHeaderDiv">
         <div class="hastaKimlikSubHeadDiv" id="hastaKimlikSubHeadDiv">
-            <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('hastakimlik')"
+            <div id="newTabButton" onclick="window.open('\http:\/\/localhost:161/hastakimlik', '_blank');"
                 title="Click for open in new tab."><img class="openInNewTab" id="hastaKimlikOpenInNewTab"
                     src="/public/images/open-new-tab.png" alt=""></div>
             <div id="hastaKimlikModulNameText"> Patient ID Module </div>
@@ -67,6 +68,7 @@
         <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;"
             onmouseover="LoginProcess.showUserDataOnHover();" title="">Please Login from main page!
         </hUserName>
+        <p id="clock" title="Know the true value of time!">Time!</p>
     </div>
 
     <div class="bottomScrool" style="margin-top: 10px">
@@ -119,7 +121,6 @@
                         <textarea id="patientAdress" name="patientAdress" cols="50" rows="5"
                             style="resize: vertical;color: black;" placeholder="Patient's adress"></textarea><br><br>
                     </div>
-
                 </div>
 
                 <div class="patientPhoto">
@@ -138,8 +139,9 @@
             </div>
 
             <div class="btnDiv">
-                <button class="inpatientBtn btn-primary" id="searchPatient"
-                    onclick="HastaKimlikMethods.findOnePatient();PolyclinicExamMethods.findPatientHistory()">Search
+                <button class="inpatientBtn btn-primary" id="searchPatient" onclick="HastaKimlikMethods.findOnePatient();
+                    PolyclinicExamMethods.findPatientHistory();
+                    AppointmentMethods.findPatientAppointmentHistory()">Search
                 </button>
                 <button class="inpatientBtn btn-success" id="savePatient"
                     onclick="HastaKimlikMethods.updateOrSavePatientBtn()">Save
@@ -155,7 +157,7 @@
             <div class="medicalHistory">
                 <div class="patientHistoryContainer" id="patientHistoryContainer">
                     <h10 class="historyHeaders"> Patient History</h10>
-                    <table id="polExamPatientHistoryTable" class="patientTable" style="margin-top:10px;">
+                    <table id="polExamPatientHistoryTable" class="patientTable">
                         <thead>
                             <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
                                 <td>No.</td>
@@ -176,62 +178,34 @@
                 <div class="appointmentSearchHistory">
                     <h10 class="historyHeaders" id="appRegPatientHistory">Patient Appointment History</h10>
                     <div style="box-shadow: 2px 2px 10px #555;">
-                        <table id="appSearchPatientHistoryTable" class="patientTable">
+                        <table id="patientHistoryTable" class="patientTable">
                             <thead>
                                 <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
-                                    <td style="border-top-left-radius: 8px !important;">#</td>
-                                    <td>Protocol No.</td>
-                                    <td>Appiontment Date</td>
-                                    <td>Polyclinic</td>
-                                    <td>Doctor</td>
-                                    <td style="border-top-right-radius: 8px;">Status</td>
+                                    <td
+                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                        No.
+                                    </td>
+                                    <td
+                                        style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                        Appointment No</td>
+                                    <td
+                                        style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                        Appiontment Date</td>
+                                    <td
+                                        style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                        Polyclinic</td>
+                                    <td
+                                        style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                        Doctor</td>
+                                    <td
+                                        style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                        Status</td>
+                                    <td style="border-top-right-radius: 8px;">Select</td>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
-                    
-                                Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
-                                ">
-                                    <td>1</td>
-                                    <td>12345</td>
-                                    <td>01/03/2019</td>
-                                    <td>Diet Pol.</td>
-                                    <td>Prof. Dr. Ahmet MEHMET</td>
-                                    <td class="gecerliAppointment">Gecerli</td>
-                                <tr>
-                                    <td>2</td>
-                                    <td>45678</td>
-                                    <td>15/01/2020</td>
-                                    <td>Cardiology Pol.</td>
-                                    <td>Doc. Dr. Ayse SARMASIK</td>
-                                    <td class="iptalAppointment">Iptal - Doktor Acil Ameliyat</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>91011</td>
-                                    <td>22/02/2020</td>
-                                    <td>Urology Pol.</td>
-                                    <td>Uzm. Dr. Hasan HUSEYIN</td>
-                                    <td class="gecerliAppointment">Gecerli</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>12131</td>
-                                    <td>04/03/2020</td>
-                                    <td>Emergency Pol.</td>
-                                    <td>Prof. Dr. Ridvan CELIK</td>
-                                    <td class="gecerliAppointment">Gecerli</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>14151</td>
-                                    <td>18/04/2020</td>
-                                    <td>Urology Pol.</td>
-                                    <td>Prof. Dr. Ahmet MEHMET</td>
-                                    <td class="iptalAppointment">Iptal - Hasta Gelmedi</td>
-                                </tr>
-                            </tbody>
+                            <tbody style="background-color: inherit !important;">
 
+                            </tbody>
                         </table>
                     </div>
                 </div>

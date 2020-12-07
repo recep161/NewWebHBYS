@@ -1,5 +1,6 @@
 const polExamSaveSchema = require('../models/polExamModel');
 const staffSaveSchema = require('../models/staffModel');
+const appointmentSaveSchema = require('../models/appointmentModel');
 const myMongoose = require('mongoose');
 const myMoment = require('moment');
 
@@ -8,6 +9,7 @@ myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: fals
 var myPolExamModel = myMongoose.model('polyclinicExam');
 var myPatientsModel = myMongoose.model('patients');
 var myStaffModel = myMongoose.model('staffs');
+var myAppointmentModel = myMongoose.model('appointments');
 
 module.exports.savePolExam = (req, res) => {
 
@@ -104,6 +106,36 @@ module.exports.updatePolExam = (req, res) => {
             res.send(patient);
             // console.log("Patient data updated! = " + patient);
             // console.log(myPatientIdNo);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.fillPatientAppointmentStatusTable = (req, res) => {
+    myAppointmentModel.find(req.query)
+        .then(appointmentData => {
+            res.send(appointmentData);
+            // console.log("appointment found! = " + appointmentData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.fillPatientUpcomingAppointmentTable = (req, res) => {
+    var today = myMoment().format('DD-MM-YYYY');
+    myAppointmentModel.find(
+        {
+            patientId: (+req.query.patientId),
+            appointmentStatus: 'Valid',
+            appointmentDate: { $gte: today }
+        })
+        .then(appData => {
+            res.send(appData);
+            // console.log('appData= ' + appData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -251,7 +283,36 @@ module.exports.fillDoctorPatientTable = (req, res) => {
     ])
         .then(doctorData => {
             res.send(doctorData);
-            // console.log(doctorData)
+            // console.log('fillDoctorPatientTable= ', doctorData)
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.fillDoctorAppointmentTable = (req, res) => {
+    var today = myMoment().format('DD-MM-YYYY');
+    myAppointmentModel.aggregate([
+        {
+            $match: {
+                appointmentDate: today,
+                appointmentStatus: 'Valid'
+            }
+        },
+        {
+            $group: {
+                '_id': "$appointmentDoctor",
+                'count': { $sum: 1 }
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ])
+        .then(doctorAppData => {
+            res.send(doctorAppData);
+            // console.log(doctorAppData)
         }).catch(err => {
             res.status(500).send({
                 message: err.message

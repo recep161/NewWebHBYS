@@ -60,6 +60,51 @@ body {
   position: fixed;
 }
 
+#clock {
+  cursor: not-allowed;
+  color: blueviolet;
+  font-size: medium;
+  text-align: center;
+  margin: -15px 10px 0px 1250px;
+  border-style: none;
+  border-width: 7px;
+  animation: clockBorderColors ease-in-out 10s infinite;
+  box-shadow: -2px 0px 10px 0px black;
+  transition: box-shadow .3s ease-in;
+  -webkit-transition: box-shadow .3s ease-in;
+}
+
+@keyframes clockBorderColors {
+  0% {
+    border-color: magenta;
+  }
+  10% {
+    border-color: blueviolet;
+    border-top-left-radius: 20px;
+    text-shadow: 0 0 5px cornflowerblue;
+  }
+  25% {
+    border-color: blue;
+    border-top-right-radius: 20px;
+    text-shadow: 0 0 3px red;
+  }
+  50% {
+    border-color: pink;
+    border-bottom-left-radius: 20px;
+    text-shadow: 0 0 5px cornflowerblue;
+  }
+  75% {
+    border-color: lightgreen;
+    border-bottom-right-radius: 20px;
+    text-shadow: 0 0 5px red;
+  }
+  100% {
+    border-color: magenta;
+    border-start-end-radius: 20px;
+    text-shadow: 0 0 5px cornflowerblue;
+  }
+}
+
 .modulAvatar {
   width: 100px;
   height: 100px;
@@ -687,7 +732,7 @@ input, textarea, text, select {
 /* ============================ end of bottom user menu =================================== */
 
 .patientHistoryContainer {
-  width: 50%;
+  width: 100%;
   height: max-content;
   margin: 10px 3px;
   box-shadow: 2px 2px 10px #555;
@@ -705,18 +750,13 @@ input, textarea, text, select {
   box-shadow: 2px 2px 10px #555;
 }
 
-.patientHistoryMainContainer {
-  display: flex;
+#polExamPatientHistoryTable, #patientHistoryTable {
+  margin-top: 10px;
+  font-size: small;
 }
 
-.patientHistoryContainer {
-  width: 100%;
-  height: max-content;
-  /* margin: 10px 3px; */
-  box-shadow: 2px 2px 10px #555;
-  border-radius: 8px;
-  padding: 5px;
-  text-align: center;
+.patientHistoryMainContainer {
+  display: flex;
 }
 
 .patientTable {
@@ -753,26 +793,6 @@ input, textarea, text, select {
 
 tr:hover, tr.selected {
   background-color: #49A7BC !important;
-}
-
-#patientHistoryTable {
-  font-family: inherit;
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 10px;
-  cursor: default;
-}
-
-#patientHistoryTable td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-  border: 1px solid black;
-  text-align: center;
-}
-
-#patientHistoryTable tr:nth-child(even) {
-  background-color: #dddddd;
 }
 
 .historyHeaders {
@@ -1356,3 +1376,25 @@ input {
   height: 35px;
   box-shadow: 2px 2px 10px #555;
 }
+
+/* ===========footer copyright =============*/
+
+.shadows {
+  position: relative;
+  text-transform: uppercase;
+  text-shadow: -15px 5px 20px #ced0d3;
+  color: white;
+  letter-spacing: -0.05em;
+  font-family: 'Anton', Arial, sans-serif;
+  user-select: none;
+  text-transform: uppercase;
+  font-size: 50px;
+  transition: all 0.25s ease-out;
+}
+
+.shadows:hover {
+  text-shadow: -6px 6px 5px #ced0d3;
+  cursor: pointer;
+}
+
+/* =========== end of footer copyright =============*/

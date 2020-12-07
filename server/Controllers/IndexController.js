@@ -25,6 +25,10 @@ module.exports.indexRedirectToPolExam = function (req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'polyclinic-examination.html'))
 };
 
+module.exports.indexRedirectToAppointmentSave = function (req, res) {
+    res.sendFile(path.join(__dirname, '../../public/htmls', 'appointment-save.html'))
+};
+
 module.exports.findLoginUser = (req, res) => {
     var myUserName = req.query.userName,
         myPassword = req.query.password;

@@ -30,23 +30,31 @@
     <link rel="shortcut icon" href="/public/images/settings-1.png">
 
     <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
 </head>
 
 <body id="administrationBody"
     onload="
+        myClockMethods.myClock();
+        AdministrationMethods.fillUserStatisticsTable(),
+        AdministrationMethods.fillUnitStatisticsTable(),
+        AdministrationMethods.fillStaffStatisticsTable(),
+        AdministrationMethods.fillDatabaseStatusTable(),
+        AdministrationMethods.fillStafOnLeaveTable(),
+        AdministrationMethods.takeUserInfoFromCookie(),
         ShowOrHideMethods.hideDiv('unitDefinitionDiv');
         ShowOrHideMethods.hideDiv('staffDefinitionDiv');
         ShowOrHideMethods.hideDiv('userDefinitionDiv');
         ShowOrHideMethods.hideDiv('administrationStatisticsDiv');
+        ShowOrHideMethods.openInNewTabAndAdjustForViews('administrationBody');
         jQueryMethods.setCalenderValueToday('polyclinicExamStatisticsStartDate');
         jQueryMethods.setCalenderValueToday('polyclinicExamStatisticsEndDate');
         jQueryMethods.setCalenderValueToday('doctorExamStatisticsStartDate');
         jQueryMethods.setCalenderValueToday('doctorExamStatisticsEndDate');
         jQueryMethods.getJqueryDatePicker();
         jQueryMethods.toolTipFunction();
+        jQueryMethods.bottomUserMenuDrag();
         ShowOrHideMethods.showBackTotopButton();
         InpatientMethods.colorSelectedPatient();
         PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
@@ -59,18 +67,21 @@
     <div class="mainContainer" id="mainContainer">
         <div class="headerDiv" id="headerDiv">
             <div class="subHeadDiv" id="subHeadDiv">
-                <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('administration')"
+                <div id="newTabButton" onclick="window.open('\http:\/\/localhost:161/admin', '_blank');"
                     title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab"
                         src="/public/images/open-new-tab.png" alt=""></div>
                 <div id="modulNameText"> Administration Module </div>
                 <div>
                     <img class="modulAvatar" src="/public/images/settings-1.png" title="Anasayfa için tıklayınız."
-                        onclick="window.location.href='/public/htmls/index.html'">
+                        onclick="AdministrationMethods.redirectToAdminTab('')">
                 </div>
             </div>
         </div>
+        <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
+            style="margin: 10px ;cursor: default;" title="">Please Login from main page!</hUserName>
+        <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!</p>
 
-        <div class="bottomScrool">
+        <div class="bottomScrool" style="margin-top: 10px">
             <p id="bottomScrollP4" style="color: white;">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke
                 Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı...
                 &#164;&#164; Sağlık Bakanlığı;'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI'
@@ -81,30 +92,33 @@
 
             <div id="listOfOperations">
                 <button class="polyclinicButtons btn--swap"
-                    onclick="
+                    onclick="AdministrationMethods.redirectToAdminTab('admin/units');
                     AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'staffDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'userDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'administrationStatisticsDiv');">
                     Unit Definition <span>Sub module for units informations.</span></button>
 
-                <button class="polyclinicButtons btn--swap"
-                    onclick="
+                <button class="polyclinicButtons btn--swap" onclick="
+                    AdministrationMethods.redirectToAdminTab('admin/staff');
                     AdministrationMethods.showSelectedDivAndHideOthers('staffDefinitionDiv', 'unitDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('staffDefinitionDiv', 'userDefinitionDiv');
-                    AdministrationMethods.showSelectedDivAndHideOthers('staffDefinitionDiv', 'administrationStatisticsDiv');">
+                    AdministrationMethods.showSelectedDivAndHideOthers('staffDefinitionDiv', 'administrationStatisticsDiv');
+                    AdministrationMethods.clearForNewStaff();
+                    AdministrationMethods.findAllStaffs();">
                     Staff Definition <span>Sub module for staff informations.</span></button>
 
                 <button class="polyclinicButtons btn--swap"
                     onclick="
+                    AdministrationMethods.redirectToAdminTab('admin/user');
                     AdministrationMethods.findAllUsers();
+                    AdministrationMethods.clearForNewUser();
                     AdministrationMethods.showSelectedDivAndHideOthers('userDefinitionDiv', 'unitDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('userDefinitionDiv', 'staffDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('userDefinitionDiv', 'administrationStatisticsDiv');">
-                    User Definition <span>Sub module for user informations.</span>
-                </button>
+                    User Definition <span>Sub module for user informations.</span></button>
 
                 <button class="polyclinicButtons btn--swap"
-                    onclick="
+                    onclick="AdministrationMethods.redirectToAdminTab('admin/statistics');
                     AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'unitDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'staffDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'userDefinitionDiv');">
@@ -156,33 +170,79 @@
                 <div id="staffDefinitionInputsDiv">
                     Id: <br>
                     <input class="staffDefinitionInputs" type="text" name="staffId" id="staffId"><br>
-                    ID Number:
-                    <input class="staffDefinitionInputs" type="text" name="staffTc" id="staffTc"
+                    ID Number: <br>
+                    <input class="staffDefinitionInputs" type="number" name="staffTc" id="staffTc"
+                        oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}"
+                        maxlength="11" minlength="11" required placeholder="Must be 11 digits" title="Must be 11 digits"
                         placeholder="Must be 11 digits"><br>
-                    Name:
+                    Name: <br>
                     <input class="staffDefinitionInputs" type="text" name="staffName" id="staffName"
                         placeholder="Name"><br>
-                    Surname:
+                    Surname: <br>
                     <input class="staffDefinitionInputs" type="text" name="staffSurname" id="staffSurname"
                         placeholder="Surname"><br>
-                    Major Dicipline:
+                    Diploma No: <br>
+                    <input class="staffDefinitionInputs" type="text" name="staffDiplomaNo" id="staffDiplomaNo"
+                        placeholder="Example: 12345-67"><br>
+                    Major Dicipline: <br>
                     <select class="staffDefinitionInputs" name="staffMajorDicipline" id="staffMajorDicipline">
                         <option value="majorDicipline1">Emergency</option>
                         <option value="majorDicipline1">Cardiology</option>
                         <option value="majorDicipline1">Urology</option>
                         <option value="majorDicipline1">Biochemistry</option>
                     </select><br>
-                    Diploma No:
-                    <input class="staffDefinitionInputs" type="text" name="staffDiplomaNo" id="staffDiplomaNo"
-                        placeholder="Example: 12345-67">
-                    <br><br><br><br>
+                    Staff Group: <br>
+                    <select class="staffDefinitionInputs" name="staffGroup" id="staffGroup">
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Personnel">Personnel</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                    <br><br><br>
 
-                    <button class="inpatientBtn btn-danger" id="yeniHasta"
-                        title="Seçili kayıtları silmek için tıklayınız."
-                        onclick="ShowOrHideMethods.generalFailureAlert('Successfully Deleted!');">Delete</button>
-                    <button class="inpatientBtn btn-success" id="kaydet"
-                        onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Saved!')"
-                        title="Verilerinizi kaydetmek  için tıklayınız..">Save</button>
+                    <button class="inpatientBtn btn-success" id="saveStaff" title="Click for save staff."
+                        onclick="AdministrationMethods.saveStaff();">Save
+                    </button>
+
+                    <button type="button" class="inpatientBtn btn-primary" id="newStaff" title="Click for new staff."
+                        onclick="AdministrationMethods.findAllStaffs();AdministrationMethods.clearForNewStaff()">
+                        New Staff
+                    </button>
+
+                    <button class="inpatientBtn btn-info" title="Click for search staff or staffs."
+                        onclick="AdministrationMethods.findAllStaffs()" id="searchStaffBtn">Search
+                    </button>
+
+                    <br><br><br>
+
+                    <div id="staffListDiv" style="box-shadow: 2px 2px 10px #555;">
+                        <h11 class="historyHeaders">Staff List</h11><br>
+                        <input class="searchInputs" type="text" id="staffSearchInput"
+                            style="width: 100%;margin: 5px 0px 10px 0px;"
+                            onkeydown="PolyclinicMethods.searchInTable('staffSearchInput', 'staffList')"
+                            placeholder="Search for staffs..."
+                            title="Search staff by name, surname, ID, major dicipline or user group.">
+
+                        <table id="staffList" class="patientTable">
+                            <thead>
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                    <td style="border-top-left-radius: 8px !important;">Id</td>
+                                    <td>ID Number</td>
+                                    <td>Name</td>
+                                    <td>Surname</td>
+                                    <td>Diploma No</td>
+                                    <td>Major Dicipline</td>
+                                    <td>Staff Group</td>
+                                    <td>Photo</td>
+                                    <td style="border-top-right-radius: 8px;">Delete</td>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: inherit !important;">
+
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
 
                 <div class="staffPhoto">
@@ -190,6 +250,10 @@
                     <button class="polyclinicButtons btn--swap" id="changeStaffImage"
                         onclick="document.getElementById('getStaffFile').click()">
                         <pDegis>Change</pDegis> <span id="degistirSpan">Change staff's <br> photo.</span>
+                    </button>
+                    <br>
+                    <button class="inpatientBtn btn-primary" style="width: 250px;position: absolute;"
+                        onclick="AdministrationMethods.updatePhoto('Staff')">Update Photo
                     </button>
 
                     <input type='file' id="getStaffFile"
@@ -204,46 +268,61 @@
                 </h11>
 
                 <div id="userDefinitionInputsDiv">
-                    <!-- <form action="/server/views/adminModule" method="POST" id="userDefinitionInputsForm"> -->
                     Id: <br>
-                    <input class="userDefinitionInputs" type="text" name="userId" id="userId">
-                    Username:
+                    <input class="userDefinitionInputs" type="text" name="userId" id="userId"
+                        style="background-color: lightgrey;" readonly><br>
+                    Username: <br>
                     <input class="userDefinitionInputs" type="text" name="userNickname" id="userNickname" required
-                        placeholder="Example: RCelik" title="Example: RCelik">
-                    Password:
+                        placeholder="Example: RCelik" title="Example: RCelik"> <br>
+                    Password: <br>
                     <input class="userDefinitionInputs" type="password" name="userPassword" id="userPassword" required
-                        minlength="4" placeholder="Minimum 4 digits" title="Minimum 4 digits">
-                    <button class="polyclinicButtons btn--swap" id="changeUserPassword">
+                        minlength="4" placeholder="Minimum 4 digits" title="Minimum 4 digits"> <br>
+                    <span for='userPassword' id="showUserPasswordSpanViewer">
+                        <i id="showUserPasswordIcon" class="fa fa-eye" aria-hidden="true" style="color: black;"
+                            title="Show password!"
+                            onclick="ShowOrHideMethods.showPassword('userPassword','showUserPasswordIcon')">
+                        </i>
+                    </span>
+                    <button class="polyclinicButtons btn--swap" id="changeUserPassword"
+                        onclick="AdministrationMethods.resetPassword()">
                         <pDegis>Reset</pDegis> <span id="changeUserPasswordSpan">Reset user's password.</span>
-                    </button>
-                    Name:
+                    </button> <br>
+                    Name: <br>
                     <input class="userDefinitionInputs" type="text" name="userName" id="userName" required
-                        placeholder="User Name" title="User Name">
-                    Surname:
+                        placeholder="User Name" title="User Name"> <br>
+                    Surname: <br>
                     <input class="userDefinitionInputs" type="text" name="userSurname" id="userSurname" required
                         placeholder="User Surname" title="User Surname"><br>
-                    ID Number:
+                    ID Number: <br>
                     <input class="userDefinitionInputs" type="number" name="userTc" id="userTc"
                         oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}"
                         maxlength="11" minlength="11" required placeholder="Must be 11 digits"
                         title="Must be 11 digits"><br>
-                    Major Dicipline:
+                    Major Dicipline: <br>
                     <select class="userDefinitionInputs" name="userMajorDicipline" id="userMajorDicipline">
                         <option value="Emergency">Emergency</option>
                         <option value="Cardiology">Cardiology</option>
                         <option value="Urology">Urology</option>
                         <option value="Biochemistry">Biochemistry</option>
                     </select><br>
-                    User Group:
+                    User Group: <br>
                     <select class="userDefinitionInputs" name="userGroup" id="userGroup">
-                        <option value="doctor">Doctor</option>
-                        <option value="nurse">Nurse</option>
-                        <option value="personnel">Personnel</option>
-                        <option value="admin">Admin</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Personnel">Personnel</option>
+                        <option value="Admin">Admin</option>
                     </select><br><br><br><br>
+
                     <button class="inpatientBtn btn-success" id="saveUser" title="Click for save user."
                         onclick="AdministrationMethods.saveUser(); AdministrationMethods.findAllUsers()">Save</button>
-                    <!-- </form> -->
+
+                    <button type="button" class="inpatientBtn btn-primary" id="newUser" title="Click for new user."
+                        onclick="AdministrationMethods.findAllUsers();AdministrationMethods.clearForNewUser()">
+                        New User</button>
+
+                    <button class="inpatientBtn btn-info" title="Click for search user or users."
+                        onclick="AdministrationMethods.findUsersAtOnce()" id="searchUserBtn">Search</button>
+
                     <div id="userListDiv">
                         <h11 class="historyHeaders">User List</h11><br><br>
                         <input class="searchInputs" type="text" id="userSearchInput"
@@ -253,14 +332,16 @@
                             title="Search user by name, surname, ID, major dicipline or user group.">
                         <table id="usersList" class="patientTable">
                             <thead>
-                                <tr style="background-color: #49A681 !important;">
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
                                     <td style="border-top-left-radius: 8px !important;">Id</td>
                                     <td>Username</td>
                                     <td>Name</td>
                                     <td>Surname</td>
                                     <td>ID Number</td>
                                     <td>Major Dicipline</td>
-                                    <td style="border-top-right-radius: 8px;">User Group</td>
+                                    <td>User Group</td>
+                                    <td>Photo</td>
+                                    <td style="border-top-right-radius: 8px;">Delete</td>
                                 </tr>
                             </thead>
                             <tbody style="background-color: inherit !important;">
@@ -272,11 +353,15 @@
 
                 <div class="userPhoto">
                     <img id="userPhotoId" src="/public/images/admin-2.png" alt="User Photo">
+                    <br>
+                    <button class="inpatientBtn btn-primary" style="width: 250px;"
+                        onclick="AdministrationMethods.updatePhoto('User')">Update Photo
+                    </button>
+
                     <button class="polyclinicButtons btn--swap" id="changeUserImage"
                         onclick="document.getElementById('getUserFile').click()">
                         <pDegis>Change</pDegis> <span id="degistirSpan">Change user's <br> photo.</span>
                     </button>
-
                     <input type='file' id="getUserFile"
                         onchange="HastaKimlikMethods.changePatientPhoto('getUserFile','userPhotoId')"
                         style="display:none">
@@ -294,22 +379,19 @@
                         onclick="ShowOrHideMethods.showDiv('administrationStatisticsDetailDiv','flex');
                             AdministrationMethods.showSelectedDivAndHideOthers('polyclinicExamStatistics', 'doctorExamStatistics');
                             AdministrationMethods.showSelectedDivAndHideOthers('polyclinicExamStatistics', 'sqlQueriesDiv');">
-                        Polyclinic Exam Statistics <span>Sub module for units informations.</span>
-                    </button>
+                        Polyclinic Exam Statistics <span>Sub module for units informations.</span></button>
 
                     <button class="polyclinicButtons btn--swap"
                         onclick="ShowOrHideMethods.showDiv('administrationStatisticsDetailDiv','flex');
                             AdministrationMethods.showSelectedDivAndHideOthers('doctorExamStatistics', 'polyclinicExamStatistics');
                             AdministrationMethods.showSelectedDivAndHideOthers('doctorExamStatistics', 'sqlQueriesDiv');">
-                        Doctor Exam Statistics <span>Sub module for doctors informations.</span>
-                    </button>
+                        Doctor Exam Statistics <span>Sub module for doctors informations.</span></button>
 
                     <button class="polyclinicButtons btn--swap"
                         onclick="ShowOrHideMethods.showDiv('administrationStatisticsDetailDiv','flex');
                             AdministrationMethods.showSelectedDivAndHideOthers('sqlQueriesDiv', 'polyclinicExamStatistics');
                             AdministrationMethods.showSelectedDivAndHideOthers('sqlQueriesDiv', 'doctorExamStatistics');">
-                        SQL Queries <span>Sub module user's SQL Queries.</span>
-                    </button>
+                        SQL Queries <span>Sub module user's SQL Queries.</span></button>
                 </div>
 
                 <div id="administrationStatisticsDetailDiv">
@@ -406,30 +488,45 @@
     </div>
 
 
-    <div class="administrationStatics">
+    <div class="administrationStaticsDiv">
         <!-- cards -->
         <div class="card-container" id="poly-card-container">
+
             <div class="baseCard" id="statics1"
                 onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
                 onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                 <div class="card" id="staticsCard1">
-                    <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-1.png');
+                    <div id="analytcStatics1" class="front" style="background-image: url('/public/images/user-statistics.png');
                             background-size: cover;">
                         <div class="card-title">
                             <header>
                                 <h4>
-                                    Hasta Randevu Durumu
+                                    User Statistics
                                 </h4>
                             </header>
                         </div>
                     </div>
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Randevulu hasta vs Normal Hasta"></button>
-                        <p class="cardP">
-                            Hastalarin basvuru turune gore istatistik. <br><br>
-                            Randevulu hasta : 4 <br>
-                            Normal hasta : 12
+                            title="User statistics shows details of staff."></button>
+
+                        <p class="cardP" id="userStatisticsCardBack">
+                            User Statistics. <br><br>
+
+                        <table id="userStatisticsTable" style="width: 100%;line-height: 15px;cursor: default;">
+                            <thead>
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                    <td
+                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                        User Group
+                                    </td>
+                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: inherit !important;">
+
+                            </tbody>
+                        </table>
                         </p>
                     </div>
                 </div>
@@ -439,24 +536,39 @@
                 onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
                 onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                 <div class="card" id="staticsCard2">
-                    <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-2.png');
-                            background-size: cover; background-color: cornflowerblue;">
+                    <div id="analytcStatics2" class="front" style="background-image: url('/public/images/unit-statistics.png');
+                            background-size: cover;">
                         <div class="card-title">
                             <header>
                                 <h4>
-                                    Hasta Kurum Turu
+                                    Unit Statistics
                                 </h4>
                             </header>
                         </div>
                     </div>
-                    <div class="back">
+                    <div class="back" style="font-size: smaller;">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Hasta Kurum Turu"></button>
-                        <p class="cardP">
-                            Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
-                            Yesilkart : 4 <br>
-                            SGK : 12 <br>
-                            Ucretli : 1
+                            title="This statistics shows details of units by to unit type and status."></button>
+                        <p class="cardP" id="unitStatisticBackCardHeader">
+                            Unit Statistics. <br><br>
+
+                        <table id="unitStatisticsTable" style="width: 100%;font-size: smaller;line-height: 10px;">
+                            <thead>
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                    <td
+                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                        Units Group
+                                    </td>
+                                    <td style="border-top: none; border-right: 1px solid #b9c8d2 !important;">
+                                        Units Status
+                                    </td>
+                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: inherit !important;">
+
+                            </tbody>
+                        </table>
                         </p>
                     </div>
                 </div>
@@ -466,23 +578,36 @@
                 onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
                 onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                 <div class="card" id="staticsCard3">
-                    <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-3.png');
-                            background-size: cover; background-color: cornflowerblue;">
+                    <div id="analytcStatics3" class="front" style="background-image: url('/public/images/staff-statistics-1.png');
+                            background-size: cover;">
                         <div class="card-title">
                             <header>
                                 <h4>
-                                    Hasta Cinsiyet Dagilimi
+                                    Staff Statistics
                                 </h4>
                             </header>
                         </div>
                     </div>
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Hasta Cinsiyet Dagilimi"></button>
-                        <p class="cardP">
-                            Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                            Kadin : 4 <br>
-                            Erkek : 8
+                            title="This statistics shows count of staff by to staff group."></button>
+                        <p class="cardP" id="staffStatisticsCardFrontHeader">
+                            Staff Statistics. <br><br>
+
+                        <table id="staffStatisticsTable" style="width: 100%;">
+                            <thead>
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                    <td
+                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                        Staff Group
+                                    </td>
+                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: inherit !important;">
+
+                            </tbody>
+                        </table>
                         </p>
                     </div>
                 </div>
@@ -492,24 +617,36 @@
                 onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
                 onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                 <div class="card" id="staticsCard4">
-                    <div id="analytcStatics4" class="front" style="background-image: url('/public/images/statics-4.png');
-                        background-size: cover; background-color: cornflowerblue;">
+                    <div id="analytcStatics4" class="front" style="background-image: url('/public/images/staff-leave.png');
+                        background-size: 280px;">
                         <div class="card-title">
                             <header>
                                 <h4>
-                                    Hasta Yas Dagilimi
+                                    Staff on Leave
                                 </h4>
                             </header>
                         </div>
                     </div>
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Hasta Yas Dagilimi"></button>
-                        <p class="cardP">
-                            Hastalarin yaslarina gore istatistik. <br><br>
-                            0 - 12 : 3 <br>
-                            12 - 18 : 5 <br>
-                            18+ : 4
+                            title="These statistics show the personnel who are still on leave today by personnel group."></button>
+                        <p class="cardP" id="staffOnLeaveBackCard">
+                            Staff on Leave. <br><br>
+
+                        <table id="staffLeaveStatisticsTable" style="width: 100%;">
+                            <thead>
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                    <td
+                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                        Staff Group
+                                    </td>
+                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: inherit !important;">
+
+                            </tbody>
+                        </table>
                         </p>
                     </div>
                 </div>
@@ -519,23 +656,35 @@
                 onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
                 onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                 <div class="card" id="staticsCard5">
-                    <div id="analytcStatics5" class="front" style="background-image: url('/public/images/statics-5.png');
-                        background-size: cover; background-color: cornflowerblue;">
+                    <div id="analytcStatics5" class="front" style="background-image: url('/public/images/database-statistics.jpg');
+                        background-size: 200px; ">
                         <div class="card-title">
                             <header>
                                 <h4>
-                                    Muayene olan hasta vs Bekleyen hasta
+                                    Database Status.
                                 </h4>
                             </header>
                         </div>
                     </div>
                     <div class="back">
                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                            title="Hasta Yas Dagilimi"></button>
+                            title="These statistics show status of database."></button>
                         <p class="cardP">
-                            Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br>
-                            Muayene olan : 4 <br>
-                            Bekleyen : 6
+                            Database Status. <br><br>
+                        <table id="databaseStatusTable" style="width: 100%;">
+                            <thead>
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                    <td
+                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                        Database Table
+                                    </td>
+                                    <td style="border-top-right-radius: 8px;">Count</td>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: inherit !important;">
+
+                            </tbody>
+                        </table>
                         </p>
                     </div>
                 </div>
@@ -1076,9 +1225,7 @@
     <!--end of back to top button -->
 
     <!-- -----------scripts----------------------------- -->
-    <script> var exports = {}; </script>
     <script type=" text/javascript" src="../../public/functions/functions.js"></script>
-    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
     <!-- -----------end of scripts----------------------------- -->
 
 </body>

@@ -30,18 +30,30 @@
 
     <link rel="stylesheet" href="/public/css/all-pages-style.css">
     <link rel="shortcut icon" href="/public/images/Medical-icons/calender.png">
+
+    <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
 </head>
 
-
-<body id="appointmentRegBody"
-    onload="
-            jQueryMethods.setCalenderValueToday('dogumTarihi');
+<body id="appointmentRegBody" onload="
+            LoginProcess.checkIfThereIsAUserLoggedIn('appointmentSave', 'patientSearch');
+            AdministrationMethods.takeUserInfoFromCookie();
+            myClockMethods.myClock();
+            AppointmentMethods.getMaxAppointmentId();
+            AppointmentMethods.fillPolyclinicAppointmentStatusTable();
+            AppointmentMethods.fillCanceledValidAppointmentTable();
+            AppointmentMethods.fillAppointmentGenderTable();
+            PolyclinicExamMethods.fillPatientAppointmentStatusTable();
+            PolyclinicExamMethods.fillDoctorAppointmentTable();
+            PolyclinicExamMethods.fillDoctorOnLeaveTable();
+            PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6');
+            ShowOrHideMethods.showBackTotopButton();
+            ShowOrHideMethods.adjustHtmlsBackground('appointmentRegBody');
             jQueryMethods.setCalenderValueToday('appointmentDate');
             jQueryMethods.getJqueryDatePicker();
-            ShowOrHideMethods.showBackTotopButton();
             jQueryMethods.toolTipFunction();
-            InpatientMethods.colorSelectedPatient();
-            PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6');">
+            jQueryMethods.bottomUserMenuDrag();">
 
     <div class="appointmentRegNotify" id="appointmentRegNotify">
         <span id="appointmentRegNotifyType" class=""></span>
@@ -53,148 +65,153 @@
 
     <div class="appointmentRegHeaderDiv" id="appointmentRegHeaderDiv">
         <div class="appointmentRegSubHeadDiv" id="appointmentRegSubHeadDiv">
-            <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('appointment-save')"
+            <div id="newTabButton" onclick="window.open('\http:\/\/localhost:161/appSave', '_blank');"
                 title="Click for open in new tab."><img class="openInNewTab" id="appointmentRegOpenInNewTab"
                     src="/public/images/open-new-tab.png" alt=""></div>
             <div id="appointmentRegModulNameText"> Appointment Registration Module </div>
             <div>
                 <img class="modulAvatar" src="/public/images/Medical-icons/calender.png"
-                    title="Anasayfa için tıklayınız." onclick="window.location.href='/public/htmls/index.html'">
+                    title="Anasayfa için tıklayınız." onclick="AdministrationMethods.redirectToAdminTab('')">
             </div>
         </div>
+        <div class="bottomScrool" style="margin-top: 35px;">
+            <p id="bottomScrollP4" style="color: white;">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke
+                Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı...
+                &#164;&#164; Sağlık Bakanlığı;'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI'
+                adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
+        </div>
     </div>
-    <div class="appointmentRegMainContainer">
+
+    <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
+        style="margin: 10px ;cursor: default;" title="">Please Login from main page!
+    </hUserName>
+    <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!</p>
+
+    <div class="appointmentRegMainContainer" style="margin-top: 55px;">
         <h10 class="historyHeaders" id="appRegPatientInfo"> Patient Info</h10>
         <div class="appointmentRegVeriler">
             <div class="appointmentRegNav-wrapper">
-                <div class="appointmentRegLabels">
-                    <label class="appointmentRegLabelsClass" for="idTxt">Hasta Id </label><br><br>
-                    <label class="appointmentRegLabelsClass" for="hastaNo">Hasta no</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="tcKimlik">TC Kimlik No</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="adi">Adi</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="soyadi">Soyadi</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="babaAdi">Baba adi</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="anaAdi">Anne adi</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="cinsiyeti">Cinsiyeti</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="dogumYeri">Dogum yeri</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="dogumTarihi">Dogum tarihi</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="phone">Telefon</label><br><br>
-                    <label class="appointmentRegLabelsClass" for="adress">Adres</label><br><br><br><br><br><br>
-                    <label class="appointmentRegLabelsClass" for="appointmentDate">Appointment Date</label><br>
-                    <label class="appointmentRegLabelsClass" for="appointmentHour">Appointment Hour</label><br>
-                    <label class="appointmentRegLabelsClass" for="appointmentPolyclinic">Appointment Polyclinic</label><br>
-                    <label class="appointmentRegLabelsClass" for="appointmentDoctor">Appointment Doctor</label><br><br>
-                </div>
-
                 <div class="appointmentRegInputs">
-                    <input type="number" name="idTxt" id="idTxt"><br><br>
-                    <input type="number" name="hastaNo" id="hastaNo"><br><br>
-                    <input type="number" name="tcKimlik" id="tcKimlik" maxlength="11"><br><br>
-                    <input type="text" name="adi" id="adi"><br><br>
-                    <input type="text" name="soyadi" id="soyadi"><br><br>
-                    <input type="text" name="babaAdi" id="babaAdi"><br><br>
-                    <input type="text" name="anaAdi" id="anaAdi"><br><br>
-                    <select name="cinsiyeti" id="cinsiyetiId" style="width: 160;height: 28;">
-                        <!-- <option value="bos" selected></option> -->
-                        <option value="erkek" selected>Erkek</option>
-                        <option value="kadin">Kadin</option>
-                    </select><br><br>
-                    <input type="text" name="dogumYeri" id="dogumYeri"><br><br>
-                    <input type="text" id="dogumTarihi" name="dogumTarihi" style="width: 160;" value=""><br><br>
-                    <input type="phone" name="phone" id="phone"><br><br>
-                    <textarea id="adress" name="adress" cols="40" rows="5" style="resize: none;"></textarea><br><br>
-                    <input type="text" name="appointmentDate" id="appointmentDate" style="width: 305px;"><br><br>
-                    <input type="text" name="appointmentHour" id="appointmentHour" style="width: 305px;"
-                        onclick="jQueryMethods.setCalenderHour('appointmentHour')"><br><br>
+                    Appointment Id: <br>
+                    <input type="number" name="appointmentId" id="appointmentId" readonly><br>
+                    Patient Id: <br>
+                    <input type="number" name="patientId" id="patientId" style="width: 110%;"><br>
+                    Patient ID No: <br>
+                    <input type="number" name="patientIdNo" id="patientIdNo"
+                        oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}"
+                        maxlength="11" minlength="11" style="width: 110%;"><br>
+                    Name: <br>
+                    <input type="text" name="patientName" id="patientName" readonly><br>
+                    Surname: <br>
+                    <input type="text" name="patientSurname" id="patientSurname" readonly><br>
+                    Father Name: <br>
+                    <input type="text" name="patientFatherName" id="patientFatherName" readonly
+                        style="width: 281%;"><br>
+                    Mother Name: <br>
+                    <input type="text" name="patientMotherName" id="patientMotherName" readonly
+                        style="width: 281%;"><br>
+                    Gender: <br>
+                    <input type="text" name="patientGender" id="patientGender" readonly style="width: 281%;"><br>
+                    Birth Place: <br>
+                    <input type="text" name="patientBirthPlace" id="patientBirthPlace" readonly
+                        style="width: 281%;"><br>
+                    Birth Date: <br>
+                    <input type="text" id="patientBirthDate" name="patientBirthDate" readonly style="width: 281%;"><br>
+                    Phone: <br>
+                    <input type="phone" name="patientPhone" id="patientPhone" readonly style="width: 281%;"><br>
+                    Adress: <br>
+                    <textarea id="patientAdress" name="patientAdress" cols="40" rows="5" readonly
+                        style="resize: none;width: 281%;color: black;background-color: lightgray;"></textarea><br>
+                    Appointment Date: <br>
+                    <input type="text" name="appointmentDate" id="appointmentDate" style="width: 281%;"><br>
+                    Appointment Time: <br>
+                    <input type="text" name="appointmentHour" id="appointmentHour"
+                        onclick="jQueryMethods.setCalenderHour('appointmentHour')" style="width: 281%;"><br>
+                    Appointment Polyclinic: <br>
                     <select name="appointmentPolyclinic" id="appointmentPolyclinic" class="appointmentPolyclinic"
-                        style="width: 305px;">
-                        <option value="clinic1">General Surgery Clinic</option>
-                        <option value="clinic2">Orthopedic Clinic</option>
-                        <option value="clinic3">Cardiology Clinic</option>
-                        <option value="clinic4">Urology Clinic</option>
-                    </select><br><br>
+                        style="width: 281%;margin: 8px;">
+                        <option value="generalSurgeryPolyclinic">General Surgery Polyclinic</option>
+                        <option value="orthopedicPolyclinic">Orthopedic Polyclinic</option>
+                        <option value="cardiologyPolyclinic">Cardiology Polyclinic</option>
+                        <option value="urologyPolyclinic">Urology Polyclinic</option>
+                    </select><br>
+                    Appointment Doctor: <br>
                     <select name="appointmentDoctor" id="appointmentDoctor" class="appointmentDoctor"
-                        style="width: 305px;">
-                        <option value="clinic1">Prof. Dr. Ahmet SAYLAN</option>
-                        <option value="clinic2">Doc. Dr. Huseyin IKIRCIKLI</option>
-                        <option value="clinic3">Uzm. Dr. Hulya BULUT</option>
+                        style="width: 281%;margin: 8px;">
+                        <option value="ProfDrAhmetSAYLAN">Prof. Dr. Ahmet SAYLAN</option>
+                        <option value="DocDrHuseyinIKIRCIKLI">Doc. Dr. Huseyin IKIRCIKLI</option>
+                        <option value="UzmDrHulyaBULUT">Uzm. Dr. Hulya BULUT</option>
+                    </select>
+                    Status: <br>
+                    <select name="appointmentStatus" id="appointmentStatus" class="appointmentDoctor"
+                        style="width: 281%;margin: 8px;">
+                        <option value="Valid">Valid</option>
+                        <option value="Canceled-Doctor-Operation">Canceled - Doctor Operation</option>
+                        <option value="Canceled-By-Patient">Canceled By Patient</option>
                     </select>
                 </div>
             </div>
-            <div class="appointmentRegPatientPhoto">
-                <img id="appointmentRegPatientPhotoId" src="/public/images/cv photo - office background.jpg"
-                    alt="Patient Photo">
-                <button class="polyclinicButtons btn--swap" id="appointmentRegIdDetails"
-                    onclick="ShowOrHideMethods.showPopUpModal('appRegIframeContainer');">Kimlik
-                    Bilgileri <span id="appointmentRegIdDetailsSpan">Hastanin kimlik bilgileri icin
-                        tiklayin.</span></button>
 
+            <div class="appointmentRegPatientPhoto">
+                <img id="appointmentRegPatientPhotoId" src="/public/images/Patient_Male.ico" alt="Patient Photo">
+                <button class="polyclinicButtons btn--swap" id="changeImage"
+                    onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">
+                    Degistir <span id="degistirSpan">Change patient <br> photo.</span>
+                </button>
+                <button class="polyclinicButtons btn--swap" id="polExamIdDetails"
+                    onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer'); PolyclinicExamMethods.getPatientIdFromPreviousPage();">Patient
+                    Id Info <span id="polExamIdDetailsSpan">Click for detailed information.</span>
+                </button>
             </div>
 
             <div class="patientStatistcisAndHistory" id="appointmentRegPatientStatistcisAndHistory">
-
                 <div class="patientHistoryTableDiv">
-                    <h10 class="historyHeaders" id="appRegPatientHistory"> Patient History</h10>
-                    <table id="appRegPatientHistoryTable">
-                        <tr style="background-color: #49A7BC;">
-                            <th>No.</th>
-                            <th>Protocol No.</th>
-                            <th>Appiontment Date</th>
-                            <th>Polyclinic</th>
-                            <th>Doctor</th>
-                        </tr>
-                        <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
-                    
-                    Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
-                    ">
-                            <td>1</td>
-                            <td>12345</td>
-                            <td>01/03/2019</td>
-                            <td>Diet Pol.</td>
-                            <td>Prof. Dr. Ahmet MEHMET</td>
-                        <tr>
-                            <td>2</td>
-                            <td>45678</td>
-                            <td>15/01/2020</td>
-                            <td>Cardiology Pol.</td>
-                            <td>Doc. Dr. Ayse SARMASIK</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>91011</td>
-                            <td>22/02/2020</td>
-                            <td>Urology Pol.</td>
-                            <td>Uzm. Dr. Hasan HUSEYIN</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>12131</td>
-                            <td>04/03/2020</td>
-                            <td>Emergency Pol.</td>
-                            <td>Prof. Dr. Ridvan CELIK</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>14151</td>
-                            <td>18/04/2020</td>
-                            <td>Urology Pol.</td>
-                            <td>Prof. Dr. Ahmet MEHMET</td>
-                        </tr>
+                    <h10 class="historyHeaders" id="appRegPatientHistory"> Patient Appointment History</h10>
+                    <table id="patientHistoryTable">
+                        <thead>
+                            <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                <td
+                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                    No.
+                                </td>
+                                <td
+                                    style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                    Appointment No</td>
+                                <td
+                                    style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                    Appiontment Date</td>
+                                <td
+                                    style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                    Polyclinic</td>
+                                <td
+                                    style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                    Doctor</td>
+                                <td
+                                    style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                    Status</td>
+                                <td style="border-top-right-radius: 8px;">Select</td>
+                            </tr>
+                        </thead>
+                        <tbody style="background-color: inherit !important;">
+
+                        </tbody>
                     </table>
                 </div>
 
                 <div class="appointmentStatisticsDiv">
+                    <h10 class="historyHeaders" id="appRegPatientStatistics" style="margin-left: -42px;"> Stats</h10>
                     <div class="card-container" id="regApp-card-container">
+
                         <div class="baseCard" id="statics1"
                             onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');"
                             onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');">
                             <div class="card" id="staticsCard1">
-                                <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-1.png');
+                                <div id="analytcStatics1" class="front" style="background-image: url('/public/images/patient-appointment-statistics.png');
                                 background-size: cover;">
                                     <div class="card-title">
                                         <header>
                                             <h4>
-                                                Hasta Randevu Durumu
+                                                Patient Appointments Status
                                             </h4>
                                         </header>
                                     </div>
@@ -203,9 +220,25 @@
                                     <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                         title="Randevulu hasta vs Normal Hasta"></button>
                                     <p class="cardP">
-                                        Hastalarin basvuru turune gore istatistik. <br><br>
-                                        Randevulu hasta : 4 <br>
-                                        Normal hasta : 12
+                                    <table id="patientAppointmentStatusTable"
+                                        style="margin-left:-26px !important;margin-top:0px !important">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Polyclinic
+                                                </td>
+                                                <td
+                                                    style="border-right: 1px solid #b9c8d2 !important;border-bottom: none;border-top: none;">
+                                                    Date</td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;">
+
+                                        </tbody>
+                                    </table>
                                     </p>
                                 </div>
                             </div>
@@ -215,12 +248,12 @@
                             onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');"
                             onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');">
                             <div class="card" id="staticsCard2">
-                                <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-2.png');
-                                background-size: cover; background-color: cornflowerblue;">
+                                <div id="analytcStatics2" class="front"
+                                    style="background-image: url('/public/images/polyclinic-statistics.png');background-size: cover; ">
                                     <div class="card-title">
                                         <header>
                                             <h4>
-                                                Hasta Kurum Turu
+                                                Polyclinic Appointment Status
                                             </h4>
                                         </header>
                                     </div>
@@ -229,10 +262,23 @@
                                     <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                         title="Hasta Kurum Turu"></button>
                                     <p class="cardP">
-                                        Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
-                                        Yesilkart : 4 <br>
-                                        SGK : 12 <br>
-                                        Ucretli : 1
+                                    <h1 id="appMonth" style="font-size: smaller;"></h1>
+                                    <table id="polyclinicAppointmentStatusTable"
+                                        style="margin-left: -16px;font-size: 14px;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Polyclinic
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;">
+
+                                        </tbody>
+                                    </table>
                                     </p>
                                 </div>
                             </div>
@@ -242,12 +288,12 @@
                             onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');"
                             onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');">
                             <div class="card" id="staticsCard3">
-                                <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-3.png');
-                                background-size: cover; background-color: cornflowerblue;">
+                                <div id="analytcStatics3" class="front"
+                                    style="background-image: url('/public/images/polyclinic-doctor-appointment.png');background-size: cover;">
                                     <div class="card-title">
                                         <header>
                                             <h4>
-                                                Hasta Cinsiyet Dagilimi
+                                                Doctor Appointments Status
                                             </h4>
                                         </header>
                                     </div>
@@ -256,9 +302,21 @@
                                     <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                         title="Hasta Cinsiyet Dagilimi"></button>
                                     <p class="cardP">
-                                        Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                        Kadin : 4 <br>
-                                        Erkek : 8
+                                    <table id="doctorAppointmentTable" style="margin: -20px;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Doctor
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;font-size: 13px;">
+
+                                        </tbody>
+                                    </table>
                                     </p>
                                 </div>
                             </div>
@@ -266,16 +324,17 @@
                     </div>
 
                     <div class="card-container" id="regApp-card-container">
+
                         <div class="baseCard" id="statics4"
                             onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');"
                             onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');">
                             <div class="card" id="staticsCard1">
-                                <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-4.png');
-                                background-size: cover;">
+                                <div id="analytcStatics1" class="front" style="background-image: url('/public/images/staff-leave.png');
+                                background-size: contain;">
                                     <div class="card-title">
                                         <header>
                                             <h4>
-                                                Hasta Randevu Durumu
+                                                Doctor On Leave <br>Status
                                             </h4>
                                         </header>
                                     </div>
@@ -284,9 +343,23 @@
                                     <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                         title="Randevulu hasta vs Normal Hasta"></button>
                                     <p class="cardP">
-                                        Hastalarin basvuru turune gore istatistik. <br><br>
-                                        Randevulu hasta : 4 <br>
-                                        Normal hasta : 12
+                                    <table id="doctorOnLeaveTable"
+                                        style="margin: -20px 0px 0px -14px !important;width: 113% !important;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;font-size: smaller;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Doctor
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Return Date</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody
+                                            style="background-color: inherit !important;font-size: small !important  ;">
+
+                                        </tbody>
+                                    </table>
                                     </p>
                                 </div>
                             </div>
@@ -296,12 +369,12 @@
                             onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');"
                             onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');">
                             <div class="card" id="staticsCard2">
-                                <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-5.png');
-                                background-size: cover; background-color: cornflowerblue;">
+                                <div id="analytcStatics2" class="front"
+                                    style="background-image: url('/public/images/percentage-pie-chart-2.png');background-size: contain; ">
                                     <div class="card-title">
                                         <header>
                                             <h4>
-                                                Hasta Kurum Turu
+                                                Canceled / Valid Appointments Status
                                             </h4>
                                         </header>
                                     </div>
@@ -310,10 +383,23 @@
                                     <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                         title="Hasta Kurum Turu"></button>
                                     <p class="cardP">
-                                        Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
-                                        Yesilkart : 4 <br>
-                                        SGK : 12 <br>
-                                        Ucretli : 1
+                                    <h1 id="appValid" style="font-size: medium;"></h1>
+                                    <h1 id="appCanceled" style="font-size: medium;"></h1>
+                                    <table id="canceledValidAppointmentTable" style="margin-top: 15px;width: 100%;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Status
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;font-size: 13px;">
+
+                                        </tbody>
+                                    </table>
                                     </p>
                                 </div>
                             </div>
@@ -323,12 +409,12 @@
                             onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');"
                             onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5','staticsCard6');">
                             <div class="card" id="staticsCard3">
-                                <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-6.png');
-                                background-size: cover; background-color: cornflowerblue;">
+                                <div id="analytcStatics3" class="front"
+                                    style="background-image: url('/public/images/polyclinic-gender.png');background-size: cover;">
                                     <div class="card-title">
                                         <header>
                                             <h4>
-                                                Hasta Cinsiyet Dagilimi
+                                                Appointments Gender Distribution
                                             </h4>
                                         </header>
                                     </div>
@@ -337,9 +423,24 @@
                                     <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                         title="Hasta Cinsiyet Dagilimi"></button>
                                     <p class="cardP">
-                                        Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                        Kadin : 4 <br>
-                                        Erkek : 8
+                                    <table id="appointmentGenderTable" style="margin-left: -25px;font-size: 10px;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Polyclinic
+                                                </td>
+                                                <td
+                                                    style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                                    Gender</td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;">
+
+                                        </tbody>
+                                    </table>
                                     </p>
                                 </div>
                             </div>
@@ -350,23 +451,24 @@
 
         </div>
         <div class="appRegButtonDiv">
-            <button class="appRegButtons btn-primary" id="hastaAra">Hasta Ara</button>
-            <button class="appRegButtons btn-success" id="kaydet"
-                onclick="ShowOrHideMethods.appointmentRegShowSuccesAlert();">Kaydet</button>
-            <button class="appRegButtons btn-info" id="guncelle"
-                onclick="ShowOrHideMethods.appointmentRegShowSuccesAlert();">Guncelle</button>
-            <button class="appRegButtons btn-danger" id="yeniHasta" onclick="checksBeforeExit();">Yeni Hasta</button>
+            <button class="appRegButtons btn-primary" id="patientSearch" title="Click for search patient."
+                onclick="AppointmentMethods.findPatient()">Search</button>
+            <button class="appRegButtons btn-success" id="appointmentSave" title="Click for save appointment."
+                onclick="AppointmentMethods.saveAppointment();">Save</button>
+            <button class="appRegButtons btn-danger" id="newAppointment" title="Click for new patient."
+                onclick="AppointmentMethods.clearForNewPatient();">New Appointment</button>
         </div>
 
-        <div id="appRegIframeContainer" class="modal" style="padding: 60px;">
-            <form id="appReg-modal-content" class="appRegIframeContent animate" action="?action=add" method="post">
-                <div id="appRegIframeImgcontainer" class="imgcontainer">
-                    <span onclick="document.getElementById('appRegIframeContainer').style.display='none'"
-                        id="appRegIframeCloseBtn" class="close" title="Close Modal">&times;</span>
-                    <img id="appRegAvatar" src="/public/images/id-3.png" alt="Avatar" class="avatar">
+        <div id="polExamIframeContainer" class="modal" style="padding: 25px;">
+            <form id="polExam-modal-content" class="polExamIframeContent animate" action="?action=add" method="post">
+                <div id="polExamIframeImgcontainer" class="imgcontainer">
+                    <span onclick="document.getElementById('polExamIframeContainer').style.display='none'; 
+                    document.getElementById('patientSearch').click();" id="polExamIframeCloseBtn" class="close"
+                        title="Close Modal">&times;</span>
+                    <img id="polExamAvatar" src="/public/images/id-3.png" alt="Avatar" class="avatar">
                 </div>
-                <iframe src="/public/htmls/hastaKimlik.html" name="appRegIframe" id="appRegmIframe" allowTransparency="true"
-                    frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
+                <iframe src="/public/htmls/hastaKimlik.html" name="polExamIframe" id="polExamIframe"
+                    allowTransparency="true" frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
                 </iframe>
             </form>
         </div>
@@ -443,22 +545,21 @@
             <div id="userStatisticsContainer" class="userStatisticsContainer">
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
                 <table id="userLoginStatsTable">
-                    <tr id="tableHeader">
-                        <th>#</th>
-                        <th>Ip Adress</th>
-                        <th>Login Date</th>
-                        <th>Login Duration</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>192.168.1.11</td>
-                        <td>03.09.2020 14:10</td>
-                        <td>22 minutes 17 seconds</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader">
+                            <th>#</th>
+                            <th>Ip Adress</th>
+                            <th>Local Machine</th>
+                            <th>Login Date</th>
+                            <th>Login Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 id="lastPasswordChangeStatistics" class="historyHeaders" style="margin: 5px;color: white;">-</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -567,14 +668,14 @@
                 Old Password: <br>
                 <input type="password" name="userOldPassword" id="userOldPassword"
                     placeholder="Please enter your current password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <br>
                 New Password: <br>
                 <input type="password" name="userNewPassword" id="userNewPassword"
                     placeholder="Please enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <span for='userNewPassword' class="p-viewer">
                     <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
@@ -585,9 +686,9 @@
                 New Password Repeat: <br>
                 <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
                     placeholder="Please re-enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event),
-                    CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator')">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
+                    CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
                 <span for='userNewPasswordRepeat' class="p-viewer">
                     <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
@@ -595,12 +696,10 @@
                     </i>
                 </span>
                 <br>
-                <pCapsLockIndicator id="pCapsLockIndicator">WARNING! Caps lock is ON.</pCapsLockIndicator>
+                <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
-                    Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
+                    title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -730,8 +829,11 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Statistics." onclick="
+                ShowOrHideMethods.showPopUpModal('userStatistics'); 
+                LoginProcess.userLoginStatistics();
+                LoginProcess.getLastPasswordChangeStatistics();">
+                <i class="fa fa-bar-chart"></i> </a>
             <a href="#" class="menu-item" title="User Trainings."
                 onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
             <a href="#" class="menu-item" title="User Settings."
@@ -777,8 +879,6 @@
         <p id="bottomScrollP4">News about your hospital --- it's not a mobile device.</p>
     </div><br>
     <!-- end of Footer -->
-
-
 
     <script src="/public/functions/functions.js"></script>
 </body>

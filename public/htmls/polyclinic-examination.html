@@ -34,7 +34,9 @@
     <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
 </head>
 
-<body id="polyclinicExaminationBody" onload=" PolyclinicExamMethods.getMaxProtocolNo();
+<body id="polyclinicExaminationBody" onload=" 
+    myClockMethods.myClock();
+    PolyclinicExamMethods.getMaxProtocolNo();
     PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );
     LoginProcess.checkIfThereIsAUserLoggedIn('polExamSave', 'polSearch');
     jQueryMethods.setCalenderValueToday('patientBirthDate');
@@ -46,6 +48,7 @@
     PolyclinicExamMethods.fillPatientHealtInsuranceTable();
     PolyclinicExamMethods.fillPatientGenderTable();
     PolyclinicExamMethods.fillDoctorPatientTable();
+    PolyclinicExamMethods.fillDoctorAppointmentTable();
     PolyclinicExamMethods.fillDoctorOnLeaveTable();
     ShowOrHideMethods.showBackTotopButton();
     ShowOrHideMethods.adjustHtmlsBackground('polyclinicExaminationBody');
@@ -61,10 +64,10 @@
     </div>
 
     <div class="polyclinicExamMainContainer" id="polyclinicExamMainContainer">
-        
+
         <div class="polyclinicExamHeaderDiv" id="polyclinicExamHeaderDiv">
             <div class="polyclinicExamSubHeadDiv" id="polyclinicExamSubHeadDiv">
-                <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('polyclinic-examination')"
+                <div id="newTabButton" onclick="window.open('\http:\/\/localhost:161/polExam', '_blank');"
                     title="Click for open in new tab."><img class="openInNewTab" id="hastaKimlikOpenInNewTab"
                         src="/public/images/open-new-tab.png" alt=""></div>
                 <div id="polyclinicExamModulNameText"> Polyclinic Examination Module </div>
@@ -75,6 +78,8 @@
             </div>
             <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;"
                 onmouseover="LoginProcess.showUserDataOnHover();" title="">Please Login from main page!</hUserName>
+            <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!
+            </p>
         </div>
 
         <div class="bottomScrool" id="polExamTopScrool" style="margin-bottom: 20px;">
@@ -169,7 +174,7 @@
                             onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">
                             Degistir <span id="degistirSpan">Change patient <br> photo.</span>
                         </button>
-                        <button class="polyclinicButtons btn--swap" id="polExamIdDetails" onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');
+                        <button class="polyclinicButtons btn--swap" id="polExamIdDetails" style="width: 109%;" onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');
                             PolyclinicExamMethods.getPatientIdFromPreviousPage();">Patient
                             Id Info <span id="polExamIdDetailsSpan">Click for detailed information.</span>
                         </button>
@@ -196,7 +201,7 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                             title="This statistic shows which polyclinics and how many times the patient visited.">
                                         </button>
@@ -235,7 +240,7 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                             title="This statistic shows status of patient's appointment."></button>
                                         <p class="cardP">
@@ -253,7 +258,7 @@
                                                     <td style="border-top-right-radius: 8px;">Status</td>
                                                 </tr>
                                             </thead>
-                                            <tbody style="background-color: inherit !important;">
+                                            <tbody>
 
                                             </tbody>
                                         </table>
@@ -276,11 +281,11 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                             title="This statistic shows patient's upcoming appointments."></button>
                                         <p class="cardP">
-                                        <table id="patientUpcominAppointmentTable">
+                                        <table id="patientUpcomingAppointmentTable" style="width: 113%;">
                                             <thead>
                                                 <tr id="tableHeader"
                                                     style="background-color: #49A681 !important; color: white;">
@@ -321,7 +326,7 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows how many patients were examined or awaited in the
                                             polyclinic."></button>
                                         <p class="cardP">
@@ -359,14 +364,14 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                             title="This statistic shows which health insurance the patients in the polyclinic belong to."></button>
                                         <p class="cardP">
                                         <table id="patientHealtInsuranceTable" style="margin-left: -16px;">
                                             <thead>
                                                 <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;">
+                                                    style="background-color: #49A681 !important; color: white;font-size: 9px;">
                                                     <td
                                                         style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
                                                         Polyclinic
@@ -400,14 +405,14 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                             title="This statistic shows the gender distribution of patients in the polyclinic."></button>
                                         <p class="cardP">
                                         <table id="patientGenderTable" style="margin-left: -15px;">
                                             <thead>
                                                 <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;">
+                                                    style="background-color: #49A681 !important; color: white;font-size: 9px;">
                                                     <td
                                                         style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
                                                         Polyclinic
@@ -448,14 +453,14 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                             title="This statistic shows the doctors' examined patient count."></button>
                                         <p class="cardP">
                                         <table id="doctorPatientTable" style="margin-left: -13px;">
                                             <thead>
                                                 <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;">
+                                                    style="background-color: #49A681 !important; color: white;font-size: 9px;">
                                                     <td
                                                         style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
                                                         Doctor
@@ -490,7 +495,7 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                             title="This statistic shows the doctors' appointment patient count."></button>
                                         <p class="cardP">
@@ -502,9 +507,6 @@
                                                         style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
                                                         Doctor
                                                     </td>
-                                                    <td
-                                                        style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
-                                                        Status</td>
                                                     <td style="border-top-right-radius: 8px;">Count</td>
                                                 </tr>
                                             </thead>
@@ -531,7 +533,7 @@
                                             </header>
                                         </div>
                                     </div>
-                                    <div class="back">
+                                    <div class="back" style="overflow-y: scroll !important;">
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                             title="This statistic shows the doctors on leave."></button>
                                         <p class="cardP">
@@ -641,7 +643,7 @@
 
     <button onclick="ShowOrHideMethods.backtoTopFunction();" id="goTotop" title="Go to top"></button>
 
-    <div id="polExamIframeContainer" class="modal" style="padding: 60px;">
+    <div id="polExamIframeContainer" class="modal" style="padding: 25px;">
         <form id="polExam-modal-content" class="polExamIframeContent animate" action="?action=add" method="post">
             <div id="polExamIframeImgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('polExamIframeContainer').style.display='none'; 

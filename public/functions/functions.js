@@ -2639,7 +2639,7 @@ var
 
     PolyclinicExamMethods = {
 
-        clearForNewPatient: function name() {
+        clearForNewPatient: function clearForNewPatient() {
             jQueryMethods.toastrOptions();
             var myPatientId = $("#patientId").val(),
                 savePatient = document.getElementById('polExamSave'),
@@ -2740,12 +2740,15 @@ var
                             statusSelect = patient.statusSelect;
                             $.cookie('patientIdNo');
 
+                            PolyclinicExamMethods.fillPatientAppointmentStatusTable();
+                            PolyclinicExamMethods.fillPatientUpcomingAppointmentTable();
                             PolyclinicExamMethods.findPatientHistory();
                             PolyclinicExamMethods.fillPatientVisitStatisticsTable();
                             PolyclinicExamMethods.fillPolyclinicPatientCountTable();
                             PolyclinicExamMethods.fillPatientHealtInsuranceTable();
                             PolyclinicExamMethods.fillPatientGenderTable();
                             PolyclinicExamMethods.fillDoctorPatientTable();
+                            PolyclinicExamMethods.fillDoctorAppointmentTable();
                             PolyclinicExamMethods.fillDoctorOnLeaveTable();
                             // findPatientLabRadHistory function will come here
 
@@ -2973,6 +2976,55 @@ var
             }
         },
 
+        fillPatientAppointmentStatusTable: function fillPatientAppointmentStatusTable() {
+            $('#patientAppointmentStatusTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExam/fillPatientAppointmentStatusTable",
+                data: { patientId: $("#patientId").val() },
+                success: function (result) {
+                    $.each(result, function (i) {
+                        $("#patientAppointmentStatusTable> tbody").append(
+                            "<tr class='appData'><td class='appPol'>"
+                            + result[i].appointmentPolyclinic
+                            + "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour
+                            + "</td><td class='appStatus'>" + result[i].appointmentStatus + "</td></tr>");
+                    });
+                    AppointmentMethods.colorRedCanceledAppointmentId('patientAppointmentStatusTable', 2);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientUpcomingAppointmentTable: function fillPatientUpcomingAppointmentTable() {
+            $('#patientUpcomingAppointmentTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExam/fillPatientUpcomingAppointmentTable",
+                data: { patientId: $("#patientId").val() },
+                success: function (result) {
+                    $.each(result, function (i) {
+                        $("#patientUpcomingAppointmentTable> tbody").append(
+                            "<tr class='appData'><td class='appDoctor'>"
+                            + result[i].appointmentDoctor
+                            + "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour
+                            + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
         fillPatientVisitStatisticsTable: function fillPatientVisitStatisticsTable() {
             var patientId = $('#patientId').val();
 
@@ -3094,6 +3146,30 @@ var
                 error: function (e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillDoctorAppointmentTable: function fillDoctorAppointmentTable() {
+            var polExamDate = $('#patientPolExamDate').val();
+            $('#doctorAppointmentTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate },
+                url: "/polExam/fillDoctorAppointmentTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#doctorAppointmentTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
+                            + docs[i]["_id"]
+                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Doctor appointments couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });
@@ -3284,6 +3360,71 @@ var
 
     AppointmentMethods = {
 
+        clearForNewPatient: function clearForNewPatient() {
+            jQueryMethods.toastrOptions();
+            var myPatientId = $("#patientId").val(),
+                savePatient = document.getElementById('appointmentSave'),
+                myPolyclinicSelect = document.getElementById('appointmentPolyclinic'),
+                myDoctorSelector = document.getElementById('appointmentDoctor'),
+                myStatusSelect = document.getElementById('appointmentStatus'),
+                myPatientIdNo = document.getElementById('patientIdNo'),
+                myPatientId = document.getElementById('patientId');
+
+            if (myPatientId != '' || myPatientId > 0) {
+                toastr.warning(
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
+                    {
+                        allowHtml: true,
+                        progressBar: true,
+                        timeOut: 10000,
+                        onShown: function (toast) {
+                            $("#clearConfirmBtn").on('click', function () {
+                                AppointmentMethods.getMaxAppointmentId();
+                                jQueryMethods.setCalenderValueToday('appointmentDate');
+                                $('#patientHistoryTable > tbody').empty();
+                                // $('#patientVisitStatisticsTable > tbody').empty();
+                                // $('#patientAppointmentStatusTable > tbody').empty();
+                                // $('#patientUpcominAppointmentTable > tbody').empty();
+                                // $('#polyclinicPatientCountTable > tbody').empty();
+                                // $('#patientHealtInsuranceTable > tbody').empty();
+                                // $('#patientGenderTable > tbody').empty();
+
+                                $("#appointmentId").val('');
+                                $("#patientId").val('');
+                                $("#patientIdNo").val('');
+                                $("#patientName").val('');
+                                $("#patientSurname").val('');
+                                $("#patientFatherName").val('');
+                                $("#patientMotherName").val('');
+                                $("#patientGender").val('');
+                                $("#patientBirthPlace").val('');
+                                $("#patientBirthDate").val('');
+                                jQueryMethods.setCalenderValueToday('appointmentDate');
+                                $("#appointmentHour").val('');
+                                $("#patientPhone").val('');
+                                $("#patientAdress").val('');
+                                $('#appointmentRegPatientPhotoId')[0].src = 'http://localhost:161/public/images/Patient_Male.ico';
+                                savePatient.innerHTML = 'Save';
+                                myPatientIdNo.readOnly = false;
+                                myPatientId.readOnly = false;
+                                myPolyclinicSelect.readOnly = false;
+                                myDoctorSelector.readOnly = false;
+                                myStatusSelect.readOnly = false;
+                                document.getElementById("appointmentDate").readOnly = false;
+                                $("#appointmentDate").css("pointer-events", "all");
+                                $("#appointmentDate").css("background-color", "white");
+                                $("#appointmentPolyclinic").css("pointer-events", "all");
+                                $("#appointmentPolyclinic").css("background-color", "white");
+                                $("#appointmentDoctor").css("pointer-events", "all");
+                                $("#appointmentDoctor").css("background-color", "white");
+
+                                toastr.info('Form cleared for new patient!', 'Form Cleared');
+                            });
+                        }
+                    });
+            }
+        },
+
         randevuSelect: function randevuSelect(checkboxId, checkboxClass) {
             var selectedCheckbox = document.getElementById(checkboxId),
                 checkboxParent = selectedCheckbox.parentElement,
@@ -3304,6 +3445,374 @@ var
                 grandParent.style.backgroundColor = '#dddddd';
 
             }
+        },
+
+        findPatient: function findPatient() {
+            var searchQuery = 0,
+                myQuery = {},
+                myStatusSelect = document.getElementById('appointmentStatus'),
+                statusSelect = myStatusSelect.options[myStatusSelect.selectedIndex];
+
+            if ($("#patientIdNo").val() == '') {
+                searchQuery = $("#patientId").val();
+                myQuery = {
+                    patientId: searchQuery
+                }
+            } else {
+                searchQuery = $("#patientIdNo").val();
+                myQuery = {
+                    patientIdNo: searchQuery
+                }
+            };
+
+            if ($("#patientIdNo").val() == '' && $("#patientId").val() == '') {
+                toastr.error('Patient Id or Patient Id No cant be empty! \n\n\n', 'Error!')
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: "/appSave/findPatient",
+                    data: myQuery,
+                    success: function (patient) {
+                        jQueryMethods.toastrOptions();
+                        if (patient.patientId == '' || patient.patientId == null || patient.patientId == 'undefind') {
+                            toastr.error('Patient couldnt find! \n\n\n', 'Error!')
+                        } else {
+                            $("#patientId").val(patient.patientId);
+                            $("#patientIdNo").val(patient.patientIdNo);
+                            $("#patientName").val(patient.patientName);
+                            $("#patientSurname").val(patient.patientSurname);
+                            $("#patientFatherName").val(patient.patientFatherName);
+                            $("#patientMotherName").val(patient.patientMotherName);
+                            $("#patientGender").val(patient.patientGender);
+                            $("#patientBirthPlace").val(patient.patientBirthPlace);
+                            $("#patientBirthDate").val(patient.patientBirthDate);
+                            $("#patientPhone").val(patient.patientPhone);
+                            $("#patientAdress").val(patient.patientAdress);
+                            $('#appointmentRegPatientPhotoId')[0].src = patient.patientPhotoSrc;
+                            statusSelect = patient.statusSelect;
+
+                            AppointmentMethods.fillPolyclinicAppointmentStatusTable();
+                            AppointmentMethods.fillCanceledValidAppointmentTable();
+                            AppointmentMethods.fillAppointmentGenderTable();
+                            AppointmentMethods.findPatientAppointmentHistory();
+                            PolyclinicExamMethods.fillPatientAppointmentStatusTable();
+                            PolyclinicExamMethods.fillDoctorAppointmentTable();
+                            PolyclinicExamMethods.fillDoctorOnLeaveTable();
+
+
+                            toastr.info('Patient - ' + $("#patientName").val() + $("#patientSurname").val() + ' - found!', 'Patient Search');
+                        }
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Patient couldnt find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        saveAppointment: function saveAppointment() {
+            jQueryMethods.toastrOptions();
+            var myPolyclinicSelect = document.getElementById('appointmentPolyclinic'),
+                myDoctorSelector = document.getElementById('appointmentDoctor'),
+                myStatusSelect = document.getElementById('appointmentStatus'),
+                myData = {
+                    appointmentId: $("#appointmentId").val(),
+                    patientId: $("#patientId").val(),
+                    patientIdNo: $("#patientIdNo").val(),
+                    patientName: $("#patientName").val(),
+                    patientSurname: $("#patientSurname").val(),
+                    patientFatherName: $("#patientFatherName").val(),
+                    patientMotherName: $("#patientMotherName").val(),
+                    patientGender: $("#patientGender").val(),
+                    patientBirthPlace: $("#patientBirthPlace").val(),
+                    patientBirthDate: $("#patientBirthDate").val(),
+                    appointmentDate: $("#appointmentDate").val(),
+                    appointmentHour: $("#appointmentHour").val(),
+                    appointmentPolyclinic: myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value,
+                    appointmentDoctor: myDoctorSelector.options[myDoctorSelector.selectedIndex].value,
+                    appointmentStatus: myStatusSelect.options[myStatusSelect.selectedIndex].value,
+                    patientSavedUser: $.cookie('username')
+                };
+
+            if (document.getElementById('appointmentSave').innerHTML == 'Update') {
+                AppointmentMethods.updateAppointmentData()
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/appSave/saveAppointment',
+                    success: function () {
+                        toastr.success('Appointment successfully saved!', 'Save');
+                        AppointmentMethods.fillPolyclinicAppointmentStatusTable();
+                        AppointmentMethods.fillCanceledValidAppointmentTable();
+                        AppointmentMethods.fillAppointmentGenderTable();
+                        AppointmentMethods.findPatientAppointmentHistory();
+                        PolyclinicExamMethods.fillPatientAppointmentStatusTable();
+                        PolyclinicExamMethods.fillDoctorAppointmentTable();
+                        PolyclinicExamMethods.fillDoctorOnLeaveTable();
+                    },
+                    error: function (e) {
+                        toastr.error('Appointment couldnt save! \n' + e, 'Error!')
+                        console.log("ERROR: ", e);
+                    }
+                });
+            }
+        },
+
+        getMaxAppointmentId: function getMaxAppointmentId() {
+            $.ajax({
+                type: "GET",
+                url: "/appSave/getMaxAppointmentId",
+                success: function (patient) {
+                    $("#appointmentId").val(patient.appointmentId + 1);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error("Couldn't get max appointmentId!", "Error!")
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        updateAppointmentData: function updateAppointmentData() {
+            jQueryMethods.toastrOptions();
+            var myStatusSelect = document.getElementById('appointmentStatus'),
+                myAppointmentHour = document.getElementById('appointmentHour').value,
+                myAppointmentId = document.getElementById('appointmentId').value,
+                myData =
+                {
+                    appointmentId: myAppointmentId,
+                    appointmentHour: myAppointmentHour,
+                    appointmentStatus: myStatusSelect.options[myStatusSelect.selectedIndex].value
+                };
+
+            $('#patientHistoryTable > tbody').empty();
+
+            if ($("#patientIdNo").val() == '') {
+                toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
+            }
+            else {
+                $.ajax({
+                    type: 'PUT',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/appSave/updateAppointmentData',
+                    success: function (patient) {
+                        toastr.success('Appointment updated! \n\n\n', 'Appointment Update');
+                        AppointmentMethods.fillPolyclinicAppointmentStatusTable();
+                        AppointmentMethods.fillCanceledValidAppointmentTable();
+                        AppointmentMethods.fillAppointmentGenderTable();
+                        AppointmentMethods.findPatientAppointmentHistory();
+                        PolyclinicExamMethods.fillPatientAppointmentStatusTable();
+                        PolyclinicExamMethods.fillDoctorAppointmentTable();
+                        PolyclinicExamMethods.fillDoctorOnLeaveTable();
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Appointment couldnt update! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        findPatientAppointmentHistory: function findPatientAppointmentHistory() {
+            $('#patientHistoryTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/appSave/findPatientAppointmentHistory",
+                data: { patientIdNo: $("#patientIdNo").val() },
+                success: function (result) {
+                    $.each(result, function (i, appointmentData) {
+                        i++;
+                        $("#patientHistoryTable> tbody").append(
+                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >"
+                            + i + "</td><td>" + appointmentData.appointmentId + "</td><td>"
+                            + appointmentData.appointmentDate + " - " + appointmentData.appointmentHour + "</td><td>"
+                            + appointmentData.appointmentPolyclinic + "</td><td>"
+                            + appointmentData.appointmentDoctor + "</td><td>"
+                            + appointmentData.appointmentStatus + "</td><td><button class='inpatientBtn btn-success' title='Click for select appointment.' onclick=\"AppointmentMethods.findByAppointmentId(\'patientHistory" + i + "\')\">Select</button></td></tr>");
+                    });
+                    AppointmentMethods.colorRedCanceledAppointmentId('patientHistoryTable', 5);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        colorRedCanceledAppointmentId: function colorRedCanceledAppointmentId(tableId, cellId) {
+            var table = document.getElementById(tableId);
+            for (var r = 0, n = table.rows.length; r < n; r++) {
+                for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+                    if (table.rows[r].cells[cellId].innerHTML == 'Canceled-Doctor-Operation'
+                        || table.rows[r].cells[cellId].innerHTML == 'Canceled-By-Patient') {
+                        table.rows[r].style.background = 'linear-gradient(90deg,rgb(229 48 62),lightgrey)';
+                        table.rows[r].style.color = 'white  ';
+                    }
+                }
+            }
+        },
+
+        findByAppointmentId: function findByAppointmentId(rowId) {
+            jQueryMethods.toastrOptions();
+            var myRow = document.getElementById(rowId),
+                myPolyclinicSelect = document.getElementById('appointmentPolyclinic'),
+                polyclinicSelect = myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex],
+                myDoctorSelector = document.getElementById('appointmentDoctor'),
+                doctorSelector = myDoctorSelector.options[myDoctorSelector.selectedIndex],
+                myStatusSelect = document.getElementById('appointmentStatus'),
+                statusSelect = myStatusSelect.options[myStatusSelect.selectedIndex],
+                myAppointmentId = myRow.cells[1].innerHTML,
+                myPatientIdNo = document.getElementById('patientIdNo'),
+                myPatientId = document.getElementById('patientId'),
+                appointmentSaveBtn = document.getElementById('appointmentSave');
+            $.ajax({
+                type: "GET",
+                url: "/appSave/findByAppointmentId",
+                data: { appointmentId: myAppointmentId },
+                success: function (patient) {
+                    if (patient.appointmentId == '' || patient.appointmentId == null
+                        || patient.appointmentId == 'undefind') {
+                        toastr.error('Patient appointment found by data couldnt set to form! \n\n\n', 'Error!')
+                    } else {
+                        $("#patientId").val(patient.patientId);
+                        $("#appointmentId").val(patient.appointmentId);
+                        $("#patientIdNo").val(patient.patientIdNo);
+                        $("#patientName").val(patient.patientName);
+                        $("#patientSurname").val(patient.patientSurname);
+                        $("#patientFatherName").val(patient.patientFatherName);
+                        $("#patientMotherName").val(patient.patientMotherName);
+                        $("#patientGender").val(patient.patientGender);
+                        $("#patientBirthPlace").val(patient.patientBirthPlace);
+                        $("#patientBirthDate").val(patient.patientBirthDate);
+                        $("#appointmentDate").val(patient.appointmentDate);
+                        $("#appointmentHour").val(patient.appointmentHour);
+                        polyclinicSelect = patient.appointmentPolyclinic;
+                        doctorSelector = patient.appointmentDoctor;
+                        statusSelect = patient.appointmentStatus;
+                        appointmentSaveBtn.innerHTML = 'Update';
+
+                        myPatientIdNo.readOnly = true;
+                        myPatientId.readOnly = true;
+                        myPolyclinicSelect.readOnly = true;
+                        myDoctorSelector.readOnly = true;
+                        document.getElementById("appointmentDate").readOnly = true;
+                        $("#appointmentDate").css("pointer-events", "none");
+                        $("#appointmentDate").css("background-color", "lightgrey");
+                        $("#appointmentPolyclinic").css("pointer-events", "none");
+                        $("#appointmentPolyclinic").css("background-color", "lightgrey");
+                        $("#appointmentDoctor").css("pointer-events", "none");
+                        $("#appointmentDoctor").css("background-color", "lightgrey");
+
+                        toastr.info('Appointment No: ' + patient.appointmentId + ' - selected!', 'Patient Appointment Search');
+                    }
+                },
+                error: function (e) {
+                    toastr.error('Patient appointment couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPolyclinicAppointmentStatusTable: function fillPolyclinicAppointmentStatusTable() {
+            var appMonth = document.getElementById('appMonth'),
+                date = new Date(),
+                firstDay = new Date(date.getFullYear(), date.getMonth(), 1).toLocaleDateString(),
+                lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).toLocaleDateString();
+
+            $('#polyclinicAppointmentStatusTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/appSave/fillPolyclinicAppointmentStatusTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#polyclinicAppointmentStatusTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
+                            + docs[i]["_id"]
+                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+
+                    appMonth.innerHTML = 'Appointments between = <br>' + firstDay + ' - ' + lastDay;
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Polyclinic appointments couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillCanceledValidAppointmentTable: function fillCanceledValidAppointmentTable() {
+            var canceled = 0, valid = 0, percentageValid = 0, percentageCanceled = 0, total = 0;
+
+            $('#canceledValidAppointmentTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/appSave/fillCanceledValidAppointmentTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#canceledValidAppointmentTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
+                            + docs[i]["_id"]['appointmentStatus']
+                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+
+                        if (docs[i]["_id"]['appointmentStatus'] == 'Canceled-Doctor-Operation'
+                            || docs[i]["_id"]['appointmentStatus'] == 'Canceled-By-Patient') {
+                            canceled = docs[i]["count"];
+                        } else {
+                            valid = docs[i]["count"];
+                        }
+                    });
+
+                    total = canceled + valid;
+                    percentageValid = (valid * 100) / total;
+                    percentageCanceled = (canceled * 100) / total;
+
+                    document.getElementById('appValid').innerHTML = 'Valid percentage = % ' + Math.round(percentageValid);
+                    document.getElementById('appCanceled').innerHTML = 'Canceled percentage = % ' + Math.round(percentageCanceled);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Canceled / Valid Appointments couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillAppointmentGenderTable: function fillAppointmentGenderTable() {
+            $('#appointmentGenderTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/appSave/fillAppointmentGenderTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#appointmentGenderTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='patientData'>"
+                            + docs[i]["_id"]["appointmentPolyclinic"]
+                            + "</td><td class='patientGender'>" + docs[i]["_id"]["patientGender"]
+                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Appointment gender couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
         }
     },
 
