@@ -128,11 +128,6 @@ input:read-only {
   animation: slide-right 1.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
-#administrationModule {
-  -webkit-animation: slide-right 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-  animation: slide-right 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-}
-
 @-webkit-keyframes slide-right {
   0% {
     -webkit-transform: translateX(-1000px);
@@ -164,10 +159,15 @@ input:read-only {
   animation: slide-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
-#randevuSorgu {
+#administrationModule {
   -webkit-animation: slide-left 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   animation: slide-left 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
+
+/* #randevuSorgu {
+  -webkit-animation: slide-left 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: slide-left 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+} */
 
 #dietModulu {
   -webkit-animation: slide-left 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;

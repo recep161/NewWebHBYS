@@ -2270,7 +2270,7 @@ var
             var hastaKimlikBaseCard = document.getElementById('hastaKimlikBaseCard'),
                 polMuayeneBaseCard = document.getElementById('polMuayeneBaseCard'),
                 randevuKayitBaseCard = document.getElementById('randevuKayitBaseCard'),
-                randevuSorguBaseCard = document.getElementById('randevuSorguBaseCard'),
+                // randevuSorguBaseCard = document.getElementById('randevuSorguBaseCard'),
                 laboratoryBaseParent = document.getElementById('laboratoryBaseParent'),
                 radiologyBaseParent = document.getElementById('radiologyBaseParent'),
 
@@ -2292,8 +2292,8 @@ var
             randevuKayitBaseCard.style.animation = 'slide-cards-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
             randevuKayitBaseCard.style.webkitAnimation = 'slide-cards-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
 
-            randevuSorguBaseCard.style.animation = 'slide-cards-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
-            randevuSorguBaseCard.style.webkitAnimation = 'slide-cards-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
+            // randevuSorguBaseCard.style.animation = 'slide-cards-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
+            // randevuSorguBaseCard.style.webkitAnimation = 'slide-cards-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
 
             laboratoryBaseParent.style.animation = 'slide-cards-right 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
             laboratoryBaseParent.style.webkitAnimation = 'slide-cards-right 1.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';

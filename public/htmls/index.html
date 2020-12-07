@@ -1,7 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="tr">
 
-
 <head>
     <meta charset='UTF-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=yes">
@@ -48,6 +47,7 @@
             ShowOrHideMethods.showBackTotopButton();
             ColorAndAdjustmentMethods.stabledColorsChange();
             jQueryMethods.toolTipFunction();
+            jQueryMethods.bottomUserMenuDrag();
             // ShowOrHideMethods.showFixedHeaderAfterScrool();
             // ColorAndAdjustmentMethods.scaleForMobile();">
 
@@ -74,7 +74,7 @@
                     </h1>
 
                     <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
-                        style="cursor: default;">
+                        style="cursor: default;box-shadow: 0px 3px 10px black;">
                     </hUserName>
                 </div>
             </div>
@@ -416,7 +416,47 @@
             </div>
         </div>
 
-        <div id="randevuSorgu" class="column" style="display: '';background-color: greenyellow;"
+        <div id="administrationModule" class="column" style="display: '';background-color: green;"
+            title="This module is administration portal.">
+            <div class="columnDivider">
+                <div class="modulTitleDiv">
+                    <button class="helpButtons fa fa-question-circle" title="Help and documents."
+                        onclick="ShowOrHideMethods.showPopUpModal('helpAndDocument');"></button>
+                    <h2 class="modulBaslik">Administration Module</h2>
+                    <p>
+                        <a id="modulLink11" class="modulLink" onclick="TabProcess.openTab('b11');
+                            ListingMethods.Listview();
+                            ColorAndAdjustmentMethods.scrollPage();
+                            ShowOrHideMethods.hideMyStickHeader('nav-wrapper')"
+                            style="color: black;border-bottom: solid 0.5px;">
+                            Click For Module
+                        </a>
+                </div>
+                <div>
+                    <img class="modulAvatar" src="/public/images/settings-1.png" alt=""
+                        onclick="TabProcess.openTab('b11');ShowOrHideMethods.hideMyStickHeader('nav-wrapper');">
+                </div>
+            </div>
+            </p>
+
+            <div id="b11" class="containerTab" style="display:none;background:inherit">
+                <button id="myCloseBtnB11" class="closeBtn" style="right: -50px;" onclick="this.parentElement.style.display='none';
+                    ListingMethods.Listview();
+                    ColorAndAdjustmentMethods.classColor();
+                    TabProcess.closeContainerTab('b11');
+                    ShowOrHideMethods.myStickHeader('nav-wrapper');">
+                    Close Module X
+                </button>
+                <iframe src="/public/htmls/administration.html" name="targetframe" id="iframe11"
+                    allowTransparency="true" frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
+                </iframe>
+                <input type="button" class="fixedCloseBtn" value="X" onclick="
+                    TabProcess.closeContainerTab('b11');
+                    ShowOrHideMethods.myStickHeader('nav-wrapper');">
+            </div>
+        </div>
+
+        <!-- <div id="randevuSorgu" class="column" style="display: '';background-color: greenyellow;"
             title="Keep track of your appointments. With Checkins, always know which patients are in the Waiting Room and how late they are.">
             <div class="columnDivider">
                 <div class="modulTitleDiv">
@@ -455,7 +495,7 @@
                     CheckAndClearMethods.checksBeforeExit('iframe4', 'input', 'b4');
                    ShowOrHideMethods.myStickHeader('nav-wrapper');">
             </div>
-        </div>
+        </div> -->
 
     </div>
 
@@ -717,45 +757,7 @@
     <!-- sixth row-->
     <div class="row">
 
-        <div id="administrationModule" class="column" style="display: '';background-color: green;"
-            title="This module is administration portal.">
-            <div class="columnDivider">
-                <div class="modulTitleDiv">
-                    <button class="helpButtons fa fa-question-circle" title="Help and documents."
-                        onclick="ShowOrHideMethods.showPopUpModal('helpAndDocument');"></button>
-                    <h2 class="modulBaslik">Administration Module</h2>
-                    <p>
-                        <a id="modulLink11" class="modulLink" onclick="TabProcess.openTab('b11');
-                            ListingMethods.Listview();
-                            ColorAndAdjustmentMethods.scrollPage();
-                            ShowOrHideMethods.hideMyStickHeader('nav-wrapper')"
-                            style="color: black;border-bottom: solid 0.5px;">
-                            Click For Module
-                        </a>
-                </div>
-                <div>
-                    <img class="modulAvatar" src="/public/images/settings-1.png" alt=""
-                        onclick="TabProcess.openTab('b11');ShowOrHideMethods.hideMyStickHeader('nav-wrapper');">
-                </div>
-            </div>
-            </p>
 
-            <div id="b11" class="containerTab" style="display:none;background:inherit">
-                <button id="myCloseBtnB11" class="closeBtn" style="right: -50px;" onclick="this.parentElement.style.display='none';
-                    ListingMethods.Listview();
-                    ColorAndAdjustmentMethods.classColor();
-                    TabProcess.closeContainerTab('b11');
-                    ShowOrHideMethods.myStickHeader('nav-wrapper');">
-                    Close Module X
-                </button>
-                <iframe src="/public/htmls/administration.html" name="targetframe" id="iframe11"
-                    allowTransparency="true" frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
-                </iframe>
-                <input type="button" class="fixedCloseBtn" value="X" onclick="
-                    TabProcess.closeContainerTab('b11');
-                    ShowOrHideMethods.myStickHeader('nav-wrapper');">
-            </div>
-        </div>
 
 
     </div>
@@ -901,7 +903,37 @@
             </div>
         </div>
 
-        <div class="baseCard" id="randevuSorguBaseCard">
+        <div class="baseCard" id="administrationBaseParent">
+            <div class="card" id="administrationCardParent">
+                <div id="administrationCard" class="front"
+                    style="background-image: url('/public/images/settings-1.png');background-size: 250px;">
+                    <div class="card-title">
+                        <header>
+                            <h4>
+                                Administration Module
+                            </h4>
+                        </header>
+                    </div>
+                </div>
+                <div class="back">
+                    <button class="helpButtons fa fa-question-circle" title="Help and documents."
+                        onclick="ShowOrHideMethods.showPopUpModal('helpAndDocument');"></button>
+                    <p class="like-button fa fa-heart" title="Add your favourites!" id="myHeart11" onclick="
+                    CardAnimationAndAdjustmentMethods.addCardFavourites('administrationBaseParent','myHeart11');">
+                    </p>
+                    <p class="cardP">
+                        This module is administration portal.
+                    </p>
+                    <a id="cardLink11" class="cardLink" onclick="TabProcess.openTab('b11');
+                        ListingMethods.Listview();
+                        ShowOrHideMethods.hideMyStickHeader('nav-wrapper')"
+                        style="color: black;border-bottom: solid 0.5px;">Click
+                        For Module</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="baseCard" id="randevuSorguBaseCard">
             <div class="card" id="randevuSorguParentCard">
                 <div id="CardRandevuSorgu" class="front"
                     style="background-image:url('/public/images/Medical-icons/Calendar-selected-day.png');background-size: 200px;">
@@ -928,7 +960,7 @@
                         For Module</a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!----------- second row of flip-cards -------->
@@ -1111,35 +1143,7 @@
             </div>
         </div>
 
-        <div class="baseCard" id="administrationBaseParent">
-            <div class="card" id="administrationCardParent">
-                <div id="administrationCard" class="front"
-                    style="background-image: url('/public/images/settings-1.png');background-size: 250px;">
-                    <div class="card-title">
-                        <header>
-                            <h4>
-                                Administration Module
-                            </h4>
-                        </header>
-                    </div>
-                </div>
-                <div class="back">
-                    <button class="helpButtons fa fa-question-circle" title="Help and documents."
-                        onclick="ShowOrHideMethods.showPopUpModal('helpAndDocument');"></button>
-                    <p class="like-button fa fa-heart" title="Add your favourites!" id="myHeart11" onclick="
-                    CardAnimationAndAdjustmentMethods.addCardFavourites('administrationBaseParent','myHeart11');">
-                    </p>
-                    <p class="cardP">
-                        This module is administration portal.
-                    </p>
-                    <a id="cardLink11" class="cardLink" onclick="TabProcess.openTab('b11');
-                        ListingMethods.Listview();
-                        ShowOrHideMethods.hideMyStickHeader('nav-wrapper')"
-                        style="color: black;border-bottom: solid 0.5px;">Click
-                        For Module</a>
-                </div>
-            </div>
-        </div>
+
     </div>
     <!--------------- end of flip-cards ---------->
 
