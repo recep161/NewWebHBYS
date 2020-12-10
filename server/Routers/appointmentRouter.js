@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
-    controllerAppointment = require('../Controllers/appointmentController');
+    controllerAppointment = require('../Controllers/appointmentController'),
+    path = require('path');
 
 router.use(function (req, res, next) {
     console.log('appointmentRouter answer: ' + "/" + req.method + ' - ' + req.url);
@@ -21,5 +22,9 @@ router.get('/fillAppointmentGenderTable', controllerAppointment.fillAppointmentG
 // router.get('/fillDoctorOnLeaveTable', controllerPolExam.fillDoctorOnLeaveTable);
 // router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
 // router.put('/changeUserPassword', controllerIndex.changeUserPassword);
+
+router.use("*", (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));
+});
 
 module.exports = router;

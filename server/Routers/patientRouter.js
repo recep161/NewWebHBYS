@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
-    controllerPatient = require('../Controllers/patientController');
+    controllerPatient = require('../Controllers/patientController'),
+    path = require('path');
 
 router.use(function (req, res, next) {
     console.log('patientRouter answer: ' + "/" + req.method, req.url);
@@ -19,5 +20,9 @@ router.put('/updatePatientData', controllerPatient.updatePatientData);
 // router.get('/getLastPasswordChangeStatistics', controllerIndex.getLastPasswordChangeStatistics);
 // router.get('/checkUserPassword', controllerIndex.checkUserPassword);
 // router.put('/changeUserPassword', controllerIndex.changeUserPassword);
+
+router.use("*", (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));
+});
 
 module.exports = router;

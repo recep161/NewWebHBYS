@@ -6,8 +6,8 @@ var routerIndex = require('./IndexRouter'),
 
 module.exports = function (app) {
     app.use('/', routerIndex);
+    app.use('/admin', routerAdmin);
     app.use('/hastakimlik', routerPatient);
     app.use('/polExam', routerPolExam);
     app.use('/appSave', routerAppointment);
-    app.use('/admin', routerAdmin);
 };

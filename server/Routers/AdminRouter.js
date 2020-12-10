@@ -4,8 +4,8 @@ var express = require('express'),
     controllerStaff = require('../Controllers/StaffController'),
     controllerUsers = require('../Controllers/userController'),
     controllerUnits = require('../Controllers/unitController'),
-    controllerAdminStatistics = require('../Controllers/AdminStatisticsController')
-    ;
+    controllerAdminStatistics = require('../Controllers/AdminStatisticsController'),
+    path = require('path');
 
 
 router.use(function (req, res, next) {
@@ -57,5 +57,9 @@ router.get('/units/fillUnitStatisticsTable', controllerUnits.fillUnitStatisticsT
 
 // adminStatistics routes
 router.get('/statistics', controllerAdminStatistics.redirectToStatisticsTab);
+
+router.use("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));
+});
 
 module.exports = router;

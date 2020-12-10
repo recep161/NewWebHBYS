@@ -3309,6 +3309,37 @@ input:focus, textarea:focus, text:focus {
   box-shadow: 2px 2px 10px #555;
 }
 
+.polStatusTableDiv {
+  width: 100%;
+  border-radius: 8px;
+  margin: 20px 0px 10px 0px;
+  padding: 10px 5px 10px 47px;
+  box-shadow: 2px 2px 10px #555;
+}
+
+#polStatusTable {
+  width: 100%;
+  margin-top: 10px;
+  cursor: default;
+  font-family: inherit;
+  border-collapse: collapse;
+  border-style: hidden;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px #555;
+}
+
+#polStatusTable td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+#polStatusTable tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
 #regApp-card-container {
   padding: 5px 0px;
 }

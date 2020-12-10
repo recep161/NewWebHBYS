@@ -29,6 +29,10 @@ module.exports.indexRedirectToAppointmentSave = function (req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'appointment-save.html'))
 };
 
+module.exports.indexRedirectToAdmin = function (req, res) {
+    res.render('../views/adminModule')
+};
+
 module.exports.findLoginUser = (req, res) => {
     var myUserName = req.query.userName,
         myPassword = req.query.password;
@@ -163,9 +167,3 @@ module.exports.changeUserPassword = (req, res) => {
             });
         });
 };
-
-module.exports.indexNotFound = function (app) {
-    app.use("*", (req, res) => {
-        res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));
-    })
-}

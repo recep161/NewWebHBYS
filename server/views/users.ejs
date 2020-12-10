@@ -82,7 +82,7 @@
 
         <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
             style="margin: 10px ;cursor: default;" title="">Please Login from main page!</hUserName>
-            <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!</p>
+        <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!</p>
 
         <div class="bottomScrool" style="margin-top: 10px">
             <p id="bottomScrollP4" style="color: white;">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke
@@ -829,22 +829,21 @@
             <div id="userStatisticsContainer" class="userStatisticsContainer">
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
                 <table id="userLoginStatsTable">
-                    <tr id="tableHeader">
-                        <th>#</th>
-                        <th>Ip Adress</th>
-                        <th>Login Date</th>
-                        <th>Login Duration</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>192.168.1.11</td>
-                        <td>03.09.2020 14:10</td>
-                        <td>22 minutes 17 seconds</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader">
+                            <th>#</th>
+                            <th>Ip Adress</th>
+                            <th>Local Machine</th>
+                            <th>Login Date</th>
+                            <th>Login Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 id="lastPasswordChangeStatistics" class="historyHeaders" style="margin: 5px;color: white;">-</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -890,7 +889,7 @@
                         <td>Central Conferece Room</td>
                         <td>
                             <a id="documentOpenLink1" class="modulLink"
-                                href="../../ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -899,7 +898,7 @@
                         <td>12.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="../../ViewerJS/#../public/documents/test-file.pdf"
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
                                 target="_blank">Open File</a>
                         </td>
                     </tr>
@@ -922,7 +921,7 @@
                         <td>Central Conferece Room</td>
                         <td>
                             <a id="documentOpenLink1" class="modulLink"
-                                href="../../ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -931,7 +930,7 @@
                         <td>12.01.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="../../ViewerJS/#../public/documents/test-file.pdf"
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
                                 target="_blank">Open File</a>
                         </td>
                     </tr>
@@ -953,14 +952,14 @@
                 Old Password: <br>
                 <input type="password" name="userOldPassword" id="userOldPassword"
                     placeholder="Please enter your current password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <br>
                 New Password: <br>
                 <input type="password" name="userNewPassword" id="userNewPassword"
                     placeholder="Please enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <span for='userNewPassword' class="p-viewer">
                     <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
@@ -971,9 +970,9 @@
                 New Password Repeat: <br>
                 <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
                     placeholder="Please re-enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event),
-                    CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator')">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
+                    CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
                 <span for='userNewPasswordRepeat' class="p-viewer">
                     <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
@@ -981,12 +980,10 @@
                     </i>
                 </span>
                 <br>
-                <pCapsLockIndicator id="pCapsLockIndicator">WARNING! Caps lock is ON.</pCapsLockIndicator>
+                <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
-                    Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
+                    title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -1018,7 +1015,7 @@
                                 <td>Central Conferece Room</td>
                                 <td>
                                     <a id="documentOpenLink1" class="modulLink"
-                                        href="../../ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -1028,7 +1025,7 @@
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="../../ViewerJS/#../public/documents/test-file.pdf"
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
                                         target="_blank">Open Message</a>
                                 </td>
                             </tr>
@@ -1051,7 +1048,7 @@
                                 <td>Central Conferece Room</td>
                                 <td>
                                     <a id="documentOpenLink1" class="modulLink"
-                                        href="../../ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -1061,7 +1058,7 @@
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="../../ViewerJS/#../public/documents/test-file.pdf"
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
                                         target="_blank">Open Message</a>
                                 </td>
                             </tr>
@@ -1116,8 +1113,11 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Statistics." onclick="
+                ShowOrHideMethods.showPopUpModal('userStatistics'); 
+                LoginProcess.userLoginStatistics();
+                LoginProcess.getLastPasswordChangeStatistics();">
+                <i class="fa fa-bar-chart"></i> </a>
             <a href="#" class="menu-item" title="User Trainings."
                 onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
             <a href="#" class="menu-item" title="User Settings."
@@ -1153,6 +1153,7 @@
         </svg>
     </div>
     <!-- end of bottom user menu  -->
+
 
     <!-- Footer -->
     <footer class="page-footer">

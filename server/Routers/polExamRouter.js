@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
-    controllerPolExam = require('../Controllers/polExamController');
+    controllerPolExam = require('../Controllers/polExamController'),
+    path = require('path');
 
 router.use(function (req, res, next) {
     console.log('polExamRouter answer: ' + "/" + req.method + ' - ' + req.url);
@@ -25,5 +26,9 @@ router.get('/fillDoctorAppointmentTable', controllerPolExam.fillDoctorAppointmen
 router.get('/fillDoctorOnLeaveTable', controllerPolExam.fillDoctorOnLeaveTable);
 // router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
 // router.put('/changeUserPassword', controllerIndex.changeUserPassword);
+
+router.use("*", (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));
+});
 
 module.exports = router;
