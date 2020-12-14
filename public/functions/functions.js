@@ -1393,6 +1393,7 @@ var
                             AppointmentMethods.fillCanceledValidAppointmentTable();
                             AppointmentMethods.fillAppointmentGenderTable();
                             AppointmentMethods.findPatientAppointmentHistory();
+                            AppointmentMethods.fillPolAppointmentStatusTable();
                             PolyclinicExamMethods.fillPatientAppointmentStatusTable();
                             PolyclinicExamMethods.fillDoctorAppointmentTable();
                             PolyclinicExamMethods.fillDoctorOnLeaveTable();
@@ -1450,6 +1451,7 @@ var
                         AppointmentMethods.fillCanceledValidAppointmentTable();
                         AppointmentMethods.fillAppointmentGenderTable();
                         AppointmentMethods.findPatientAppointmentHistory();
+                        AppointmentMethods.fillPolAppointmentStatusTable();
                         PolyclinicExamMethods.fillPatientAppointmentStatusTable();
                         PolyclinicExamMethods.fillDoctorAppointmentTable();
                         PolyclinicExamMethods.fillDoctorOnLeaveTable();
@@ -1508,6 +1510,7 @@ var
                         AppointmentMethods.fillCanceledValidAppointmentTable();
                         AppointmentMethods.fillAppointmentGenderTable();
                         AppointmentMethods.findPatientAppointmentHistory();
+                        AppointmentMethods.fillPolAppointmentStatusTable();
                         PolyclinicExamMethods.fillPatientAppointmentStatusTable();
                         PolyclinicExamMethods.fillDoctorAppointmentTable();
                         PolyclinicExamMethods.fillDoctorOnLeaveTable();
@@ -1715,6 +1718,36 @@ var
                 error: function (e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Appointment gender couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPolAppointmentStatusTable: function fillPolAppointmentStatusTable() {
+            $('#polStatusTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/appSave/fillPolAppointmentStatusTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#polStatusTable> tbody").append(
+                            "<tr class='appPol' id='appPolRowId" + i + "' colspan='0'><td class='doctorSelector'>" + docs[i]['_id']
+                        );
+                        for (let i2 = 0; i2 < docs[i]["data"].length; i2++) {
+                            $("#appPolRowId" + i).append(
+                                "</td><td class='appHour'>"
+                                + docs[i]["data"][i2]["patientName"] + " " + docs[i]["data"][i2]["patientSurname"] + "<br>"
+                                + docs[i]["data"][i2]["appointmentDate"] + " - " + docs[i]["data"][i2]["appointmentHour"]
+                                + "<br> Appointment Id: "
+                                + docs[i]["data"][i2]["appointmentId"]
+                                + "</td></tr>");
+                        };
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('fillPolStatusTable couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });
@@ -3833,6 +3866,727 @@ var
         }
     },
 
+    PolyclinicExamMethods = {
+
+        clearForNewPatient: function clearForNewPatient() {
+            jQueryMethods.toastrOptions();
+            var myPatientId = $("#patientId").val(),
+                savePatient = document.getElementById('polExamSave'),
+                myPolyclinicSelect = document.getElementById('polyclinicSelect'),
+                myPatientIdNo = document.getElementById('patientIdNo'),
+                myPatientId = document.getElementById('patientId');
+
+            if (myPatientId != '' || myPatientId > 0) {
+                toastr.warning(
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
+                    {
+                        allowHtml: true,
+                        progressBar: true,
+                        timeOut: 10000,
+                        onShown: function (toast) {
+                            $("#clearConfirmBtn").on('click', function () {
+                                PolyclinicExamMethods.getMaxProtocolNo();
+                                jQueryMethods.setCalenderValueToday('patientBirthDate');
+                                jQueryMethods.setCalenderValueToday('patientPolExamDate');
+                                $('#polExamPatientHistoryTable > tbody').empty();
+                                $('#patientVisitStatisticsTable > tbody').empty();
+                                $('#patientAppointmentStatusTable > tbody').empty();
+                                $('#patientUpcominAppointmentTable > tbody').empty();
+                                $('#polyclinicPatientCountTable > tbody').empty();
+                                $('#patientHealtInsuranceTable > tbody').empty();
+                                $('#patientGenderTable > tbody').empty();
+
+                                $("#patientId").val('');
+                                $("#patientIdNo").val('');
+                                $("#patientNameSurname").val('');
+                                $("#patientFatherName").val('');
+                                $("#patientMotherName").val('');
+                                $("#patientGender").val('');
+                                $("#patientBirthPlace").val('');
+                                $('#patientPhotoId')[0].src = 'http://localhost:161/public/images/Patient_Male.ico';
+                                savePatient.innerHTML = 'Save';
+                                myPatientIdNo.readOnly = false;
+                                myPatientId.readOnly = false;
+                                myPolyclinicSelect.readOnly = false;
+                                $("#polyclinicSelect").css("pointer-events", "all");
+                                $("#polyclinicSelect").css("background-color", "white");
+
+                                toastr.info('Form cleared for new patient!', 'Form Cleared');
+                            });
+                        }
+                    });
+            }
+        },
+
+        searchByEnter: function searchByEnter(inputId) {
+            const node = document.getElementById(inputId);
+            node.addEventListener("keyup", function (event) {
+                if (event.key === "Enter") {
+                    document.getElementById('polSearch').click();
+                }
+            });
+        },
+
+        findPatient: function findPatient() {
+            var searchQuery = 0,
+                myQuery = {},
+                myStatusSelect = document.getElementById('statusSelect'),
+                statusSelect = myStatusSelect.options[myStatusSelect.selectedIndex];
+
+            if ($("#patientIdNo").val() == '') {
+                searchQuery = $("#patientId").val();
+                myQuery = {
+                    patientId: searchQuery
+                }
+            } else {
+                searchQuery = $("#patientIdNo").val();
+                myQuery = {
+                    patientIdNo: searchQuery
+                }
+            };
+
+            if ($("#patientIdNo").val() == '' && $("#patientId").val() == '') {
+                toastr.error('Patient Id or Patient Id No cant be empty! \n\n\n', 'Error!')
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: "/polExam/findPatient",
+                    data: myQuery,
+                    success: function (patient) {
+                        jQueryMethods.toastrOptions();
+                        if (patient.patientId == '' || patient.patientId == null || patient.patientId == 'undefind') {
+                            toastr.error('Patient couldnt find! \n\n\n', 'Error!')
+                        } else {
+                            $("#patientId").val(patient.patientId);
+                            $("#patientIdNo").val(patient.patientIdNo);
+                            $("#patientNameSurname").val(patient.patientName + '  ' + patient.patientSurname);
+                            $("#patientFatherName").val(patient.patientFatherName);
+                            $("#patientMotherName").val(patient.patientMotherName);
+                            $("#patientGender").val(patient.patientGender);
+                            $("#patientBirthPlace").val(patient.patientBirthPlace);
+                            $("#patientBirthDate").val(patient.patientBirthDate);
+                            $('#patientPhotoId')[0].src = patient.patientPhotoSrc;
+                            statusSelect = patient.statusSelect;
+                            $.cookie('patientIdNo');
+
+                            PolyclinicExamMethods.fillPatientAppointmentStatusTable();
+                            PolyclinicExamMethods.fillPatientUpcomingAppointmentTable();
+                            PolyclinicExamMethods.findPatientHistory();
+                            PolyclinicExamMethods.fillPatientVisitStatisticsTable();
+                            PolyclinicExamMethods.fillPolyclinicPatientCountTable();
+                            PolyclinicExamMethods.fillPatientHealtInsuranceTable();
+                            PolyclinicExamMethods.fillPatientGenderTable();
+                            PolyclinicExamMethods.fillDoctorPatientTable();
+                            PolyclinicExamMethods.fillDoctorAppointmentTable();
+                            PolyclinicExamMethods.fillDoctorOnLeaveTable();
+                            // findPatientLabRadHistory function will come here
+
+                            toastr.info('Patient - ' + $("#patientNameSurname").val() + ' - found!', 'Patient Search');
+                        }
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Patient couldnt find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        getPatientIdFromPreviousPage: function getPatientIdFromPreviousPage() { // for hastaKimlik iframe
+            var input = document.getElementById('patientIdNo'),
+                myIframe = document.getElementById('polExamIframe').contentWindow;
+
+            myIframe.document.getElementById("patientIdNo").value = input.value;
+            myIframe.document.getElementById("searchPatient").click();
+        },
+
+        savePolExam: function savePolExam() {
+            jQueryMethods.toastrOptions();
+            var myPolyclinicSelect = document.getElementById('polyclinicSelect'),
+                myDoctorSelector = document.getElementById('doctorSelector'),
+                myStatusSelect = document.getElementById('statusSelect'),
+                myInsuranceSelect = document.getElementById('insuranceSelect'),
+                myData = {
+                    patientProtocolNo: $("#patientProtocolNo").val(),
+                    patientId: $("#patientId").val(),
+                    patientIdNo: $("#patientIdNo").val(),
+                    patientNameSurname: $("#patientNameSurname").val(),
+                    patientFatherName: $("#patientFatherName").val(),
+                    patientMotherName: $("#patientMotherName").val(),
+                    patientGender: $("#patientGender").val(),
+                    patientBirthPlace: $("#patientBirthPlace").val(),
+                    patientBirthDate: $("#patientBirthDate").val(),
+                    patientPolExamDate: $("#patientPolExamDate").val(),
+                    insuranceSelect: myInsuranceSelect.options[myInsuranceSelect.selectedIndex].value,
+                    polyclinicSelect: myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value,
+                    doctorSelector: myDoctorSelector.options[myDoctorSelector.selectedIndex].value,
+                    statusSelect: myStatusSelect.options[myStatusSelect.selectedIndex].value,
+                    patientSavedUser: $.cookie('username')
+                };
+
+            if (polExamSave.innerHTML == 'Update') {
+                PolyclinicExamMethods.updatePatientData()
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/polExam/savePolExam',
+                    success: function () {
+                        toastr.success('Patient polyclinic exam successfully saved!', 'Save');
+                        PolyclinicExamMethods.findPatient();
+                        PolyclinicExamMethods.getMaxProtocolNo();
+                        // findPatientLabRadHistory function will come here
+                    },
+                    error: function (e) {
+                        toastr.error('Patient polyclinic exam couldnt save! \n' + e, 'Error!')
+                        console.log("ERROR: ", e);
+                    }
+                });
+            }
+        },
+
+        getMaxProtocolNo: function getMaxProtocolNo() {
+            $.ajax({
+                type: "GET",
+                url: "/polExam/getMaxProtocolNo",
+                success: function (patient) {
+                    $("#patientProtocolNo").val(patient.patientProtocolNo + 1);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error("Couldn't get max protocol no!", "Error!")
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        findPatientHistory: function findPatientHistory() {
+            $('#polExamPatientHistoryTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExam/findPatientHistory",
+                data: { patientIdNo: $("#patientIdNo").val() },
+                success: function (result) {
+                    $.each(result, function (i, patientData) {
+                        i++;
+                        $("#polExamPatientHistoryTable> tbody").append(
+                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >"
+                            + i + "</td><td>" + patientData.patientProtocolNo + "</td><td>"
+                            + patientData.patientPolExamDate + "</td><td>"
+                            + patientData.polyclinicSelect + "</td><td>"
+                            + patientData.doctorSelector + "</td><td>"
+                            + patientData.statusSelect + "</td><td><button class='inpatientBtn btn-success' title='Click for select protocol.' onclick=\"PolyclinicExamMethods.findByProtocol(\'patientHistory" + i + "\')\">Select</button></td></tr>");
+                    });
+                    PolyclinicExamMethods.colorRedCanceledPolExams();
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        colorRedCanceledPolExams: function colorRedCanceledPolExams() {
+            var table = document.getElementById('polExamPatientHistoryTable');
+            for (var r = 0, n = table.rows.length; r < n; r++) {
+                for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+                    if (table.rows[r].cells[5].innerHTML == 'Canceled') {
+                        table.rows[r].style.background = 'linear-gradient(90deg,rgb(229 48 62),lightgrey)';
+                        table.rows[r].style.color = 'white  ';
+                    }
+                }
+            }
+        },
+
+        findByProtocol: function findByProtocol(rowId) {
+            jQueryMethods.toastrOptions();
+            var myRow = document.getElementById(rowId),
+                myPolyclinicSelect = document.getElementById('polyclinicSelect'),
+                polyclinicSelect = myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex],
+                myDoctorSelector = document.getElementById('doctorSelector'),
+                doctorSelector = myDoctorSelector.options[myDoctorSelector.selectedIndex],
+                myStatusSelect = document.getElementById('statusSelect'),
+                statusSelect = myStatusSelect.options[myStatusSelect.selectedIndex],
+                myProtocol = myRow.cells[1].innerHTML,
+                myPatientIdNo = document.getElementById('patientIdNo'),
+                myPatientId = document.getElementById('patientId'),
+                polExamSaveBtn = document.getElementById('polExamSave');
+
+            $.ajax({
+                type: "GET",
+                url: "/polExam/findByProtocol",
+                data: { patientProtocolNo: myProtocol },
+                success: function (patient) {
+                    jQueryMethods.toastrOptions();
+                    if (patient.patientProtocolNo == '' || patient.patientProtocolNo == null
+                        || patient.patientProtocolNo == 'undefind') {
+                        toastr.error('Patient found by data couldnt set to form! \n\n\n', 'Error!')
+                    } else {
+                        $("#patientId").val(patient.patientId);
+                        $("#patientProtocolNo").val(patient.patientProtocolNo);
+                        $("#patientIdNo").val(patient.patientIdNo);
+                        $("#patientNameSurname").val(patient.patientNameSurname);
+                        $("#patientFatherName").val(patient.patientFatherName);
+                        $("#patientMotherName").val(patient.patientMotherName);
+                        $("#patientGender").val(patient.patientGender);
+                        $("#patientBirthPlace").val(patient.patientBirthPlace);
+                        $("#patientBirthDate").val(patient.patientBirthDate);
+                        polyclinicSelect = patient.polyclinicSelect;
+                        doctorSelector = patient.doctorSelector;
+                        statusSelect = patient.statusSelect;
+                        polExamSaveBtn.innerHTML = 'Update';
+
+                        myPatientIdNo.readOnly = true;
+                        myPatientId.readOnly = true;
+                        myPolyclinicSelect.readOnly = true;
+                        $("#polyclinicSelect").css("pointer-events", "none");
+                        $("#polyclinicSelect").css("background-color", "lightgrey");
+
+                        toastr.info('Patient - ' + patient.patientNameSurname + ' - found!', 'Patient Protocol Search');
+                    }
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient protocol couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        updatePatientData: function updatePatientData() {
+            jQueryMethods.toastrOptions();
+            var myDoctorSelector = document.getElementById('doctorSelector'),
+                myStatusSelect = document.getElementById('statusSelect'),
+                myInsuranceSelect = document.getElementById('insuranceSelect'),
+                myPatientProtocolNo = document.getElementById('patientProtocolNo').value,
+                myData =
+                {
+                    patientProtocolNo: myPatientProtocolNo,
+                    insuranceSelect: myInsuranceSelect.options[myInsuranceSelect.selectedIndex].value,
+                    doctorSelector: myDoctorSelector.options[myDoctorSelector.selectedIndex].value,
+                    statusSelect: myStatusSelect.options[myStatusSelect.selectedIndex].value
+                };
+
+            $('#polExamPatientHistoryTable > tbody').empty();
+
+            if ($("#patientIdNo").val() == '') {
+                toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
+            }
+            else {
+                $.ajax({
+                    type: 'PUT',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/polExam/updatePolExam',
+                    success: function (patient) {
+                        toastr.success('Polyclinic exam updated! \n\n\n', 'Polyclinic Exam Update');
+                        PolyclinicExamMethods.findPatientHistory();
+                        PolyclinicExamMethods.fillPatientVisitStatisticsTable();
+                        PolyclinicExamMethods.fillPolyclinicPatientCountTable();
+                        PolyclinicExamMethods.fillPatientHealtInsuranceTable();
+                        PolyclinicExamMethods.fillPatientGenderTable();
+                        PolyclinicExamMethods.fillDoctorPatientTable();
+                        PolyclinicExamMethods.fillDoctorOnLeaveTable();
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Polyclinic exam couldnt update! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        fillPatientAppointmentStatusTable: function fillPatientAppointmentStatusTable() {
+            $('#patientAppointmentStatusTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExam/fillPatientAppointmentStatusTable",
+                data: { patientId: $("#patientId").val() },
+                success: function (result) {
+                    $.each(result, function (i) {
+                        $("#patientAppointmentStatusTable> tbody").append(
+                            "<tr class='appData'><td class='appPol'>"
+                            + result[i].appointmentPolyclinic
+                            + "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour
+                            + "</td><td class='appStatus'>" + result[i].appointmentStatus + "</td></tr>");
+                    });
+                    AppointmentMethods.colorRedCanceledAppointmentId('patientAppointmentStatusTable', 2);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientUpcomingAppointmentTable: function fillPatientUpcomingAppointmentTable() {
+            $('#patientUpcomingAppointmentTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExam/fillPatientUpcomingAppointmentTable",
+                data: { patientId: $("#patientId").val() },
+                success: function (result) {
+                    $.each(result, function (i) {
+                        $("#patientUpcomingAppointmentTable> tbody").append(
+                            "<tr class='appData'><td class='appDoctor'>"
+                            + result[i].appointmentDoctor
+                            + "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour
+                            + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientVisitStatisticsTable: function fillPatientVisitStatisticsTable() {
+            var patientId = $('#patientId').val();
+
+            $('#patientVisitStatisticsTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientId: patientId },
+                url: "/polExam/fillPatientVisitStatisticsTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#patientVisitStatisticsTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='patientData'>"
+                            + docs[i]["_id"] + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient polyclinic visits couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPolyclinicPatientCountTable: function fillPolyclinicPatientCountTable() {
+            var polExamDate = $('#patientPolExamDate').val();
+
+            $('#polyclinicPatientCountTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate },
+                url: "/polExam/fillPolyclinicPatientCountTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#polyclinicPatientCountTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='patientData'>"
+                            + docs[i]["_id"] + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientHealtInsuranceTable: function fillPatientHealtInsuranceTable() {
+            var polExamDate = $('#patientPolExamDate').val();
+
+            $('#patientHealtInsuranceTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate },
+                url: "/polExam/fillPatientHealtInsuranceTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#patientHealtInsuranceTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='patientData'>"
+                            + docs[i]["_id"]["polyclinicSelect"]
+                            + "</td><td class='patientInsurance'>" + docs[i]["_id"]["insuranceSelect"]
+                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientGenderTable: function fillPatientGenderTable() {
+            var polExamDate = $('#patientPolExamDate').val();
+
+            $('#patientGenderTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate },
+                url: "/polExam/fillPatientGenderTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#patientGenderTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='patientData'>"
+                            + docs[i]["_id"]["polyclinicSelect"]
+                            + "</td><td class='patientGender'>" + docs[i]["_id"]["patientGender"]
+                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillDoctorPatientTable: function fillDoctorPatientTable() {
+            var polExamDate = $('#patientPolExamDate').val();
+
+            $('#doctorPatientTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate },
+                url: "/polExam/fillDoctorPatientTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#doctorPatientTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
+                            + docs[i]["_id"]["doctorSelector"]
+                            + "</td><td class='polyclinicSelect'>" + docs[i]["_id"]["polyclinicSelect"]
+                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillDoctorAppointmentTable: function fillDoctorAppointmentTable() {
+            var polExamDate = $('#patientPolExamDate').val();
+            $('#doctorAppointmentTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate },
+                url: "/polExam/fillDoctorAppointmentTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#doctorAppointmentTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
+                            + docs[i]["_id"]
+                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Doctor appointments couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillDoctorOnLeaveTable: function fillDoctorOnLeaveTable() {
+            var polExamDate = $('#patientPolExamDate').val();
+
+            $('#doctorOnLeaveTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate },
+                url: "/polExam/fillDoctorOnLeaveTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#doctorOnLeaveTable> tbody").append(
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
+                            + docs[i]["staffName"] + ' ' + docs[i]["staffSurname"]
+                            + "</td><td class='patientCount'>" + docs[i]["staffLeaveEndDate"].substring(0, 10) + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        }
+    },
+
+    PolyclinicMethods = {
+
+        searchInTable: function searchInTable(inputId, TableId) {
+            var input, filter, found, table, tr, td, i, j,
+                input = document.getElementById(inputId),
+                filter = input.value.toUpperCase(),
+                table = document.getElementById(TableId),
+                tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                    found = false;
+                } else if (!tr[i].id.match('^tableHeader')) {
+                    tr[i].style.display = "none";
+                }
+            }
+        },
+
+        flipCardsByTime: function flipCardsByTime(cardId1, cardId2, cardId3, cardId4, cardId5) {
+            window.myFlipInterval = setInterval(() => {
+                var myCards =
+                    document.querySelectorAll('#' + cardId1 + ',#' + cardId2 + ',#' + cardId3 + ',#' + cardId4 + ',#' + cardId5 + '');
+                for (let i = 0; i < myCards.length; i++) {
+                    myCards[i].style.transform = 'rotateY(180deg)';
+                }
+            }, 11000);
+
+            window.myFlipBackInterval = setInterval(() => {
+                var myCards =
+                    document.querySelectorAll('#' + cardId1 + ',#' + cardId2 + ',#' + cardId3 + ',#' + cardId4 + ',#' + cardId5 + '');
+                for (let i = 0; i < myCards.length; i++) {
+                    myCards[i].style.transform = 'rotateX(0deg)';
+                }
+
+            }, 20000);
+        },
+
+        stopAnimationsOnHover: function stopAnimationsOnHover(cardId1, cardId2, cardId3, cardId4, cardId5) {
+            window.clearInterval(window.myFlipInterval);
+            window.clearInterval(window.myFlipBackInterval);
+            var myCards =
+                document.querySelectorAll('#' + cardId1 + ',#' + cardId2 + ',#' + cardId3 + ',#' + cardId4 + ',#' + cardId5 + '');
+            for (let i = 0; i < myCards.length; i++) {
+                myCards[i].style.transform = '';
+            }
+        },
+
+        hidePopUpModal: function hidePopUpModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+        },
+
+        bedSelect: function bedSelect(bedId) {
+            var bed = document.getElementById(bedId),
+                bedSrc = document.getElementById(bedId).src,
+                selectedBed = document.querySelector("img[alt='selected']"),
+                fullBedCount = document.getElementById('fullBedCount'),
+                emptyBedCount = document.getElementById('emptyBedCount');
+
+            if (bedSrc == 'http://127.0.0.1:5500/public/images/Medical-icons/full%20bed.png') {
+                alert('Dolu yatagi seçemezsiniz!')
+            } else {
+                if (selectedBed != null && bedId == selectedBed.id) {
+                    bed.alt = 'bed';
+                    bed.style.border = '2px ridge black';
+                    bed.style.backgroundColor = 'inherit';
+                    emptyBedCount.innerHTML = '10';
+                    fullBedCount.innerHTML = '10';
+                } else if (selectedBed != null && bedId != selectedBed.id) {
+                    alert('Birden fazla yatak seçemezsiniz!')
+                }
+                else {
+                    bed.alt = 'selected';
+                    bed.style.border = '5px inset red';
+                    bed.style.backgroundColor = 'grey';
+                    emptyBedCount.innerHTML = '9';
+                    fullBedCount.innerHTML = '11';
+                }
+            }
+        },
+
+        tetkikSelect: function tetkikSelect(checkboxId, checkboxClass, resultTable, countResult) {
+            var selectedCheckbox = document.getElementById(checkboxId),
+                checkboxParent = selectedCheckbox.parentElement,
+                grandParent = checkboxParent.parentElement,
+                checkboxes = document.getElementsByClassName(checkboxClass),
+                selectedExam = document.getElementById(resultTable).rows[1].cells,
+                y = 0,
+                totalExam = document.getElementById(countResult);
+
+            if (selectedCheckbox.checked == true) {
+                grandParent.style.backgroundColor = '#5bc0de';
+
+                for (let i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked == true) {
+                        y++
+                    }
+                }
+                if (y == 0) {
+                    totalExam.style.backgroundColor = 'red'
+                }
+                else {
+                    totalExam.style.backgroundColor = '#5bc0de'
+                }
+                selectedExam[0].innerHTML = y;
+
+            }
+            else {
+                grandParent.style.backgroundColor = '#dddddd';
+
+
+                for (let i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked == true) {
+                        y++
+                    }
+                }
+                if (y == 0) {
+                    totalExam.style.backgroundColor = 'red'
+                }
+                else { totalExam.style.backgroundColor = '#5bc0de' }
+                selectedExam[0].innerHTML = y;
+            }
+        },
+
+        countSelectedCheckboxes: function countSelectedCheckboxes(checkboxClass, examTable, countResult) {
+            var checkboxes = document.getElementsByClassName(checkboxClass),
+                selectedExam = document.getElementById(examTable).rows[1].cells,
+                y = 0,
+                totalExam = document.getElementById(countResult);
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked == true) {
+                    y++
+                }
+            }
+            if (y == 0) {
+                totalExam.style.backgroundColor = 'red'
+            }
+            else { totalExam.style.backgroundColor = '#5bc0de' }
+            selectedExam[0].innerHTML = y;
+        },
+
+        checkBeforeSaveExaminations: function checkBeforeSaveExaminations(totalId) {
+            var totalExam = document.getElementById(totalId);
+            if (Number(totalExam.innerHTML) == 0) {
+                alert('Tetkik seçmeden kaydedemesiniz!');
+            } else {
+                ShowOrHideMethods.polyclinicShowSuccesAlert();
+            }
+        }
+    },
+
     ShowOrHideMethods = {
         HideColumn: function hideColumnsByClass(par) {
             var myClasses = document.querySelectorAll('.' + par),
@@ -4665,727 +5419,6 @@ var
         showPopUpModal: function showPopUpModal(modalId) {
             var modal = document.getElementById(modalId);
             modal.style.display = 'block';
-        }
-    },
-
-    PolyclinicExamMethods = {
-
-        clearForNewPatient: function clearForNewPatient() {
-            jQueryMethods.toastrOptions();
-            var myPatientId = $("#patientId").val(),
-                savePatient = document.getElementById('polExamSave'),
-                myPolyclinicSelect = document.getElementById('polyclinicSelect'),
-                myPatientIdNo = document.getElementById('patientIdNo'),
-                myPatientId = document.getElementById('patientId');
-
-            if (myPatientId != '' || myPatientId > 0) {
-                toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
-                        allowHtml: true,
-                        progressBar: true,
-                        timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
-                                PolyclinicExamMethods.getMaxProtocolNo();
-                                jQueryMethods.setCalenderValueToday('patientBirthDate');
-                                jQueryMethods.setCalenderValueToday('patientPolExamDate');
-                                $('#polExamPatientHistoryTable > tbody').empty();
-                                $('#patientVisitStatisticsTable > tbody').empty();
-                                $('#patientAppointmentStatusTable > tbody').empty();
-                                $('#patientUpcominAppointmentTable > tbody').empty();
-                                $('#polyclinicPatientCountTable > tbody').empty();
-                                $('#patientHealtInsuranceTable > tbody').empty();
-                                $('#patientGenderTable > tbody').empty();
-
-                                $("#patientId").val('');
-                                $("#patientIdNo").val('');
-                                $("#patientNameSurname").val('');
-                                $("#patientFatherName").val('');
-                                $("#patientMotherName").val('');
-                                $("#patientGender").val('');
-                                $("#patientBirthPlace").val('');
-                                $('#patientPhotoId')[0].src = 'http://localhost:161/public/images/Patient_Male.ico';
-                                savePatient.innerHTML = 'Save';
-                                myPatientIdNo.readOnly = false;
-                                myPatientId.readOnly = false;
-                                myPolyclinicSelect.readOnly = false;
-                                $("#polyclinicSelect").css("pointer-events", "all");
-                                $("#polyclinicSelect").css("background-color", "white");
-
-                                toastr.info('Form cleared for new patient!', 'Form Cleared');
-                            });
-                        }
-                    });
-            }
-        },
-
-        searchByEnter: function searchByEnter(inputId) {
-            const node = document.getElementById(inputId);
-            node.addEventListener("keyup", function (event) {
-                if (event.key === "Enter") {
-                    document.getElementById('polSearch').click();
-                }
-            });
-        },
-
-        findPatient: function findPatient() {
-            var searchQuery = 0,
-                myQuery = {},
-                myStatusSelect = document.getElementById('statusSelect'),
-                statusSelect = myStatusSelect.options[myStatusSelect.selectedIndex];
-
-            if ($("#patientIdNo").val() == '') {
-                searchQuery = $("#patientId").val();
-                myQuery = {
-                    patientId: searchQuery
-                }
-            } else {
-                searchQuery = $("#patientIdNo").val();
-                myQuery = {
-                    patientIdNo: searchQuery
-                }
-            };
-
-            if ($("#patientIdNo").val() == '' && $("#patientId").val() == '') {
-                toastr.error('Patient Id or Patient Id No cant be empty! \n\n\n', 'Error!')
-            } else {
-                $.ajax({
-                    type: "GET",
-                    url: "/polExam/findPatient",
-                    data: myQuery,
-                    success: function (patient) {
-                        jQueryMethods.toastrOptions();
-                        if (patient.patientId == '' || patient.patientId == null || patient.patientId == 'undefind') {
-                            toastr.error('Patient couldnt find! \n\n\n', 'Error!')
-                        } else {
-                            $("#patientId").val(patient.patientId);
-                            $("#patientIdNo").val(patient.patientIdNo);
-                            $("#patientNameSurname").val(patient.patientName + '  ' + patient.patientSurname);
-                            $("#patientFatherName").val(patient.patientFatherName);
-                            $("#patientMotherName").val(patient.patientMotherName);
-                            $("#patientGender").val(patient.patientGender);
-                            $("#patientBirthPlace").val(patient.patientBirthPlace);
-                            $("#patientBirthDate").val(patient.patientBirthDate);
-                            $('#patientPhotoId')[0].src = patient.patientPhotoSrc;
-                            statusSelect = patient.statusSelect;
-                            $.cookie('patientIdNo');
-
-                            PolyclinicExamMethods.fillPatientAppointmentStatusTable();
-                            PolyclinicExamMethods.fillPatientUpcomingAppointmentTable();
-                            PolyclinicExamMethods.findPatientHistory();
-                            PolyclinicExamMethods.fillPatientVisitStatisticsTable();
-                            PolyclinicExamMethods.fillPolyclinicPatientCountTable();
-                            PolyclinicExamMethods.fillPatientHealtInsuranceTable();
-                            PolyclinicExamMethods.fillPatientGenderTable();
-                            PolyclinicExamMethods.fillDoctorPatientTable();
-                            PolyclinicExamMethods.fillDoctorAppointmentTable();
-                            PolyclinicExamMethods.fillDoctorOnLeaveTable();
-                            // findPatientLabRadHistory function will come here
-
-                            toastr.info('Patient - ' + $("#patientNameSurname").val() + ' - found!', 'Patient Search');
-                        }
-                    },
-                    error: function (e) {
-                        jQueryMethods.toastrOptions();
-                        toastr.error('Patient couldnt find! \n\n\n' + e.responseText, 'Error!')
-                        console.log("ERROR: ", e.responseText);
-                    }
-                });
-            }
-        },
-
-        getPatientIdFromPreviousPage: function getPatientIdFromPreviousPage() { // for hastaKimlik iframe
-            var input = document.getElementById('patientIdNo'),
-                myIframe = document.getElementById('polExamIframe').contentWindow;
-
-            myIframe.document.getElementById("patientIdNo").value = input.value;
-            myIframe.document.getElementById("searchPatient").click();
-        },
-
-        savePolExam: function savePolExam() {
-            jQueryMethods.toastrOptions();
-            var myPolyclinicSelect = document.getElementById('polyclinicSelect'),
-                myDoctorSelector = document.getElementById('doctorSelector'),
-                myStatusSelect = document.getElementById('statusSelect'),
-                myInsuranceSelect = document.getElementById('insuranceSelect'),
-                myData = {
-                    patientProtocolNo: $("#patientProtocolNo").val(),
-                    patientId: $("#patientId").val(),
-                    patientIdNo: $("#patientIdNo").val(),
-                    patientNameSurname: $("#patientNameSurname").val(),
-                    patientFatherName: $("#patientFatherName").val(),
-                    patientMotherName: $("#patientMotherName").val(),
-                    patientGender: $("#patientGender").val(),
-                    patientBirthPlace: $("#patientBirthPlace").val(),
-                    patientBirthDate: $("#patientBirthDate").val(),
-                    patientPolExamDate: $("#patientPolExamDate").val(),
-                    insuranceSelect: myInsuranceSelect.options[myInsuranceSelect.selectedIndex].value,
-                    polyclinicSelect: myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value,
-                    doctorSelector: myDoctorSelector.options[myDoctorSelector.selectedIndex].value,
-                    statusSelect: myStatusSelect.options[myStatusSelect.selectedIndex].value,
-                    patientSavedUser: $.cookie('username')
-                };
-
-            if (polExamSave.innerHTML == 'Update') {
-                PolyclinicExamMethods.updatePatientData()
-            } else {
-                $.ajax({
-                    type: 'POST',
-                    data: JSON.stringify(myData),
-                    cache: false,
-                    contentType: 'application/json',
-                    datatype: "json",
-                    url: '/polExam/savePolExam',
-                    success: function () {
-                        toastr.success('Patient polyclinic exam successfully saved!', 'Save');
-                        PolyclinicExamMethods.findPatient();
-                        PolyclinicExamMethods.getMaxProtocolNo();
-                        // findPatientLabRadHistory function will come here
-                    },
-                    error: function (e) {
-                        toastr.error('Patient polyclinic exam couldnt save! \n' + e, 'Error!')
-                        console.log("ERROR: ", e);
-                    }
-                });
-            }
-        },
-
-        getMaxProtocolNo: function getMaxProtocolNo() {
-            $.ajax({
-                type: "GET",
-                url: "/polExam/getMaxProtocolNo",
-                success: function (patient) {
-                    $("#patientProtocolNo").val(patient.patientProtocolNo + 1);
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error("Couldn't get max protocol no!", "Error!")
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        findPatientHistory: function findPatientHistory() {
-            $('#polExamPatientHistoryTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                url: "/polExam/findPatientHistory",
-                data: { patientIdNo: $("#patientIdNo").val() },
-                success: function (result) {
-                    $.each(result, function (i, patientData) {
-                        i++;
-                        $("#polExamPatientHistoryTable> tbody").append(
-                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >"
-                            + i + "</td><td>" + patientData.patientProtocolNo + "</td><td>"
-                            + patientData.patientPolExamDate + "</td><td>"
-                            + patientData.polyclinicSelect + "</td><td>"
-                            + patientData.doctorSelector + "</td><td>"
-                            + patientData.statusSelect + "</td><td><button class='inpatientBtn btn-success' title='Click for select protocol.' onclick=\"PolyclinicExamMethods.findByProtocol(\'patientHistory" + i + "\')\">Select</button></td></tr>");
-                    });
-                    PolyclinicExamMethods.colorRedCanceledPolExams();
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Patient history couldnt find! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        colorRedCanceledPolExams: function colorRedCanceledPolExams() {
-            var table = document.getElementById('polExamPatientHistoryTable');
-            for (var r = 0, n = table.rows.length; r < n; r++) {
-                for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
-                    if (table.rows[r].cells[5].innerHTML == 'Canceled') {
-                        table.rows[r].style.background = 'linear-gradient(90deg,rgb(229 48 62),lightgrey)';
-                        table.rows[r].style.color = 'white  ';
-                    }
-                }
-            }
-        },
-
-        findByProtocol: function findByProtocol(rowId) {
-            jQueryMethods.toastrOptions();
-            var myRow = document.getElementById(rowId),
-                myPolyclinicSelect = document.getElementById('polyclinicSelect'),
-                polyclinicSelect = myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex],
-                myDoctorSelector = document.getElementById('doctorSelector'),
-                doctorSelector = myDoctorSelector.options[myDoctorSelector.selectedIndex],
-                myStatusSelect = document.getElementById('statusSelect'),
-                statusSelect = myStatusSelect.options[myStatusSelect.selectedIndex],
-                myProtocol = myRow.cells[1].innerHTML,
-                myPatientIdNo = document.getElementById('patientIdNo'),
-                myPatientId = document.getElementById('patientId'),
-                polExamSaveBtn = document.getElementById('polExamSave');
-
-            $.ajax({
-                type: "GET",
-                url: "/polExam/findByProtocol",
-                data: { patientProtocolNo: myProtocol },
-                success: function (patient) {
-                    jQueryMethods.toastrOptions();
-                    if (patient.patientProtocolNo == '' || patient.patientProtocolNo == null
-                        || patient.patientProtocolNo == 'undefind') {
-                        toastr.error('Patient found by data couldnt set to form! \n\n\n', 'Error!')
-                    } else {
-                        $("#patientId").val(patient.patientId);
-                        $("#patientProtocolNo").val(patient.patientProtocolNo);
-                        $("#patientIdNo").val(patient.patientIdNo);
-                        $("#patientNameSurname").val(patient.patientNameSurname);
-                        $("#patientFatherName").val(patient.patientFatherName);
-                        $("#patientMotherName").val(patient.patientMotherName);
-                        $("#patientGender").val(patient.patientGender);
-                        $("#patientBirthPlace").val(patient.patientBirthPlace);
-                        $("#patientBirthDate").val(patient.patientBirthDate);
-                        polyclinicSelect = patient.polyclinicSelect;
-                        doctorSelector = patient.doctorSelector;
-                        statusSelect = patient.statusSelect;
-                        polExamSaveBtn.innerHTML = 'Update';
-
-                        myPatientIdNo.readOnly = true;
-                        myPatientId.readOnly = true;
-                        myPolyclinicSelect.readOnly = true;
-                        $("#polyclinicSelect").css("pointer-events", "none");
-                        $("#polyclinicSelect").css("background-color", "lightgrey");
-
-                        toastr.info('Patient - ' + patient.patientNameSurname + ' - found!', 'Patient Protocol Search');
-                    }
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Patient protocol couldnt find! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        updatePatientData: function updatePatientData() {
-            jQueryMethods.toastrOptions();
-            var myDoctorSelector = document.getElementById('doctorSelector'),
-                myStatusSelect = document.getElementById('statusSelect'),
-                myInsuranceSelect = document.getElementById('insuranceSelect'),
-                myPatientProtocolNo = document.getElementById('patientProtocolNo').value,
-                myData =
-                {
-                    patientProtocolNo: myPatientProtocolNo,
-                    insuranceSelect: myInsuranceSelect.options[myInsuranceSelect.selectedIndex].value,
-                    doctorSelector: myDoctorSelector.options[myDoctorSelector.selectedIndex].value,
-                    statusSelect: myStatusSelect.options[myStatusSelect.selectedIndex].value
-                };
-
-            $('#polExamPatientHistoryTable > tbody').empty();
-
-            if ($("#patientIdNo").val() == '') {
-                toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
-            }
-            else {
-                $.ajax({
-                    type: 'PUT',
-                    data: JSON.stringify(myData),
-                    cache: false,
-                    contentType: 'application/json',
-                    datatype: "json",
-                    url: '/polExam/updatePolExam',
-                    success: function (patient) {
-                        toastr.success('Polyclinic exam updated! \n\n\n', 'Polyclinic Exam Update');
-                        PolyclinicExamMethods.findPatientHistory();
-                        PolyclinicExamMethods.fillPatientVisitStatisticsTable();
-                        PolyclinicExamMethods.fillPolyclinicPatientCountTable();
-                        PolyclinicExamMethods.fillPatientHealtInsuranceTable();
-                        PolyclinicExamMethods.fillPatientGenderTable();
-                        PolyclinicExamMethods.fillDoctorPatientTable();
-                        PolyclinicExamMethods.fillDoctorOnLeaveTable();
-                    },
-                    error: function (e) {
-                        jQueryMethods.toastrOptions();
-                        toastr.error('Polyclinic exam couldnt update! \n\n\n' + e.responseText, 'Error!')
-                        console.log("ERROR: ", e.responseText);
-                    }
-                });
-            }
-        },
-
-        fillPatientAppointmentStatusTable: function fillPatientAppointmentStatusTable() {
-            $('#patientAppointmentStatusTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                url: "/polExam/fillPatientAppointmentStatusTable",
-                data: { patientId: $("#patientId").val() },
-                success: function (result) {
-                    $.each(result, function (i) {
-                        $("#patientAppointmentStatusTable> tbody").append(
-                            "<tr class='appData'><td class='appPol'>"
-                            + result[i].appointmentPolyclinic
-                            + "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour
-                            + "</td><td class='appStatus'>" + result[i].appointmentStatus + "</td></tr>");
-                    });
-                    AppointmentMethods.colorRedCanceledAppointmentId('patientAppointmentStatusTable', 2);
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        fillPatientUpcomingAppointmentTable: function fillPatientUpcomingAppointmentTable() {
-            $('#patientUpcomingAppointmentTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                url: "/polExam/fillPatientUpcomingAppointmentTable",
-                data: { patientId: $("#patientId").val() },
-                success: function (result) {
-                    $.each(result, function (i) {
-                        $("#patientUpcomingAppointmentTable> tbody").append(
-                            "<tr class='appData'><td class='appDoctor'>"
-                            + result[i].appointmentDoctor
-                            + "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour
-                            + "</td></tr>");
-                    });
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        fillPatientVisitStatisticsTable: function fillPatientVisitStatisticsTable() {
-            var patientId = $('#patientId').val();
-
-            $('#patientVisitStatisticsTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                data: { patientId: patientId },
-                url: "/polExam/fillPatientVisitStatisticsTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
-                        $("#patientVisitStatisticsTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"] + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
-                    });
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Patient polyclinic visits couldnt count! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        fillPolyclinicPatientCountTable: function fillPolyclinicPatientCountTable() {
-            var polExamDate = $('#patientPolExamDate').val();
-
-            $('#polyclinicPatientCountTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                data: { patientPolExamDate: polExamDate },
-                url: "/polExam/fillPolyclinicPatientCountTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
-                        $("#polyclinicPatientCountTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"] + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
-                    });
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        fillPatientHealtInsuranceTable: function fillPatientHealtInsuranceTable() {
-            var polExamDate = $('#patientPolExamDate').val();
-
-            $('#patientHealtInsuranceTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                data: { patientPolExamDate: polExamDate },
-                url: "/polExam/fillPatientHealtInsuranceTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
-                        $("#patientHealtInsuranceTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"]["polyclinicSelect"]
-                            + "</td><td class='patientInsurance'>" + docs[i]["_id"]["insuranceSelect"]
-                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
-                    });
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        fillPatientGenderTable: function fillPatientGenderTable() {
-            var polExamDate = $('#patientPolExamDate').val();
-
-            $('#patientGenderTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                data: { patientPolExamDate: polExamDate },
-                url: "/polExam/fillPatientGenderTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
-                        $("#patientGenderTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"]["polyclinicSelect"]
-                            + "</td><td class='patientGender'>" + docs[i]["_id"]["patientGender"]
-                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
-                    });
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        fillDoctorPatientTable: function fillDoctorPatientTable() {
-            var polExamDate = $('#patientPolExamDate').val();
-
-            $('#doctorPatientTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                data: { patientPolExamDate: polExamDate },
-                url: "/polExam/fillDoctorPatientTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
-                        $("#doctorPatientTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["_id"]["doctorSelector"]
-                            + "</td><td class='polyclinicSelect'>" + docs[i]["_id"]["polyclinicSelect"]
-                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
-                    });
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        fillDoctorAppointmentTable: function fillDoctorAppointmentTable() {
-            var polExamDate = $('#patientPolExamDate').val();
-            $('#doctorAppointmentTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                data: { patientPolExamDate: polExamDate },
-                url: "/polExam/fillDoctorAppointmentTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
-                        $("#doctorAppointmentTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["_id"]
-                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
-                    });
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Doctor appointments couldnt count! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        },
-
-        fillDoctorOnLeaveTable: function fillDoctorOnLeaveTable() {
-            var polExamDate = $('#patientPolExamDate').val();
-
-            $('#doctorOnLeaveTable > tbody').empty();
-
-            $.ajax({
-                type: "GET",
-                data: { patientPolExamDate: polExamDate },
-                url: "/polExam/fillDoctorOnLeaveTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
-                        $("#doctorOnLeaveTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["staffName"] + ' ' + docs[i]["staffSurname"]
-                            + "</td><td class='patientCount'>" + docs[i]["staffLeaveEndDate"].substring(0, 10) + "</td></tr>");
-                    });
-                },
-                error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
-                    console.log("ERROR: ", e.responseText);
-                }
-            });
-        }
-    },
-
-    PolyclinicMethods = {
-
-        searchInTable: function searchInTable(inputId, TableId) {
-            var input, filter, found, table, tr, td, i, j,
-                input = document.getElementById(inputId),
-                filter = input.value.toUpperCase(),
-                table = document.getElementById(TableId),
-                tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td");
-                for (j = 0; j < td.length; j++) {
-                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        found = true;
-                    }
-                }
-                if (found) {
-                    tr[i].style.display = "";
-                    found = false;
-                } else if (!tr[i].id.match('^tableHeader')) {
-                    tr[i].style.display = "none";
-                }
-            }
-        },
-
-        flipCardsByTime: function flipCardsByTime(cardId1, cardId2, cardId3, cardId4, cardId5) {
-            window.myFlipInterval = setInterval(() => {
-                var myCards =
-                    document.querySelectorAll('#' + cardId1 + ',#' + cardId2 + ',#' + cardId3 + ',#' + cardId4 + ',#' + cardId5 + '');
-                for (let i = 0; i < myCards.length; i++) {
-                    myCards[i].style.transform = 'rotateY(180deg)';
-                }
-            }, 11000);
-
-            window.myFlipBackInterval = setInterval(() => {
-                var myCards =
-                    document.querySelectorAll('#' + cardId1 + ',#' + cardId2 + ',#' + cardId3 + ',#' + cardId4 + ',#' + cardId5 + '');
-                for (let i = 0; i < myCards.length; i++) {
-                    myCards[i].style.transform = 'rotateX(0deg)';
-                }
-
-            }, 20000);
-        },
-
-        stopAnimationsOnHover: function stopAnimationsOnHover(cardId1, cardId2, cardId3, cardId4, cardId5) {
-            window.clearInterval(window.myFlipInterval);
-            window.clearInterval(window.myFlipBackInterval);
-            var myCards =
-                document.querySelectorAll('#' + cardId1 + ',#' + cardId2 + ',#' + cardId3 + ',#' + cardId4 + ',#' + cardId5 + '');
-            for (let i = 0; i < myCards.length; i++) {
-                myCards[i].style.transform = '';
-            }
-        },
-
-        hidePopUpModal: function hidePopUpModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = 'none';
-        },
-
-        bedSelect: function bedSelect(bedId) {
-            var bed = document.getElementById(bedId),
-                bedSrc = document.getElementById(bedId).src,
-                selectedBed = document.querySelector("img[alt='selected']"),
-                fullBedCount = document.getElementById('fullBedCount'),
-                emptyBedCount = document.getElementById('emptyBedCount');
-
-            if (bedSrc == 'http://127.0.0.1:5500/public/images/Medical-icons/full%20bed.png') {
-                alert('Dolu yatagi seçemezsiniz!')
-            } else {
-                if (selectedBed != null && bedId == selectedBed.id) {
-                    bed.alt = 'bed';
-                    bed.style.border = '2px ridge black';
-                    bed.style.backgroundColor = 'inherit';
-                    emptyBedCount.innerHTML = '10';
-                    fullBedCount.innerHTML = '10';
-                } else if (selectedBed != null && bedId != selectedBed.id) {
-                    alert('Birden fazla yatak seçemezsiniz!')
-                }
-                else {
-                    bed.alt = 'selected';
-                    bed.style.border = '5px inset red';
-                    bed.style.backgroundColor = 'grey';
-                    emptyBedCount.innerHTML = '9';
-                    fullBedCount.innerHTML = '11';
-                }
-            }
-        },
-
-        tetkikSelect: function tetkikSelect(checkboxId, checkboxClass, resultTable, countResult) {
-            var selectedCheckbox = document.getElementById(checkboxId),
-                checkboxParent = selectedCheckbox.parentElement,
-                grandParent = checkboxParent.parentElement,
-                checkboxes = document.getElementsByClassName(checkboxClass),
-                selectedExam = document.getElementById(resultTable).rows[1].cells,
-                y = 0,
-                totalExam = document.getElementById(countResult);
-
-            if (selectedCheckbox.checked == true) {
-                grandParent.style.backgroundColor = '#5bc0de';
-
-                for (let i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].checked == true) {
-                        y++
-                    }
-                }
-                if (y == 0) {
-                    totalExam.style.backgroundColor = 'red'
-                }
-                else {
-                    totalExam.style.backgroundColor = '#5bc0de'
-                }
-                selectedExam[0].innerHTML = y;
-
-            }
-            else {
-                grandParent.style.backgroundColor = '#dddddd';
-
-
-                for (let i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].checked == true) {
-                        y++
-                    }
-                }
-                if (y == 0) {
-                    totalExam.style.backgroundColor = 'red'
-                }
-                else { totalExam.style.backgroundColor = '#5bc0de' }
-                selectedExam[0].innerHTML = y;
-            }
-        },
-
-        countSelectedCheckboxes: function countSelectedCheckboxes(checkboxClass, examTable, countResult) {
-            var checkboxes = document.getElementsByClassName(checkboxClass),
-                selectedExam = document.getElementById(examTable).rows[1].cells,
-                y = 0,
-                totalExam = document.getElementById(countResult);
-            for (let i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked == true) {
-                    y++
-                }
-            }
-            if (y == 0) {
-                totalExam.style.backgroundColor = 'red'
-            }
-            else { totalExam.style.backgroundColor = '#5bc0de' }
-            selectedExam[0].innerHTML = y;
-        },
-
-        checkBeforeSaveExaminations: function checkBeforeSaveExaminations(totalId) {
-            var totalExam = document.getElementById(totalId);
-            if (Number(totalExam.innerHTML) == 0) {
-                alert('Tetkik seçmeden kaydedemesiniz!');
-            } else {
-                ShowOrHideMethods.polyclinicShowSuccesAlert();
-            }
         }
     },
 

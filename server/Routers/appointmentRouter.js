@@ -17,6 +17,7 @@ router.put('/updateAppointmentData', controllerAppointment.updateAppointmentData
 router.get('/fillPolyclinicAppointmentStatusTable', controllerAppointment.fillPolyclinicAppointmentStatusTable);
 router.get('/fillCanceledValidAppointmentTable', controllerAppointment.fillCanceledValidAppointmentTable);
 router.get('/fillAppointmentGenderTable', controllerAppointment.fillAppointmentGenderTable);
+router.get('/fillPolAppointmentStatusTable', controllerAppointment.fillPolAppointmentStatusTable);
 // router.get('/fillPatientGenderTable', controllerPolExam.fillPatientGenderTable);
 // router.get('/fillDoctorPatientTable', controllerPolExam.fillDoctorPatientTable);
 // router.get('/fillDoctorOnLeaveTable', controllerPolExam.fillDoctorOnLeaveTable);

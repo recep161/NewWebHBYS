@@ -1,6 +1,7 @@
 const appointmentSaveSchema = require('../models/appointmentModel');
 const myMongoose = require('mongoose');
 const myMoment = require('moment');
+const { each } = require('async');
 
 myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: false });
 
@@ -8,7 +9,8 @@ var myAppointmentModel = myMongoose.model('appointments');
 var myPatientsModel = myMongoose.model('patients');
 
 var firstDayOfMonth = myMoment().startOf('month').format('DD-MM-YYYY'),
-    lastDayOfMonth = myMoment().endOf('month').format('DD-MM-YYYY');
+    lastDayOfMonth = myMoment().endOf('month').format('DD-MM-YYYY'),
+    today = today = myMoment().format('DD-MM-YYYY');
 
 module.exports.saveAppointment = (req, res) => {
 
@@ -193,6 +195,34 @@ module.exports.fillAppointmentGenderTable = (req, res) => {
         },
         {
             $sort: { _id: 1 }
+        }
+    ])
+        .then(polData => {
+            res.send(polData);
+            // console.log(polData)
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.fillPolAppointmentStatusTable = (req, res) => {
+    myAppointmentModel.aggregate([
+        {
+            $match: {
+                appointmentDate: { $gte: today },
+                appointmentStatus: 'Valid'
+            }
+        },
+        {
+            $group: {
+                "_id": "$appointmentPolyclinic",
+                "data": { $push: { appointmentDate: "$appointmentDate", appointmentHour: "$appointmentHour", appointmentId: "$appointmentId", patientName: "$patientName", patientSurname: "$patientSurname" } }
+            }
+        },
+        {
+            $sort: { '_id': 1, 'data.appointmentDate': 1 }
         }
     ])
         .then(polData => {
