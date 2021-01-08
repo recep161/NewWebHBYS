@@ -27,19 +27,29 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <link rel="stylesheet" href="/public/css/all-pages-style.css">
-    <link rel="shortcut icon" href="/public/images/Medical-icons/Task-Completed-256.png">
+    <link rel="shortcut icon" href="/public/images/Medical-icons/polyclinic-doctor.png">
+
+    <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
 </head>
 
-<body id="polyclinicBody" onload="ShowOrHideMethods.myStickHeader('subHeadDiv');
-PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');
-                                  jQueryMethods.setCalenderValueToday('clinicDate');
-                                  jQueryMethods.setCalenderValueToday('examDate');
-                                  jQueryMethods.setCalenderValueToday('konsDate');
-                                  jQueryMethods.getJqueryDatePicker();
-                                  jQueryMethods.toolTipFunction();
-                                  InpatientMethods.colorSelectedPatient();
-                                  ShowOrHideMethods.showBackTotopButton();
-                                  jQueryMethods.getPatientPhotoAndInfos('patientRecep');">
+<body id="polyclinicBody" onload="
+                                LoginProcess.checkIfThereIsAUserLoggedIn('polyclinicBody', 'poylclinicAnamnezKaydet');
+                                AdministrationMethods.takeUserInfoFromCookie();
+                                // ShowOrHideMethods.myStickHeader('subHeadDiv');
+                                InpatientMethods.colorSelectedPatient();
+                                jQueryMethods.setCalenderValueToday('clinicDate');
+                                jQueryMethods.setCalenderValueToday('examDate');
+                                jQueryMethods.setCalenderValueToday('konsDate');
+                                jQueryMethods.getJqueryDatePicker();
+                                jQueryMethods.toolTipFunction();
+                                jQueryMethods.bottomUserMenuDrag();
+                                myClockMethods.myClock();
+                                PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');
+                                PolyclinicMethods.findPatientList();
+                                ShowOrHideMethods.showBackTotopButton();
+                                ShowOrHideMethods.adjustHtmlsBackground('polyclinicBody');">
     <div class="polyclinicNotify" id="polyclinicNotify">
         <span id="polyclinicNotifyType" class=""></span>
     </div>
@@ -57,21 +67,28 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         src="/public/images/open-new-tab.png" alt=""></div>
                 <div id="modulNameText"> Polyclinic Module </div>
                 <div>
-                    <img class="modulAvatar" src="/public/images/Medical-icons/Task-Completed-256.png"
+                    <img class="modulAvatar" src="/public/images/Medical-icons/polyclinic-doctor.png"
                         title="Anasayfa için tıklayınız." onclick="window.location.href='/public/htmls/index.html'">
                 </div>
             </div>
+
+            <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
+                style="margin: 10px ;cursor: default;" title="">Please Login from main page!
+            </hUserName>
+            <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!
+            </p>
+
             <select name="polyclinicSelect" id="polyclinicSelector" class="polyclinicPalette">
-                <option value="pol1">Emergency Pol.</option>
-                <option value="pol2">Diet Pol.</option>
-                <option value="pol3">Cardiology Pol.</option>
-                <option value="pol4">Urology Pol.</option>
+                <option value="GeneralSurgeryPolyclinic">General Surgery Polyclinic</option>
+                <option value="OrthopedicPolyclinic">Orthopedic Polyclinic</option>
+                <option value="CardiologyPolyclinic">Cardiology Polyclinic</option>
+                <option value="UrologyPolyclinic">Urology Polyclinic</option>
             </select>
 
             <!-- <input type="date" id="examDate" name="examDate"> -->
             <input type="text" id="examDate">
-            <button class="polyclinicButtons btn--swap" id="refresh">Refresh<span>Refresh the patients'
-                    list.</span></button>
+            <button class="polyclinicButtons btn--swap" id="refreshPatientList"
+                onclick="PolyclinicMethods.findPatientList()">Refresh<span>Refresh the patients' list.</span></button>
         </div>
 
         <div class="bottomScrool">
@@ -90,36 +107,16 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                     placeholder="Search for patients..."
                     title="Search patients by name, surname, protocol or appointment status.">
                 <table id="patientTable">
-                    <tr id="tableHeader">
-                        <th>Protocol No.</th>
-                        <th>Name Surname</th>
-                        <th>Appointment</th>
-                    </tr>
-                    <tr title="" id="patientRecep">
-                        <td>12345</td>
-                        <td>Recep CELiK</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="Cinsiyeti: Erkek, Yas: 34, Dogum yeri: Diyarbakir">
-                        <td>45678</td>
-                        <td>Adnan YILDIRIM</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="Cinsiyeti: Erkek, Yas: 44, Dogum yeri: Ankara">
-                        <td>91011</td>
-                        <td>Onder KARABULUT</td>
-                        <td>No</td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="Cinsiyeti: Kadin, Yas: 22, Dogum yeri: Istanbul">
-                        <td>12131</td>
-                        <td>Ayse GENC</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="Cinsiyeti: Erkek, Yas: 3, Dogum yeri: Malatya">
-                        <td>14151</td>
-                        <td>Ahmet MEHMET</td>
-                        <td>No</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                            <td>Protocol No.</td>
+                            <td>Name Surname</td>
+                            <td>Appointment</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
 
@@ -918,22 +915,21 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
             <div id="userStatisticsContainer" class="userStatisticsContainer">
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
                 <table id="userLoginStatsTable">
-                    <tr id="tableHeader">
-                        <th>#</th>
-                        <th>Ip Adress</th>
-                        <th>Login Date</th>
-                        <th>Login Duration</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>192.168.1.11</td>
-                        <td>03.09.2020 14:10</td>
-                        <td>22 minutes 17 seconds</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader">
+                            <th>#</th>
+                            <th>Ip Adress</th>
+                            <th>Local Machine</th>
+                            <th>Login Date</th>
+                            <th>Login Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 id="lastPasswordChangeStatistics" class="historyHeaders" style="margin: 5px;color: white;">-</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -1072,10 +1068,8 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                 <br>
                 <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
-                    Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
+                    title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -1205,8 +1199,11 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Statistics." onclick="
+                ShowOrHideMethods.showPopUpModal('userStatistics'); 
+                LoginProcess.userLoginStatistics();
+                LoginProcess.getLastPasswordChangeStatistics();">
+                <i class="fa fa-bar-chart"></i> </a>
             <a href="#" class="menu-item" title="User Trainings."
                 onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
             <a href="#" class="menu-item" title="User Settings."

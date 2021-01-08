@@ -12,6 +12,7 @@ router.get('/', controllerIndex.indexControllerGet);
 router.get('/admin', controllerIndex.indexRedirectToAdmin);
 router.get('/hastakimlik', controllerIndex.indexRedirectToHastaKimlik);
 router.get('/polExam', controllerIndex.indexRedirectToPolExam);
+router.get('/polExamAnamnesis', controllerIndex.indexRedirectToPolExamAnamnesis);
 router.get('/appSave', controllerIndex.indexRedirectToAppointmentSave);
 router.get('/findLoginUser', controllerIndex.findLoginUser);
 router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);

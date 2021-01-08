@@ -1930,11 +1930,16 @@ span.psw {
   height: 250px;
 }
 
-#refresh {
+#refreshPatientList {
   width: 29%;
-  height: 30px;
+  height: 40px;
   box-shadow: 2px 2px 10px #555;
   left: 35%;
+}
+
+#refreshPatientList span {
+  top: 8px;
+  font-size: 13px;
 }
 
 .polyclinicButtons {

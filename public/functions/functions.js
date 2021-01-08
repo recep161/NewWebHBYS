@@ -1831,8 +1831,8 @@ var
             radiologyBaseParent.style.animation = 'slide-cards-right 1.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
             radiologyBaseParent.style.webkitAnimation = 'slide-cards-right 1.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
 
-            administrationBaseParent.style.animation = 'slide-cards-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
-            administrationBaseParent.style.webkitAnimation = 'slide-cards-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
+            administrationBaseParent.style.animation = 'slide-cards-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
+            administrationBaseParent.style.webkitAnimation = 'slide-cards-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both';
 
             // ====================================================== slide left
 
@@ -2282,7 +2282,7 @@ var
                             front[1].style.backgroundImage = 'url("/public/images/exam_2.png")';
                             front[2].style.backgroundImage = 'url("/public/images/Medical-icons/calender.png")';
                             front[3].style.backgroundImage = 'url("/public/images/Medical-icons/Calendar-selected-day.png")';
-                            front[4].style.backgroundImage = 'url("/public/images/Medical-icons/Task-Completed-256.png")';
+                            front[4].style.backgroundImage = 'url("/public/images/Medical-icons/polyclinic-doctor.png")';
                             front[5].style.backgroundImage = 'url("/public/images/diet_3.png")';
                             front[6].style.backgroundImage = 'url("/public/images/new_announcements.png")';
                             front[7].style.backgroundImage = 'url("/public/images/Medical-icons/nurse.png")';
@@ -2313,7 +2313,7 @@ var
                             front[1].style.backgroundImage = 'url("/public/images/exam_2.png")';
                             front[2].style.backgroundImage = 'url("/public/images/Medical-icons/calender.png")';
                             front[3].style.backgroundImage = 'url("/public/images/Medical-icons/Calendar-selected-day.png")';
-                            front[4].style.backgroundImage = 'url("/public/images/Medical-icons/Task-Completed-256.png")';
+                            front[4].style.backgroundImage = 'url("/public/images/Medical-icons/polyclinic-doctor.png")';
                             front[5].style.backgroundImage = 'url("/public/images/diet_3.png")';
                             front[6].style.backgroundImage = 'url("/public/images/new_announcements.png")';
                             front[7].style.backgroundImage = 'url("/public/images/Medical-icons/nurse.png")';
@@ -2344,7 +2344,7 @@ var
                             front[1].style.backgroundImage = 'url("/public/images/exam_2.png")';
                             front[2].style.backgroundImage = 'url("/public/images/Medical-icons/calender.png")';
                             front[3].style.backgroundImage = 'url("/public/images/Medical-icons/Calendar-selected-day.png")';
-                            front[4].style.backgroundImage = 'url("/public/images/Medical-icons/Task-Completed-256.png")';
+                            front[4].style.backgroundImage = 'url("/public/images/Medical-icons/polyclinic-doctor.png")';
                             front[5].style.backgroundImage = 'url("/public/images/diet_3.png")';
                             front[6].style.backgroundImage = 'url("/public/images/new_announcements.png")';
                             front[7].style.backgroundImage = 'url("/public/images/Medical-icons/nurse.png")';
@@ -2374,7 +2374,7 @@ var
                             front[1].style.backgroundImage = 'url("/public/images/exam_2.png")';
                             front[2].style.backgroundImage = 'url("/public/images/Medical-icons/calender.png")';
                             front[3].style.backgroundImage = 'url("/public/images/Medical-icons/Calendar-selected-day.png")';
-                            front[4].style.backgroundImage = 'url("/public/images/Medical-icons/Task-Completed-256.png")';
+                            front[4].style.backgroundImage = 'url("/public/images/Medical-icons/polyclinic-doctor.png")';
                             front[5].style.backgroundImage = 'url("/public/images/diet_3.png")';
                             front[6].style.backgroundImage = 'url("/public/images/new_announcements.png")';
                             front[7].style.backgroundImage = 'url("/public/images/Medical-icons/nurse.png")';
@@ -4584,6 +4584,172 @@ var
             } else {
                 ShowOrHideMethods.polyclinicShowSuccesAlert();
             }
+        },
+
+        showPatientDataOnHover: function showPatientDataOnHover() {
+            var patientNameSurname = $.cookie('patientNameSurname'),
+                patientPersonalIdNumber = $.cookie('patientPersonalIdNumber'),
+                patientGender = $.cookie('patientGender'),
+                patientBirthDate = $.cookie('patientGroup'),
+                myPhotoSrc = $.cookie('patientPhotoSrc');
+
+            $(function () {
+                s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">';
+                s += '<tr style="border-style:ridge;border:5px solid #761c54;"><img src="' + myPhotoSrc + '" style="width:200px; height:200px;align-items:center;box-shadow:"/> </td><td valign="top">' + patientNameSurname + '</td></tr>';
+                s += '<td class="Text">' + patientGender + ' - ' + patientBirthDate + ' <br/>' + patientPersonalIdNumber + '</td>';
+                s += '</table>';
+                $('#hUserName').tooltip({
+                    content: s,
+                    position: {
+                        my: "center top",
+                        at: "center bottom-5",
+                    },
+                    show: {
+                        effect: "slideDown",
+                        delay: 250,
+                        track: true
+                    }
+                });
+            });
+        },
+
+        getPatientPersonalIdNo: function getPatientPersonalIdNo(patientTableRowId) {
+            var clickedPatientProtocol = $('#' + patientTableRowId + '').children("td:first-child").text(),
+                clickedPatientNameSurname = $('#' + patientTableRowId + '').children("td:nth-child(2)").text(),
+                myData = { patientProtocolNo: clickedPatientProtocol };
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/getPatientPersonalIdNo",
+                data: (myData),
+                contentType: 'application/json',
+                datatype: "json",
+                success: function (result) {
+                    $.each(result, function (i, patientData) {
+                        i++;
+                        $.cookie('patientNameSurname', clickedPatientNameSurname, { expires: 1, path: '/' });
+
+                        $.cookie('patientPersonalIdNumber', patientData.patientIdNo, { expires: 1, path: '/' });
+
+                    });
+                    PolyclinicMethods.getPatientDataToCookie();
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient list couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        getPatientDataToCookie: function getPatientDataToCookie() {
+            var clickedPatientPersonalIdNo = $.cookie('patientPersonalIdNumber'),
+                age = new Date(),
+                today = new Date(),
+                dob = new Date(),
+                dd = String(today.getDate()).padStart(2, '0'),
+                mm = String(today.getMonth() + 1).padStart(2, '0'), //January is 0!,
+                yyyy = today.getFullYear(),
+                myData = { patientIdNo: clickedPatientPersonalIdNo };
+
+            today = dd + '-' + mm + '-' + yyyy;
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/getPatientDataToCookie",
+                data: (myData),
+                contentType: 'application/json',
+                datatype: "json",
+                success: function (result) {
+                    $.each(result, function (i, patientData) {
+                        i++;
+                        $.cookie('patientPhotoSrc', patientData.patientPhotoSrc, { expires: 1, path: '/' });
+                        $.cookie('patientFatherName', patientData.patientFatherName, { expires: 1, path: '/' });
+                        $.cookie('patientGender', patientData.patientGender, { expires: 1, path: '/' });
+                        $.cookie('patientBirthPlace', patientData.patientBirthPlace, { expires: 1, path: '/' });
+                        $.cookie('patientBirthDate', patientData.patientBirthDate, { expires: 1, path: '/' });
+                        dob = $.cookie('patientBirthDate');
+                        age = Math.floor((new Date(today) - new Date(dob)) / (365.25 * 24 * 60 * 60 * 1000));
+                        $.cookie('patientAge', age, { expires: 1, path: '/' });
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient data couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        findPatientList: function findPatientList() {
+            var myPolyclinicSelect = document.getElementById('polyclinicSelector'),
+                polExamDate = $('#examDate').val(),
+                myPolyclinicSelectValue = myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value;
+
+            $('#patientTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/findPatientList",
+                data: { polyclinicSelect: myPolyclinicSelectValue, statusSelect: 'Valid', patientPolExamDate: polExamDate },
+                success: function (result) {
+                    $.each(result, function (i, patientData) {
+                        i++;
+                        $("#patientTable> tbody").append(
+                            "<tr class='patientList' id='patient" + i
+                            + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\")' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'> "
+                            + patientData.patientProtocolNo + "</td><td>"
+                            + patientData.patientNameSurname + "</td><td>"
+                            + patientData.appointmentStatus + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient list couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        savePolExamAnamnesis: function savePolExamAnamnesis() {
+            jQueryMethods.toastrOptions();
+            var myPolyclinicSelect = document.getElementById('polyclinicSelector'),
+                myData = {
+                    patientProtocolNo: $("#patientProtocolNo").val(),
+                    patientId: $("#patientId").val(),
+                    patientIdNo: $("#patientIdNo").val(),
+                    patientNameSurname: $("#patientNameSurname").val(),
+                    appointmentStatus: $("#appointmentStatus").val(),
+                    patientStory: $("#patientStory").val(),
+                    patientAnamnesis: $("#patientAnamnesis").val(),
+                    patientExamination: $("#patientExamination").val(),
+                    patientDiagnosis: $("#patientDiagnosis").val(),
+                    patientSavedUser: $.cookie('username'),
+                    polyclinicSelect: myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value
+                };
+
+            if (polExamSave.innerHTML == 'Update') {
+                PolyclinicMethods.updatePolExamAnamnesis()
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/polExamAnamnesis/savePolExamAnamnesis',
+                    success: function () {
+                        toastr.success('Patient polyclinic exam successfully saved!', 'Save');
+                        // PolyclinicExamMethods.findPatient();
+                        // PolyclinicExamMethods.getMaxProtocolNo();
+                        // findPatientLabRadHistory function will come here
+                    },
+                    error: function (e) {
+                        toastr.error('Patient polyclinic exam couldnt save! \n' + e, 'Error!')
+                        console.log("ERROR: ", e);
+                    }
+                });
+            }
         }
     },
 
@@ -5538,13 +5704,20 @@ var
             })
         },
 
-        getPatientPhotoAndInfos: function getPatientPhotoAndInfos(hastaId) {
+        getPatientPhotoAndInfos: function getPatientPhotoAndInfos(hastaRowId) {
+            var patientNameSurname = $.cookie('patientNameSurname'),
+                patientPersonalIdNumber = $.cookie('patientPersonalIdNumber'),
+                patientGender = $.cookie('patientGender'),
+                patientAge = $.cookie('patientAge'),
+                patientBirthPlace = $.cookie('patientBirthPlace'),
+                patientPhotoSrc = $.cookie('patientPhotoSrc');
+
             $(function () {
-                s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 12px -3px black;">';
-                s += '<tr style="border-style:ridge;border-color:rosybrown;><td><img src="http://localhost:161/public/images/cv photo - office background.jpg" style="width:200px; height:200px;align-items:center;"/> </ td><td valign="top">Recep CELIK</td></tr>';
-                s += '<td class="Text">Cinsiyeti: Erkek, Yas: 34 <br/>Dogum yeri: Diyarbakir</td>';
+                s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">';
+                s += '<tr style="border-style:ridge;border:5px solid #761c54;"><img src="' + patientPhotoSrc + '" style="width:200px; height:200px;align-items:center;"/> </td><td valign="top">' + patientNameSurname + '</td></tr>';
+                s += '<td class="Text">' + patientGender + ' - ' + patientAge + ' <br/>' + patientBirthPlace + ' <br/>' + patientPersonalIdNumber +'</td>';
                 s += '</table>';
-                $('#' + hastaId + '').tooltip({
+                $('#' + hastaRowId + '').tooltip({
                     content: s,
                     position: {
                         my: "center top",
