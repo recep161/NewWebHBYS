@@ -6,8 +6,8 @@ myMongoose.set('useCreateIndex', true);
 
 myMongoose.connect(myMongoDb, { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
     if (err) {
-        console.log('Couldnt connected...:' + err.error)
+        console.log('Couldnt connected...: ' + err.error)
     } else {
-        console.log('Connected to...:' + myMongoDb)
+        console.log('Connected to...: ' + myMongoDb)
     }
 })

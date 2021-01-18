@@ -12,10 +12,10 @@ module.exports.redirectToUserTab = (req, res) => {
 
 // Save FormData - User to MongoDB
 module.exports.saveUser = (req, res) => {
-    console.log('Post a User: ' + JSON.stringify(req.body));
+    // console.log('Post a User: ' + JSON.stringify(req.body));
 
     // Create a Customer
-    console.log(req.body);
+    // console.log(req.body);
 
     const newUser = new userSaveSchema({
         userId: req.body.userId,

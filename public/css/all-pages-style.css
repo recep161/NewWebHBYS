@@ -1881,7 +1881,7 @@ span.psw {
   font-size: 15px;
 }
 
-#polMuayeneTani {
+#polDiagnosis {
   display: none;
   max-height: 355px;
   position: absolute;
@@ -1894,7 +1894,7 @@ span.psw {
   box-shadow: 0 8px 35px -6px #555;
 }
 
-#polMuayeneTaniSearch {
+#polDiagnosisSearch {
   width: 98%;
   margin: 5px 5px 5px 8px;
   box-sizing: border-box;
@@ -1909,7 +1909,7 @@ span.psw {
   background-color: inherit;
 }
 
-#polMuayeneTaniSearch:focus {
+#polDiagnosisSearch:focus {
   outline: 3px solid #ddd;
 }
 
@@ -2008,7 +2008,7 @@ span.psw {
   border-collapse: collapse;
   border-style: hidden;
   border-radius: 8px;
-  box-shadow: 0 0 0 1px #666;
+  box-shadow: 5px 10px 20px 1px #666;
 }
 
 #patientHistoryTable {
@@ -3973,7 +3973,7 @@ input:focus, textarea:focus, text:focus {
   border-radius: 8px;
 }
 
-#dietKaydet, #poylclinicAnamnezKaydet {
+#dietKaydet, #poylclinicAnamnesisSave {
   margin: 5px 0px 5px 5px;
   width: 100% !important;
 }
@@ -4401,17 +4401,18 @@ tr:hover, tr.selected {
   display: block;
 }
 
-.hastaTaniHistory {
+.polDiagnosisHistoryTable {
   width: 100%;
   margin: 10px 0px;
   cursor: pointer;
+  font-family: inherit;
   border-collapse: collapse;
-  border-radius: 8px;
   border-style: hidden;
+  border-radius: 8px;
   box-shadow: 0 0 0 1px #666;
 }
 
-.hastaTaniHistoryDiv {
+.polDiagnosisHistoryDiv {
   box-shadow: 0 8px 6px -6px #555;
 }
 

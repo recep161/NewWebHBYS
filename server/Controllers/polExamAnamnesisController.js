@@ -1,6 +1,8 @@
 const polExamAnamnesisSaveSchema = require('../models/polExamAnamnesisModel');
 const polExamSaveSchema = require('../models/polExamModel');
 const appointmentSaveSchema = require('../models/appointmentModel');
+const patientDiagnosisSaveSchema = require('../models/diagnosisModel');
+const allDiagnosisSaveSchema = require('../models/allDiagnosisModel');
 const myMongoose = require('mongoose');
 const myMoment = require('moment');
 
@@ -11,6 +13,8 @@ var myPolExamModel = myMongoose.model('polyclinicExam');
 var myPatientsModel = myMongoose.model('patients');
 var myStaffModel = myMongoose.model('staffs');
 var myAppointmentModel = myMongoose.model('appointments');
+var myPatientdiagnosisModel = myMongoose.model('patientdiagnoses');
+var allDiagnosisModel = myMongoose.model('diagnosistables');
 
 module.exports.savePolExamAnamnesis = (req, res) => {
 
@@ -23,11 +27,10 @@ module.exports.savePolExamAnamnesis = (req, res) => {
         patientStory: req.body.patientStory,
         patientAnamnesis: req.body.patientAnamnesis,
         patientExamination: req.body.patientExamination,
-        patientDiagnosis: req.body.patientDiagnosis,
         patientSavedUser: req.body.patientSavedUser,
+        saveDate: req.body.saveDate,
         polyclinicSelect: req.body.polyclinicSelect
     })
-
     newPolExamAnamnesis.save()
         .then(polExam => {
             res.send(polExam);
@@ -39,11 +42,114 @@ module.exports.savePolExamAnamnesis = (req, res) => {
         });
 };
 
+module.exports.updatePolExamAnamnesis = (req, res) => {
+    myPolExamAnamnesisModel.findOneAndUpdate(
+        { patientProtocolNo: req.body.patientProtocolNo },
+        {
+            $set: {
+                patientStory: req.body.patientStory,
+                patientAnamnesis: req.body.patientAnamnesis,
+                patientExamination: req.body.patientExamination
+            }
+        },
+        { useFindAndModify: false })
+        .then(patientAnamnesisData => {
+            res.send(patientAnamnesisData);
+            // console.log("Patient data updated! = " + patientAnamnesisData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
 module.exports.findPatientList = (req, res) => {
     myPolExamModel.find(req.query)
         .then(patientData => {
             res.send(patientData);
             // console.log("patient found! = " + patientData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.diagnosisList = (req, res) => {
+    allDiagnosisModel.find().sort({ 'icd10': 1 })
+        .then(diagnosisData => {
+            res.send(diagnosisData);
+            // console.log("All diagnosis data: " + diagnosisData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.savePolExamDiagnosis = (req, res) => {
+    const newPatientDiagnosisSaveSchema = new patientDiagnosisSaveSchema({
+        patientProtocolNo: req.body.patientProtocolNo,
+        patientIdNo: req.body.patientIdNo,
+        patientId: req.body.patientId,
+        icd10: req.body.icd10,
+        diagnosisType: req.body.diagnosisType1,
+        diagnosisName: req.body.diagnosisName1,
+        diagnosisUser: req.body.diagnosisUser1,
+        diagnosisDate: req.body.diagnosisDate1
+    });
+    newPatientDiagnosisSaveSchema.save()
+        .then(polExam => {
+            res.send(polExam);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message,
+                myerr: console.log(err.message)
+            });
+        });
+};
+
+module.exports.findPatientDiagnosisHistory = (req, res) => {
+    myPatientdiagnosisModel.find(req.query)
+        .then(patientDiagnosisData => {
+            res.send(patientDiagnosisData);
+            // console.log("patient diagnosis found! = " + patientDiagnosisData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.deletePatientDiagnosis = (req, res) => {
+
+    myPatientdiagnosisModel.deleteOne(req.query)
+        .then(diagnosis => {
+            res.send(diagnosis);
+            // console.log("Diagnosis deleted! ");
+            // console.log(req.query);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.updateDiagnosisType = (req, res) => {
+    myPatientdiagnosisModel.findOneAndUpdate(
+        {
+            patientProtocolNo: req.body.patientProtocolNo,
+            icd10: req.body.icd10
+        },
+        {
+            $set: {
+                diagnosisType: req.body.diagnosisType
+            }
+        },
+        { useFindAndModify: false })
+        .then(diagnosisData => {
+            res.send(diagnosisData);
+            // console.log("diagnosisData updated! = " + diagnosisData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -89,33 +195,11 @@ module.exports.getPatientDataToCookie = (req, res) => {
         });
 };
 
-module.exports.findByProtocol = (req, res) => {
-    myPolExamModel.findOne(req.query)
-        .then(patientData => {
-            res.send(patientData);
-            // console.log("patient found! = " + patientData);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
-};
-
-module.exports.updatePolExam = (req, res) => {
-    myPolExamModel.findOneAndUpdate(
-        { patientProtocolNo: req.body.patientProtocolNo },
-        {
-            $set: {
-                insuranceSelect: req.body.insuranceSelect,
-                doctorSelector: req.body.doctorSelector,
-                statusSelect: req.body.statusSelect
-            }
-        },
-        { useFindAndModify: false })
-        .then(patient => {
-            res.send(patient);
-            // console.log("Patient data updated! = " + patient);
-            // console.log(myPatientIdNo);
+module.exports.findPatientAnamnesisByProtocol = (req, res) => {
+    myPolExamAnamnesisModel.find(req.query)
+        .then(patientAnamnesisData => {
+            res.send(patientAnamnesisData);
+            // console.log("patient found! = " + patientAnamnesisData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message

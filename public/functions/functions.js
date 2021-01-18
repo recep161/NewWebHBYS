@@ -4631,6 +4631,8 @@ var
 
                         $.cookie('patientPersonalIdNumber', patientData.patientIdNo, { expires: 1, path: '/' });
 
+                        $.cookie('patientProtocol', clickedPatientProtocol, { expires: 1, path: '/' });
+
                     });
                     PolyclinicMethods.getPatientDataToCookie();
                 },
@@ -4668,6 +4670,7 @@ var
                         $.cookie('patientGender', patientData.patientGender, { expires: 1, path: '/' });
                         $.cookie('patientBirthPlace', patientData.patientBirthPlace, { expires: 1, path: '/' });
                         $.cookie('patientBirthDate', patientData.patientBirthDate, { expires: 1, path: '/' });
+                        $.cookie('patientId', patientData.patientId, { expires: 1, path: '/' });
                         dob = $.cookie('patientBirthDate');
                         age = Math.floor((new Date(today) - new Date(dob)) / (365.25 * 24 * 60 * 60 * 1000));
                         $.cookie('patientAge', age, { expires: 1, path: '/' });
@@ -4682,54 +4685,249 @@ var
         },
 
         findPatientList: function findPatientList() {
-            var myPolyclinicSelect = document.getElementById('polyclinicSelector'),
-                polExamDate = $('#examDate').val(),
-                myPolyclinicSelectValue = myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value;
+            jQueryMethods.toastrOptions();
+            if ($.cookie('username') == null
+                || $.cookie('username') == 'null'
+                || $.cookie('username') == undefined
+                || $.cookie('username') == 'undefined') {
+                toastr.error('Please login from Main page!', 'Login error!')
+            }
+            else {
+                var myPolyclinicSelect = document.getElementById('polyclinicSelector'),
+                    polExamDate = $('#examDate').val(),
+                    myPolyclinicSelectValue = myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value;
 
-            $('#patientTable > tbody').empty();
+                $('#patientTable > tbody').empty();
+
+                $.ajax({
+                    type: "GET",
+                    url: "/polExamAnamnesis/findPatientList",
+                    data: { polyclinicSelect: myPolyclinicSelectValue, statusSelect: 'Valid', patientPolExamDate: polExamDate },
+                    success: function (result) {
+                        $.each(result, function (i, patientData) {
+                            i++;
+                            $("#patientTable> tbody").append(
+                                "<tr class='patientList' id='patient" + i
+                                + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'> "
+                                + patientData.patientProtocolNo + "</td><td>"
+                                + patientData.patientNameSurname + "</td><td>"
+                                + patientData.appointmentStatus + "</td></tr>");
+                        });
+                    },
+                    error: function (e) {
+                        toastr.error('Patient list couldnt find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        fillDiagnosisDropDown: function fillDiagnosisDropDown() {
+            $('#diagnosisList').empty();
 
             $.ajax({
                 type: "GET",
-                url: "/polExamAnamnesis/findPatientList",
-                data: { polyclinicSelect: myPolyclinicSelectValue, statusSelect: 'Valid', patientPolExamDate: polExamDate },
+                url: "/polExamAnamnesis/diagnosisList",
+                data: {},
                 success: function (result) {
-                    $.each(result, function (i, patientData) {
+                    $.each(result, function (i, diagnosisData) {
                         i++;
-                        $("#patientTable> tbody").append(
-                            "<tr class='patientList' id='patient" + i
-                            + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\")' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'> "
-                            + patientData.patientProtocolNo + "</td><td>"
-                            + patientData.patientNameSurname + "</td><td>"
-                            + patientData.appointmentStatus + "</td></tr>");
+                        $("#polDiagnosis").append(
+                            "<a class='diagnosisListItems' id='diagnosisListItem" + i
+                            + "'href='#taniAdd' onclick='PolyclinicMethods.addDiagnosisToTableAndDatabase(\"diagnosisListItem" + i + "\");'>" + diagnosisData.icd10 + ' - ' + diagnosisData.diagnosisName + "</a>");
                     });
                 },
                 error: function (e) {
-                    jQueryMethods.toastrOptions();
-                    toastr.error('Patient list couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    toastr.error('Diagnosis list couldnt find! \n\n\n' + e.responseText, 'Error!');
                     console.log("ERROR: ", e.responseText);
                 }
             });
         },
 
+        deletePatientDiagnosis: function deletePatientDiagnosis(patientTableRowId) {
+            var icd10Code = $('#' + patientTableRowId + '').children("td:first-child").text().substr(0, 5),
+                icd10FullName = $('#' + patientTableRowId + '').children("td:first-child").text(),
+                clickedPatientProtocol = $.cookie('patientProtocol').substr(1),
+                diagnosisTypeFromSelect = $("#diagnosisSelect option:selected").val(),
+                diagnosisTypeFromTable = $('#' + patientTableRowId + ' td:nth-child(2)').text(),
+                whichDiagnosisText;
+
+            if (diagnosisTypeFromSelect == null || diagnosisTypeFromSelect == 'null') {
+                whichDiagnosisText = diagnosisTypeFromTable;
+            } else {
+                whichDiagnosisText = diagnosisTypeFromSelect;
+            }
+
+            toastr.warning(
+                "<br/><br/><button type='button' id='deleteConfirmBtn' class='inpatientBtn btn-danger' style='width: 325px !important;'>Yes</button>", 'Do you want to DELETE diagnosis?',
+                {
+                    allowHtml: true,
+                    progressBar: false,
+                    timeOut: 10000,
+                    onShown: function (toast) {
+                        $("#deleteConfirmBtn").on('click', function () {
+                            $.ajax({
+                                type: "GET",
+                                url: "/polExamAnamnesis/deletePatientDiagnosis",
+                                data: { patientProtocolNo: clickedPatientProtocol, icd10: icd10Code, diagnosisType: whichDiagnosisText },
+                                success: function () {
+                                    toastr.success(icd10FullName + ' - Deleted!', 'Diagnosis Delete');
+                                    PolyclinicMethods.findPatientDiagnosisHistory();
+                                },
+                                error: function (e) {
+                                    jQueryMethods.toastrOptions();
+                                    toastr.error('Diagnosis couldnt deleted! \n' + e.body, 'Error!')
+                                    console.log("ERROR: ", e);
+                                }
+                            });
+                        });
+                    }
+                });
+        },
+
+        updateDiagnosisType: function updateDiagnosisType(patientTableRowId) {
+            var icd10Code = $('#' + patientTableRowId + '').children("td:first-child").text().substr(0, 5),
+                icd10FullName = $('#' + patientTableRowId + '').children("td:first-child").text(),
+                clickedPatientProtocol = $.cookie('patientProtocol').substr(1),
+                diagnosisTypeFromSelect = $("#diagnosisSelect option:selected").val(),
+                myData = { patientProtocolNo: clickedPatientProtocol, icd10: icd10Code, diagnosisType: diagnosisTypeFromSelect };
+
+            $.ajax({
+                type: 'PUT',
+                data: JSON.stringify(myData),
+                cache: false,
+                contentType: 'application/json',
+                datatype: "json",
+                url: '/polExamAnamnesis/updateDiagnosisType',
+                success: function () {
+                    toastr.success(icd10FullName + ' diagnosis updated!', 'Diagnosis Update');
+                    PolyclinicMethods.findPatientDiagnosisHistory();
+                },
+                error: function (e) {
+                    toastr.error(icd10FullName + ' couldnt update! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        addDiagnosisToTableAndDatabase: function addDiagnosisToTableAndDatabase(diagnosisListItemId) {
+            var myDate = new Date(),
+                userDate = myDate.toLocaleString("en-US"),
+                patientProtocol = $.cookie('patientProtocol'),
+                patientId = $.cookie('patientId'),
+                patientPersonalIdNumber = $.cookie('patientPersonalIdNumber'),
+                icd10Code = $("#" + diagnosisListItemId + "").html().substr(0, 5),
+                icd10Name = $("#" + diagnosisListItemId + "").html().substr(8),
+                myDiagnosisUser = $.cookie('username'),
+                rowCount = $('.polDiagnosisHistoryTable >tbody >tr').length + 1;
+
+            $(".polDiagnosisHistoryTable > tbody").append(
+                "<tr class='patientDiagnosis' id='patientDiagnosis" + rowCount + "'><td style='color:white'>"
+                + $("#" + diagnosisListItemId + "").html() + "</td>"
+                + "<td><select id='diagnosisSelect' style='width:fit-content'><option value='preDiagnosis'>Pre Diagnosis</option><option value='certainDiagnosis'>Certain Diagnosis</option></select></td>"
+                + "<td>" + myDiagnosisUser + "</td>"
+                + "<td>" + userDate + "</td>"
+                + "<td><button class='inpatientBtn btn-danger' onclick='PolyclinicMethods.deletePatientDiagnosis(\"patientDiagnosis" + rowCount + "\")'>Delete</button></td>"
+                + "<td><button class='inpatientBtn btn-primary' style='width:62px;height:42px;' onclick='PolyclinicMethods.updateDiagnosisType(\"patientDiagnosis" + rowCount + "\")'>Update</button></td>"
+                + "</tr>")
+
+            var myDiagnosisType = $("#diagnosisSelect option:selected").val(),
+                myData = {
+                    patientProtocolNo: patientProtocol,
+                    patientId: patientId,
+                    patientIdNo: patientPersonalIdNumber,
+                    icd10: icd10Code,
+                    diagnosisType1: myDiagnosisType,
+                    diagnosisName1: icd10Name,
+                    diagnosisUser1: myDiagnosisUser,
+                    diagnosisDate1: userDate
+                };
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(myData),
+                cache: false,
+                contentType: 'application/json',
+                // datatype: "json",
+                url: '/polExamAnamnesis/savePolExamDiagnosis',
+                success: function () {
+                    toastr.success($("#" + diagnosisListItemId + "").html() + ' added!', 'Info!')
+                },
+                error: function (e) {
+                    toastr.error('Patient diagnosis couldnt save! \n' + e, 'Error!')
+                    console.log("ERROR: ", e);
+                }
+            });
+        },
+
+        findPatientDiagnosisHistory: function findPatientDiagnosisHistory() {
+            jQueryMethods.toastrOptions();
+
+            var patientProtocol = $.cookie('patientProtocol');
+
+            if (patientProtocol == null
+                || patientProtocol == 'null'
+                || patientProtocol == undefined
+                || patientProtocol == 'undefined') {
+                toastr.error('Please choose a patient from patient list!', 'Patient Diagnosis List Error!')
+            }
+            else {
+                $.ajax({
+                    type: "GET",
+                    url: "/polExamAnamnesis/findPatientDiagnosisHistory",
+                    data: { patientProtocolNo: patientProtocol },
+                    success: function (result) {
+                        $('.polDiagnosisHistoryTable > tbody').empty();
+                        $.each(result, function (i, patientDiagnosisData) {
+                            i++
+                            if (result.length > 0
+                                && patientDiagnosisData.icd10 != null
+                                || patientDiagnosisData.icd10 != 'null'
+                                || patientDiagnosisData.icd10 != 'undefined'
+                                || patientDiagnosisData.icd10 != undefined) {
+                                $(".polDiagnosisHistoryTable > tbody").append(
+                                    "<tr class='patientDiagnosis' id='patientDiagnosis" + i + "'><td style='color:white'>"
+                                    + patientDiagnosisData.icd10 + ' - ' + patientDiagnosisData.diagnosisName + "</td>"
+                                    + "<td>" + patientDiagnosisData.diagnosisType + "</td>"
+                                    + "<td>" + patientDiagnosisData.diagnosisUser + "</td>"
+                                    + "<td>" + patientDiagnosisData.diagnosisDate + "</td>"
+                                    + "<td><button class='inpatientBtn btn-danger' onclick='PolyclinicMethods.deletePatientDiagnosis(\"patientDiagnosis" + i + "\")'>Delete</button></td>"
+                                    + "<td>Can\'t Update</td>"
+                                    + "</tr>")
+                            } else {
+                                $('.polDiagnosisHistoryTable > tbody').empty();
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        toastr.error('Patient diagnosis history couldn\'t find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
         savePolExamAnamnesis: function savePolExamAnamnesis() {
             jQueryMethods.toastrOptions();
-            var myPolyclinicSelect = document.getElementById('polyclinicSelector'),
+            var polExamSave = document.getElementById('poylclinicAnamnesisSave'),
+                myDate = new Date(),
+                mySaveDate = myDate.toLocaleString("en-US"),
                 myData = {
-                    patientProtocolNo: $("#patientProtocolNo").val(),
-                    patientId: $("#patientId").val(),
-                    patientIdNo: $("#patientIdNo").val(),
-                    patientNameSurname: $("#patientNameSurname").val(),
-                    appointmentStatus: $("#appointmentStatus").val(),
-                    patientStory: $("#patientStory").val(),
-                    patientAnamnesis: $("#patientAnamnesis").val(),
-                    patientExamination: $("#patientExamination").val(),
-                    patientDiagnosis: $("#patientDiagnosis").val(),
+                    patientProtocolNo: $.cookie("patientProtocol"),
+                    patientId: $.cookie("patientId"),
+                    patientIdNo: $.cookie("patientPersonalIdNumber"),
+                    patientNameSurname: $.cookie("patientNameSurname"),
+                    appointmentStatus: '',
+                    patientStory: $("#oykusuArea").val(),
+                    patientAnamnesis: $("#anamnezArea").val(),
+                    patientExamination: $("#muayeneArea").val(),
                     patientSavedUser: $.cookie('username'),
-                    polyclinicSelect: myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value
+                    saveDate: mySaveDate,
+                    polyclinicSelect: $("#polyclinicSelector option:selected").val()
                 };
 
             if (polExamSave.innerHTML == 'Update') {
-                PolyclinicMethods.updatePolExamAnamnesis()
+                PolyclinicMethods.updatePolExamAnamnesis();
             } else {
                 $.ajax({
                     type: 'POST',
@@ -4739,9 +4937,8 @@ var
                     datatype: "json",
                     url: '/polExamAnamnesis/savePolExamAnamnesis',
                     success: function () {
-                        toastr.success('Patient polyclinic exam successfully saved!', 'Save');
-                        // PolyclinicExamMethods.findPatient();
-                        // PolyclinicExamMethods.getMaxProtocolNo();
+                        toastr.success('Patient polyclinic exam successfully saved!', 'Save!');
+                        // PolyclinicExamMethods.findPatientHistory();
                         // findPatientLabRadHistory function will come here
                     },
                     error: function (e) {
@@ -4750,6 +4947,100 @@ var
                     }
                 });
             }
+        },
+
+        updatePolExamAnamnesis: function updatePolExamAnamnesis() {
+            var clickedPatientProtocol = $.cookie('patientProtocol').substr(1),
+                myData = {
+                    patientProtocolNo: clickedPatientProtocol,
+                    patientStory: $("#oykusuArea").val(),
+                    patientAnamnesis: $("#anamnezArea").val(),
+                    patientExamination: $("#muayeneArea").val(),
+                };
+
+            $.ajax({
+                type: 'PUT',
+                data: JSON.stringify(myData),
+                cache: false,
+                contentType: 'application/json',
+                datatype: "json",
+                url: '/polExamAnamnesis/updatePolExamAnamnesis',
+                success: function () {
+                    toastr.success('Anamnesis updated!', 'Anamnesis Update!');
+                },
+                error: function (e) {
+                    toastr.error('Anamnesis couldnt update! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        findPatientAnamnesisByProtocol: function findPatientAnamnesisByProtocol() {
+            var polExamSave = document.getElementById('poylclinicAnamnesisSave'),
+                patientProtocol = $.cookie('patientProtocol'),
+                oykusuArea = $('#oykusuArea').val(),
+                anamnezArea = $('#anamnezArea').val(),
+                muayeneArea = $('#muayeneArea').val();
+
+            if (patientProtocol == null
+                || patientProtocol == 'null'
+                || patientProtocol == undefined
+                || patientProtocol == 'undefined') {
+                toastr.error('Please choose a patient from patient list!', 'Patient Anamnesis Error!')
+            }
+            else {
+                $.ajax({
+                    type: "GET",
+                    url: "/polExamAnamnesis/findPatientAnamnesisByProtocol",
+                    data: { patientProtocolNo: patientProtocol },
+                    success: function (result) {
+
+                        $('#oykusuArea').val('');
+                        $('#anamnezArea').val('');
+                        $('#muayeneArea').val('');
+                        polExamSave.innerHTML = 'Save';
+                        $.each(result, function (i, patientAnamnesisData) {
+                            i++
+                            $('#oykusuArea').val(patientAnamnesisData.patientStory);
+                            $('#anamnezArea').val(patientAnamnesisData.patientAnamnesis);
+                            $('#muayeneArea').val(patientAnamnesisData.patientExamination);
+                            polExamSave.innerHTML = 'Update';
+                        });
+                    },
+                    error: function (e) {
+                        toastr.error('Patient Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        fillPatientExamHistoryTable: function fillPatientExamHistoryTable() {
+            $('#polExamPatientHistoryTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExam/fillPatientExamHistoryTable",
+                data: { patientIdNo: $("#patientIdNo").val() },
+                success: function (result) {
+                    $.each(result, function (i, patientData) {
+                        i++;
+                        $("#polExamPatientHistoryTable> tbody").append(
+                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >"
+                            + i + "</td><td>" + patientData.patientProtocolNo + "</td><td>"
+                            + patientData.patientPolExamDate + "</td><td>"
+                            + patientData.polyclinicSelect + "</td><td>"
+                            + patientData.doctorSelector + "</td><td>"
+                            + patientData.statusSelect + "</td><td><button class='inpatientBtn btn-success' title='Click for select protocol.' onclick=\"PolyclinicExamMethods.findByProtocol(\'patientHistory" + i + "\')\">Select</button></td></tr>");
+                    });
+                    PolyclinicExamMethods.colorRedCanceledPolExams();
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
         }
     },
 
@@ -5715,7 +6006,7 @@ var
             $(function () {
                 s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">';
                 s += '<tr style="border-style:ridge;border:5px solid #761c54;"><img src="' + patientPhotoSrc + '" style="width:200px; height:200px;align-items:center;"/> </td><td valign="top">' + patientNameSurname + '</td></tr>';
-                s += '<td class="Text">' + patientGender + ' - ' + patientAge + ' <br/>' + patientBirthPlace + ' <br/>' + patientPersonalIdNumber +'</td>';
+                s += '<td class="Text">' + patientGender + ' - ' + patientAge + ' <br/>' + patientBirthPlace + ' <br/>' + patientPersonalIdNumber + '</td>';
                 s += '</table>';
                 $('#' + hastaRowId + '').tooltip({
                     content: s,

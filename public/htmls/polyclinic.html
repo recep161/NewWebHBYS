@@ -35,7 +35,7 @@
 </head>
 
 <body id="polyclinicBody" onload="
-                                LoginProcess.checkIfThereIsAUserLoggedIn('polyclinicBody', 'poylclinicAnamnezKaydet');
+                                LoginProcess.checkIfThereIsAUserLoggedIn('refreshPatientList', 'poylclinicAnamnesisSave');
                                 AdministrationMethods.takeUserInfoFromCookie();
                                 // ShowOrHideMethods.myStickHeader('subHeadDiv');
                                 InpatientMethods.colorSelectedPatient();
@@ -135,42 +135,37 @@
                     data-toggle="tooltip" title="Write examination result."></textarea>
 
                 <div class="dropdown">
-                    <button onclick="InpatientMethods.showDropDownInside('polMuayeneTani')"
-                        class="polyclinicButtons btn--swap" id="polMuayeneTaniBtn">Tanilar <span>ICD-10 Tani
-                            Listesi</span></button>
-                    <div id="polMuayeneTani" class="dropdown-content">
-                        <input type="text" placeholder="Search.." id="polMuayeneTaniSearch" autofocus
-                            onkeyup="InpatientMethods.filterTaniDropdown('polMuayeneTaniSearch', 'polMuayeneTani')">
-                        <a href="">A00.0 - Kolera, Vibrio cholorea 01, biovar kolera’ya bağlı</a>
-                        <a href="">A23.0 - Bruselloz, Brucella melitensis’e bağlı</a>
-                        <a href="">B01.0 - Varisella menenjiti (G02.0*)</a>
-                        <a href="">B05.0 - Kızamık, ensefalit komplikasyonlu (G05.1*)</a>
-                        <a href="">B18.1 - Kronik viral hepatit B, delta ajansız</a>
-                        <a href="">B50.8 - Plasmodium falciparum sıtması, diğer ağır ve komplikasyonlu</a>
-                        <a href="">B90.0 - Merkezi sinir sistemi tüberkülozu sekelleri</a>
-                        <a href="">B91.0 - Merkezi sinir sistemi tüberkülozu sekelleri (Tanimlanmamis)</a>
+                    <button
+                        onclick="InpatientMethods.showDropDownInside('polDiagnosis');PolyclinicMethods.fillDiagnosisDropDown();"
+                        class="polyclinicButtons btn--swap" id="polMuayeneTaniBtn">Diagnosis <span>ICD-10 Diagnosis
+                            List</span></button>
+                    <div id="polDiagnosis" class="dropdown-content">
+                        <input type="text" placeholder="Search.." id="polDiagnosisSearch" autofocus
+                            onkeyup="InpatientMethods.filterTaniDropdown('polDiagnosisSearch', 'polDiagnosis')">
                     </div>
                 </div>
                 <br><br>
-                <div class="hastaTaniHistoryDiv">
-                    <h10 class="historyHeaders" style="margin-bottom: 10px;">Hasta Tani Gecmisi</h10>
-                    <table class="hastaTaniHistory">
-                        <th>ICD-10</th>
-                        <th>Tani Tipi</th>
-                        <th>Tani Adi</th>
-                        <th>Kullanici</th>
-                        <tr>
-                            <td>B05.0</td>
-                            <td>On tani</td>
-                            <td>- Kızamık, ensefalit komplikasyonlu (G05.1*)</td>
-                            <td>Dr. Ahmet MEHMET</td>
-                        </tr>
+                <div class="polDiagnosisHistoryDiv">
+                    <h10 class="historyHeaders" style="margin-bottom: 10px;">Patient Diagnosis</h10>
+                    <table class="polDiagnosisHistoryTable">
+                        <thead>
+                            <tr id="tableHeader" style="background-color:#49A681 !important;color:white">
+                                <td>ICD-10 Diagnosis Name</td>
+                                <td>Diagnosis Type</td>
+                                <td>User</td>
+                                <td>Date</td>
+                                <td>Delete</td>
+                                <td>Update</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
                     </table>
                 </div>
                 <br><br>
-                <button class="anamnezBtns btn-success" id="poylclinicAnamnezKaydet"
-                    onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip"
-                    title="Verilerinizi kaydetmek icin tiklayin.">Save</button>
+                <button class="anamnezBtns btn-success" id="poylclinicAnamnesisSave"
+                    onclick="PolyclinicMethods.savePolExamAnamnesis()" title="Click for save your data.">Save</button>
             </div>
 
             <div class="buttonContainer" id="buttonContainer" style="width: 25%;border-style: ridge;">

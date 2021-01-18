@@ -10,8 +10,8 @@ var mongoose = require('mongoose'),
         patientStory: String,
         patientAnamnesis: String,
         patientExamination: String,
-        patientDiagnosis: String,
         patientSavedUser: String,
+        saveDate: String,
         polyclinicSelect: String
     }),
 

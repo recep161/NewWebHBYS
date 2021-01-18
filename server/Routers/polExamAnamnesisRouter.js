@@ -9,14 +9,17 @@ router.use(function (req, res, next) {
 });
 
 
-router.post('/savePolExam', controllerPolExamAnamnesis.savePolExamAnamnesis);
+router.post('/savePolExamAnamnesis', controllerPolExamAnamnesis.savePolExamAnamnesis);
 router.get('/getPatientPersonalIdNo', controllerPolExamAnamnesis.getPatientPersonalIdNo);
 router.get('/getPatientDataToCookie', controllerPolExamAnamnesis.getPatientDataToCookie);
 router.get('/findPatientList', controllerPolExamAnamnesis.findPatientList);
-// router.get('/findPatientHistory', controllerPolExam.findPatientHistory);
-// router.get('/findByProtocol', controllerPolExam.findByProtocol);
-// router.put('/updatePolExam', controllerPolExam.updatePolExam);
-// router.get('/fillPatientVisitStatisticsTable', controllerPolExam.fillPatientVisitStatisticsTable);
+router.get('/diagnosisList', controllerPolExamAnamnesis.diagnosisList);
+router.get('/findPatientDiagnosisHistory', controllerPolExamAnamnesis.findPatientDiagnosisHistory);
+router.post('/savePolExamDiagnosis', controllerPolExamAnamnesis.savePolExamDiagnosis);
+router.get('/deletePatientDiagnosis', controllerPolExamAnamnesis.deletePatientDiagnosis);
+router.put('/updateDiagnosisType', controllerPolExamAnamnesis.updateDiagnosisType);
+router.put('/updatePolExamAnamnesis', controllerPolExamAnamnesis.updatePolExamAnamnesis);
+router.get('/findPatientAnamnesisByProtocol', controllerPolExamAnamnesis.findPatientAnamnesisByProtocol);
 // router.get('/fillPatientAppointmentStatusTable', controllerPolExam.fillPatientAppointmentStatusTable);
 // router.get('/fillPatientUpcomingAppointmentTable', controllerPolExam.fillPatientUpcomingAppointmentTable);
 // router.get('/fillpolyclinicPatientCountTable', controllerPolExam.fillPolyclinicPatientCountTable);
