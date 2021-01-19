@@ -2042,6 +2042,14 @@ span.psw {
   background-color: #dddddd;
 }
 
+#patientTable tr:last-child td:last-child{
+  border-bottom-right-radius: 8px;
+}
+
+#patientTable tr:last-child td:first-child{
+  border-bottom-left-radius: 8px;
+}
+
 #patientHistoryTable tr:nth-child(even) {
   background-color: #dddddd;
 }
@@ -2332,6 +2340,8 @@ span.psw {
   border-style: ridge;
   margin: 0px 10px;
   padding: 2px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .bedImages {
@@ -2378,7 +2388,7 @@ span.psw {
   width: 50%;
 }
 
-#yatisKaydet, #konsultasyonKaydet {
+#hospitalizationSave, #konsultasyonKaydet {
   margin: 10px;
   width: 50%;
 }
@@ -5510,7 +5520,6 @@ tr:hover, tr.selected {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
-  border: 1px solid black;
   text-align: center;
 }
 
@@ -5805,6 +5814,11 @@ tr:hover, tr.selected {
 #administrationBody {
   color: black;
   background: linear-gradient(90deg, rgb(114, 22, 79), transparent);
+}
+
+#administrationBody .back {
+  overflow-y: scroll;
+  cursor: default;
 }
 
 #administrationBody .polyclinicButtons {

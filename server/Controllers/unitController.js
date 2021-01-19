@@ -11,15 +11,12 @@ module.exports.redirectToUnitTab = (req, res) => {
 
 // Save FormData - User to MongoDB
 module.exports.saveUnit = (req, res) => {
-    // console.log('Post a Unit: ' + JSON.stringify(req.body));
-
-    // console.log(req.body);
-
     const newUnit = new unitSaveSchema({
         unitId: req.body.unitId,
         unitName: req.body.unitName,
         unitType: req.body.unitType,
         unitMajorDicipline: req.body.unitMajorDicipline,
+        beds: req.body.beds,
         unitActivePassive: req.body.unitActivePassive
     })
 
@@ -34,7 +31,7 @@ module.exports.saveUnit = (req, res) => {
         });
 };
 
-// Fetch all Users
+// Fetch all Units
 module.exports.findAllUnits = (req, res) => {
     unitSaveSchema.find().sort({ 'unitId': 1 })
         .then(units => {
@@ -47,7 +44,7 @@ module.exports.findAllUnits = (req, res) => {
         });
 };
 
-// Find one user
+// Find one unit
 module.exports.findOneUnit = (req, res) => {
 
     myUnitsModel.findOne(req.query)
@@ -81,6 +78,7 @@ module.exports.updateUnitData = (req, res) => {
         myUnitName = req.body.unitName,
         myUnitType = req.body.unitType,
         myUnitMajorDicipline = req.body.unitMajorDicipline,
+        myBeds = req.body.beds,
         myUnitActivePassive = req.body.unitActivePassive;
 
     myUnitsModel.findOneAndUpdate(
@@ -90,6 +88,7 @@ module.exports.updateUnitData = (req, res) => {
                 "unitName": myUnitName,
                 "unitType": myUnitType,
                 "unitMajorDicipline": myUnitMajorDicipline,
+                "beds": myBeds,
                 "unitActivePassive": myUnitActivePassive
             }
         })
@@ -129,6 +128,18 @@ module.exports.fillUnitStatisticsTable = (req, res) => {
         .then(docs => {
             res.send(docs);
             // console.log(docs);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.fetchUnits = (req, res) => {
+    myUnitsModel.find(req.query).sort({ 'unitName': 1 })
+        .then(units => {
+            res.send(units);
+            // console.log("All Units Listed: " + units);
         }).catch(err => {
             res.status(500).send({
                 message: err.message

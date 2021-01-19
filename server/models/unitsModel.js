@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
         unitName: { type: String, required: true, unique: true },
         unitType: { type: String, required: true },
         unitMajorDicipline: String,
-        unitActivePassive: String,
+        beds: String,
+        unitActivePassive: String
     }),
 
     unitSaveSchema = mongoose.model('units', unitSchema);

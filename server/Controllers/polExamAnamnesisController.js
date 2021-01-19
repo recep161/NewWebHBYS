@@ -3,6 +3,8 @@ const polExamSaveSchema = require('../models/polExamModel');
 const appointmentSaveSchema = require('../models/appointmentModel');
 const patientDiagnosisSaveSchema = require('../models/diagnosisModel');
 const allDiagnosisSaveSchema = require('../models/allDiagnosisModel');
+const inpatientSaveSchema = require('../models/inpatientModel');
+const unitsSaveSchema = require('../models/unitsModel');
 const myMongoose = require('mongoose');
 const myMoment = require('moment');
 
@@ -11,7 +13,9 @@ myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: fals
 var myPolExamAnamnesisModel = myMongoose.model('polyclinicanamneses');
 var myPolExamModel = myMongoose.model('polyclinicExam');
 var myPatientsModel = myMongoose.model('patients');
+var myInpatientsModel = myMongoose.model('inpatients');
 var myStaffModel = myMongoose.model('staffs');
+var myUnitsModel = myMongoose.model('units');
 var myAppointmentModel = myMongoose.model('appointments');
 var myPatientdiagnosisModel = myMongoose.model('patientdiagnoses');
 var allDiagnosisModel = myMongoose.model('diagnosistables');
@@ -200,6 +204,94 @@ module.exports.findPatientAnamnesisByProtocol = (req, res) => {
         .then(patientAnamnesisData => {
             res.send(patientAnamnesisData);
             // console.log("patient found! = " + patientAnamnesisData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.hospitalizationProcedure = (req, res) => {
+    const newInpatientSaveSchema = new inpatientSaveSchema({
+        patientProtocolNo: req.body.patientProtocolNo,
+        patientId: req.body.patientId,
+        patientIdNo: req.body.patientIdNo,
+        patientNameSurname: req.body.patientNameSurname,
+        bedId: req.body.bedId,
+        doctorSelect: req.body.doctorSelect,
+        hospitalizationDate: req.body.hospitalizationDate,
+        exitDate: req.body.exitDate,
+        clinicSelect: req.body.clinicSelect,
+        patientSavedUser: req.body.patientSavedUser,
+        savedDate: req.body.savedDate
+    });
+    newInpatientSaveSchema.save()
+        .then(inpatientData => {
+            res.send(inpatientData);
+            // console.log('inpatientData = ', inpatientData)
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message,
+                myerr: console.log(err.message)
+            });
+        });
+};
+
+module.exports.fillPatientExamHistoryTable = (req, res) => {
+    myPolExamModel.find(req.query)
+        .then(patientData => {
+            res.send(patientData);
+            // console.log("patient found! = " + patientData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.getBeds = (req, res) => {
+    myUnitsModel.find(req.query)
+        .then(unitData => {
+            res.send(unitData);
+            // console.log("unit found! = " + unitData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.countFullandEmptyBeds = (req, res) => {
+
+    myInpatientsModel.aggregate([
+        {
+            $match: {
+                'clinicSelect': req.query.clinicSelect,
+                'exitDate': ''
+            }
+        },
+        {
+            $group: {
+                '_id': "$clinicSelect",
+                'count': { $sum: 1 }
+            }
+        }
+    ])
+        .then(bedData => {
+            res.send(bedData);
+            // console.log("bedData found! = " + bedData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.checkProtocolInpatients = (req, res) => {
+    myInpatientsModel.find(req.query)
+        .then(inpatientData => {
+            res.send(inpatientData);
+            // console.log("inpatientData found! = " + inpatientData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message

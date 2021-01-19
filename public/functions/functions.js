@@ -40,7 +40,7 @@ var
         },
 
         redirectToAdminTab: function redirectToAdminTab(pageName) {
-            document.location = 'http://localhost:161/' + pageName;
+            document.location = 'http://localhost:1609/' + pageName;
         },
 
         takeUserInfoFromCookie: function takeUserInfoFromCookie() {
@@ -78,7 +78,7 @@ var
                                 $("#userName").val('');
                                 $("#userSurname").val('');
                                 $("#userTc").val('');
-                                $('#userPhotoId')[0].src = 'http://localhost:161/public/images/Admin-2.png';
+                                $('#userPhotoId')[0].src = 'http://localhost:1609/public/images/Admin-2.png';
 
                                 jQueryMethods.toastrOptions();
                                 toastr.info('Form cleared for new user!', 'Form Cleared');
@@ -505,7 +505,7 @@ var
                                 $("#staffName").val('');
                                 $("#staffSurname").val('');
                                 $("#staffDiplomaNo").val('');
-                                $('#staffPhotoId')[0].src = 'http://localhost:161/public/images/Admin-2.png';
+                                $('#staffPhotoId')[0].src = 'http://localhost:1609/public/images/Admin-2.png';
 
                                 jQueryMethods.toastrOptions();
                                 toastr.info('Form cleared for new staff!', 'Form Cleared');
@@ -1006,8 +1006,15 @@ var
                         unitName: $("#unitName").val(),
                         unitType: myUnitType.options[myUnitType.selectedIndex].value,
                         unitMajorDicipline: myUnitMajorDicipline.options[myUnitMajorDicipline.selectedIndex].value,
+                        beds: '',
                         unitActivePassive: myUnitActivePassive.options[myUnitActivePassive.selectedIndex].value
                     };
+
+                if ($("#unitType option:selected").val() == 'Clinic') {
+                    myData.beds == $('#beds').val();
+                } else {
+                    myData.beds == '';
+                }
 
                 $.ajax({
                     type: 'POST',
@@ -1026,6 +1033,7 @@ var
 
                         // reset form data
                         $("#unitName").val('');
+                        $("#beds").val('');
                     },
                     error: function (e) {
                         jQueryMethods.toastrOptions();
@@ -1095,6 +1103,7 @@ var
                         $("#unitName").val(unit.unitName);
                         $("#unitType").val(unit.unitType);
                         $("#unitMajorDicipline").val(unit.unitMajorDicipline);
+                        $("#beds").val(unit.beds);
                         $("#unitActivePassive").val(unit.unitActivePassive);
 
                         $("#unitListTable> tbody").append(
@@ -1126,6 +1135,7 @@ var
                     unitName: $("#unitName").val(),
                     unitType: myUnitType.options[myUnitType.selectedIndex].value,
                     unitMajorDicipline: myUnitMajorDicipline.options[myUnitMajorDicipline.selectedIndex].value,
+                    beds: $("#beds").val(),
                     unitActivePassive: myUnitActivePassive.options[myUnitActivePassive.selectedIndex].value
                 };
 
@@ -1207,6 +1217,125 @@ var
                     console.log("ERROR: ", e.responseText);
                 }
             });
+        },
+
+        // ========================== general functions =============================
+
+        fetchUnits: function fetchUnits(unitType, selectId) {
+            $('#' + selectId).empty();
+            $.ajax({
+                type: "GET",
+                url: "/admin/units/fetchUnits",
+                data: { unitType: unitType, unitActivePassive: 'Active' },
+                success: function (result) {
+                    $.each(result, function (i, unitData) {
+                        i++
+                        var name = unitData.unitName;
+                        $('#' + selectId + '').append("<option value='" + name.replace(/\s/g, '') + "'>" + unitData.unitName + "</option>");
+                    });
+                },
+                error: function (e) {
+                    toastr.error('Couldn\'t fetch units! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        calculateAge: function calculateAge(dateString) {
+            var today = new Date();
+            var birthDate = new Date(dateString);
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        },
+
+        getBeds: function getBeds() {
+            var unitName = $('#clinicSelector option:selected').text();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/getBeds",
+                data: { unitName: unitName, unitActivePassive: 'Active' },
+                success: function (result) {
+                    if (result.length > 0) {
+                        $('#bedsDiv').empty();
+                        $('#totalBedCount').text(result[0].beds);
+                        AdministrationMethods.countFullandEmptyBeds(unitName.replace(/\s/g, ''));
+                        x = result[0].beds - $('#fullBedCount').text();
+                        for (let i = 0; i < x; i++) {
+                            $('#bedsDiv').append("<img id='bed" + i + "' onclick='AdministrationMethods.bedSelect(\"bed" + i + "\");' class='bedImages' src='/public/images/Medical-icons/empty bed.png' alt='bed'></img>");
+                        }
+                    }
+                    else {
+                        $('#bedsDiv').empty();
+                    }
+                },
+                error: function (e) {
+                    toastr.error('Couldn\'t fetch beds! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        countFullandEmptyBeds: function countFullandEmptyBeds(unitName) {
+            var totalBeds = $('#totalBedCount').text(),
+                fullBeds,
+                emptyBeds = 0;
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/countFullandEmptyBeds",
+                data: { clinicSelect: unitName },
+                success: function (result) {
+                    if (result.length > 0) {
+                        fullBeds = result[0]['count'];
+                        emptyBeds = totalBeds - fullBeds;
+
+                        $('#emptyBedCount').text(emptyBeds);
+                        $('#fullBedCount').text(result[0]['count'])
+                    }
+                    else {
+                        $('#emptyBeds').text(emptyBeds)
+                    }
+                },
+                error: function (e) {
+                    toastr.error('Couldn\'t fetch beds! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+
+        },
+
+        bedSelect: function bedSelect(bedId) {
+            var bed = document.getElementById(bedId),
+                bedSrc = document.getElementById(bedId).src,
+                selectedBed = document.querySelector("img[alt='selected']"),
+                totalBedCount = document.getElementById('totalBedCount'),
+                fullBedCount = document.getElementById('fullBedCount'),
+                emptyBedCount = document.getElementById('emptyBedCount');
+
+            if (bedSrc == 'http://localhost:1609/public/images/Medical-icons/full%20bed.png') {
+                alert('You can\'t choose full bed!')
+            } else {
+                if (selectedBed != null && bedId == selectedBed.id) {
+                    bed.alt = 'bed';
+                    bed.style.border = '2px ridge black';
+                    bed.style.backgroundColor = 'inherit';
+                    fullBedCount.innerHTML--;
+                    emptyBedCount.innerHTML = totalBedCount.innerHTML - fullBedCount.innerHTML;
+                } else if (selectedBed != null && bedId != selectedBed.id) {
+                    alert('You can\'t choose 2 beds!')
+                }
+                else {
+                    bed.alt = 'selected';
+                    bed.style.border = '5px inset red';
+                    bed.style.backgroundColor = 'grey';
+                    fullBedCount.innerHTML++;
+                    emptyBedCount.innerHTML = totalBedCount.innerHTML - fullBedCount.innerHTML;
+                }
+            }
         }
     },
 
@@ -1301,7 +1430,7 @@ var
                                 $("#appointmentHour").val('');
                                 $("#patientPhone").val('');
                                 $("#patientAdress").val('');
-                                $('#appointmentRegPatientPhotoId')[0].src = 'http://localhost:161/public/images/Patient_Male.ico';
+                                $('#appointmentRegPatientPhotoId')[0].src = 'http://localhost:1609/public/images/Patient_Male.ico';
                                 savePatient.innerHTML = 'Save';
                                 myPatientIdNo.readOnly = false;
                                 myPatientId.readOnly = false;
@@ -2872,7 +3001,7 @@ var
                                 $("#patientBirthDate").val('');
                                 $("#patientPhone").val('');
                                 $("#patientAdress").val('');
-                                $('#patientPhotoId')[0].src = 'http://localhost:161/public/images/Patient_Female.ico';
+                                $('#patientPhotoId')[0].src = 'http://localhost:1609/public/images/Patient_Female.ico';
                                 savePatient.innerHTML = 'Save';
                                 toastr.info('Form cleared for new patient!', 'Form Cleared');
                             });
@@ -3903,7 +4032,7 @@ var
                                 $("#patientMotherName").val('');
                                 $("#patientGender").val('');
                                 $("#patientBirthPlace").val('');
-                                $('#patientPhotoId')[0].src = 'http://localhost:161/public/images/Patient_Male.ico';
+                                $('#patientPhotoId')[0].src = 'http://localhost:1609/public/images/Patient_Male.ico';
                                 savePatient.innerHTML = 'Save';
                                 myPatientIdNo.readOnly = false;
                                 myPatientId.readOnly = false;
@@ -4488,35 +4617,6 @@ var
             modal.style.display = 'none';
         },
 
-        bedSelect: function bedSelect(bedId) {
-            var bed = document.getElementById(bedId),
-                bedSrc = document.getElementById(bedId).src,
-                selectedBed = document.querySelector("img[alt='selected']"),
-                fullBedCount = document.getElementById('fullBedCount'),
-                emptyBedCount = document.getElementById('emptyBedCount');
-
-            if (bedSrc == 'http://127.0.0.1:5500/public/images/Medical-icons/full%20bed.png') {
-                alert('Dolu yatagi seçemezsiniz!')
-            } else {
-                if (selectedBed != null && bedId == selectedBed.id) {
-                    bed.alt = 'bed';
-                    bed.style.border = '2px ridge black';
-                    bed.style.backgroundColor = 'inherit';
-                    emptyBedCount.innerHTML = '10';
-                    fullBedCount.innerHTML = '10';
-                } else if (selectedBed != null && bedId != selectedBed.id) {
-                    alert('Birden fazla yatak seçemezsiniz!')
-                }
-                else {
-                    bed.alt = 'selected';
-                    bed.style.border = '5px inset red';
-                    bed.style.backgroundColor = 'grey';
-                    emptyBedCount.innerHTML = '9';
-                    fullBedCount.innerHTML = '11';
-                }
-            }
-        },
-
         tetkikSelect: function tetkikSelect(checkboxId, checkboxClass, resultTable, countResult) {
             var selectedCheckbox = document.getElementById(checkboxId),
                 checkboxParent = selectedCheckbox.parentElement,
@@ -4646,15 +4746,8 @@ var
 
         getPatientDataToCookie: function getPatientDataToCookie() {
             var clickedPatientPersonalIdNo = $.cookie('patientPersonalIdNumber'),
-                age = new Date(),
-                today = new Date(),
-                dob = new Date(),
-                dd = String(today.getDate()).padStart(2, '0'),
-                mm = String(today.getMonth() + 1).padStart(2, '0'), //January is 0!,
-                yyyy = today.getFullYear(),
+                age,
                 myData = { patientIdNo: clickedPatientPersonalIdNo };
-
-            today = dd + '-' + mm + '-' + yyyy;
 
             $.ajax({
                 type: "GET",
@@ -4672,7 +4765,7 @@ var
                         $.cookie('patientBirthDate', patientData.patientBirthDate, { expires: 1, path: '/' });
                         $.cookie('patientId', patientData.patientId, { expires: 1, path: '/' });
                         dob = $.cookie('patientBirthDate');
-                        age = Math.floor((new Date(today) - new Date(dob)) / (365.25 * 24 * 60 * 60 * 1000));
+                        age = AdministrationMethods.calculateAge(dob);
                         $.cookie('patientAge', age, { expires: 1, path: '/' });
                     });
                 },
@@ -4693,9 +4786,8 @@ var
                 toastr.error('Please login from Main page!', 'Login error!')
             }
             else {
-                var myPolyclinicSelect = document.getElementById('polyclinicSelector'),
-                    polExamDate = $('#examDate').val(),
-                    myPolyclinicSelectValue = myPolyclinicSelect.options[myPolyclinicSelect.selectedIndex].value;
+                var polExamDate = $('#examDate').val(),
+                    myPolyclinicSelectValue = $("#polyclinicSelector option:selected").val();
 
                 $('#patientTable > tbody').empty();
 
@@ -4708,7 +4800,7 @@ var
                             i++;
                             $("#patientTable> tbody").append(
                                 "<tr class='patientList' id='patient" + i
-                                + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'> "
+                                + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'> "
                                 + patientData.patientProtocolNo + "</td><td>"
                                 + patientData.patientNameSurname + "</td><td>"
                                 + patientData.appointmentStatus + "</td></tr>");
@@ -4929,23 +5021,27 @@ var
             if (polExamSave.innerHTML == 'Update') {
                 PolyclinicMethods.updatePolExamAnamnesis();
             } else {
-                $.ajax({
-                    type: 'POST',
-                    data: JSON.stringify(myData),
-                    cache: false,
-                    contentType: 'application/json',
-                    datatype: "json",
-                    url: '/polExamAnamnesis/savePolExamAnamnesis',
-                    success: function () {
-                        toastr.success('Patient polyclinic exam successfully saved!', 'Save!');
-                        // PolyclinicExamMethods.findPatientHistory();
-                        // findPatientLabRadHistory function will come here
-                    },
-                    error: function (e) {
-                        toastr.error('Patient polyclinic exam couldnt save! \n' + e, 'Error!')
-                        console.log("ERROR: ", e);
-                    }
-                });
+                if (myData.patientStory == '' && myData.patientAnamnesis == '' && myData.patientExamination == '') {
+                    toastr.warning('Please fill at least one of Story, Anamnesis or Examination area! \n', 'Error!')
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        data: JSON.stringify(myData),
+                        cache: false,
+                        contentType: 'application/json',
+                        datatype: "json",
+                        url: '/polExamAnamnesis/savePolExamAnamnesis',
+                        success: function () {
+                            toastr.success('Patient polyclinic exam successfully saved!', 'Save!');
+                            // PolyclinicExamMethods.findPatientHistory();
+                            // findPatientLabRadHistory function will come here
+                        },
+                        error: function (e) {
+                            toastr.error('Patient polyclinic exam couldnt save! \n' + e, 'Error!')
+                            console.log("ERROR: ", e);
+                        }
+                    });
+                }
             }
         },
 
@@ -5016,31 +5112,123 @@ var
         },
 
         fillPatientExamHistoryTable: function fillPatientExamHistoryTable() {
-            $('#polExamPatientHistoryTable > tbody').empty();
+            $('#patientHistoryTable > tbody').empty();
 
             $.ajax({
                 type: "GET",
-                url: "/polExam/fillPatientExamHistoryTable",
-                data: { patientIdNo: $("#patientIdNo").val() },
+                url: "/polExamAnamnesis/fillPatientExamHistoryTable",
+                data: { patientIdNo: $.cookie("patientPersonalIdNumber") },
                 success: function (result) {
                     $.each(result, function (i, patientData) {
                         i++;
-                        $("#polExamPatientHistoryTable> tbody").append(
+                        $("#patientHistoryTable> tbody").append(
                             "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >"
                             + i + "</td><td>" + patientData.patientProtocolNo + "</td><td>"
                             + patientData.patientPolExamDate + "</td><td>"
                             + patientData.polyclinicSelect + "</td><td>"
-                            + patientData.doctorSelector + "</td><td>"
-                            + patientData.statusSelect + "</td><td><button class='inpatientBtn btn-success' title='Click for select protocol.' onclick=\"PolyclinicExamMethods.findByProtocol(\'patientHistory" + i + "\')\">Select</button></td></tr>");
+                            + patientData.doctorSelector + "</td></tr>");
                     });
-                    PolyclinicExamMethods.colorRedCanceledPolExams();
                 },
                 error: function (e) {
                     jQueryMethods.toastrOptions();
-                    toastr.error('Patient history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    toastr.error('Patient polyclinic history couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });
+        },
+
+        patientDataForHospitalization: function patientDataForHospitalization() {
+            var patientProtocol = $.cookie('patientProtocol').substr(1),
+                patientNameSurname = $.cookie('patientNameSurname');
+
+            $('#patientProtocol').val(patientProtocol);
+            $('#patientNameSurname').val(patientNameSurname);
+            PolyclinicMethods.checkProtocolInpatients();
+        },
+
+        hospitalizationProcedure: function hospitalizationProcedure() {
+            var patientProtocol = $.cookie('patientProtocol').substr(1),
+                patientNameSurname = $.cookie('patientNameSurname'),
+                myDate = new Date(),
+                mySaveDate = myDate.toLocaleString("en-US"),
+                myData = {
+                    patientProtocolNo: patientProtocol,
+                    patientId: $.cookie("patientId"),
+                    patientIdNo: $.cookie("patientPersonalIdNumber"),
+                    patientNameSurname: patientNameSurname,
+                    bedId: $('img[alt="selected"]').attr('id'),
+                    doctorSelect: $("#polExamDoctorSelector option:selected").val(),
+                    hospitalizationDate: mySaveDate,
+                    exitDate: '',
+                    clinicSelect: $("#clinicSelector option:selected").val(),
+                    patientSavedUser: $.cookie('username'),
+                    savedDate: mySaveDate
+                };
+
+            if (myData.bedId == 'null' || myData.bedId == null) {
+                toastr.warning('Please select a bed! \n', 'Error!')
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/polExamAnamnesis/hospitalizationProcedure',
+                    success: function () {
+                        toastr.success('Patient hospitalization successfully saved!', 'Save!');
+                    },
+                    error: function (e) {
+                        toastr.error('Patient hospitalization couldn\'t save! \n' + e, 'Error!')
+                        console.log("ERROR: ", e);
+                    }
+                });
+            }
+        },
+
+        checkProtocolInpatients: function checkProtocolInpatients() {
+            var hospitalizationSave = document.getElementById('hospitalizationSave'),
+                patientProtocol = $.cookie('patientProtocol'),
+                patientTable = $('#patientTable > tbody > tr');
+
+            if (patientTable.length < 1) {
+                $('#patientProtocol').val('');
+                $('#patientNameSurname').val('');
+                hospitalizationSave.disabled = true;
+                hospitalizationSave.style.backgroundColor = 'grey';
+                toastr.error('Please choose a patient from patient list!', 'Patient Data Error!')
+            }
+            else {
+                $.ajax({
+                    type: "GET",
+                    url: "/polExamAnamnesis/checkProtocolInpatients",
+                    data: { patientProtocolNo: patientProtocol },
+                    success: function (result) {
+                        if (result.length > 0) {
+                            $.each(result, function (i, patientHospitalizationData) {
+                                i++
+                                console.log(patientHospitalizationData.patientNameSurname, patientHospitalizationData.clinicSelect, patientHospitalizationData.doctorSelect)
+                                $('#patientProtocolNo').val(patientHospitalizationData.patientProtocolNo);
+                                $('#patientNameSurname').val(patientHospitalizationData.patientNameSurname);
+                                $('#polExamDoctorSelector').val(patientHospitalizationData.doctorSelect);
+                                $('#hospitalizationDate').val(patientHospitalizationData.hospitalizationDate);
+                                $('#clinicSelector').val(patientHospitalizationData.clinicSelect);
+                                hospitalizationSave.disabled = true;
+                                hospitalizationSave.style.backgroundColor = 'grey';
+                            });
+                        } else {
+                            hospitalizationSave.disabled = false;
+                            hospitalizationSave.style.backgroundColor = '#5cb85c';
+                        }
+
+                    },
+                    error: function (e) {
+                        toastr.error('Patient Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
         }
     },
 

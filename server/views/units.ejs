@@ -69,7 +69,7 @@
     <div class="mainContainer" id="mainContainer">
         <div class="headerDiv" id="headerDiv">
             <div class="subHeadDiv" id="subHeadDiv">
-                <div id="newTabButton" onclick="window.open('\http:\/\/localhost:161/admin/units', '_blank');"
+                <div id="newTabButton" onclick="window.open('\http:\/\/localhost:1609/admin/units', '_blank');"
                     title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab"
                         src="/public/images/open-new-tab.png" alt=""></div>
                 <div id="modulNameText"> Administration Module </div>
@@ -150,11 +150,15 @@
                     </select><br>
                     Unit Major Dicipline:
                     <select class="unitDefinitionInputs" name="unitMajorDicipline" id="unitMajorDicipline">
+                        <option value="GeneralSurgery">General Surgery</option>
+                        <option value="Orthopedic">Orthopedic</option>
                         <option value="Emergency">Emergency</option>
                         <option value="Cardiology">Cardiology</option>
                         <option value="Urology">Urology</option>
                         <option value="Biochemistry">Biochemistry</option>
                     </select><br>
+                    Beds:
+                    <input class="unitDefinitionInputs" type="number" name="beds" id="beds" placeholder="Bed count" min="0"><br>
                     Active / Passive:
                     <select class="unitDefinitionInputs" name="unitActivePassive" id="unitActivePassive">
                         <option value="Active">Active</option>

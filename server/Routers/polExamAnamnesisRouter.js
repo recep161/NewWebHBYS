@@ -20,16 +20,11 @@ router.get('/deletePatientDiagnosis', controllerPolExamAnamnesis.deletePatientDi
 router.put('/updateDiagnosisType', controllerPolExamAnamnesis.updateDiagnosisType);
 router.put('/updatePolExamAnamnesis', controllerPolExamAnamnesis.updatePolExamAnamnesis);
 router.get('/findPatientAnamnesisByProtocol', controllerPolExamAnamnesis.findPatientAnamnesisByProtocol);
-// router.get('/fillPatientAppointmentStatusTable', controllerPolExam.fillPatientAppointmentStatusTable);
-// router.get('/fillPatientUpcomingAppointmentTable', controllerPolExam.fillPatientUpcomingAppointmentTable);
-// router.get('/fillpolyclinicPatientCountTable', controllerPolExam.fillPolyclinicPatientCountTable);
-// router.get('/fillPatientHealtInsuranceTable', controllerPolExam.fillPatientHealtInsuranceTable);
-// router.get('/fillPatientGenderTable', controllerPolExam.fillPatientGenderTable);
-// router.get('/fillDoctorPatientTable', controllerPolExam.fillDoctorPatientTable);
-// router.get('/fillDoctorAppointmentTable', controllerPolExam.fillDoctorAppointmentTable);
-// router.get('/fillDoctorOnLeaveTable', controllerPolExam.fillDoctorOnLeaveTable);
-// router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
-// router.put('/changeUserPassword', controllerIndex.changeUserPassword);
+router.get('/fillPatientExamHistoryTable', controllerPolExamAnamnesis.fillPatientExamHistoryTable);
+router.post('/hospitalizationProcedure', controllerPolExamAnamnesis.hospitalizationProcedure);
+router.get('/getBeds', controllerPolExamAnamnesis.getBeds);
+router.get('/countFullandEmptyBeds', controllerPolExamAnamnesis.countFullandEmptyBeds);
+router.get('/checkProtocolInpatients', controllerPolExamAnamnesis.checkProtocolInpatients);
 
 router.use("*", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));

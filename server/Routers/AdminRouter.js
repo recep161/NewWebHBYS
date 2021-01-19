@@ -54,6 +54,7 @@ router.get('/units/checkUnitFromDatabase', controllerUnits.checkUnitFromDatabase
 router.put('/units/updateUnitData', controllerUnits.updateUnitData);
 router.get('/units/getMaxUnitId', controllerUnits.getMaxUnitId);
 router.get('/units/fillUnitStatisticsTable', controllerUnits.fillUnitStatisticsTable);
+router.get('/units/fetchUnits', controllerUnits.fetchUnits);
 
 // adminStatistics routes
 router.get('/statistics', controllerAdminStatistics.redirectToStatisticsTab);
