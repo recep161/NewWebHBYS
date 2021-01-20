@@ -1308,6 +1308,39 @@ var
 
         },
 
+        getConsultationCount: function getConsultationCount(unitSelectId) {
+            var unitName = $('#' + unitSelectId + ' option:selected').text(),
+                unitName = unitName.replace(/\s/g, ''),
+                done;
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/getConsultationCount",
+                data: { unitName },
+                success: function (result) {
+                    if (result[0].Total > 0) {
+                        $('#totalCons').text(result[0].Total);
+                        $('#waitingCons').text(result[0].Waiting);
+                        done = result[0].Total - result[0].Waiting;
+                        if (done != '0' || done != 0) {
+                            $('#doneCons').text('0');
+                        } else {
+                            $('#doneCons').text(done);
+                        }
+                    }
+                    else {
+                        $('#totalCons').text('0');
+                        $('#waitingCons').text('0');
+                        $('#doneCons').text('0');
+                    }
+                },
+                error: function (e) {
+                    toastr.error('Couldn\'t fetch consultation! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
         bedSelect: function bedSelect(bedId) {
             var bed = document.getElementById(bedId),
                 bedSrc = document.getElementById(bedId).src,
@@ -5122,7 +5155,7 @@ var
                     $.each(result, function (i, patientData) {
                         i++;
                         $("#patientHistoryTable> tbody").append(
-                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >"
+                            "<tr class='patientHistory' id='patientHistory" + i + "' title='' onmouseover ='PolyclinicMethods.getPatientExamAnamnesisInTooltip(\"patientHistory" + i + "\")'><td >"
                             + i + "</td><td>" + patientData.patientProtocolNo + "</td><td>"
                             + patientData.patientPolExamDate + "</td><td>"
                             + patientData.polyclinicSelect + "</td><td>"
@@ -5132,6 +5165,61 @@ var
                 error: function (e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient polyclinic history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        getPatientExamAnamnesisInTooltip: function getPatientExamAnamnesisInTooltip(examRowId) {
+            var patientProtocol = $('#' + examRowId + ' td:nth-child(2)').text();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/getPatientExamAnamnesisInTooltip",
+                data: { patientProtocolNo: patientProtocol },
+                success: function (result) {
+                    if (result.length > 0) {
+                        s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;">'
+                            + '<tr style="border-style:dotted;"><td valign="top"> Story : '
+                            + result[0].patientStory + '</td></tr>'
+                            + '<tr style="border-style:dotted;"><td>Anamnesis : ' + result[0].patientAnamnesis + '</td></tr>'
+                            + '<tr><td>Examination : ' + result[0].patientExamination + '</td></tr></table>';
+
+                        $('#' + examRowId + '').tooltip({
+                            content: s,
+                            position: {
+                                my: "center top",
+                                at: "center bottom-5",
+                            },
+                            show: {
+                                effect: "slideDown",
+                                delay: 250,
+                                track: true
+                            }
+                        });
+                    } else {
+                        s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;"'
+                            + ' style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">'
+                            + '<tr style="border-style:dotted;"><td> Story : No Data</td></tr>'
+                            + '<tr style="border-style:dotted;"><td>Anamnesis : No Data</td></tr>'
+                            + '<tr><td>Examination : No Data</td></tr></table>';
+
+                        $('#' + examRowId + '').tooltip({
+                            content: s,
+                            position: {
+                                my: "center top",
+                                at: "center bottom-5",
+                            },
+                            show: {
+                                effect: "slideDown",
+                                delay: 250,
+                                track: true
+                            }
+                        });
+                    }
+                },
+                error: function (e) {
+                    toastr.error('Patient Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });
@@ -5226,6 +5314,58 @@ var
                     error: function (e) {
                         toastr.error('Patient Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        patientProtocolandNameFromCookie: function patientProtocolandNameFromCookie(protocolInputId, nameInputId) {
+            var patientProtocol = $.cookie('patientProtocol').substr(1),
+                patientNameSurname = $.cookie('patientNameSurname');
+
+            $('#' + protocolInputId).val(patientProtocol);
+            $('#' + protocolInputId).prop('disabled', true);
+            $('#' + nameInputId).val(patientNameSurname);
+            $('#' + nameInputId).prop('disabled', true);
+        },
+
+        saveConsultation: function saveConsultation() {
+            var patientProtocol = $('#konsPatientProtocol').val(),
+                patientNameSurname = $('#konsPatientName').val(),
+                myConsDate = $('#konsDate').val(),
+                myDate = new Date(),
+                mySaveDate = myDate.toLocaleString("en-US"),
+                myData = {
+                    patientProtocolNo: patientProtocol,
+                    patientId: $.cookie("patientId"),
+                    patientIdNo: $.cookie("patientPersonalIdNumber"),
+                    patientNameSurname: patientNameSurname,
+                    doctorSelect: $("#konsDoctorSelector option:selected").val(),
+                    consultationDate: myConsDate,
+                    acceptDate: '',
+                    clinicSelect: $("#konsPolyclinicSelector option:selected").val(),
+                    consultationNote: $("#konsNote").val(),
+                    patientSavedUser: $.cookie('username'),
+                    savedDate: mySaveDate
+                };
+
+            if (patientProtocol == 'null' || patientProtocol == null) {
+                toastr.warning('Please select a patient! \n', 'Error!')
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/polExamAnamnesis/saveConsultation',
+                    success: function () {
+                        toastr.success('Patient consultation successfully saved!', 'Save!');
+                    },
+                    error: function (e) {
+                        toastr.error('Patient consultation couldn\'t save! \n' + e, 'Error!')
+                        console.log("ERROR: ", e);
                     }
                 });
             }

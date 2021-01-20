@@ -4,6 +4,7 @@ const appointmentSaveSchema = require('../models/appointmentModel');
 const patientDiagnosisSaveSchema = require('../models/diagnosisModel');
 const allDiagnosisSaveSchema = require('../models/allDiagnosisModel');
 const inpatientSaveSchema = require('../models/inpatientModel');
+const consultationSaveSchema = require('../models/consultationModel');
 const unitsSaveSchema = require('../models/unitsModel');
 const myMongoose = require('mongoose');
 const myMoment = require('moment');
@@ -14,6 +15,7 @@ var myPolExamAnamnesisModel = myMongoose.model('polyclinicanamneses');
 var myPolExamModel = myMongoose.model('polyclinicExam');
 var myPatientsModel = myMongoose.model('patients');
 var myInpatientsModel = myMongoose.model('inpatients');
+var myConsultationsModel = myMongoose.model('consultations');
 var myStaffModel = myMongoose.model('staffs');
 var myUnitsModel = myMongoose.model('units');
 var myAppointmentModel = myMongoose.model('appointments');
@@ -211,6 +213,18 @@ module.exports.findPatientAnamnesisByProtocol = (req, res) => {
         });
 };
 
+module.exports.getPatientExamAnamnesisInTooltip = (req, res) => {
+    myPolExamAnamnesisModel.find(req.query)
+        .then(patientAnamnesisData => {
+            res.send(patientAnamnesisData);
+            // console.log("getPatientExamAnamnesisInTooltip found! = " + patientAnamnesisData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
 module.exports.hospitalizationProcedure = (req, res) => {
     const newInpatientSaveSchema = new inpatientSaveSchema({
         patientProtocolNo: req.body.patientProtocolNo,
@@ -297,6 +311,68 @@ module.exports.checkProtocolInpatients = (req, res) => {
                 message: err.message
             });
         });
+};
+
+module.exports.saveConsultation = (req, res) => {
+    const newConsultationSaveSchema = new consultationSaveSchema({
+        patientProtocolNo: req.body.patientProtocolNo,
+        patientId: req.body.patientId,
+        patientIdNo: req.body.patientIdNo,
+        patientNameSurname: req.body.patientNameSurname,
+        doctorSelect: req.body.doctorSelect,
+        consultationDate: req.body.consultationDate,
+        acceptDate: req.body.acceptDate,
+        clinicSelect: req.body.clinicSelect,
+        consultationNote: req.body.consultationNote,
+        patientSavedUser: req.body.patientSavedUser,
+        savedDate: req.body.savedDate
+    });
+    newConsultationSaveSchema.save()
+        .then(consultationData => {
+            res.send(consultationData);
+            // console.log('consultationData = ', consultationData)
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message,
+                myerr: console.log(err.message)
+            });
+        });
+};
+
+module.exports.getConsultationCount = (req, res) => {
+    myConsultationsModel.aggregate([
+        {
+            "$facet": {
+                "Total": [
+                    { "$match": { "clinicSelect": req.query.unitName } },
+                    { "$count": "Total" },
+                ],
+                "Waiting": [
+                    { "$match": { "acceptDate": '', "clinicSelect": req.query.unitName } },
+                    { "$count": "Waiting" }
+                ],
+                "Done": [
+                    { "$match": { "acceptDate": { "$nin": [''] }, "clinicSelect": req.query.unitName } },
+                    { "$count": "Done" }
+                ]
+            }
+        },
+        {
+            "$project": {
+                "Total": { "$arrayElemAt": ["$Total.Total", 0] },
+                "Waiting": { "$arrayElemAt": ["$Waiting.Waiting", 0] },
+                "Done": { "$arrayElemAt": ["$Done.Done", 0] }
+            }
+        }
+    ]).then(consultationCountData => {
+        res.send(consultationCountData);
+        // console.log('consultationCountData = ', consultationCountData)
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message,
+            myerr: console.log(err.message)
+        });
+    });
 };
 
 module.exports.fillPatientAppointmentStatusTable = (req, res) => {

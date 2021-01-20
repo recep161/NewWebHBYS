@@ -1836,7 +1836,8 @@ span.psw {
   margin: 10px 3px;
   border-radius: 8px;
   box-shadow: 0 8px 6px -6px #555;
-  text-align-last: center;
+  padding: 0px 0px 0px 45% !important;
+  /* text-align-last: center; */
 }
 
 #patientContainer {
@@ -2042,16 +2043,22 @@ span.psw {
   background-color: #dddddd;
 }
 
-#patientTable tr:last-child td:last-child{
+#patientTable tr:last-child td:last-child {
   border-bottom-right-radius: 8px;
 }
 
-#patientTable tr:last-child td:first-child{
+#patientTable tr:last-child td:first-child {
   border-bottom-left-radius: 8px;
 }
 
 #patientHistoryTable tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+#patientAnamnesisTooltipTable {
+  border-style: hidden;
+  width: 200px;
+  box-shadow: 0px 0px 15px 3px white;
 }
 
 .openInNewTab {
@@ -2388,7 +2395,7 @@ span.psw {
   width: 50%;
 }
 
-#hospitalizationSave, #konsultasyonKaydet {
+#hospitalizationSave, #consultationSave {
   margin: 10px;
   width: 50%;
 }
@@ -2529,7 +2536,7 @@ input:focus, textarea:focus, text:focus {
   text-align: center;
 }
 
-#konsultasyonKaydet {
+#consultationSave {
   margin: 20px 10px 10px 10px;
   width: 70%;
 }
@@ -3372,7 +3379,23 @@ input:focus, textarea:focus, text:focus {
   border-radius: 8px;
 }
 
-#appointmentRegBody input, textarea, select {
+#appointmentRegBody input {
+  margin: 8px;
+  border-radius: 8px;
+  box-shadow: 0 8px 6px -6px #555;
+  text-align: center;
+  text-align-last: center;
+}
+
+#appointmentRegBody textarea {
+  margin: 8px;
+  border-radius: 8px;
+  box-shadow: 0 8px 6px -6px #555;
+  text-align: center;
+  text-align-last: center;
+}
+
+#appointmentRegBody select {
   margin: 8px;
   border-radius: 8px;
   box-shadow: 0 8px 6px -6px #555;

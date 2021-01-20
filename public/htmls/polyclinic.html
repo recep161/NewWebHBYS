@@ -172,7 +172,10 @@
                     class="polyclinicButtons btn--swap">Hospitalization Procedure <span>Primum
                         non nocere.</span></button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('konsultasyonEkrani');"
+                <button onclick="ShowOrHideMethods.showPopUpModal('konsultasyonEkrani');
+                    AdministrationMethods.fetchUnits('Polyclinic', 'konsPolyclinicSelector');
+                    PolyclinicMethods.patientProtocolandNameFromCookie('konsPatientProtocol', 'konsPatientName');
+                    AdministrationMethods.getConsultationCount('konsPolyclinicSelector')"
                     class="polyclinicButtons btn--swap">Consultation <span>Primum non nocere.</span></button>
 
                 <button onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');"
@@ -514,9 +517,10 @@
                 <div class="tableDiv">
                     <table id="bedTable">
                         <tr id="tableHeader">
-                            <th>Total Bed</th>
-                            <th>Empty Bed</th>
-                            <th>Full Bed</th>
+                            <td>Total Bed</td>
+                            <td style="border-top: none;border-left-style: dotted;border-right-style: dotted;">Empty Bed
+                            </td>
+                            <td>Full Bed</td>
                         </tr>
                         <tr>
                             <td id="totalBedCount">0</td>
@@ -533,17 +537,18 @@
     </div>
 
     <div id="konsultasyonEkrani" class="modal" style="padding: 60px;">
-        <form id="kons-modal-content" class="konsultasyonEkraniContent animate" action="?action=add" method="post">
+        <div id="kons-modal-content" class="konsultasyonEkraniContent animate">
             <div id="konsultasyonImgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('konsultasyonEkrani').style.display='none'" id="konsCloseBtn"
                     class="close" title="Close Modal">&times;</span>
-                <img id="myAvatar" src="/public/images/Medical-icons/cons-doctor.png" alt="Avatar" class="avatar">
+                <img id="myAvatar" src="/public/images/Medical-icons/cons-doctor.png" alt="Avatar" class="avatar"
+                    style="margin:10px 0px -15px 0px">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> Konsultasyon islemleri</h11>
             <div id="konsultasyonEkraniContainer" class="konsultasyonEkraniContainer">
                 <div class="konsultasyonInputsAndLabels">
                     <div class="konsultasyonEkraniLbls">
-                        <label id="konstProtocolLbl" for="konsProtocol">Patient
+                        <label id="konstProtocolLbl" for="konsPatientProtocol">Patient
                             Protocol No:</label>
                         <br>
                         <label id="konsPatientNameLbl" for="konsPatientName">Patient Name
@@ -553,32 +558,30 @@
                         <br>
                         <label id="konsDateLbl" for="konsDate">Date:</label>
                         <br>
-                        <label id="konsClinicLbl" for="konsClinicSelector"
-                            style="margin: 10px 0px 25px;">Clinic:</label>
+                        <label id="konsClinicLbl" for="konsPolyclinicSelector"
+                            style="margin: 10px 0px 25px;">Polyclinic:</label>
                         <br>
                         <label id="konsNoteLbl" for="konsNote" style="margin: 10px 0px 40px;">Consultation Note:</label>
                     </div>
 
                     <div class="konsultasyonEkraniInputs">
-                        <input type="text" id="konsProtocol" name="konsPatientProtocol"
+                        <input type="text" id="konsPatientProtocol" name="konsPatientProtocol"
                             placeholder="Patient Protocol No" autofocus required>
                         <br>
                         <input type="text" id="konsPatientName" name="konsPatientName"
                             placeholder="Patient Name Surname" autofocus required>
                         <br>
                         <select name="konsDoctorSelect" id="konsDoctorSelector" class="konsDoctorSelect">
-                            <option value="clinic1">Prof. Dr. Ahmet SAYLAN</option>
-                            <option value="clinic2">Doc. Dr. Huseyin IKIRCIKLI</option>
-                            <option value="clinic3">Uzm. Dr. Hulya BULUT</option>
+                            <option value="ProfDrAhmetSAYLAN">Prof. Dr. Ahmet SAYLAN</option>
+                            <option value="DocDrHuseyinIKIRCIKLI">Doc. Dr. Huseyin IKIRCIKLI</option>
+                            <option value="UzmDrHulyaBULUT">Uzm. Dr. Hulya BULUT</option>
                         </select>
                         <br>
                         <input type="text" id="konsDate">
                         <br>
-                        <select name="konsClinicSelect" id="konsClinicSelector" class="konsClinicSelect">
-                            <option value="clinic1">General Surgery Clinic</option>
-                            <option value="clinic2">Orthopedic Clinic</option>
-                            <option value="clinic3">Cardiology Clinic</option>
-                            <option value="clinic4">Urology Clinic</option>
+                        <select name="konsPolyclinicSelector" id="konsPolyclinicSelector" class="konsClinicSelect"
+                            onchange="AdministrationMethods.getConsultationCount('konsPolyclinicSelector')">
+
                         </select>
                         <br>
                         <textarea name="konsNote" id="konsNote" cols="50" rows="10"></textarea>
@@ -589,23 +592,28 @@
             <div id="konsultasyonContainerBottom" class="konsultasyonContainerBottom">
                 <div class="tableDiv">
                     <table id="konsultasyonTable">
-                        <tr id="tableHeader">
-                            <th>Total Patient</th>
-                            <th>Waiting for consultation</th>
-                            <th>Done</th>
-                        </tr>
-                        <tr>
-                            <td>20</td>
-                            <td id="waitingCons" style="background-color: palevioletred;">10</td>
-                            <td id="doneCons" style="background-color: cornflowerblue;">10</td>
-                        </tr>
+                        <thead>
+                            <tr id="tableHeader">
+                                <td>Total Patient</td>
+                                <td style="border-top: none;border-left-style: dotted;border-right-style: dotted;">
+                                    Waiting for consultation</td>
+                                <td>Done</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="totalCons">0</td>
+                                <td id="waitingCons" style="background-color: palevioletred;">0</td>
+                                <td id="doneCons" style="background-color: cornflowerblue;">0</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="konsultasyonKaydet"
-                        onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip"
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="consultationSave"
+                        onclick="PolyclinicMethods.saveConsultation()" data-toggle="tooltip"
                         title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
             </div>
-        </form>
+        </div>
     </div>
 
     <div id="labIstemEkrani" class="modal" style="padding: 60px;">

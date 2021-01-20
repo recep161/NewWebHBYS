@@ -20,11 +20,14 @@ router.get('/deletePatientDiagnosis', controllerPolExamAnamnesis.deletePatientDi
 router.put('/updateDiagnosisType', controllerPolExamAnamnesis.updateDiagnosisType);
 router.put('/updatePolExamAnamnesis', controllerPolExamAnamnesis.updatePolExamAnamnesis);
 router.get('/findPatientAnamnesisByProtocol', controllerPolExamAnamnesis.findPatientAnamnesisByProtocol);
+router.get('/getPatientExamAnamnesisInTooltip', controllerPolExamAnamnesis.getPatientExamAnamnesisInTooltip);
 router.get('/fillPatientExamHistoryTable', controllerPolExamAnamnesis.fillPatientExamHistoryTable);
 router.post('/hospitalizationProcedure', controllerPolExamAnamnesis.hospitalizationProcedure);
 router.get('/getBeds', controllerPolExamAnamnesis.getBeds);
 router.get('/countFullandEmptyBeds', controllerPolExamAnamnesis.countFullandEmptyBeds);
 router.get('/checkProtocolInpatients', controllerPolExamAnamnesis.checkProtocolInpatients);
+router.post('/saveConsultation', controllerPolExamAnamnesis.saveConsultation);
+router.get('/getConsultationCount', controllerPolExamAnamnesis.getConsultationCount);
 
 router.use("*", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));
