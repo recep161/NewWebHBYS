@@ -81,6 +81,18 @@ module.exports.findPatientList = (req, res) => {
         });
 };
 
+module.exports.checkPatientAppointmentStatus = (req, res) => {
+    myAppointmentModel.find(req.query)
+        .then(patientData => {
+            res.send(patientData);
+            // console.log("patient found! = " + patientData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
 module.exports.diagnosisList = (req, res) => {
     allDiagnosisModel.find().sort({ 'icd10': 1 })
         .then(diagnosisData => {
@@ -373,6 +385,18 @@ module.exports.getConsultationCount = (req, res) => {
             myerr: console.log(err.message)
         });
     });
+};
+
+module.exports.fillConsultationHistoryTable = (req, res) => {
+    myConsultationsModel.find(req.query)
+        .then(consultationData => {
+            res.send(consultationData);
+            // console.log("consultationData found! = " + consultationData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
 };
 
 module.exports.fillPatientAppointmentStatusTable = (req, res) => {

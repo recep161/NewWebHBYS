@@ -35,25 +35,26 @@
 </head>
 
 <body id="polyclinicExaminationBody" onload=" 
-    myClockMethods.myClock();
-    PolyclinicExamMethods.getMaxProtocolNo();
-    PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );
-    LoginProcess.checkIfThereIsAUserLoggedIn('polExamSave', 'polSearch');
-    jQueryMethods.setCalenderValueToday('patientBirthDate');
-    jQueryMethods.setCalenderValueToday('patientPolExamDate');
-    jQueryMethods.getJqueryDatePicker();
-    jQueryMethods.toolTipFunction();
-    jQueryMethods.bottomUserMenuDrag();
-    PolyclinicExamMethods.fillPolyclinicPatientCountTable();
-    PolyclinicExamMethods.fillPatientHealtInsuranceTable();
-    PolyclinicExamMethods.fillPatientGenderTable();
-    PolyclinicExamMethods.fillDoctorPatientTable();
-    PolyclinicExamMethods.fillDoctorAppointmentTable();
-    PolyclinicExamMethods.fillDoctorOnLeaveTable();
-    ShowOrHideMethods.showBackTotopButton();
-    ShowOrHideMethods.adjustHtmlsBackground('polyclinicExaminationBody');
-    AdministrationMethods.takeUserInfoFromCookie();
-//  ShowOrHideMethods.myStickHeader('polyclinicExamSubHeadDiv');
+                            myClockMethods.myClock();
+                            PolyclinicExamMethods.getMaxProtocolNo();
+                            PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );
+                            LoginProcess.checkIfThereIsAUserLoggedIn('polExamSave', 'polSearch');
+                            jQueryMethods.setCalenderValueToday('patientBirthDate');
+                            jQueryMethods.setCalenderValueToday('patientPolExamDate');
+                            jQueryMethods.getJqueryDatePicker();
+                            jQueryMethods.toolTipFunction();
+                            jQueryMethods.bottomUserMenuDrag();
+                            PolyclinicExamMethods.fillPolyclinicPatientCountTable();
+                            PolyclinicExamMethods.fillPatientHealtInsuranceTable();
+                            PolyclinicExamMethods.fillPatientGenderTable();
+                            PolyclinicExamMethods.fillDoctorPatientTable();
+                            PolyclinicExamMethods.fillDoctorAppointmentTable();
+                            PolyclinicExamMethods.fillDoctorOnLeaveTable();
+                            ShowOrHideMethods.showBackTotopButton();
+                            ShowOrHideMethods.adjustHtmlsBackground('polyclinicExaminationBody');
+                            AdministrationMethods.takeUserInfoFromCookie();
+                            AdministrationMethods.fetchUnits('Polyclinic', 'polyclinicSelect');
+                        //  ShowOrHideMethods.myStickHeader('polyclinicExamSubHeadDiv');
     ">
     <div class="polyclinicExamNotify" id="polyclinicExamNotify">
         <span id="polyclinicExamNotifyType" class=""></span>

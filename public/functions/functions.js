@@ -4810,6 +4810,51 @@ var
             });
         },
 
+        checkPatientAppointmentStatus: function checkPatientAppointmentStatus(patientAppStatusId, patientPersonalIdNumber) {
+            var date = new Date(),
+                day = date.getDate(),
+                month = date.getMonth() + 1,
+                year = date.getFullYear(),
+                today;
+
+            if (month < 10) month = "0" + month;
+            if (day < 10) day = "0" + day;
+            today = day + "-" + month + "-" + year;
+
+            var patientIdNo = patientPersonalIdNumber,
+                appointmentStatusCell = document.getElementById(patientAppStatusId),
+                appointmentPolyclinic = $('#polyclinicSelector option:selected').val(),
+                myData = {
+                    patientIdNo: patientIdNo,
+                    appointmentStatus: 'Valid',
+                    appointmentDate: today,
+                    appointmentPolyclinic: appointmentPolyclinic
+                };
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/checkPatientAppointmentStatus",
+                data: (myData),
+                contentType: 'application/json',
+                datatype: "json",
+                success: function (result) {
+                    $.each(result, function (i, patientAppStatus) {
+                        i++;
+                        if (result.length > 0) {
+                            appointmentStatusCell.innerHTML = 'With Appointment';
+                        } else {
+                            appointmentStatusCell.innerHTML = 'No Appointment';
+                        }
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient appointment status couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
         findPatientList: function findPatientList() {
             jQueryMethods.toastrOptions();
             if ($.cookie('username') == null
@@ -4831,12 +4876,14 @@ var
                     success: function (result) {
                         $.each(result, function (i, patientData) {
                             i++;
+                            var patientAppStatusId = 'patientAppStatus' + i;
                             $("#patientTable> tbody").append(
                                 "<tr class='patientList' id='patient" + i
-                                + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'> "
+                                + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>"
                                 + patientData.patientProtocolNo + "</td><td>"
-                                + patientData.patientNameSurname + "</td><td>"
-                                + patientData.appointmentStatus + "</td></tr>");
+                                + patientData.patientNameSurname + "</td><td id='patientAppStatus" + i
+                                + "'>Without Appointment</td></tr>");
+                            PolyclinicMethods.checkPatientAppointmentStatus(patientAppStatusId, patientData.patientIdNo)
                         });
                     },
                     error: function (e) {
@@ -5180,6 +5227,7 @@ var
                 success: function (result) {
                     if (result.length > 0) {
                         s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;">'
+                            + '<tr><td>Protocol No: ' + patientProtocol + '</td></tr>'
                             + '<tr style="border-style:dotted;"><td valign="top"> Story : '
                             + result[0].patientStory + '</td></tr>'
                             + '<tr style="border-style:dotted;"><td>Anamnesis : ' + result[0].patientAnamnesis + '</td></tr>'
@@ -5200,6 +5248,7 @@ var
                     } else {
                         s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;"'
                             + ' style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">'
+                            + '<tr><td>Protocol No: ' + patientProtocol + '</td></tr>'
                             + '<tr style="border-style:dotted;"><td> Story : No Data</td></tr>'
                             + '<tr style="border-style:dotted;"><td>Anamnesis : No Data</td></tr>'
                             + '<tr><td>Examination : No Data</td></tr></table>';
@@ -5319,8 +5368,9 @@ var
             }
         },
 
-        patientProtocolandNameFromCookie: function patientProtocolandNameFromCookie(protocolInputId, nameInputId) {
-            var patientProtocol = $.cookie('patientProtocol').substr(1),
+        patientProtocolandNameFromCookieForConsultation: function patientProtocolandNameFromCookieForConsultation
+            (protocolInputId, nameInputId) {
+            var patientProtocol = $.cookie('patientProtocol'),
                 patientNameSurname = $.cookie('patientNameSurname');
 
             $('#' + protocolInputId).val(patientProtocol);
@@ -5362,6 +5412,8 @@ var
                     url: '/polExamAnamnesis/saveConsultation',
                     success: function () {
                         toastr.success('Patient consultation successfully saved!', 'Save!');
+                        PolyclinicMethods.fillConsultationHistoryTable();
+                        $('#konsNote').val('');
                     },
                     error: function (e) {
                         toastr.error('Patient consultation couldn\'t save! \n' + e, 'Error!')
@@ -5369,7 +5421,35 @@ var
                     }
                 });
             }
-        }
+        },
+
+        fillConsultationHistoryTable: function fillConsultationHistoryTable() {
+            $('#consultationHistoryTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/fillConsultationHistoryTable",
+                data: { patientIdNo: $.cookie("patientPersonalIdNumber") },
+                success: function (result) {
+                    $.each(result, function (i, consultationData) {
+                        i++;
+                        $("#consultationHistoryTable> tbody").append(
+                            "<tr class='patientConsHistory' id='patientConsHistory" + i + "'>"
+                            + "</td><td>" + consultationData.patientProtocolNo + "</td><td>"
+                            + consultationData.doctorSelect + "</td><td>"
+                            + consultationData.clinicSelect + "</td><td>"
+                            + consultationData.consultationDate + "</td><td>"
+                            + consultationData.acceptDate + "</td><td>"
+                            + consultationData.consultationNote + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient consultation history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
     },
 
     ShowOrHideMethods = {

@@ -13,6 +13,7 @@ router.post('/savePolExamAnamnesis', controllerPolExamAnamnesis.savePolExamAnamn
 router.get('/getPatientPersonalIdNo', controllerPolExamAnamnesis.getPatientPersonalIdNo);
 router.get('/getPatientDataToCookie', controllerPolExamAnamnesis.getPatientDataToCookie);
 router.get('/findPatientList', controllerPolExamAnamnesis.findPatientList);
+router.get('/checkPatientAppointmentStatus', controllerPolExamAnamnesis.checkPatientAppointmentStatus);
 router.get('/diagnosisList', controllerPolExamAnamnesis.diagnosisList);
 router.get('/findPatientDiagnosisHistory', controllerPolExamAnamnesis.findPatientDiagnosisHistory);
 router.post('/savePolExamDiagnosis', controllerPolExamAnamnesis.savePolExamDiagnosis);
@@ -28,6 +29,7 @@ router.get('/countFullandEmptyBeds', controllerPolExamAnamnesis.countFullandEmpt
 router.get('/checkProtocolInpatients', controllerPolExamAnamnesis.checkProtocolInpatients);
 router.post('/saveConsultation', controllerPolExamAnamnesis.saveConsultation);
 router.get('/getConsultationCount', controllerPolExamAnamnesis.getConsultationCount);
+router.get('/fillConsultationHistoryTable', controllerPolExamAnamnesis.fillConsultationHistoryTable);
 
 router.use("*", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));

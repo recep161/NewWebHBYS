@@ -2451,12 +2451,14 @@ input:focus, textarea:focus, text:focus {
 /* end of for all inputs and textareas */
 
 .konsultasyonEkraniContent {
+  display: flex;
   background-color: #49A7BC;
-  margin: 1% auto 15% auto;
+  margin: -2% auto 15% auto;
   border: 1px solid #888;
-  width: 40%;
+  width: 100%;
   border-radius: 8px;
   box-shadow: 3px 0px 38px cornsilk;
+  overflow-y: scroll;
 }
 
 .konsultasyonEkraniContainer {
@@ -2469,26 +2471,44 @@ input:focus, textarea:focus, text:focus {
 }
 
 #konsCloseBtn {
-  bottom: -80px;
+  bottom: -108px;
+  right: 15px;
 }
 
-.konsultasyonInputsAndLabels {
-  display: flex;
-  /* width: 55%; */
+#consultationHistoryTable {
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  border-collapse: collapse;
+  border-style: hidden;
+  border-radius: 8px;
+  box-shadow: 5px 10px 20px 1px #666;
 }
 
-.konsultasyonEkraniLbls {
-  text-align: right;
+#consultationHistoryTable td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid black;
+  text-align: center;
 }
 
-.konsultasyonEkraniLbls label {
-  margin: 5px 0px 24px 0px;
+#consultationHistoryTable tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+#consultationHistoryTable tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+#consultationHistoryTable tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
 }
 
 .konsultasyonEkraniInputs input {
   width: 98%;
   height: 30px;
-  margin: 0px 0px 20px 5px;
+  margin: 0px 0px 5px 5px;
   border-radius: 8px;
   height: 35px;
   text-align: center;
@@ -2497,7 +2517,7 @@ input:focus, textarea:focus, text:focus {
 .konsultasyonEkraniInputs select {
   width: 98%;
   height: 35px;
-  margin: 0px 0px 20px 5px;
+  margin: 0px 0px 5px 5px;
   border-radius: 8px;
   border: solid;
 }
@@ -4580,6 +4600,10 @@ tr:hover, tr.selected {
   z-index: 99999999;
 }
 
+.bottomUserMenu a {
+  cursor: pointer;
+}
+
 .menu h1, h2, h3, h4 {
   margin: 0;
   margin-bottom: 10px;
@@ -4999,7 +5023,7 @@ tr:hover, tr.selected {
   text-align: center;
 }
 
-.patientTable>tbody>tr:first-child {
+.patientTable>thead>tr:first-child {
   background-color: #49A681;
 }
 
