@@ -483,7 +483,8 @@
         </div>
 
         <div id="appSearchIframeContainer" class="modal" style="padding: 60px;">
-            <form id="appSearch-modal-content" class="appSearchIframeContent animate" action="?action=add" method="post">
+            <form id="appSearch-modal-content" class="appSearchIframeContent animate" action="?action=add"
+                method="post">
                 <div id="appSearchIframeImgcontainer" class="imgcontainer">
                     <span onclick="document.getElementById('appSearchIframeContainer').style.display='none'"
                         id="appSearchIframeCloseBtn" class="close" title="Close Modal">&times;</span>
@@ -855,15 +856,18 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
-            <a href="#" class="menu-item" title="User Trainings."
-                onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
-            <a href="#" class="menu-item" title="User Settings."
-                onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
-            <a href="#" class="menu-item" title="User Messages."
-                onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
-            <a href="#" class="menu-item"> <i class="fa fa-cog"></i> </a>
+            <a class="menu-item" title="User Statistics." onclick="
+                ShowOrHideMethods.showPopUpModal('userStatistics'); 
+                LoginProcess.userLoginStatistics();
+                LoginProcess.getLastPasswordChangeStatistics();">
+                <i class="fa fa-bar-chart"></i> </a>
+            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i
+                    class='fa fa-file-text'></i></a>
+            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i
+                    class="fa fa-cog   fa-fw"></i> </a>
+            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i
+                    class="fa fa-envelope"></i> </a>
+            <a class="menu-item"> <i class="fa fa-cog"></i> </a>
 
         </nav>
 

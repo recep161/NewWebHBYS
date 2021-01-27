@@ -120,6 +120,13 @@
                     AdministrationMethods.showSelectedDivAndHideOthers('userDefinitionDiv', 'administrationStatisticsDiv');">
                     User Definition <span>Sub module for user informations.</span></button>
 
+                <button class="polyclinicButtons btn--swap" onclick="AdministrationMethods.redirectToAdminTab('admin/tests');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'unitDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'staffDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'userDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'testDefinitionDiv');">
+                    Tests <span>Sub module test informations.</span></button>
+
                 <button class="polyclinicButtons btn--swap"
                     onclick="AdministrationMethods.redirectToAdminTab('admin/statistics');
                     AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'unitDefinitionDiv');
@@ -158,7 +165,8 @@
                         <option value="Biochemistry">Biochemistry</option>
                     </select><br>
                     Beds:
-                    <input class="unitDefinitionInputs" type="number" name="beds" id="beds" placeholder="Bed count" min="0"><br>
+                    <input class="unitDefinitionInputs" type="number" name="beds" id="beds" placeholder="Bed count"
+                        min="0"><br>
                     Active / Passive:
                     <select class="unitDefinitionInputs" name="unitActivePassive" id="unitActivePassive">
                         <option value="Active">Active</option>
@@ -1153,18 +1161,18 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics." onclick="
+            <a class="menu-item" title="User Statistics." onclick="
                 ShowOrHideMethods.showPopUpModal('userStatistics'); 
                 LoginProcess.userLoginStatistics();
                 LoginProcess.getLastPasswordChangeStatistics();">
                 <i class="fa fa-bar-chart"></i> </a>
-            <a href="#" class="menu-item" title="User Trainings."
-                onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
-            <a href="#" class="menu-item" title="User Settings."
-                onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
-            <a href="#" class="menu-item" title="User Messages."
-                onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
-            <a href="#" class="menu-item"> <i class="fa fa-cog"></i> </a>
+            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i
+                    class='fa fa-file-text'></i></a>
+            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i
+                    class="fa fa-cog   fa-fw"></i> </a>
+            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i
+                    class="fa fa-envelope"></i> </a>
+            <a class="menu-item"> <i class="fa fa-cog"></i> </a>
 
         </nav>
 

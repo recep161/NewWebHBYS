@@ -95,7 +95,8 @@
                     onclick="AdministrationMethods.redirectToAdminTab('admin/units');
                     AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'staffDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'userDefinitionDiv');
-                    AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'administrationStatisticsDiv');">
+                    AdministrationMethods.showSelectedDivAndHideOthers('unitDefinitionDiv', 'administrationStatisticsDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'testDefinitionDiv');">
                     Unit Definition <span>Sub module for units informations.</span></button>
 
                 <button class="polyclinicButtons btn--swap" onclick="
@@ -103,6 +104,7 @@
                     AdministrationMethods.showSelectedDivAndHideOthers('staffDefinitionDiv', 'unitDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('staffDefinitionDiv', 'userDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('staffDefinitionDiv', 'administrationStatisticsDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'testDefinitionDiv');
                     AdministrationMethods.clearForNewStaff();
                     AdministrationMethods.findAllStaffs();">
                     Staff Definition <span>Sub module for staff informations.</span></button>
@@ -112,16 +114,25 @@
                     AdministrationMethods.redirectToAdminTab('admin/user');
                     AdministrationMethods.findAllUsers();
                     AdministrationMethods.clearForNewUser();
-                    AdministrationMethods.showSelectedDivAndHideOthers('userDefinitionDiv', 'unitDefinitionDiv');
-                    AdministrationMethods.showSelectedDivAndHideOthers('userDefinitionDiv', 'staffDefinitionDiv');
-                    AdministrationMethods.showSelectedDivAndHideOthers('userDefinitionDiv', 'administrationStatisticsDiv');">
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'unitDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'staffDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'administrationStatisticsDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'testDefinitionDiv');">
                     User Definition <span>Sub module for user informations.</span></button>
+
+                <button class="polyclinicButtons btn--swap" onclick="AdministrationMethods.redirectToAdminTab('admin/tests');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'unitDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'staffDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'userDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('testDefinitionDiv', 'testDefinitionDiv');">
+                    Tests <span>Sub module test informations.</span></button>
 
                 <button class="polyclinicButtons btn--swap"
                     onclick="AdministrationMethods.redirectToAdminTab('admin/statistics');
                     AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'unitDefinitionDiv');
                     AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'staffDefinitionDiv');
-                    AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'userDefinitionDiv');">
+                    AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'userDefinitionDiv');
+                    AdministrationMethods.showSelectedDivAndHideOthers('administrationStatisticsDiv', 'administrationStatisticsDiv');">
                     Administration Statistics <span>Sub module administration statistics.</span></button>
             </div>
 
@@ -263,6 +274,112 @@
             </div>
 
             <div id="userDefinitionDiv">
+                <h11 class="historyHeaders">
+                    <pName>User Definition</pName>
+                </h11>
+
+                <div id="userDefinitionInputsDiv">
+                    Id: <br>
+                    <input class="userDefinitionInputs" type="text" name="userId" id="userId"
+                        style="background-color: lightgrey;" readonly><br>
+                    Username: <br>
+                    <input class="userDefinitionInputs" type="text" name="userNickname" id="userNickname" required
+                        placeholder="Example: RCelik" title="Example: RCelik"> <br>
+                    Password: <br>
+                    <input class="userDefinitionInputs" type="password" name="userPassword" id="userPassword" required
+                        minlength="4" placeholder="Minimum 4 digits" title="Minimum 4 digits"> <br>
+                    <span for='userPassword' id="showUserPasswordSpanViewer">
+                        <i id="showUserPasswordIcon" class="fa fa-eye" aria-hidden="true" style="color: black;"
+                            title="Show password!"
+                            onclick="ShowOrHideMethods.showPassword('userPassword','showUserPasswordIcon')">
+                        </i>
+                    </span>
+                    <button class="polyclinicButtons btn--swap" id="changeUserPassword"
+                        onclick="AdministrationMethods.resetPassword()">
+                        <pDegis>Reset</pDegis> <span id="changeUserPasswordSpan">Reset user's password.</span>
+                    </button> <br>
+                    Name: <br>
+                    <input class="userDefinitionInputs" type="text" name="userName" id="userName" required
+                        placeholder="User Name" title="User Name"> <br>
+                    Surname: <br>
+                    <input class="userDefinitionInputs" type="text" name="userSurname" id="userSurname" required
+                        placeholder="User Surname" title="User Surname"><br>
+                    ID Number: <br>
+                    <input class="userDefinitionInputs" type="number" name="userTc" id="userTc"
+                        oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}"
+                        maxlength="11" minlength="11" required placeholder="Must be 11 digits"
+                        title="Must be 11 digits"><br>
+                    Major Dicipline: <br>
+                    <select class="userDefinitionInputs" name="userMajorDicipline" id="userMajorDicipline">
+                        <option value="Emergency">Emergency</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Urology">Urology</option>
+                        <option value="Biochemistry">Biochemistry</option>
+                    </select><br>
+                    User Group: <br>
+                    <select class="userDefinitionInputs" name="userGroup" id="userGroup">
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Personnel">Personnel</option>
+                        <option value="Admin">Admin</option>
+                    </select><br><br><br><br>
+
+                    <button class="inpatientBtn btn-success" id="saveUser" title="Click for save user."
+                        onclick="AdministrationMethods.saveUser(); AdministrationMethods.findAllUsers()">Save</button>
+
+                    <button type="button" class="inpatientBtn btn-primary" id="newUser" title="Click for new user."
+                        onclick="AdministrationMethods.findAllUsers();AdministrationMethods.clearForNewUser()">
+                        New User</button>
+
+                    <button class="inpatientBtn btn-info" title="Click for search user or users."
+                        onclick="AdministrationMethods.findUsersAtOnce()" id="searchUserBtn">Search</button>
+
+                    <div id="userListDiv">
+                        <h11 class="historyHeaders">User List</h11><br><br>
+                        <input class="searchInputs" type="text" id="userSearchInput"
+                            style="width: 100%;margin: 5px 0px 10px 0px;"
+                            onkeydown="PolyclinicMethods.searchInTable('userSearchInput', 'usersList')"
+                            placeholder="Search for users..."
+                            title="Search user by name, surname, ID, major dicipline or user group.">
+                        <table id="usersList" class="patientTable">
+                            <thead>
+                                <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                    <td style="border-top-left-radius: 8px !important;">Id</td>
+                                    <td>Username</td>
+                                    <td>Name</td>
+                                    <td>Surname</td>
+                                    <td>ID Number</td>
+                                    <td>Major Dicipline</td>
+                                    <td>User Group</td>
+                                    <td>Photo</td>
+                                    <td style="border-top-right-radius: 8px;">Delete</td>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: inherit !important;">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="userPhoto">
+                    <img id="userPhotoId" src="/public/images/admin-2.png" alt="User Photo">
+                    <br>
+                    <button class="inpatientBtn btn-primary" style="width: 250px;"
+                        onclick="AdministrationMethods.updatePhoto('User')">Update Photo
+                    </button>
+
+                    <button class="polyclinicButtons btn--swap" id="changeUserImage"
+                        onclick="document.getElementById('getUserFile').click()">
+                        <pDegis>Change</pDegis> <span id="degistirSpan">Change user's <br> photo.</span>
+                    </button>
+                    <input type='file' id="getUserFile"
+                        onchange="HastaKimlikMethods.changePatientPhoto('getUserFile','userPhotoId')"
+                        style="display:none">
+                </div>
+            </div>
+
+            <div id="testDefinitionDiv">
                 <h11 class="historyHeaders">
                     <pName>User Definition</pName>
                 </h11>
@@ -1110,18 +1227,18 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics." onclick="
+            <a class="menu-item" title="User Statistics." onclick="
                 ShowOrHideMethods.showPopUpModal('userStatistics'); 
                 LoginProcess.userLoginStatistics();
                 LoginProcess.getLastPasswordChangeStatistics();">
                 <i class="fa fa-bar-chart"></i> </a>
-            <a href="#" class="menu-item" title="User Trainings."
-                onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
-            <a href="#" class="menu-item" title="User Settings."
-                onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
-            <a href="#" class="menu-item" title="User Messages."
-                onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
-            <a href="#" class="menu-item"> <i class="fa fa-cog"></i> </a>
+            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i
+                    class='fa fa-file-text'></i></a>
+            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i
+                    class="fa fa-cog   fa-fw"></i> </a>
+            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i
+                    class="fa fa-envelope"></i> </a>
+            <a class="menu-item"> <i class="fa fa-cog"></i> </a>
 
         </nav>
 

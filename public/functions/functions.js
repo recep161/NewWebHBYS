@@ -5373,6 +5373,14 @@ var
             var patientProtocol = $.cookie('patientProtocol'),
                 patientNameSurname = $.cookie('patientNameSurname');
 
+            if (patientProtocol == '' || patientProtocol == null) {
+                document.getElementById('consultationSave').disabled = true;
+                document.getElementById('consultationSave').style.backgroundColor = 'gray';
+            } else {
+                document.getElementById('consultationSave').disabled = false;
+                document.getElementById('consultationSave').style.backgroundColor = '#449d44';
+                document.getElementById('consultationSave').style.borderColor = '#39843';
+            }
             $('#' + protocolInputId).val(patientProtocol);
             $('#' + protocolInputId).prop('disabled', true);
             $('#' + nameInputId).val(patientNameSurname);

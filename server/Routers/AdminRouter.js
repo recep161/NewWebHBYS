@@ -4,6 +4,7 @@ var express = require('express'),
     controllerStaff = require('../Controllers/StaffController'),
     controllerUsers = require('../Controllers/userController'),
     controllerUnits = require('../Controllers/unitController'),
+    controllerTests = require('../Controllers/testsController'),
     controllerAdminStatistics = require('../Controllers/AdminStatisticsController'),
     path = require('path');
 
@@ -55,6 +56,11 @@ router.put('/units/updateUnitData', controllerUnits.updateUnitData);
 router.get('/units/getMaxUnitId', controllerUnits.getMaxUnitId);
 router.get('/units/fillUnitStatisticsTable', controllerUnits.fillUnitStatisticsTable);
 router.get('/units/fetchUnits', controllerUnits.fetchUnits);
+
+// tests routes
+router.get('/tests', controllerTests.redirectToTestTab);
+router.post('/tests/save', controllerUnits.saveUnit);
+
 
 // adminStatistics routes
 router.get('/statistics', controllerAdminStatistics.redirectToStatisticsTab);
