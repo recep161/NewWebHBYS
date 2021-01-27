@@ -3,40 +3,42 @@ const myMongoose = require('mongoose');
 
 myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: false });
 
-var myUnitsModel = myMongoose.model('tests');
+var myTestsModel = myMongoose.model('tests');
 
 module.exports.redirectToTestTab = (req, res) => {
     res.render('tests')
 };
 
 // Save FormData - User to MongoDB
-module.exports.saveUnit = (req, res) => {
-    const newUnit = new unitSaveSchema({
-        unitId: req.body.unitId,
-        unitName: req.body.unitName,
-        unitType: req.body.unitType,
-        unitMajorDicipline: req.body.unitMajorDicipline,
-        beds: req.body.beds,
-        unitActivePassive: req.body.unitActivePassive
+module.exports.saveTest = (req, res) => {
+    const newTest = new testSaveSchema({
+        testId: req.body.testId,
+        testCode: req.body.testCode,
+        testName: req.body.testName,
+        testType: req.body.testType,
+        testLab: req.body.testLab,
+        testHint: req.body.testHint,
+        maxRequest: req.body.maxRequest,
+        testActivePassive: req.body.testActivePassive
     })
 
-    newUnit.save()
+    newTest.save()
         .then(data => {
             res.send(data);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
-                // , myerr: console.log(err.message)
+                , myerr: console.log(err.message)
             });
         });
 };
 
 // Fetch all Units
-module.exports.findAllUnits = (req, res) => {
-    unitSaveSchema.find().sort({ 'unitId': 1 })
-        .then(units => {
-            res.send(units);
-            // console.log("All Units Listed!");
+module.exports.findAllTests = (req, res) => {
+    testSaveSchema.find().sort({ 'testCode': 1 })
+        .then(tests => {
+            res.send(tests);
+            // console.log("All tests Listed!");
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -45,12 +47,12 @@ module.exports.findAllUnits = (req, res) => {
 };
 
 // Find one unit
-module.exports.findOneUnit = (req, res) => {
+module.exports.findOneTest = (req, res) => {
 
-    myUnitsModel.findOne(req.query)
-        .then(unit => {
-            res.send(unit);
-            // console.log("Unit found! = " + unit);
+    myTestsModel.findOne(req.query)
+        .then(test => {
+            res.send(test);
+            // console.log("Unit found! = " + test);
             // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
@@ -59,12 +61,12 @@ module.exports.findOneUnit = (req, res) => {
         });
 };
 
-module.exports.checkUnitFromDatabase = (req, res) => {
+module.exports.checkTestFromDatabase = (req, res) => {
 
-    myUnitsModel.findOne(req.query)
-        .then(units => {
-            res.send(units);
-            // console.log("User found! = " + units);
+    myTestsModel.findOne(req.query)
+        .then(tests => {
+            res.send(tests);
+            // console.log("test found! = " + tests);
             // console.log(req.query);
         }).catch(err => {
             res.status(500).send({
@@ -73,23 +75,27 @@ module.exports.checkUnitFromDatabase = (req, res) => {
         });
 };
 
-module.exports.updateUnitData = (req, res) => {
-    var myUnitId = req.body.unitId,
-        myUnitName = req.body.unitName,
-        myUnitType = req.body.unitType,
-        myUnitMajorDicipline = req.body.unitMajorDicipline,
-        myBeds = req.body.beds,
-        myUnitActivePassive = req.body.unitActivePassive;
+module.exports.updateTestData = (req, res) => {
+    var myTestId = req.body.testId,
+        myTestCode = req.body.testCode,
+        myTestName = req.body.testName,
+        myTestType = req.body.testType,
+        myTestLab = req.body.testLab,
+        myTestHint = req.body.testHint,
+        myMaxRequest = req.body.maxRequest,
+        myTestActivePassive = req.body.testActivePassive;
 
-    myUnitsModel.findOneAndUpdate(
-        { unitId: myUnitId },
+    myTestsModel.findOneAndUpdate(
+        { testId: myTestId },
         {
             $set: {
-                "unitName": myUnitName,
-                "unitType": myUnitType,
-                "unitMajorDicipline": myUnitMajorDicipline,
-                "beds": myBeds,
-                "unitActivePassive": myUnitActivePassive
+                "testCode": myTestCode,
+                "testName": myTestName,
+                "testType": myTestType,
+                "testLab": myTestLab,
+                "testHint": myTestHint,
+                "maxRequest": myMaxRequest,
+                "testActivePassive": myTestActivePassive
             }
         })
         .then(unit => {
@@ -103,40 +109,20 @@ module.exports.updateUnitData = (req, res) => {
         });
 };
 
-module.exports.getMaxUnitId = (req, res) => {
-    myUnitsModel.findOne().sort({ unitId: -1 }).limit(1)
-        .then(unit => {
-            res.send(unit);
-            // console.log("max id = " + user.userId);
+module.exports.getMaxTestId = (req, res) => {
+    myTestsModel.findOne().sort({ testId: -1 }).limit(1)
+        .then(test => {
+            res.send(test);
+            // console.log("max id = " + test);
         }).catch(err => {
             res.status(500).send({
-                message: 'MaxUnitId error: ' + err.message
+                message: 'MaxTestId error: ' + err.message
             });
         });
 };
 
-module.exports.fillUnitStatisticsTable = (req, res) => {
-    myUnitsModel.aggregate([
-        {
-            $group: {
-                '_id': { unitType: "$unitType", unitActivePassive: "$unitActivePassive" },
-                'count': { $sum: 1 }
-            }
-        },
-        { $sort: { _id: 1 } }
-    ])
-        .then(docs => {
-            res.send(docs);
-            // console.log(docs);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
-};
-
-module.exports.fetchUnits = (req, res) => {
-    myUnitsModel.find(req.query).sort({ 'unitName': 1 })
+module.exports.fetchTests = (req, res) => {
+    myTestsModel.find(req.query).sort({ 'testCode': 1 })
         .then(units => {
             res.send(units);
             // console.log("All Units Listed: " + units);

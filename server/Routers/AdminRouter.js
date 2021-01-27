@@ -59,7 +59,13 @@ router.get('/units/fetchUnits', controllerUnits.fetchUnits);
 
 // tests routes
 router.get('/tests', controllerTests.redirectToTestTab);
-router.post('/tests/save', controllerUnits.saveUnit);
+router.post('/tests/saveTest', controllerTests.saveTest);
+router.get('/tests/findAllTests', controllerTests.findAllTests);
+router.get('/tests/findOneTest', controllerTests.findOneTest);
+router.get('/tests/checkTestFromDatabase', controllerTests.checkTestFromDatabase);
+router.put('/tests/updateTestData', controllerTests.updateTestData);
+router.get('/tests/getMaxTestId', controllerTests.getMaxTestId);
+router.get('/tests/fetchTests', controllerTests.fetchTests);
 
 
 // adminStatistics routes

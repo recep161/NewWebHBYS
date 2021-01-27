@@ -180,7 +180,8 @@
                     <span>Primum non nocere.</span>
                 </button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');"
+                <button
+                    onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');AdministrationMethods.fetchTests('Laboratory', 'labIstemTable');"
                     class="polyclinicButtons btn--swap">Laboratuary <span>Primum non nocere.</span></button>
 
                 <button onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');"
@@ -623,7 +624,7 @@
     </div>
 
     <div id="labIstemEkrani" class="modal" style="padding: 60px;">
-        <form id="labIstem-modal-content" class="labIstemEkraniContent animate" action="none" method="none">
+        <div id="labIstem-modal-content" class="labIstemEkraniContent animate">
             <div id="labIstemImgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('labIstemEkrani').style.display='none'" id="labIstemCloseBtn"
                     class="close" title="Close Modal">&times;</span>
@@ -635,68 +636,18 @@
                 placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
             <div id="labIstemEkraniContainer" class="labIstemEkraniContainer">
                 <table id="labIstemTable">
-                    <tr id="tableHeader">
-                        <th>No.</th>
-                        <th>SUT Code</th>
-                        <th>Examination Name</th>
-                        <th>Laboratory</th>
-                        <th>Quantity</th>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck1"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck1', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>901620</td>
-                        <td>Hemogram</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity1" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck2"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck2', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>72524</td>
-                        <td>Aspartat transaminaz (AST)</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity2" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck3"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck3', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>72525</td>
-                        <td>Alanin transaminaz (ALT)</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity3" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck4"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck4', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>72526</td>
-                        <td id="tetkikAdi">Alkalen fosfataz (ALP)</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity4" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck5"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck5', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>72520</td>
-                        <td>Gama-glutamiltransferaz (GGT)</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity5" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                            <th>No.</th>
+                            <th>SUT Code</th>
+                            <th>Examination Name</th>
+                            <th>Laboratory</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
 
@@ -711,11 +662,13 @@
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="labTetkikKaydet"
-                        onclick="PolyclinicMethods.checkBeforeSaveExaminations()" data-toggle="tooltip"
-                        title="Tetkikleri kaydetmek icin tiklayin.">Save</button></div>
+                <div class="buttonDiv">
+                    <button class="anamnezBtns btn-success" id="labTetkikKaydet"
+                        onclick="PolyclinicMethods.checkBeforeSaveExaminations('totalExam')" data-toggle="tooltip"
+                        title="Click for save examinations.">Save</button>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 
     <div id="radiologyIstemEkrani" class="modal" style="padding: 60px;">

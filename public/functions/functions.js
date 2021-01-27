@@ -1218,7 +1218,245 @@ var
                 }
             });
         },
+        // ========================== test functions =============================
+        clearForNewTest: function clearForNewTest() {
+            AdministrationMethods.fillUnitStatisticsTable();
 
+            var testName = $('#testName').val();
+
+            if (testName != '' || testName > 0) {
+                toastr.warning(
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?',
+                    {
+                        allowHtml: true,
+                        progressBar: true,
+                        timeOut: 10000,
+                        onShown: function (toast) {
+                            $("#clearConfirmBtn").on('click', function () {
+                                document.getElementById('saveTest').innerHTML = 'Save';
+
+                                $("#testName").val('');
+                                $("#testCode").val('');
+                                $("#testHint").val('');
+                                $("#maxRequest").val('');
+                                AdministrationMethods.getMaxTestId();
+                                AdministrationMethods.findAllTests();
+
+                                jQueryMethods.toastrOptions();
+                                toastr.info('Form cleared for new test!', 'Form Cleared');
+                            });
+                        }
+                    });
+            }
+        },
+
+        updateOrSaveTestBtn: function updateOrSaveTestBtn() {
+            var btn = document.getElementById('saveTest');
+            $.ajax({
+                type: "GET",
+                url: "/admin/tests/checkTestFromDatabase",
+                data: { testCode: $("#testCode").val() },
+                success: function (test) {
+                    if (test.length != 0 || test != null) {
+                        btn.innerHTML = 'Update';
+                    }
+                    else {
+                        btn.innerHTML = 'Save';
+                    }
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Test couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        saveTest: function saveTest() {
+            var btn = document.getElementById('saveTest');
+
+            if (btn.innerHTML == 'Update') {
+                AdministrationMethods.updateTestData();
+            } else {
+                var myTestLab = $('#testLab option:selected').val(),
+                    myTestActivePassive = $('#testActivePassive option:selected').val(),
+                    myTestType = $('#testType option:selected').val(),
+                    myData = {
+                        testId: $("#testId").val(),
+                        testCode: $("#testCode").val(),
+                        testName: $("#testName").val(),
+                        testType: myTestType,
+                        testLab: myTestLab,
+                        testHint: $("#testHint").val(),
+                        maxRequest: $("#maxRequest").val(),
+                        testActivePassive: myTestActivePassive
+                    };
+
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/admin/tests/saveTest',
+                    success: function () {
+                        jQueryMethods.toastrOptions();
+                        toastr.success('Test successfully saved!', 'Test Save');
+
+                        AdministrationMethods.findAllTests();
+                        AdministrationMethods.getMaxTestId();
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Test couldnt save! \n' + e, 'Error!')
+                        console.log("ERROR: ", e);
+                    }
+                });
+            }
+        },
+
+        findTestAtOnce: function findTestAtOnce() {
+            var testCode = $('#testCode').val();
+
+            if (testCode == '' || testCode == null) {
+                AdministrationMethods.findAllTests();
+                AdministrationMethods.fillUnitStatisticsTable();
+                AdministrationMethods.updateOrSaveTestBtn();
+            } else {
+                AdministrationMethods.findOneTest();
+                AdministrationMethods.updateOrSaveTestBtn();
+            }
+        },
+
+        findAllTests: function findAllTests() {
+            $('#testListTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/admin/tests/findAllTests",
+                success: function (result) {
+                    $.each(result, function (i, tests) {
+                        i++;
+                        $("#testListTable> tbody").append(
+                            "<tr class='testRow' id='testRowId" + i + " title='' ><td class='idTd' title=''>"
+                            + i + "</td><td>"
+                            + tests.testId + "</td><td>"
+                            + tests.testCode + "</td><td>"
+                            + tests.testName + "</td><td>"
+                            + tests.testType + "</td><td>"
+                            + tests.testLab + "</td><td>"
+                            + tests.testHint + "</td><td>"
+                            + tests.maxRequest + "</td><td>"
+                            + tests.testActivePassive + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Test couldnt list! \n' + message.err, 'Error!')
+                    console.log("ERROR: ", e);
+                }
+            });
+        },
+
+        findOneTest: function findOneTest() {
+            $('#testListTable > tbody').empty();
+            var searchCode = $("#testCode").val();
+
+            $.ajax({
+                type: "GET",
+                url: "/admin/tests/findOneTest",
+                data: { testCode: searchCode },
+                success: function (test) {
+                    if (test.testName == '' || test.testName == null || test.testName == 'undefined') {
+                        $("#testName").val('');
+                        toastr.error('Test couldnt find! \n\n\n', 'Error!')
+                    } else {
+                        $("#testId").val(test.testId);
+                        $("#testCode").val(test.testCode);
+                        $("#testName").val(test.testName);
+                        $("#testType").val(test.testType);
+                        $("#testLab").val(test.testLab);
+                        $("#testHint").val(test.testHint);
+                        $("#maxRequest").val(test.maxRequest);
+                        $("#testActivePassive").val(test.testActivePassive);
+
+                        $("#testListTable> tbody").append(
+                            "<tr class='unitRow' id='unitRow1' title=''><td class='idTd' title=''>"
+                            + "#" + "</td><td id='idTd1'>"
+                            + test.testId + "</td><td>"
+                            + test.testCode + "</td><td>"
+                            + test.testName + "</td><td>"
+                            + test.testType + "</td><td>"
+                            + test.testLab + "</td><td>"
+                            + test.testHint + "</td><td>"
+                            + test.maxRequest + "</td><td>"
+                            + test.testActivePassive + "</td></tr>");
+
+                        toastr.info('Test - ' + test.testCode + ' - ' + test.testName + ' -  found!', 'Test Search');
+                    }
+                },
+                error: function (e) {
+                    toastr.error('Test couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        updateTestData: function updateTestData() {
+            var myTestLab = $('#testLab option:selected').val(),
+                myTestActivePassive = $('#testActivePassive option:selected').val(),
+                myTestType = $('#testType option:selected').val(),
+                myData = {
+                    testId: $("#testId").val(),
+                    testCode: $("#testCode").val(),
+                    testName: $("#testName").val(),
+                    testType: myTestType,
+                    testLab: myTestLab,
+                    testHint: $("#testHint").val(),
+                    maxRequest: $("#maxRequest").val(),
+                    testActivePassive: myTestActivePassive
+                };
+
+            $.ajax({
+                type: 'PUT',
+                data: JSON.stringify(myData),
+                cache: false,
+                contentType: 'application/json',
+                datatype: "json",
+                url: '/admin/tests/updateTestData',
+                success: function () {
+                    jQueryMethods.toastrOptions();
+                    AdministrationMethods.findOneTest();
+                    toastr.success('Test data updated!', 'Test Data Update');
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Test couldnt update! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        getMaxTestId: function getMaxTestId() {
+            $.ajax({
+                type: "GET",
+                url: "/admin/tests/getMaxTestId",
+                success: function (test) {
+                    if (test.testId == 0 || test.testId == 'NaN' || test.testId == 'undefined' || test.length < 1) {
+                        $("#testId").val(1);
+                    } else {
+                        $("#testId").val(test.testId + 1);
+                        // console.log(test.testId);
+                    }
+                },
+                error: function (e) {
+                    console.log(unit.unitId);
+                    jQueryMethods.toastrOptions();
+                    toastr.error("Couldn't get max id from test model! \n\n\n' + e.responseText, 'Error!")
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
         // ========================== general functions =============================
 
         fetchUnits: function fetchUnits(unitType, selectId) {
@@ -1232,6 +1470,32 @@ var
                         i++
                         var name = unitData.unitName;
                         $('#' + selectId + '').append("<option value='" + name.replace(/\s/g, '') + "'>" + unitData.unitName + "</option>");
+                    });
+                },
+                error: function (e) {
+                    toastr.error('Couldn\'t fetch units! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fetchTests: function fetchTests(testType, tableId) {
+            $('#' + tableId + ' > tbody').empty();
+            $.ajax({
+                type: "GET",
+                url: "/admin/tests/fetchTests",
+                data: { testType: testType, testActivePassive: 'Active' },
+                success: function (result) {
+                    $.each(result, function (i, tests) {
+                        i++
+                        $('#' + tableId + ' > tbody').append(
+                            "<tr class='testRow' id='testRowId" + i + "' title='" + tests.testHint + "' >"
+                            + "<td><input type='checkbox' class='labIstemChckbx' id='customCheck" + i
+                            + "' onchange='PolyclinicMethods.tetkikSelect(\"customCheck" + i + "\", \"labIstemChckbx\", \"selectedExamTable\", \"totalExam\")'></td><td>"
+                            + tests.testCode + "</td><td>"
+                            + tests.testName + "</td><td>"
+                            + tests.testLab + "</td><td>"
+                            + "<input type='number' name='labQuantity' id='labQuantity" + i + "\' min='1' value='1' style = 'text-align: center;' ></td ></tr > ");
                     });
                 },
                 error: function (e) {
@@ -5458,6 +5722,10 @@ var
                 }
             });
         },
+
+        savePatientRadLabExaminations: function savePatientRadLabExaminations() {
+            
+         }
     },
 
     ShowOrHideMethods = {
