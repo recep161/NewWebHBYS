@@ -5,6 +5,7 @@ const patientDiagnosisSaveSchema = require('../models/diagnosisModel');
 const allDiagnosisSaveSchema = require('../models/allDiagnosisModel');
 const inpatientSaveSchema = require('../models/inpatientModel');
 const consultationSaveSchema = require('../models/consultationModel');
+const labRadSaveSchema = require('../models/patientRadLabModel');
 const unitsSaveSchema = require('../models/unitsModel');
 const myMongoose = require('mongoose');
 const myMoment = require('moment');
@@ -21,6 +22,7 @@ var myUnitsModel = myMongoose.model('units');
 var myAppointmentModel = myMongoose.model('appointments');
 var myPatientdiagnosisModel = myMongoose.model('patientdiagnoses');
 var allDiagnosisModel = myMongoose.model('diagnosistables');
+var labRadTestModel = myMongoose.model('patientradlabtest');
 
 module.exports.savePolExamAnamnesis = (req, res) => {
 
@@ -167,7 +169,7 @@ module.exports.updateDiagnosisType = (req, res) => {
         { useFindAndModify: false })
         .then(diagnosisData => {
             res.send(diagnosisData);
-            // console.log("diagnosisData updated! = " + diagnosisData);
+            console.log("diagnosisData updated! = " + diagnosisData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -268,6 +270,18 @@ module.exports.fillPatientExamHistoryTable = (req, res) => {
         .then(patientData => {
             res.send(patientData);
             // console.log("patient found! = " + patientData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.fillPatientLabRadHistoryTable = (req, res) => {
+    labRadTestModel.find(req.query)
+        .then(testData => {
+            res.send(testData);
+            // console.log("testData found! = " + testData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -395,6 +409,34 @@ module.exports.fillConsultationHistoryTable = (req, res) => {
         }).catch(err => {
             res.status(500).send({
                 message: err.message
+            });
+        });
+};
+
+module.exports.savePatientRadLabExaminations = (req, res) => {
+    const newLabRadSaveSchema = new labRadSaveSchema({
+        patientProtocolNo: req.body.patientProtocolNo,
+        patientId: req.body.patientId,
+        patientIdNo: req.body.patientIdNo,
+        patientNameSurname: req.body.patientNameSurname,
+        testCode: req.body.testCode,
+        testName: req.body.testName,
+        testLab: req.body.testLab,
+        testQuantity: req.body.testQuantity,
+        saveDate: req.body.saveDate,
+        saveUser: req.body.saveUser,
+        result: req.body.result,
+        resultDate: req.body.resultDate,
+        resultUser: req.body.resultUser
+    });
+    newLabRadSaveSchema.save()
+        .then(testData => {
+            res.send(testData);
+            // console.log('testData = ', testData)
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message,
+                myerr: console.log(err.message)
             });
         });
 };

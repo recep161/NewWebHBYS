@@ -1481,6 +1481,14 @@ var
 
         fetchTests: function fetchTests(testType, tableId) {
             $('#' + tableId + ' > tbody').empty();
+            var selectTable, selectTotal;
+            if (testType == 'Laboratory') {
+                selectTable = 'selectedExamTable';
+                selectTotal = 'totalExam';
+            } else {
+                selectTable = 'selectedRadiologyExamTable'
+                selectTotal = 'totalRadiologyExam';
+            }
             $.ajax({
                 type: "GET",
                 url: "/admin/tests/fetchTests",
@@ -1490,10 +1498,10 @@ var
                         i++
                         $('#' + tableId + ' > tbody').append(
                             "<tr class='testRow' id='testRowId" + i + "' title='" + tests.testHint + "' >"
-                            + "<td><input type='checkbox' class='labIstemChckbx' id='customCheck" + i
-                            + "' onchange='PolyclinicMethods.tetkikSelect(\"customCheck" + i + "\", \"labIstemChckbx\", \"selectedExamTable\", \"totalExam\")'></td><td>"
-                            + tests.testCode + "</td><td>"
-                            + tests.testName + "</td><td>"
+                            + "<td><input type='checkbox' class='labRadIstemChckbx' id='customCheck" + i
+                            + "' onchange='PolyclinicMethods.tetkikSelect(\"customCheck" + i + "\", \"labRadIstemChckbx\", \"" + selectTable + "\", \"" + selectTotal + "\")'></td><td id='testCode" + i + "'> "
+                            + tests.testCode + "</td><td id='testName" + i + "'> "
+                            + tests.testName + "</td><td id=testLab" + i + "'> "
                             + tests.testLab + "</td><td>"
                             + "<input type='number' name='labQuantity' id='labQuantity" + i + "\' min='1' value='1' style = 'text-align: center;' ></td ></tr > ");
                     });
@@ -4974,12 +4982,17 @@ var
             selectedExam[0].innerHTML = y;
         },
 
-        checkBeforeSaveExaminations: function checkBeforeSaveExaminations(totalId) {
+        checkAndSaveExaminations: function checkAndSaveExaminations(totalId, clickedButtonId) {
             var totalExam = document.getElementById(totalId);
+
             if (Number(totalExam.innerHTML) == 0) {
-                alert('Tetkik seçmeden kaydedemesiniz!');
+                alert('Please select an examination!');
             } else {
-                ShowOrHideMethods.polyclinicShowSuccesAlert();
+                if (clickedButtonId == 'labTetkikKaydet') {
+                    PolyclinicMethods.savePatientRadLabExaminations('labIstemTableTbody');
+                } else {
+                    PolyclinicMethods.savePatientRadLabExaminations('radiologyIstemTableTBody');
+                }
             }
         },
 
@@ -5143,7 +5156,7 @@ var
                             var patientAppStatusId = 'patientAppStatus' + i;
                             $("#patientTable> tbody").append(
                                 "<tr class='patientList' id='patient" + i
-                                + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>"
+                                + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable();PolyclinicMethods.fillPatientLabRadHistoryTable()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>"
                                 + patientData.patientProtocolNo + "</td><td>"
                                 + patientData.patientNameSurname + "</td><td id='patientAppStatus" + i
                                 + "'>Without Appointment</td></tr>");
@@ -5183,7 +5196,7 @@ var
         deletePatientDiagnosis: function deletePatientDiagnosis(patientTableRowId) {
             var icd10Code = $('#' + patientTableRowId + '').children("td:first-child").text().substr(0, 5),
                 icd10FullName = $('#' + patientTableRowId + '').children("td:first-child").text(),
-                clickedPatientProtocol = $.cookie('patientProtocol').substr(1),
+                clickedPatientProtocol = $.cookie('patientProtocol'),
                 diagnosisTypeFromSelect = $("#diagnosisSelect option:selected").val(),
                 diagnosisTypeFromTable = $('#' + patientTableRowId + ' td:nth-child(2)').text(),
                 whichDiagnosisText;
@@ -5224,10 +5237,9 @@ var
         updateDiagnosisType: function updateDiagnosisType(patientTableRowId) {
             var icd10Code = $('#' + patientTableRowId + '').children("td:first-child").text().substr(0, 5),
                 icd10FullName = $('#' + patientTableRowId + '').children("td:first-child").text(),
-                clickedPatientProtocol = $.cookie('patientProtocol').substr(1),
+                clickedPatientProtocol = $.cookie('patientProtocol'),
                 diagnosisTypeFromSelect = $("#diagnosisSelect option:selected").val(),
                 myData = { patientProtocolNo: clickedPatientProtocol, icd10: icd10Code, diagnosisType: diagnosisTypeFromSelect };
-
             $.ajax({
                 type: 'PUT',
                 data: JSON.stringify(myData),
@@ -5390,7 +5402,7 @@ var
         },
 
         updatePolExamAnamnesis: function updatePolExamAnamnesis() {
-            var clickedPatientProtocol = $.cookie('patientProtocol').substr(1),
+            var clickedPatientProtocol = $.cookie('patientProtocol'),
                 myData = {
                     patientProtocolNo: clickedPatientProtocol,
                     patientStory: $("#oykusuArea").val(),
@@ -5407,6 +5419,7 @@ var
                 url: '/polExamAnamnesis/updatePolExamAnamnesis',
                 success: function () {
                     toastr.success('Anamnesis updated!', 'Anamnesis Update!');
+                    PolyclinicMethods.fillPatientExamHistoryTable();
                 },
                 error: function (e) {
                     toastr.error('Anamnesis couldnt update! \n\n\n' + e.responseText, 'Error!')
@@ -5476,6 +5489,32 @@ var
                 error: function (e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient polyclinic history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientLabRadHistoryTable: function fillPatientLabRadHistoryTable() {
+            $('#patientLabRadHistoryTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/fillPatientLabRadHistoryTable",
+                data: { patientIdNo: $.cookie("patientPersonalIdNumber") },
+                success: function (result) {
+                    $.each(result, function (i, testData) {
+                        i++;
+                        $("#patientLabRadHistoryTable> tbody").append(
+                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='"
+                            + testData.result + "' ><td >"
+                            + i + "</td><td>" + testData.patientProtocolNo + "</td><td>"
+                            + testData.saveDate + "</td><td>"
+                            + testData.testLab + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Lab. / Rad. history couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });
@@ -5723,9 +5762,62 @@ var
             });
         },
 
-        savePatientRadLabExaminations: function savePatientRadLabExaminations() {
-            
-         }
+        savePatientRadLabExaminations: function savePatientRadLabExaminations(requestTableTbody) {
+            var selectedCheckboxesRowIds = [];
+
+            $('#' + requestTableTbody + ' input:checked').each(function () {
+                selectedCheckboxesRowIds.push($(this).closest('tr').attr('id'));
+            });
+            $.each(selectedCheckboxesRowIds, function (i) {
+                var myCheckBox = $('#' + selectedCheckboxesRowIds[i] + ' td:first input:checkbox'),
+                    myTestCode = $('#' + selectedCheckboxesRowIds[i] + ' td:nth-child(2)').text(),
+                    myTestName = $('#' + selectedCheckboxesRowIds[i] + ' td:nth-child(3)').text(),
+                    myTestLab = $('#' + selectedCheckboxesRowIds[i] + ' td:nth-child(4)').text(),
+                    myTestQuantity = $('#' + selectedCheckboxesRowIds[i] + ' td:last input').val(),
+                    patientProtocol = $.cookie('patientProtocol'),
+                    patientNameSurname = $.cookie('patientNameSurname'),
+                    myDate = new Date(),
+                    mySaveDate = myDate.toLocaleString("en-US"),
+                    myData = {
+                        patientProtocolNo: patientProtocol,
+                        patientId: $.cookie("patientId"),
+                        patientIdNo: $.cookie("patientPersonalIdNumber"),
+                        patientNameSurname: patientNameSurname,
+                        testCode: myTestCode,
+                        testName: myTestName,
+                        testLab: myTestLab,
+                        testQuantity: myTestQuantity,
+                        saveDate: mySaveDate,
+                        saveUser: $.cookie('username'),
+                        result: '',
+                        resultDate: '',
+                        resultUser: ''
+                    };
+                // console.log(myTestCode, myTestName, myTestLab, myTestQuantity, mySaveDate,myData.saveUser)
+                if (patientProtocol == 'null' || patientProtocol == null) {
+                    toastr.warning('Please select a patient! \n', 'Error!')
+                }
+                else {
+                    $.ajax({
+                        type: 'POST',
+                        data: JSON.stringify(myData),
+                        cache: false,
+                        contentType: 'application/json',
+                        datatype: "json",
+                        url: '/polExamAnamnesis/savePatientRadLabExaminations',
+                        success: function () {
+                            toastr.success(myTestCode + ' - ' + myTestName + ' successfully saved!', 'Save!');
+                            myCheckBox.removeAttr('checked');
+                        },
+                        error: function (e) {
+                            toastr.error(myTestCode + ' - ' + myTestName + ' couldn\'t save! \n' + e, 'Error!')
+                            console.log("ERROR: ", e);
+                        }
+                    });
+                }
+                i++;
+            });
+        }
     },
 
     ShowOrHideMethods = {

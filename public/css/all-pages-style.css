@@ -2112,15 +2112,18 @@ span.psw {
   text-align: center;
 }
 
-#patientLabHistoryTable {
-  font-family: inherit;
-  border-collapse: collapse;
+#patientLabRadHistoryTable {
   width: 100%;
-  margin-top: 10px;
+  margin: 10px 0px 1px 0px;
   cursor: pointer;
+  border-collapse: collapse;
+  border-radius: 8px;
+  border-style: hidden;
+  box-shadow: 0 0 0 1px #666;
+  font-family: inherit;
 }
 
-#patientLabHistoryTable td, th {
+#patientLabRadHistoryTable td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
@@ -2128,7 +2131,7 @@ span.psw {
   text-align: center;
 }
 
-#patientLabHistoryTable tr:nth-child(even) {
+#patientLabRadHistoryTable tr:nth-child(even) {
   background-color: #dddddd;
 }
 
@@ -2573,6 +2576,8 @@ input:focus, textarea:focus, text:focus {
 .labIstemEkraniContainer {
   display: flex;
   margin: 10px;
+  overflow-y: scroll;
+  height: 300px;
 }
 
 #labIstemImgcontainer {
@@ -2620,6 +2625,36 @@ input:focus, textarea:focus, text:focus {
   border-bottom-left-radius: 8px;
 }
 
+#radiologyIstemTable {
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  border-collapse: collapse;
+  border-style: hidden;
+  border-radius: 8px;
+  box-shadow: 5px 10px 20px 1px #666;
+}
+
+#radiologyIstemTable td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+#radiologyIstemTable tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+#radiologyIstemTable tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+#radiologyIstemTable tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+}
+
 .labTetkikContainerBottom {
   background-color: #49A7BC;
   width: 100%;
@@ -2652,6 +2687,8 @@ input:focus, textarea:focus, text:focus {
 .radiologyIstemEkraniContainer {
   display: flex;
   margin: 10px;
+  overflow-y: scroll;
+  height: 300px;
 }
 
 #radiologyIstemImgcontainer {
@@ -4499,16 +4536,6 @@ tr:hover, tr.selected {
   margin: 5px;
   width: 50%;
   box-shadow: 0 8px 6px -6px #555;
-}
-
-#patientLabHistoryTable {
-  width: 100%;
-  margin: 10px 0px 1px 0px;
-  cursor: pointer;
-  border-collapse: collapse;
-  border-radius: 8px;
-  border-style: hidden;
-  box-shadow: 0 0 0 1px #666;
 }
 
 #inpatientTabTwoLabOrder, #inpatientTabTwoRadOrder {

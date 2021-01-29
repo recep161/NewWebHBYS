@@ -184,7 +184,8 @@
                     onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');AdministrationMethods.fetchTests('Laboratory', 'labIstemTable');"
                     class="polyclinicButtons btn--swap">Laboratuary <span>Primum non nocere.</span></button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');"
+                <button
+                    onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');AdministrationMethods.fetchTests('Radiology', 'radiologyIstemTable');"
                     class="polyclinicButtons btn--swap">Imaging and Radiology<span>Primum non nocere.</span></button>
 
                 <button class="polyclinicButtons btn--swap">Button 5 <span>Primum non nocere.</span></button>
@@ -219,51 +220,16 @@
             <div class="patientLabHistoryContainer" id="patientLabHistoryContainer" style="text-align: center;">
                 <h10 class="historyHeaders">
                     Patient Laboratory and Radiology History</h10>
-                <table id="patientLabHistoryTable">
-                    <tr>
+                <table id="patientLabRadHistoryTable">
+                    <thead id="tableHeader" style="background-color: #49A681 !important; color: white;">
                         <th>No.</th>
                         <th>Protocol No.</th>
                         <th>Date</th>
                         <th>Lab. / Rad. </th>
-                    </tr>
-                    <tr title="WBC : 5.6 
-                                RBC: 6.2
-                                HGB: 13.1
-                                HCT: 39.9
-                                MCV: 30.1
-                                MCHC: 34.6
-                                RDW: 13.8
-                                PLT: 322">
-                        <td>1</td>
-                        <td>12345</td>
-                        <td>01/03/2019</td>
-                        <td>Hematology Lab.</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>45678</td>
-                        <td>15/01/2020</td>
-                        <td>Ultrasound - 1</td>
-                    </tr>
-                    <tr
-                        title="ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non dui sapien.">
-                        <td>3</td>
-                        <td>91011</td>
-                        <td>22/02/2020</td>
-                        <td>ESWL - 2</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>12131</td>
-                        <td>04/03/2020</td>
-                        <td>Biochemistry Lab.</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>14151</td>
-                        <td>18/04/2020</td>
-                        <td>Serology Lab.</td>
-                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
 
@@ -630,7 +596,7 @@
                     class="close" title="Close Modal">&times;</span>
                 <img id="myAvatar" src="/public/images/Medical-icons/microscope.png" alt="Avatar" class="avatar">
             </div>
-            <h11 class="historyHeaders" style="margin: 5px;color: white;">Lab tetkis istem</h11>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;">Laboratory Test Request</h11>
             <input class="searchInputs" type="text" id="tetkikAra"
                 onkeydown="PolyclinicMethods.searchInTable('tetkikAra', 'labIstemTable')"
                 placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
@@ -645,7 +611,7 @@
                             <th>Quantity</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="labIstemTableTbody">
 
                     </tbody>
                 </table>
@@ -664,91 +630,39 @@
                 </div>
                 <div class="buttonDiv">
                     <button class="anamnezBtns btn-success" id="labTetkikKaydet"
-                        onclick="PolyclinicMethods.checkBeforeSaveExaminations('totalExam')" data-toggle="tooltip"
-                        title="Click for save examinations.">Save</button>
+                        onclick="PolyclinicMethods.checkAndSaveExaminations('totalExam','labTetkikKaydet');"
+                        data-toggle="tooltip" title="Click for save examinations.">Save</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="radiologyIstemEkrani" class="modal" style="padding: 60px;">
-        <form id="radiology-modal-content" class="radiologyIstemEkraniContent animate" action="none" method="none">
+        <div id="radiology-modal-content" class="radiologyIstemEkraniContent animate" action="none" method="none">
             <div id="radiologyIstemImgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('radiologyIstemEkrani').style.display='none'"
                     id="radiologyIstemCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="myRadiologyAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico" alt="Avatar"
                     class="avatar">
             </div>
-            <h11 class="historyHeaders" style="margin: 5px;color: white;">Lab tetkis istem</h11>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;">Radiology and Imaging Request</h11>
             <input class="searchInputs" type="text" id="radiologyTetkikAra"
                 onkeydown="PolyclinicMethods.searchInTable('radiologyTetkikAra', 'radiologyIstemTable')"
-                placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
+                placeholder="Search for examinations..." title="Search for examinations by name or code.">
             <div id="radiologyIstemEkraniContainer" class="radiologyIstemEkraniContainer">
                 <table id="radiologyIstemTable">
-                    <tr id="tableHeader">
-                        <th>No.</th>
-                        <th>SUT Code</th>
-                        <th>Examination Name</th>
-                        <th>Laboratory</th>
-                        <th>Quantity</th>
-                    </tr>
-                    <tr data-toggle="tooltip"
-                        title="SUT Kısıtları: Nükleer Tıp Uzman hekiminin yer aldığı üç imzalı rapor ile tıbbi gerekçe belirtilmelidir.">
-                        <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck1"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck1', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800640</td>
-                        <td>Akciğer perfüzyon sintigrafisi, SPECT</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity1" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Akciğer perfüzyon sintigrafisi, Planar'a eklenir.">
-                        <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck2"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck2', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800661</td>
-                        <td>Akciğer ventilasyon sintigrafisi, SPECT (Aerosol)</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity2" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Dinamik ve/veya statik">
-                        <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck3"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck3', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800710</td>
-                        <td>Konvansiyonel beyin sintigrafisi</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity3" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck4"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck4', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800690</td>
-                        <td>Beyin PET</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity4" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip"
-                        title="SUT Kısıtları: PET sırasında attenuasyon düzeltmesi ve anotomik haritalama amacıyla çekilen BT/MR ayrıca puanlandırılmaz.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="radiologyCustomCheck5"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck5', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800755</td>
-                        <td>Miyokard sempatik innervasyon sintigrafisi (I-123 MIBG)</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity5" min="1" value="1"
-                                style="text-align: center;"></td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                            <td>No.</td>
+                            <td>SUT Code</td>
+                            <td>Examination Name</td>
+                            <td>Laboratory</td>
+                            <td>Quantity</td>
+                        </tr>
+                    <tbody id="radiologyIstemTableTBody">
+
+                    </tbody>
+                    </thead>
                 </table>
             </div>
 
@@ -764,10 +678,10 @@
                     </table>
                 </div>
                 <div class="buttonDiv"><button class="anamnezBtns btn-success" id="radiologyTetkikKaydet"
-                        onclick="PolyclinicMethods.checkBeforeSaveExaminations()" data-toggle="tooltip"
-                        title="Tetkikleri kaydetmek icin tiklayin.">Save</button></div>
+                        onclick="PolyclinicMethods.checkAndSaveExaminations('totalRadiologyExam','radiologyTetkikKaydet');"
+                        data-toggle="tooltip" title="Click for save.">Save</button></div>
             </div>
-        </form>
+        </div>
     </div>
 
     <!-- Footer -->
