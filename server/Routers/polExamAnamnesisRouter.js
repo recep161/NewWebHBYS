@@ -32,6 +32,7 @@ router.post('/saveConsultation', controllerPolExamAnamnesis.saveConsultation);
 router.get('/getConsultationCount', controllerPolExamAnamnesis.getConsultationCount);
 router.get('/fillConsultationHistoryTable', controllerPolExamAnamnesis.fillConsultationHistoryTable);
 router.post('/savePatientRadLabExaminations', controllerPolExamAnamnesis.savePatientRadLabExaminations);
+router.get('/fillAppointmentStatusTable', controllerPolExamAnamnesis.fillAppointmentStatusTable);
 
 router.use("*", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));

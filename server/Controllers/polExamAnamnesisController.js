@@ -169,7 +169,7 @@ module.exports.updateDiagnosisType = (req, res) => {
         { useFindAndModify: false })
         .then(diagnosisData => {
             res.send(diagnosisData);
-            console.log("diagnosisData updated! = " + diagnosisData);
+            // console.log("diagnosisData updated! = " + diagnosisData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -282,6 +282,18 @@ module.exports.fillPatientLabRadHistoryTable = (req, res) => {
         .then(testData => {
             res.send(testData);
             // console.log("testData found! = " + testData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+module.exports.fillAppointmentStatusTable = (req, res) => {
+    myAppointmentModel.find(req.query)
+        .then(patientData => {
+            res.send(patientData);
+            // console.log("patient found! = " + patientData);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -423,6 +435,7 @@ module.exports.savePatientRadLabExaminations = (req, res) => {
         testName: req.body.testName,
         testLab: req.body.testLab,
         testQuantity: req.body.testQuantity,
+        testType: req.body.testType,
         saveDate: req.body.saveDate,
         saveUser: req.body.saveUser,
         result: req.body.result,

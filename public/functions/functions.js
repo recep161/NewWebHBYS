@@ -4526,6 +4526,36 @@ var
             });
         },
 
+        fillPatientLabRadHistoryTable: function fillPatientLabRadHistoryTable() {
+            $('#patientLabRadHistoryTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/fillPatientLabRadHistoryTable",
+                data: { patientIdNo: $("#patientIdNo").val() },
+                success: function (result) {
+                    $.each(result, function (i, testData) {
+                        i++;
+                        if (testData.result == '') {
+                            testData.result = 'No Result';
+                        }
+                        $("#patientLabRadHistoryTable> tbody").append(
+                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='"
+                            + testData.result + "' ><td >"
+                            + i + "</td><td>" + testData.patientProtocolNo + "</td><td>"
+                            + testData.testName + "</td><td>"
+                            + testData.saveDate + "</td><td>"
+                            + testData.testLab + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Lab. / Rad. history couldn\'t find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
         colorRedCanceledPolExams: function colorRedCanceledPolExams() {
             var table = document.getElementById('polExamPatientHistoryTable');
             for (var r = 0, n = table.rows.length; r < n; r++) {
@@ -4989,9 +5019,9 @@ var
                 alert('Please select an examination!');
             } else {
                 if (clickedButtonId == 'labTetkikKaydet') {
-                    PolyclinicMethods.savePatientRadLabExaminations('labIstemTableTbody');
+                    PolyclinicMethods.savePatientRadLabExaminations('labIstemTableTbody', 'Laboratory');
                 } else {
-                    PolyclinicMethods.savePatientRadLabExaminations('radiologyIstemTableTBody');
+                    PolyclinicMethods.savePatientRadLabExaminations('radiologyIstemTableTBody', 'Radiology');
                 }
             }
         },
@@ -5119,6 +5149,8 @@ var
                         i++;
                         if (result.length > 0) {
                             appointmentStatusCell.innerHTML = 'With Appointment';
+                            appointmentStatusCell.style.backgroundColor = '#4aa54a';
+                            appointmentStatusCell.style.color = 'white';
                         } else {
                             appointmentStatusCell.innerHTML = 'No Appointment';
                         }
@@ -5159,7 +5191,7 @@ var
                                 + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable();PolyclinicMethods.fillPatientLabRadHistoryTable()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>"
                                 + patientData.patientProtocolNo + "</td><td>"
                                 + patientData.patientNameSurname + "</td><td id='patientAppStatus" + i
-                                + "'>Without Appointment</td></tr>");
+                                + "' style='background-color:#e77474;'>Without Appointment</td></tr>");
                             PolyclinicMethods.checkPatientAppointmentStatus(patientAppStatusId, patientData.patientIdNo)
                         });
                     },
@@ -5504,10 +5536,47 @@ var
                 success: function (result) {
                     $.each(result, function (i, testData) {
                         i++;
+                        if (testData.result == '') {
+                            testData.result = 'No Result';
+                        }
                         $("#patientLabRadHistoryTable> tbody").append(
                             "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='"
                             + testData.result + "' ><td >"
-                            + i + "</td><td>" + testData.patientProtocolNo + "</td><td>"
+                            + i + "</td><td>"
+                            + testData.patientProtocolNo + "</td><td>"
+                            + testData.testName + "</td><td>"
+                            + testData.saveDate + "</td><td>"
+                            + testData.testLab + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Lab. / Rad. history couldn\'t find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientTodaysLabRadHistoryTable: function fillPatientTodaysLabRadHistoryTable(tableId, testType) {
+            $('#' + tableId + ' > tbody').empty();
+            $('#labPatientData').text($.cookie("patientProtocol") + ' - ' + $.cookie("patientNameSurname"));
+            $('#radPatientData').text($.cookie("patientProtocol") + ' - ' + $.cookie("patientNameSurname"));
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/fillPatientLabRadHistoryTable",
+                data: { patientProtocolNo: $.cookie("patientProtocol"), testType: testType },
+                success: function (result) {
+                    $.each(result, function (i, testData) {
+                        i++;
+                        if (testData.result == '') {
+                            testData.result = 'No Result';
+                        }
+                        $('#' + tableId + ' > tbody').append(
+                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='"
+                            + testData.result + "' ><td >"
+                            + i + "</td><td>"
+                            + testData.testCode + "</td><td>"
+                            + testData.testName + "</td><td>"
                             + testData.saveDate + "</td><td>"
                             + testData.testLab + "</td></tr>");
                     });
@@ -5762,7 +5831,7 @@ var
             });
         },
 
-        savePatientRadLabExaminations: function savePatientRadLabExaminations(requestTableTbody) {
+        savePatientRadLabExaminations: function savePatientRadLabExaminations(requestTableTbody, myTestType) {
             var selectedCheckboxesRowIds = [];
 
             $('#' + requestTableTbody + ' input:checked').each(function () {
@@ -5787,6 +5856,7 @@ var
                         testName: myTestName,
                         testLab: myTestLab,
                         testQuantity: myTestQuantity,
+                        testType: myTestType,
                         saveDate: mySaveDate,
                         saveUser: $.cookie('username'),
                         result: '',
@@ -5816,6 +5886,36 @@ var
                     });
                 }
                 i++;
+            });
+        },
+
+        fillAppointmentStatusTable: function fillAppointmentStatusTable() {
+            var myData = {
+                appointmentDate: $('#examDate').val(),
+                appointmentPolyclinic: $("#polyclinicSelector option:selected").val()
+            };
+
+            $('#patientAppointmentStatusTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/fillAppointmentStatusTable",
+                data: { myData },
+                success: function (result) {
+                    $.each(result, function (i, appData) {
+                        i++;
+                        $("#patientAppointmentStatusTable> tbody").append(
+                            "<tr class='patientApp' id='patientApp" + i + "'>"
+                            + "<td>" + appData.patientName + ' ' + appData.patientSurname + "</td><td>"
+                            + appData.appointmentDate + ' - ' + appData.appointmentHour + "</td><td>"
+                            + appData.appointmentDoctor + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('fillAppointmentStatusTable couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
             });
         }
     },

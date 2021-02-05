@@ -1797,7 +1797,7 @@ span.psw {
 }
 
 #poly-card-container {
-  overflow: scroll;
+  /* overflow: scroll; */
   overflow-y: hidden;
   padding: 5px;
 }
@@ -1813,6 +1813,12 @@ span.psw {
 #subHeadDiv {
   display: flex;
   justify-content: space-between;
+}
+
+#polyclinicBody .statics {
+  width: 97%;
+  height: 100%;
+  padding-left: 55px;
 }
 
 #modulNameText {
@@ -2568,16 +2574,27 @@ input:focus, textarea:focus, text:focus {
   background-color: #49A7BC;
   margin: 1% auto 15% auto;
   border: 1px solid #888;
-  width: 50%;
+  width: 100%;
   border-radius: 8px;
   box-shadow: 3px 0px 38px cornsilk;
 }
 
 .labIstemEkraniContainer {
+  padding: 5px;
   display: flex;
-  margin: 10px;
+  margin: 10px 2px;
+  overflow-y: scroll;
+  height: 350px;
+  width: 100%;
+}
+
+#labIstemEkraniTodayReqContainer, #radIstemEkraniTodayReqContainer {
+  padding: 5px;
+  /* display: flex; */
+  margin: 3px;
   overflow-y: scroll;
   height: 300px;
+  width: 100%;
 }
 
 #labIstemImgcontainer {
@@ -2589,7 +2606,7 @@ input:focus, textarea:focus, text:focus {
 }
 
 #tetkikAra {
-  width: 98%;
+  width: 99%;
   height: 40px;
   border-radius: 8px;
   margin: 5px;
@@ -2625,6 +2642,37 @@ input:focus, textarea:focus, text:focus {
   border-bottom-left-radius: 8px;
 }
 
+#labTodaysRequestTable {
+  width: 100%;
+  cursor: pointer;
+  margin-top: 10px;
+  font-family: inherit;
+  border-collapse: collapse;
+  border-style: hidden;
+  border-radius: 8px;
+  box-shadow: 5px 10px 20px 1px #666;
+}
+
+#labTodaysRequestTable td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+#labTodaysRequestTable tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+#labTodaysRequestTable tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+#labTodaysRequestTable tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+}
+
 #radiologyIstemTable {
   width: 100%;
   cursor: pointer;
@@ -2655,6 +2703,37 @@ input:focus, textarea:focus, text:focus {
   border-bottom-left-radius: 8px;
 }
 
+#radTodaysRequestTable {
+  width: 100%;
+  cursor: pointer;
+  margin-top: 10px;
+  font-family: inherit;
+  border-collapse: collapse;
+  border-style: hidden;
+  border-radius: 8px;
+  box-shadow: 5px 10px 20px 1px #666;
+}
+
+#radTodaysRequestTable td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+#radTodaysRequestTable tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+#radTodaysRequestTable tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+#radTodaysRequestTable tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+}
+
 .labTetkikContainerBottom {
   background-color: #49A7BC;
   width: 100%;
@@ -2679,16 +2758,17 @@ input:focus, textarea:focus, text:focus {
   background-color: #49A7BC;
   margin: 3% auto 15% auto;
   border: 1px solid #888;
-  width: 60%;
+  width: 100%;
   border-radius: 8px;
   box-shadow: 3px 0px 38px cornsilk;
 }
 
 .radiologyIstemEkraniContainer {
   display: flex;
-  margin: 10px;
+  margin: 10px 2px;
   overflow-y: scroll;
-  height: 300px;
+  height: 350px;
+  width: 100%;
 }
 
 #radiologyIstemImgcontainer {
@@ -2704,7 +2784,7 @@ input:focus, textarea:focus, text:focus {
 }
 
 #radiologyTetkikAra {
-  width: 98%;
+  width: 99%;
   height: 40px;
   border-radius: 8px;
   margin: 5px;
@@ -3103,27 +3183,6 @@ input:focus, textarea:focus, text:focus {
   border-style: ridge;
   border-radius: 8px;
   padding: 5px;
-}
-
-#polExamLabHistoryTable {
-  color: black;
-  font-family: inherit;
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-#polExamLabHistoryTable td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-  border: 1px solid black;
-  text-align: center;
-}
-
-#polExamLabHistoryTable tr:nth-child(even) {
-  background-color: #dddddd;
 }
 
 .polyclinicExamSelect {
