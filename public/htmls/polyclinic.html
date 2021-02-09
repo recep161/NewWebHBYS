@@ -35,23 +35,27 @@
 </head>
 
 <body id="polyclinicBody" onload="
-                                LoginProcess.checkIfThereIsAUserLoggedIn('refreshPatientList', 'poylclinicAnamnesisSave');
-                                AdministrationMethods.takeUserInfoFromCookie();
-                                AdministrationMethods.fetchUnits('Polyclinic', 'polyclinicSelector');
-                                // ShowOrHideMethods.myStickHeader('subHeadDiv');
-                                InpatientMethods.colorSelectedPatient();
-                                jQueryMethods.setCalenderValueToday('clinicDate');
-                                jQueryMethods.setCalenderValueToday('examDate');
-                                jQueryMethods.setCalenderValueToday('konsDate');
-                                jQueryMethods.getJqueryDatePicker();
-                                jQueryMethods.toolTipFunction();
-                                jQueryMethods.bottomUserMenuDrag();
-                                myClockMethods.myClock();
-                                PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4', 'polExamStatics5');
-                                PolyclinicMethods.fillAppointmentStatusTable();
-                                // PolyclinicMethods.findPatientList();
-                                ShowOrHideMethods.showBackTotopButton();
-                                ShowOrHideMethods.adjustHtmlsBackground('polyclinicBody');">
+                        LoginProcess.checkIfThereIsAUserLoggedIn('refreshPatientList', 'poylclinicAnamnesisSave');
+                        AdministrationMethods.takeUserInfoFromCookie();
+                        AdministrationMethods.fetchUnits('Polyclinic', 'polyclinicSelector');
+                        // ShowOrHideMethods.myStickHeader('subHeadDiv');
+                        InpatientMethods.colorSelectedPatient();
+                        jQueryMethods.setCalenderValueToday('clinicDate');
+                        jQueryMethods.setCalenderValueToday('examDate');
+                        jQueryMethods.setCalenderValueToday('konsDate');
+                        jQueryMethods.getJqueryDatePicker();
+                        jQueryMethods.toolTipFunction();
+                        jQueryMethods.bottomUserMenuDrag();
+                        myClockMethods.myClock();
+                        PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4','polExamStatics5');
+                        PolyclinicMethods.fillAppointmentStatusTable();
+                        PolyclinicMethods.fillPatientHealtInsuranceTable('examDate','polyclinicSelector','patientHealtInsuranceTable');
+                        PolyclinicMethods.fillPatientGenderTable('examDate','polyclinicSelector','patientGenderTable');
+                        PolyclinicMethods.fillDoctorPatientTable('examDate','polyclinicSelector','doctorPatientTable');
+                        PolyclinicMethods.fillAgePercentageTable('examDate','polyclinicSelector','oldPatientTable');
+                        // PolyclinicMethods.findPatientList();
+                        ShowOrHideMethods.showBackTotopButton();
+                        ShowOrHideMethods.adjustHtmlsBackground('polyclinicBody');">
     <div class="polyclinicNotify" id="polyclinicNotify">
         <span id="polyclinicNotifyType" class=""></span>
     </div>
@@ -80,14 +84,29 @@
             <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!
             </p>
 
-            <select name="polyclinicSelect" id="polyclinicSelector" class="polyclinicPalette"
-                onchange="PolyclinicMethods.fillAppointmentStatusTable()">
+            <select name="polyclinicSelect" id="polyclinicSelector" class="polyclinicPalette" onchange="PolyclinicMethods.fillAppointmentStatusTable();
+            PolyclinicMethods.fillPatientHealtInsuranceTable('examDate','polyclinicSelector','patientHealtInsuranceTable');
+            PolyclinicMethods.fillPatientGenderTable('examDate','polyclinicSelector','patientGenderTable');
+            PolyclinicMethods.fillDoctorPatientTable('examDate','polyclinicSelector','doctorPatientTable');
+            PolyclinicMethods.fillAgePercentageTable('examDate','polyclinicSelector','oldPatientTable');
+            PolyclinicMethods.findPatientList()">
             </select>
 
-            <!-- <input type="date" id="examDate" name="examDate"> -->
-            <input type="text" id="examDate">
-            <button class="polyclinicButtons btn--swap" id="refreshPatientList"
-                onclick="PolyclinicMethods.findPatientList()">Refresh<span>Refresh the patients' list.</span></button>
+            <input type="text" id="examDate" onchange="PolyclinicMethods.fillAppointmentStatusTable();
+                PolyclinicMethods.fillPatientHealtInsuranceTable('examDate','polyclinicSelector','patientHealtInsuranceTable');
+                PolyclinicMethods.fillPatientGenderTable('examDate','polyclinicSelector','patientGenderTable');
+                PolyclinicMethods.fillDoctorPatientTable('examDate','polyclinicSelector','doctorPatientTable');
+                PolyclinicMethods.fillAgePercentageTable('examDate','polyclinicSelector','oldPatientTable');
+                PolyclinicMethods.findPatientList()">
+
+            <button class="polyclinicButtons btn--swap" id="refreshPatientList" onclick="PolyclinicMethods.fillAppointmentStatusTable();
+                PolyclinicMethods.fillPatientHealtInsuranceTable('examDate','polyclinicSelector','patientHealtInsuranceTable');
+                PolyclinicMethods.fillPatientGenderTable('examDate','polyclinicSelector','patientGenderTable');
+                PolyclinicMethods.fillDoctorPatientTable('examDate','polyclinicSelector','doctorPatientTable');
+                PolyclinicMethods.fillAgePercentageTable('examDate','polyclinicSelector','oldPatientTable');
+                PolyclinicMethods.findPatientList()">Refresh<span>Refresh
+                    the patients' list.</span>
+            </button>
         </div>
 
         <div class="bottomScrool">
@@ -251,7 +270,7 @@
                             <div class="card-title">
                                 <header>
                                     <h4>
-                                        Patient Appointment Status
+                                        Patient Appointment List
                                     </h4>
                                 </header>
                             </div>
@@ -306,11 +325,8 @@
                                         style="background-color: #49A681 !important; color: white;font-size: 9px;">
                                         <td
                                             style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                            Polyclinic
+                                            Insurance
                                         </td>
-                                        <td
-                                            style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
-                                            Insurance</td>
                                         <td style="border-top-right-radius: 8px;">Count</td>
                                     </tr>
                                 </thead>
@@ -347,11 +363,8 @@
                                         style="background-color: #49A681 !important; color: white;font-size: 9px;">
                                         <td
                                             style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                            Polyclinic
+                                            Gender
                                         </td>
-                                        <td
-                                            style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
-                                            Gender</td>
                                         <td style="border-top-right-radius: 8px;">Count</td>
                                     </tr>
                                 </thead>
@@ -415,25 +428,26 @@
                             <div class="card-title">
                                 <header>
                                     <h4>
-                                        Patient Age Percentage
+                                        65+ Patient List
                                     </h4>
                                 </header>
                             </div>
                         </div>
-                        <div class="back">
+                        <div class="back" style="overflow-y: scroll;">
                             <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
                                 title="Hasta Kurum Turu"></button>
                             <p class="cardP">
-                            <h1 id="appValid" style="font-size: medium;"></h1>
-                            <h1 id="appCanceled" style="font-size: medium;"></h1>
-                            <table id="canceledValidAppointmentTable" style="margin-top: 15px;width: 100%;">
+                            <h1 id="totalPatient" style="font-size: medium;"></h1>
+                            <h1 id="oldPatient" style="font-size: medium;"></h1>
+                            <h1 id="oldPatientPercentage" style="font-size: medium;"></h1>
+                            <table id="oldPatientTable" style="margin-top: 15px;width: 100%;">
                                 <thead>
                                     <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
                                         <td
                                             style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
                                             Status
                                         </td>
-                                        <td style="border-top-right-radius: 8px;">Count</td>
+                                        <td style="border-top-right-radius: 8px;">Age</td>
                                     </tr>
                                 </thead>
                                 <tbody style="background-color: inherit !important;font-size: 13px;">

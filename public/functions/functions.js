@@ -5890,17 +5890,14 @@ var
         },
 
         fillAppointmentStatusTable: function fillAppointmentStatusTable() {
-            var myData = {
-                appointmentDate: $('#examDate').val(),
-                appointmentPolyclinic: $("#polyclinicSelector option:selected").val()
-            };
-
             $('#patientAppointmentStatusTable > tbody').empty();
-
             $.ajax({
                 type: "GET",
                 url: "/polExamAnamnesis/fillAppointmentStatusTable",
-                data: { myData },
+                data: {
+                    appointmentDate: $('#examDate').val(),
+                    appointmentPolyclinic: $("#polyclinicSelector option:selected").val()
+                },
                 success: function (result) {
                     $.each(result, function (i, appData) {
                         i++;
@@ -5914,6 +5911,122 @@ var
                 error: function (e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillAppointmentStatusTable couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientHealtInsuranceTable: function fillPatientHealtInsuranceTable(dateId, polyclinicSelectId, tableId) {
+            var polExamDate = $('#' + dateId).val(),
+                myPolyclinicSelect = $('#' + polyclinicSelectId + ' option:selected').val();
+
+            $('#' + tableId + ' > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate, polyclinicSelect: myPolyclinicSelect },
+                url: "/polExamAnamnesis/fillPatientHealtInsuranceTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $('#' + tableId + ' > tbody').append(
+                            "<tr class='userStatisticsRow'><td class='patientData'>"
+                            + docs[i]["_id"]["insuranceSelect"]
+                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('fillPatientHealtInsuranceTable couldnt fetch! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillPatientGenderTable: function fillPatientGenderTable(dateId, polyclinicSelectId, tableId) {
+            var polExamDate = $('#' + dateId).val(),
+                myPolyclinicSelect = $('#' + polyclinicSelectId + ' option:selected').val();
+
+            $('#' + tableId + ' > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate, polyclinicSelect: myPolyclinicSelect },
+                url: "/polExamAnamnesis/fillPatientGenderTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $('#' + tableId + ' > tbody').append(
+                            "<tr class='userStatisticsRow'><td class='patientData'>"
+                            + docs[i]["_id"]["patientGender"]
+                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('fillPatientGenderTable couldnt fetch! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillDoctorPatientTable: function fillDoctorPatientTable(dateId, polyclinicSelectId, tableId) {
+            var polExamDate = $('#' + dateId).val(),
+                myPolyclinicSelect = $('#' + polyclinicSelectId + ' option:selected').val();
+
+            $('#' + tableId + ' > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                data: { patientPolExamDate: polExamDate, polyclinicSelect: myPolyclinicSelect },
+                url: "/polExamAnamnesis/fillDoctorPatientTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $('#' + tableId + ' > tbody').append(
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
+                            + docs[i]["_id"]["doctorSelector"]
+                            + "</td><td class='polyclinicSelect'>" + docs[i]["_id"]["polyclinicSelect"]
+                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillAgePercentageTable: function fillAgePercentageTable(dateId, polyclinicSelectId, tableId) {
+            var oldPatient = 0, total = 0, percentageOld = 0, patientAge,
+                polExamDate = $('#' + dateId).val(),
+                myPolyclinicSelect = $('#' + polyclinicSelectId + ' option:selected').val();
+            $('#' + tableId + ' > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/polExamAnamnesis/fillAgePercentageTable",
+                data: { patientPolExamDate: polExamDate, polyclinicSelect: myPolyclinicSelect },
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        patientAge = AdministrationMethods.calculateAge(docs[i].patientBirthDate);
+                        $('#' + tableId + ' > tbody').append(
+                            "<tr class='userStatisticsRow'><td class='oldPatientList'>"
+                            + docs[i].patientNameSurname
+                            + "</td><td class='patientCount'>" + patientAge + "</td></tr>");
+                        total += i;
+
+                        if (patientAge >= 65) {
+                            oldPatient++;
+                        }
+                    });
+
+                    percentageOld = (oldPatient * 100) / total;
+                    document.getElementById('totalPatient').innerHTML = 'Total patient =  ' + total;
+                    document.getElementById('oldPatient').innerHTML = 'Old Patient Total= ' + oldPatient;
+                    document.getElementById('oldPatientPercentage').innerHTML = 'Old Patient percentage = % ' + Math.round(percentageOld);
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('fillCanceledValidAppointmentTable couldnt fetch! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });
