@@ -30,16 +30,31 @@
 
     <link rel="stylesheet" href="/public/css/all-pages-style.css">
     <link rel="shortcut icon" href="/public/images/announcemenet.png">
+
+    <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
 </head>
 
-<body id="announcementBody"
-    onload="ShowOrHideMethods.myStickHeader('announcementSubHeadDiv');
+<body id="announcementBody" onload="
+            // ShowOrHideMethods.myStickHeader('announcementSubHeadDiv');
+            AdministrationMethods.fetchUnits('Polyclinic', 'announcementUserClinic');
+            AdministrationMethods.fetchUnits('Clinic', 'announcementUserClinic');
+            AdministrationMethods.takeUserInfoFromCookie();
+            AnnouncementMethods.getMaxAnnouncementId();
+            AnnouncementMethods.findAnnouncementHistory();
+            AnnouncementMethods.announcementsToBottomAndTopScroll(); 
+            // InpatientMethods.colorSelectedPatient();
             jQueryMethods.toolTipFunction();
             jQueryMethods.getJqueryDatePicker();
             jQueryMethods.setCalenderValueToday('announcementStartDate');
-            InpatientMethods.colorSelectedPatient();
+            jQueryMethods.setCalenderValueToday('announcementEndDate');
+            jQueryMethods.bottomUserMenuDrag();
+            LoginProcess.checkIfThereIsAUserLoggedIn('announcementSave', 'announcementNew');
+            myClockMethods.myClock();
+            PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6');
             ShowOrHideMethods.showBackTotopButton();
-            PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6');">
+            ShowOrHideMethods.adjustHtmlsBackground('announcementBody');">
 
     <div class="announcementNotify" id="announcementNotify">
         <span id="announcementNotifyType" class=""></span>
@@ -50,6 +65,11 @@
     </div>
 
     <div class="announcementHeaderDiv" id="announcementHeaderDiv">
+        <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
+            style="margin: 10px ;cursor: default;" title="">Please Login from main page!
+        </hUserName>
+        <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!
+        </p>
         <div class="announcementSubHeadDiv" id="announcementSubHeadDiv">
             <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('announcement')"
                 title="Click for open in new tab."><img class="openInNewTab" id="announcementOpenInNewTab"
@@ -61,161 +81,103 @@
             </div>
         </div>
     </div>
-
-    <h10 class="historyHeaders"> Announcement Definition</h10>
+    <br><br>
     <div class="announcementMainContainer">
-        <div class="announcementSubContainer" style="display: flex;">
+        <div class="announcementSubContainer" style="display: flex; width: 100%;">
             <div class="announcementVeriler">
-                <div class="announcementNav-wrapper">
-                    <div class="announcementLabels">
-                        <label for="announcementId">Id:</label><br><br>
-                        <label for="announcementTitle">Title:</label><br><br>
-                        <label for="announcementUserGroup">User Group:</label><br><br>
-                        <label for="announcementUserMajorDiscipline">Major Discipline:</label><br><br>
-                        <label for="announcementUserClinic">Clinir or Polyclinic:</label><br><br>
-                        <label for="announcementStartDate">Announcement Start Date:</label><br><br>
-                        <label for="announcementShowTime">Announcement Show Time:</label><br><br>
-                        <label for="announcementText">Body:</label><br><br>
-                    </div>
-
-                    <div class="announcementInputs">
-                        <input type="text" class="announcmentInputandSelect" name="announcementId" id="announcementId"
-                            required><br><br>
-                        <input type="text" class="announcmentInputandSelect" name="announcementTitle"
-                            id="announcementTitle" required><br><br>
-                        <select class="announcmentInputandSelect" name="announcementUserGroup"
-                            id="announcementUserGroup" class="announcementUserGroup">
-                            <option value="pol1">Doctor Group</option>
-                            <option value="pol2">Nurse Group</option>
-                            <option value="pol3">Polyclinic User Group</option>
-                            <option value="pol4">Clinic User Group</option>
-                        </select><br><br>
-                        <select class="announcmentInputandSelect" name="announcementUserMajorDiscipline"
-                            id="announcementUserMajorDiscipline" class="announcementUserMajorDiscipline">
-                            <option value="pol1">Emergency Major Discipline</option>
-                            <option value="pol2">Diet Major Discipline</option>
-                            <option value="pol3">Cardiology Major Discipline</option>
-                            <option value="pol4">Urology Major Discipline</option>
-                        </select><br><br>
-                        <select class="announcmentInputandSelect" name="announcementUserClinic"
-                            id="announcementUserClinic" class="announcementUserClinic">
-                            <option value="pol1">Emergency Pol.</option>
-                            <option value="pol2">Diet Pol.</option>
-                            <option value="pol3">Cardiology Clinic</option>
-                            <option value="pol4">Cardiology Pol.</option>
-                            <option value="pol5">Urology Pol.</option>
-                            <option value="pol6">Urology Clinic</option>
-                        </select><br><br>
-                        <input type="text" class="announcmentInputandSelect" name="announcementStartDate"
-                            id="announcementStartDate">
-                        <br><br>
-                        <select class="announcmentInputandSelect" name="announcementShowTime" id="announcementShowTime">
-                            <option value="times1">Show once for ever</option>
-                            <option value="times2">Show once for every day</option>
-                            <option value="times2">Show once for every week</option>
-                            <option value="times2">Show once for every month</option>
-                            <option value="times2">Show once for every year</option>
-                            <option value="times2">Show once for every login</option>
-                        </select><br><br>
-                        <textarea class="announcmentInputandSelect" id="announcementText" name="announcementText"
-                            cols="40" rows="10"></textarea><br><br>
-                    </div>
+                <h10 class="historyHeaders" style="margin: 5px;"> Announcement Definition</h10>
+                <div class="announcementInputs">
+                    Id: <br>
+                    <input type="text" class="announcmentInputandSelect" name="announcementId" id="announcementId"
+                        disabled style="background-color: grey;color: white;font-size: medium;"><br><br>
+                    Title:<br>
+                    <input type="text" class="announcmentInputandSelect" name="announcementTitle" id="announcementTitle"
+                        required><br><br>
+                    User Group:<br>
+                    <select class="announcmentInputandSelect" name="announcementUserGroup" id="announcementUserGroup"
+                        class="announcementUserGroup">
+                        <option value="DoctorGroup">Doctor Group</option>
+                        <option value="NurseGroup">Nurse Group</option>
+                        <option value="PolyclinicUserGroup">Polyclinic User Group</option>
+                        <option value="ClinicUserGroup">Clinic User Group</option>
+                    </select><br><br>
+                    Major Discipline:<br>
+                    <select class="announcmentInputandSelect" name="announcementUserMajorDiscipline"
+                        id="announcementUserMajorDiscipline" class="announcementUserMajorDiscipline">
+                        <option value="EmergencyMajorDiscipline">Emergency Major Discipline</option>
+                        <option value="DietMajorDiscipline">Diet Major Discipline</option>
+                        <option value="CardiologyMajorDiscipline">Cardiology Major Discipline</option>
+                        <option value="UrologyMajorDiscipline">Urology Major Discipline</option>
+                    </select><br><br>
+                    Clinir or Polyclinic:<br>
+                    <select class="announcmentInputandSelect" name="announcementUserClinic" id="announcementUserClinic"
+                        class="announcementUserClinic">
+                    </select><br><br>
+                    Announcement Start Date:<br>
+                    <input type="text" class="announcmentInputandSelect" name="announcementStartDate"
+                        id="announcementStartDate"><br><br>
+                    Announcement End Date:<br>
+                    <input type="text" class="announcmentInputandSelect" name="announcementEndDate"
+                        id="announcementEndDate"><br><br>
+                    Announcement Show Time:<br>
+                    <select class="announcmentInputandSelect" name="announcementShowTime" id="announcementShowTime">
+                        <option value="ShowOnceForEver">Show once for ever</option>
+                        <option value="ShowOnceForEveryDay">Show once for every day</option>
+                        <option value="ShowOnceForEveryWeek">Show once for every week</option>
+                        <option value="ShowOnceForEveryMonth">Show once for every month</option>
+                        <option value="ShowOnceForEveryYear">Show once for every year</option>
+                        <option value="ShowOnceForEveryLogin">Show once for every login</option>
+                    </select><br><br>
+                    Announcement Show Time:<br>
+                    <select class="announcmentInputandSelect" name="announcementActivePasive"
+                        id="announcementActivePasive">
+                        <option value="Active">Active</option>
+                        <option value="Passive">Passive</option>
+                    </select><br><br>
+                    Body:<br>
+                    <textarea class="announcmentInputandSelect" id="announcementText" name="announcementText"
+                        style="border-radius: 8px; resize: vertical;color: black;" cols="40"
+                        rows="10"></textarea><br><br>
                 </div>
             </div>
 
             <div class="announcementHistoryDiv">
-                <h10 class="historyHeaders"> Announcement History</h10>
+                <h10 class="historyHeaders" style="margin: 5px;"> Announcement History</h10>
                 <table id="announcementHistoryTable">
-                    <tr class="testTableHeader">
-                        <th>Id</th>
-                        <th>Title</th>
-                        <th>User Group</th>
-                        <th>Major Discipline</th>
-                        <th>Clinir or Polyclinic</th>
-                        <th>Body</th>
-                    </tr>
-                    <tr id="announcementRow1">
-                        <td>1</td>
-                        <td>Sevkler</td>
-                        <td class="cellReaders" id="announcement1"
-                            onclick="AnnouncementMethods.showAnnouncementReadersToolTip('announcement1' );">All
-                            Groups</td>
-                        <td>All</td>
-                        <td>All Polyclinics</td>
-                        <td title="Olusturan: Admin
-                        Olusturma Tarihi: 15/07/2020">Mauris a diam libero. In nunc nibh, cursus eu placerat in,
-                            commodo nec metus. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec
-                            metus. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.</td>
-                    <tr id="announcementRow2">
-                        <td>2</td>
-                        <td>Sevkler</td>
-                        <td class="cellReaders" id="announcement2"
-                            onclick="AnnouncementMethods.showAnnouncementReadersToolTip('announcement2' );">All
-                            Groups</td>
-                        <td>All</td>
-                        <td>All Polyclinics</td>
-                        <td title="Olusturan: Admin
-                        Olusturma Tarihi: 15/07/2020">Mauris a diam libero. In nunc nibh, cursus eu placerat in,
-                            commodo
-                            nec metus. Mauris a diam
-                            libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Mauris a diam libero. In
-                            nunc nibh, cursus eu placerat in, commodo nec metus.</td>
-                    </tr>
-                    <tr id="announcementRow3">
-                        <td>3</td>
-                        <td>Sevkler</td>
-                        <td class="cellReaders" id="announcement3"
-                            onclick="AnnouncementMethods.showAnnouncementReadersToolTip('announcement3' );">All
-                            Groups</td>
-                        <td>All</td>
-                        <td>All Polyclinics</td>
-                        <td title="Olusturan: Admin
-                        Olusturma Tarihi: 15/07/2020">Mauris a diam libero. In nunc nibh, cursus eu placerat in,
-                            commodo nec metus. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec
-                            metus. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.</td>
-                    </tr>
-                    <tr id="announcementRow4">
-                        <td>4</td>
-                        <td>Receteler</td>
-                        <td class="cellReaders" id="announcement4"
-                            onclick="AnnouncementMethods.showAnnouncementReadersToolTip('announcement4' );">
-                            Doctors
-                        </td>
-                        <td>All</td>
-                        <td>All Polyclinics</td>
-                        <td title="Olusturan: Admin
-                        Olusturma Tarihi: 15/07/2020">Mauris a diam libero. In nunc nibh, cursus eu placerat in,
-                            commodo nec metus. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec
-                            metus. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.</td>
-                    </tr>
-                    <tr id="announcementRow5">
-                        <td>5</td>
-                        <td>Ventilator Egitimi</td>
-                        <td class="cellReaders" id="announcement5"
-                            onclick="AnnouncementMethods.showAnnouncementReadersToolTip('announcement5' );">Nurses
-                        </td>
-                        <td>Cardiology</td>
-                        <td>All Clinics</td>
-                        <td title="Olusturan: Admin
-                        Olusturma Tarihi: 15/07/2020">Mauris a diam libero. In nunc nibh, cursus eu placerat in,
-                            commodo nec metus. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec
-                            metus. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader"
+                            style="background-color: #49A681 !important; color: white;font-size: small;">
+                            <td>Id</td>
+                            <td>Title</td>
+                            <td>Major Discipline</td>
+                            <td>User Group</td>
+                            <td>User Clinic / Polyclinic</td>
+                            <td>Start Date - End Date</td>
+                            <td>Show Time</td>
+                            <td>Status</td>
+                            <td>Announcement</td>
+                            <td>Saved User</td>
+                            <td style="border-top-right-radius: 8px;">Select</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
     <div class="announcementSubContainer">
         <div class="announcementButtonDiv">
-            <button class="announcementButtons btn-primary" id="kaydet1" title="Verileriniz kaydetmek icin tiklayin."
-                onclick="ShowOrHideMethods.announcementShowSuccesAlert()">Kaydet</button>
-            <button class="announcementButtons btn-info" id="guncelle1" title="Verileriniz guncellemek icin tiklayin."
-                onclick="ShowOrHideMethods.announcementShowSuccesAlert()">Guncelle</button>
-            <button class="announcementButtons btn-danger" id="yeniDuyuru" title="Yeni duyuru kaydetmek icin tiklayin."
-                onclick="ShowOrHideMethods.announcementShowRemoveAlert()">Yeni Duyuru</button>
+            <button class="announcementButtons btn-success" id="announcementSave" title="Click for save."
+                onclick="AnnouncementMethods.saveAnnouncement()">Save
+            </button>
+            <button class="announcementButtons btn-danger" id="announcementNew" title="Click for new."
+                onclick="AnnouncementMethods.clearForNewAnnouncement()">New
+            </button>
         </div>
 
-        <h10 class="historyHeaders"> Announcement Statistics</h10>
+        <h10 class="historyHeaders" style="margin: 5px;"> Announcement Statistics</h10>
         <div class="announcementStatisticsDiv">
             <div class="card-container" id="announcement-card-container">
                 <div class="baseCard" id="statics1"
@@ -474,22 +436,21 @@
             <div id="userStatisticsContainer" class="userStatisticsContainer">
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
                 <table id="userLoginStatsTable">
-                    <tr id="tableHeader">
-                        <th>#</th>
-                        <th>Ip Adress</th>
-                        <th>Login Date</th>
-                        <th>Login Duration</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>192.168.1.11</td>
-                        <td>03.09.2020 14:10</td>
-                        <td>22 minutes 17 seconds</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader">
+                            <th>#</th>
+                            <th>Ip Adress</th>
+                            <th>Local Machine</th>
+                            <th>Login Date</th>
+                            <th>Login Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 id="lastPasswordChangeStatistics" class="historyHeaders" style="margin: 5px;color: white;">-</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -598,14 +559,14 @@
                 Old Password: <br>
                 <input type="password" name="userOldPassword" id="userOldPassword"
                     placeholder="Please enter your current password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <br>
                 New Password: <br>
                 <input type="password" name="userNewPassword" id="userNewPassword"
                     placeholder="Please enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <span for='userNewPassword' class="p-viewer">
                     <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
@@ -616,9 +577,9 @@
                 New Password Repeat: <br>
                 <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
                     placeholder="Please re-enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event),
-                    CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator')">
+                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
+                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
+                    CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
                 <span for='userNewPasswordRepeat' class="p-viewer">
                     <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
@@ -626,12 +587,10 @@
                     </i>
                 </span>
                 <br>
-                <pCapsLockIndicator id="pCapsLockIndicator">WARNING! Caps lock is ON.</pCapsLockIndicator>
+                <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
-                    Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
+                    title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -808,7 +767,7 @@
     <!--end of back to top button -->
 
     <div class="bottomScrool">
-        <p id="bottomScrollP4">News about your hospital --- it's not a mobile device.</p>
+        <p id="bottomScrollP5">News about your hospital --- it's not a mobile device.</p>
     </div><br>
     <!-- end of Footer -->
 

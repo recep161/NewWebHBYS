@@ -38,6 +38,7 @@
                         LoginProcess.checkIfThereIsAUserLoggedIn('refreshPatientList', 'poylclinicAnamnesisSave');
                         AdministrationMethods.takeUserInfoFromCookie();
                         AdministrationMethods.fetchUnits('Polyclinic', 'polyclinicSelector');
+                        AnnouncementMethods.announcementsToBottomAndTopScroll(); 
                         // ShowOrHideMethods.myStickHeader('subHeadDiv');
                         InpatientMethods.colorSelectedPatient();
                         jQueryMethods.setCalenderValueToday('clinicDate');
@@ -879,7 +880,7 @@
     </footer>
 
     <div class="bottomScrool">
-        <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
+        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
             Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
             'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
             yayımladı... &#164;&#164; it's not a mobile device.</p>

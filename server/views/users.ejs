@@ -37,14 +37,15 @@
 <body id="administrationBody"
     onload="
         myClockMethods.myClock();
-        AdministrationMethods.fillUserStatisticsTable(),
-        AdministrationMethods.fillUnitStatisticsTable(),
-        AdministrationMethods.fillStaffStatisticsTable(),
-        AdministrationMethods.fillDatabaseStatusTable(),
-        AdministrationMethods.fillStafOnLeaveTable(),
-        AdministrationMethods.findAllUsers(),
-        AdministrationMethods.getMaxUserId(),
-        AdministrationMethods.takeUserInfoFromCookie(),
+        AdministrationMethods.fillUserStatisticsTable();
+        AdministrationMethods.fillUnitStatisticsTable();
+        AdministrationMethods.fillStaffStatisticsTable();
+        AdministrationMethods.fillDatabaseStatusTable();
+        AdministrationMethods.fillStafOnLeaveTable();
+        AdministrationMethods.findAllUsers();
+        AdministrationMethods.getMaxUserId();
+        AdministrationMethods.takeUserInfoFromCookie();
+        AnnouncementMethods.announcementsToBottomAndTopScroll();
         ShowOrHideMethods.hideDiv('unitDefinitionDiv');
         ShowOrHideMethods.hideDiv('staffDefinitionDiv');
         // ShowOrHideMethods.hideDiv('userDefinitionDiv');
@@ -1224,7 +1225,7 @@
     </footer>
 
     <div class="bottomScrool">
-        <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
+        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
             Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
             'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
             yayımladı... &#164;&#164; it's not a mobile device.</p>

@@ -29,6 +29,10 @@ module.exports.indexRedirectToPolExamAnamnesis = function (req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'polyclinic.html'))
 };
 
+module.exports.indexRedirectToAnnouncement = function (req, res) {
+    res.sendFile(path.join(__dirname, '../../public/htmls', 'announcement.html'))
+};
+
 module.exports.indexRedirectToAppointmentSave = function (req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'appointment-save.html'))
 };

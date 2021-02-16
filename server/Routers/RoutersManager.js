@@ -3,6 +3,7 @@ var routerIndex = require('./IndexRouter'),
     routerPolExam = require('./polExamRouter'),
     routerPolExamAnamnesis = require('./polExamAnamnesisRouter'),
     routerAppointment = require('./appointmentRouter'),
+    routerAnnouncement = require('./announcementRouter'),
     routerAdmin = require('./AdminRouter');
 
 module.exports = function (app) {
@@ -12,4 +13,5 @@ module.exports = function (app) {
     app.use('/polExam', routerPolExam);
     app.use('/polExamAnamnesis', routerPolExamAnamnesis);
     app.use('/appSave', routerAppointment);
+    app.use('/announcement', routerAnnouncement);
 };

@@ -35,19 +35,20 @@
 </head>
 
 <body onload="
-            ShowOrHideMethods.myStickHeader('nav-wrapper');
-            ShowOrHideMethods.englishOrTurkishSelection();
-            ListingMethods.Listview();
+            AnnouncementMethods.announcementsToBottomAndTopScroll();
             ColorAndAdjustmentMethods.classColor();
             ColorAndAdjustmentMethods.nightModeBySysTime();
+            ColorAndAdjustmentMethods.stabledColorsChange();
+            jQueryMethods.toolTipFunction();
+            jQueryMethods.bottomUserMenuDrag();
+            ListingMethods.Listview();
             LoginProcess.checkIfUserLoggedInByCookie();
             LoginProcess.popupLoginModal();
             LoginProcess.closeLoginByClickOut();
             myClockMethods.myClock();
+            ShowOrHideMethods.myStickHeader('nav-wrapper');
+            ShowOrHideMethods.englishOrTurkishSelection();
             ShowOrHideMethods.showBackTotopButton();
-            ColorAndAdjustmentMethods.stabledColorsChange();
-            jQueryMethods.toolTipFunction();
-            jQueryMethods.bottomUserMenuDrag();
             // ShowOrHideMethods.showFixedHeaderAfterScrool();
             // ColorAndAdjustmentMethods.scaleForMobile();">
 
@@ -1730,7 +1731,7 @@
     <!--end of back to top button -->
 
     <div class="bottomScrool">
-        <p id="bottomScrollP4">News about your hospital --- it's not a mobile device.</p>
+        <p id="bottomScrollP5">News about your hospital --- it's not a mobile device.</p>
     </div><br>
     <!-- end of Footer -->
 

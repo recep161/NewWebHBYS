@@ -1645,6 +1645,212 @@ var
     },
 
     AnnouncementMethods = {
+        clearForNewAnnouncement: function clearForNewAnnouncement() {
+            var myAnnouncementTitle = $("#announcementTitle").val(),
+                announcementSave = document.getElementById('announcementSave');
+
+            if (myAnnouncementTitle != '') {
+                toastr.warning(
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
+                    {
+                        allowHtml: true,
+                        progressBar: true,
+                        timeOut: 10000,
+                        onShown: function (toast) {
+                            $("#clearConfirmBtn").on('click', function () {
+                                AnnouncementMethods.getMaxAnnouncementId();
+                                AnnouncementMethods.findAnnouncementHistory();
+
+                                $("#announcementTitle").val('');
+                                $("#announcementText").val('');
+
+                                announcementSave.innerHTML = 'Save';
+
+                                toastr.info('Form cleared for new announcement!', 'Form Cleared');
+                            });
+                        }
+                    });
+            }
+        },
+
+        saveAnnouncement: function saveAnnouncement() {
+            jQueryMethods.toastrOptions();
+            var myData = {
+                announcementId: $("#announcementId").val(),
+                announcementTitle: $("#announcementTitle").val(),
+                announcementUserGroup: $("#announcementUserGroup option:selected").val(),
+                announcementUserMajorDiscipline: $("#announcementUserMajorDiscipline option:selected").val(),
+                announcementUserClinic: $("#announcementUserClinic option:selected").val(),
+                announcementStartDate: $("#announcementStartDate").val(),
+                announcementEndDate: $("#announcementEndDate").val(),
+                announcementShowTime: $("#announcementShowTime option:selected").val(),
+                announcementActivePasive: $("#announcementActivePasive").val(),
+                announcementText: $("#announcementText").val(),
+                announcementSavedUser: $.cookie('username')
+            };
+
+            if (document.getElementById('announcementSave').innerHTML == 'Update') {
+                AnnouncementMethods.updateAnnouncementData()
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/announcement/saveAnnouncement',
+                    success: function () {
+                        toastr.success('Announcement successfully saved!', 'Save');
+                        AnnouncementMethods.findAnnouncementHistory();
+                        // AppointmentMethods.fillCanceledValidAppointmentTable();
+                        // AppointmentMethods.fillAppointmentGenderTable();
+                        // AppointmentMethods.findPatientAppointmentHistory();
+                        // AppointmentMethods.fillPolAppointmentStatusTable();
+                        // PolyclinicExamMethods.fillPatientAppointmentStatusTable();
+                        // PolyclinicExamMethods.fillDoctorAppointmentTable();
+                        // PolyclinicExamMethods.fillDoctorOnLeaveTable();
+                    },
+                    error: function (e) {
+                        toastr.error('Announcement couldnt save! \n' + e, 'Error!')
+                        console.log("ERROR: ", e);
+                    }
+                });
+            }
+        },
+
+        getMaxAnnouncementId: function getMaxAnnouncementId() {
+            $.ajax({
+                type: "GET",
+                url: "/announcement/getMaxAnnouncementId",
+                success: function (announcement) {
+                    if (announcement.length < 1) {
+                        $("#announcementId").val(1);
+                    } else {
+                        $("#announcementId").val(announcement.announcementId + 1);
+                    }
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error("Couldn't get max appointmentId!", "Error!")
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        findByAnnouncementId: function findByAnnouncementId(rowId) {
+            jQueryMethods.toastrOptions();
+            var myRow = document.getElementById(rowId),
+                myAnnouncementId = myRow.cells[0].innerHTML,
+                announcementSaveBtn = document.getElementById('announcementSave');
+            $.ajax({
+                type: "GET",
+                url: "/announcement/findByAnnouncementId",
+                data: { announcementId: myAnnouncementId },
+                success: function (announcement) {
+                    if (announcement.announcementId == '' || announcement.announcementId == null
+                        || announcement.announcementId == 'undefind') {
+                        toastr.error('Announcement found but data couldnt set to form! \n\n\n', 'Error!')
+                    } else {
+                        $("#announcementId").val(announcement.announcementId);
+                        $("#announcementTitle").val(announcement.announcementTitle);
+                        $("#announcementUserGroup").val(announcement.announcementUserGroup);
+                        $("#announcementUserMajorDiscipline").val(announcement.announcementUserMajorDiscipline);
+                        $("#announcementUserClinic").val(announcement.announcementUserClinic);
+                        $("#announcementStartDate").val(announcement.announcementStartDate);
+                        $("#announcementEndDate").val(announcement.announcementEndDate);
+                        $("#announcementShowTime").val(announcement.announcementShowTime);
+                        $("#patientBirthPlace").val(announcement.patientBirthPlace);
+                        $("#patientBirthDate").val(announcement.patientBirthDate);
+                        $("#announcementActivePasive").val(announcement.announcementActivePasive);
+                        $("#announcementText").val(announcement.announcementText);
+                        announcementSaveBtn.innerHTML = 'Update';
+
+                        toastr.info('Announcement Id: ' + announcement.announcementId + ' - selected!', 'Announcement Search');
+                    }
+                },
+                error: function (e) {
+                    toastr.error('Announcement couldn\'t find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        updateAnnouncementData: function updateAnnouncementData() {
+            var myData = {
+                announcementId: $('#announcementId').val(),
+                announcementTitle: $('#announcementTitle').val(),
+                announcementUserGroup: $('#announcementUserGroup option:selected').val(),
+                announcementUserMajorDiscipline: $('#announcementUserMajorDiscipline option:selected').val(),
+                announcementUserClinic: $('#announcementUserClinic option:selected').val(),
+                announcementStartDate: $('#announcementStartDate').val(),
+                announcementEndDate: $('#announcementEndDate').val(),
+                announcementShowTime: $('#announcementShowTime option:selected').val(),
+                announcementActivePasive: $('#announcementActivePasive option:selected').val(),
+                announcementText: $('#announcementText').val()
+            };
+
+            if ($("#announcementId").val() == '') {
+                toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
+            }
+            else {
+                $.ajax({
+                    type: 'PUT',
+                    data: JSON.stringify(myData),
+                    cache: false,
+                    contentType: 'application/json',
+                    datatype: "json",
+                    url: '/announcement/updateAnnouncementData',
+                    success: function (patient) {
+                        toastr.success('Announcement updated! \n\n\n', 'Announcement Update');
+                        AnnouncementMethods.findAnnouncementHistory();
+                    },
+                    error: function (e) {
+                        jQueryMethods.toastrOptions();
+                        toastr.error('Announcement couldnt update! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        },
+
+        findAnnouncementHistory: function findAnnouncementHistory() {
+            $('#announcementHistoryTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/announcement/findAnnouncementHistory",
+                success: function (result) {
+                    $.each(result, function (i, announcementData) {
+                        i++;
+                        $("#announcementHistoryTable> tbody").append(
+                            "<tr class='announcementHistory' id='announcementHistory" + i + "' title=''>"
+                            + "<td id='announcementId" + i + "'>" + announcementData.announcementId + "</td>"
+                            + "<td id='announcementTitle" + i + "'>" + announcementData.announcementTitle + "</td>"
+                            + "<td id='announcementUserMajorDiscipline" + i + "'>" + announcementData.announcementUserMajorDiscipline + "</td>"
+                            + "<td id='announcementUserGroup" + i + "'>" + announcementData.announcementUserGroup + "</td>"
+                            + "<td id='announcementUserClinic" + i + "'>" + announcementData.announcementUserClinic + "</td>"
+                            + "<td id='announcementUserDate" + i + "'>" + announcementData.announcementStartDate + " - " + announcementData.announcementEndDate + "</td>"
+                            + "<td id='announcementShowTime" + i + "'>" + announcementData.announcementShowTime + "</td>"
+                            + "<td id='announcementActivePasive" + i + "'>" + announcementData.announcementActivePasive + "</td>"
+                            + "<td><div class='announcementTextDiv' id='announcementTextDiv" + i + "'>" + announcementData.announcementText + "</td>"
+                            + "</div><td id='announcementSavedUser" + i + "'>" + announcementData.announcementSavedUser + "</td>"
+                            + "<td><button class='inpatientBtn btn-success' title='Click for select announcement.' onclick=\"AnnouncementMethods.findByAnnouncementId(\'announcementHistory" + i + "\')\">Select</button></td></tr>"
+                        );
+
+                        if (announcementData.announcementActivePasive == 'Passive') {
+                            var x = 'announcementHistory' + i;
+                            document.getElementById(x).style.backgroundColor = 'red';
+                        }
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Announcement History couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
         printReaders: function printReaders() {
             var mywindow = window.open('', 'Print Pop Up', 'height=900,width=1600'),
                 data = document.getElementById('announcementReadersDiv').innerHTML;
@@ -1687,6 +1893,35 @@ var
             readersDiv.style.left = myCell.offsetLeft + 470 + 'px';
 
             $('#' + readersDiv.id).fadeIn('medium');
+        },
+
+        announcementsToBottomAndTopScroll: function announcementsToBottomAndTopScroll() {
+            var allAnnouncements = '';
+            $.ajax({
+                type: "GET",
+                url: "/announcement/findAnnouncementHistory",
+                success: function (result) {
+                    $.each(result, function (i, announcementData) {
+                        i++;
+                        if (announcementData.announcementActivePasive != 'aActive') {
+                            allAnnouncements += i + ' - ' + announcementData.announcementTitle;
+                            allAnnouncements += ' - \n' + announcementData.announcementText;
+                            allAnnouncements += ' \n ¤¤¤¤¤¤ \n ';
+                        }
+                    });
+                    if (allAnnouncements.length > 500) {
+                        document.getElementById('bottomScrollP4').style.animationDuration = '80s';
+                        document.getElementById('bottomScrollP5').style.animationDuration = '80s';
+                    }
+                    $('#bottomScrollP4').text(allAnnouncements)
+                    $('#bottomScrollP5').text(allAnnouncements)
+                    $('#topScroolAnnouncement').text(allAnnouncements)
+                },
+                error: function (e) {
+                    toastr.error('announcementsToBottomAndTopScroll couldnt work! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
         }
     },
 
@@ -7014,7 +7249,7 @@ var
 
         getJqueryDatePicker: function myGetJqueryDatePicker() {
             $(function getJqueryDatePicker() {
-                $("#examDate,#clinicDate,#konsDate,#patientBirthDate,#appointmentDate,#randevuTarihi,#randevuTarihi2,#laboratoryDate,#announcementStartDate,#imagingRadiologyDate,#polyclinicExamStatisticsStartDate,#polyclinicExamStatisticsEndDate,#doctorExamStatisticsStartDate,#doctorExamStatisticsEndDate,#staffLeaveStartDate,#staffLeaveEndDate,#patientBirthDate").datepicker({ dateFormat: 'dd-mm-yy' });
+                $("#examDate,#clinicDate,#konsDate,#patientBirthDate,#appointmentDate,#randevuTarihi,#randevuTarihi2,#laboratoryDate,#announcementStartDate,#imagingRadiologyDate,#polyclinicExamStatisticsStartDate,#polyclinicExamStatisticsEndDate,#doctorExamStatisticsStartDate,#doctorExamStatisticsEndDate,#staffLeaveStartDate,#staffLeaveEndDate,#patientBirthDate,#announcementEndDate").datepicker({ dateFormat: 'dd-mm-yy' });
             });
         },
 
