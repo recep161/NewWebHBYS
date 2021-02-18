@@ -44,6 +44,11 @@
             AnnouncementMethods.getMaxAnnouncementId();
             AnnouncementMethods.findAnnouncementHistory();
             AnnouncementMethods.announcementsToBottomAndTopScroll(); 
+            AnnouncementMethods.fillAnnouncementStatusTable(); 
+            AnnouncementMethods.fillAnnouncementUserGroupTable(); 
+            AnnouncementMethods.fillAnnouncementMajorDisciplineTable(); 
+            AnnouncementMethods.fillAnnouncementClinicPolyclinicTable(); 
+            AnnouncementMethods.fillAnnouncementExpirationDateTable(); 
             // InpatientMethods.colorSelectedPatient();
             jQueryMethods.toolTipFunction();
             jQueryMethods.getJqueryDatePicker();
@@ -52,7 +57,7 @@
             jQueryMethods.bottomUserMenuDrag();
             LoginProcess.checkIfThereIsAUserLoggedIn('announcementSave', 'announcementNew');
             myClockMethods.myClock();
-            PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6');
+            PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');
             ShowOrHideMethods.showBackTotopButton();
             ShowOrHideMethods.adjustHtmlsBackground('announcementBody');">
 
@@ -91,8 +96,9 @@
                     <input type="text" class="announcmentInputandSelect" name="announcementId" id="announcementId"
                         disabled style="background-color: grey;color: white;font-size: medium;"><br><br>
                     Title:<br>
-                    <input type="text" class="announcmentInputandSelect" name="announcementTitle" id="announcementTitle"
-                        required><br><br>
+                    <textarea class="announcmentInputandSelect"
+                        style="border-radius: 8px; resize: vertical;color: black;text-align: justify;" cols="10"
+                        rows="3" name="announcementTitle" id="announcementTitle" required></textarea><br><br>
                     User Group:<br>
                     <select class="announcmentInputandSelect" name="announcementUserGroup" id="announcementUserGroup"
                         class="announcementUserGroup">
@@ -136,7 +142,7 @@
                     </select><br><br>
                     Body:<br>
                     <textarea class="announcmentInputandSelect" id="announcementText" name="announcementText"
-                        style="border-radius: 8px; resize: vertical;color: black;" cols="40"
+                        style="border-radius: 8px; resize: vertical;color: black;text-align: justify;" cols="40"
                         rows="10"></textarea><br><br>
                 </div>
             </div>
@@ -180,136 +186,204 @@
         <h10 class="historyHeaders" style="margin: 5px;"> Announcement Statistics</h10>
         <div class="announcementStatisticsDiv">
             <div class="card-container" id="announcement-card-container">
-                <div class="baseCard" id="statics1"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );">
-                    <div class="card" id="staticsCard1">
-                        <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-1.png');
-                        background-size: cover;">
-                            <div class="card-title">
-                                <header>
-                                    <h4>
-                                        Hasta Randevu Durumu
-                                    </h4>
-                                </header>
+
+                <div class="statics">
+                    <!-- cards -->
+                    <div class="card-container" id="poly-card-container">
+
+                        <div class="baseCard" id="statics1"
+                            onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');"
+                            onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
+                            <div class="card" id="polExamStatics1">
+                                <div id="analytcStatics2" class="front"
+                                    style="background-image: url('/public/images/actice-passive-announcement.png');background-size: cover;">
+                                    <div class="card-title">
+                                        <header>
+                                            <h4>
+                                                Active / Passive Announcement Counts
+                                            </h4>
+                                        </header>
+                                    </div>
+                                </div>
+                                <div class="back" style="overflow-y: scroll !important;">
+                                    <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                        title="This statistic shows status of announcements."></button>
+                                    <p class="cardP">
+                                    <table id="announcementStatusTable">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Status
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Randevulu hasta vs Normal Hasta"></button>
-                            <p class="cardP">
-                                Hastalarin basvuru turune gore istatistik. <br><br>
-                                Randevulu hasta : 4 <br>
-                                Normal hasta : 12
-                            </p>
+
+                        <div class="baseCard" id="statics2"
+                            onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');"
+                            onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
+                            <div class="card" id="polExamStatics2">
+                                <div id="analytcStatics2" class="front"
+                                    style="background-image: url('/public/images/user-group-announcement.png');background-size: cover;">
+                                    <div class="card-title">
+                                        <header>
+                                            <h4>
+                                                Announcements by User Group
+                                            </h4>
+                                        </header>
+                                    </div>
+                                </div>
+                                <div class="back" style="overflow-y: scroll !important;">
+                                    <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                        title="This statistic shows Announcements by User Group."></button>
+                                    <p class="cardP">
+                                    <table id="announcementUserGroupTable" style="margin-left: -16px;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    User Group
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;">
+
+                                        </tbody>
+                                    </table>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="baseCard" id="statics3"
+                            onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');"
+                            onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
+                            <div class="card" id="polExamStatics3">
+                                <div id="analytcStatics3" class="front"
+                                    style="background-image: url('/public/images/majorDiscipline.png');background-size: contain;">
+                                    <div class="card-title">
+                                        <header>
+                                            <h4>
+                                                Announcements by Major Discipline
+                                            </h4>
+                                        </header>
+                                    </div>
+                                </div>
+                                <div class="back" style="overflow-y: scroll !important;">
+                                    <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                        title="This statistic shows the announcements by Major Discipline."></button>
+                                    <p class="cardP">
+                                    <table id="announcementMajorDisciplineTable" style="margin-left: -23px;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Major Discipline
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;">
+
+                                        </tbody>
+                                    </table>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="baseCard" id="statics4"
+                            onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');"
+                            onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
+                            <div class="card" id="polExamStatics4">
+                                <div id="analytcStatics4" class="front"
+                                    style="background-image: url('/public/images/clinic-polyclinic-announcement.png');background-size: contain; ">
+                                    <div class="card-title">
+                                        <header>
+                                            <h4>
+                                                Announcements by Clinic / Polyclinic
+                                            </h4>
+                                        </header>
+                                    </div>
+                                </div>
+                                <div class="back" style="overflow-y: scroll !important;">
+                                    <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                        title="This statistic shows Announcements by Clinic / Polyclinic count."></button>
+                                    <p class="cardP">
+                                    <table id="announcementClinicPolyclinicTable" style="margin-left: -13px;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Clinic / Polyclinic
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Count</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;">
+
+                                        </tbody>
+                                    </table>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="baseCard" id="statics5"
+                            onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4', 'polExamStatics5');"
+                            onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4', 'polExamStatics5');">
+                            <div class="card" id="polExamStatics5">
+                                <div id="analytcStatics2" class="front"
+                                    style="background-image: url('/public/images/expired-announcement.png');background-size: contain; ">
+                                    <div class="card-title">
+                                        <header>
+                                            <h4>
+                                                Announcements by Expiration Date
+                                            </h4>
+                                        </header>
+                                    </div>
+                                </div>
+                                <div class="back" style="overflow-y: scroll;">
+                                    <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
+                                        title="Hasta Kurum Turu"></button>
+                                    <p class="cardP">
+                                    <table id="announcementExpirationDateTable" style="margin-top: 15px;width: 100%;">
+                                        <thead>
+                                            <tr id="tableHeader"
+                                                style="background-color: #49A681 !important; color: white;">
+                                                <td
+                                                    style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                    Announcement Title
+                                                </td>
+                                                <td style="border-top-right-radius: 8px;">Expiration Date</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="background-color: inherit !important;">
+
+                                        </tbody>
+                                    </table>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics2"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );">
-                    <div class="card" id="staticsCard2">
-                        <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-2.png');
-                        background-size: cover; background-color: cornflowerblue;">
-                            <div class="card-title">
-                                <header>
-                                    <h4>
-                                        Hasta Kurum Turu
-                                    </h4>
-                                </header>
-                            </div>
-                        </div>
-                        <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Kurum Turu"></button>
-                            <p class="cardP">
-                                Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
-                                Yesilkart : 4 <br>
-                                SGK : 12 <br>
-                                Ucretli : 1
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="baseCard" id="statics3"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );">
-                    <div class="card" id="staticsCard3">
-                        <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-3.png');
-                        background-size: cover; background-color: cornflowerblue;">
-                            <div class="card-title">
-                                <header>
-                                    <h4>
-                                        Hasta Cinsiyet Dagilimi
-                                    </h4>
-                                </header>
-                            </div>
-                        </div>
-                        <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Cinsiyet Dagilimi"></button>
-                            <p class="cardP">
-                                Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                Kadin : 4 <br>
-                                Erkek : 8
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="baseCard" id="statics4"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );">
-                    <div class="card" id="staticsCard3">
-                        <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-9.png');
-                        background-size: cover; background-color: cornflowerblue;">
-                            <div class="card-title">
-                                <header>
-                                    <h4>
-                                        Hasta Cinsiyet Dagilimi
-                                    </h4>
-                                </header>
-                            </div>
-                        </div>
-                        <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Cinsiyet Dagilimi"></button>
-                            <p class="cardP">
-                                Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                Kadin : 4 <br>
-                                Erkek : 8
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="baseCard" id="statics5"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5' );">
-                    <div class="card" id="staticsCard3">
-                        <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-10.png');
-                        background-size: cover; background-color: cornflowerblue;">
-                            <div class="card-title">
-                                <header>
-                                    <h4>
-                                        Hasta Cinsiyet Dagilimi
-                                    </h4>
-                                </header>
-                            </div>
-                        </div>
-                        <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Cinsiyet Dagilimi"></button>
-                            <p class="cardP">
-                                Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                Kadin : 4 <br>
-                                Erkek : 8
-                            </p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -412,15 +486,21 @@
         <!-- Footer Elements -->
         <!-- Copyright -->
         <div class="footer-copyright text-center" style="font-size: large;color: black;padding: 10px;">
-            © 2020
+            © since 2020
             Copyright:
             <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')"
                 title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
-                <span>R</span><span>e</span><span>c</span><span>e</span><span>p</span>
-                <span>C</span><span>e</span><span>l</span><span>i</span><span>k</span>
+                <span class="nameLetters">R</span>
+                <span class="nameLetters">e</span>
+                <span class="nameLetters">c</span>
+                <span class="nameLetters">e</span>
+                <span class="nameLetters">p</span>
+                <span class="nameLetters">C</span>
+                <span class="nameLetters">e</span>
+                <span class="nameLetters">l</span>
+                <span class="nameLetters">i</span>
+                <span class="nameLetters">k</span>
             </div>
-        </div>
-        </a>
         </div>
         <!-- Copyright -->
 
@@ -770,8 +850,6 @@
         <p id="bottomScrollP5">News about your hospital --- it's not a mobile device.</p>
     </div><br>
     <!-- end of Footer -->
-
-
 
     <script src="/public/functions/functions.js"></script>
 

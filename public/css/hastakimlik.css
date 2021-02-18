@@ -1397,9 +1397,14 @@ input {
   transition: all 0.25s ease-out;
 }
 
-.shadows:hover {
+.shadows:hover>.nameLetters {
   text-shadow: -6px 6px 5px #ced0d3;
   cursor: pointer;
+  color: white;
+}
+
+.nameLetters {
+  color: transparent;
 }
 
 /* =========== end of footer copyright =============*/

@@ -14,17 +14,13 @@ router.get('/getMaxAnnouncementId', controllerAnnouncement.getMaxAnnouncementId)
 router.get('/findAnnouncementHistory', controllerAnnouncement.findAnnouncementHistory);
 router.get('/findByAnnouncementId', controllerAnnouncement.findByAnnouncementId);
 router.put('/updateAnnouncementData', controllerAnnouncement.updateAnnouncementData);
-// router.get('/fillPatientVisitStatisticsTable', controllerAnnouncement.fillPatientVisitStatisticsTable);
-// router.get('/fillPatientAppointmentStatusTable', controllerAnnouncement.fillPatientAppointmentStatusTable);
-// router.get('/fillPatientUpcomingAppointmentTable', controllerAnnouncement.fillPatientUpcomingAppointmentTable);
-// router.get('/fillpolyclinicPatientCountTable', controllerAnnouncement.fillPolyclinicPatientCountTable);
-// router.get('/fillPatientHealtInsuranceTable', controllerAnnouncement.fillPatientHealtInsuranceTable);
-// router.get('/fillPatientGenderTable', controllerAnnouncement.fillPatientGenderTable);
-// router.get('/fillDoctorPatientTable', controllerAnnouncement.fillDoctorPatientTable);
-// router.get('/fillDoctorAppointmentTable', controllerAnnouncement.fillDoctorAppointmentTable);
-// router.get('/fillDoctorOnLeaveTable', controllerAnnouncement.fillDoctorOnLeaveTable);
-// router.post('/userLoginSessionSave', controllerIndex.userLoginSessionSave);
-// router.put('/changeUserPassword', controllerIndex.changeUserPassword);
+router.get('/announcementsToBottomAndTopScroll', controllerAnnouncement.announcementsToBottomAndTopScroll);
+router.get('/fillAnnouncementStatusTable', controllerAnnouncement.fillAnnouncementStatusTable);
+router.get('/fillAnnouncementUserGroupTable', controllerAnnouncement.fillAnnouncementUserGroupTable);
+router.get('/fillAnnouncementMajorDisciplineTable', controllerAnnouncement.fillAnnouncementMajorDisciplineTable);
+router.get('/fillAnnouncementClinicPolyclinicTable', controllerAnnouncement.fillAnnouncementClinicPolyclinicTable);
+router.get('/fillAnnouncementExpirationDateTable', controllerAnnouncement.fillAnnouncementExpirationDateTable);
+
 
 router.use("*", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/htmls/404.html'));

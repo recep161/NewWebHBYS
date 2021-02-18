@@ -1897,28 +1897,145 @@ var
 
         announcementsToBottomAndTopScroll: function announcementsToBottomAndTopScroll() {
             var allAnnouncements = '';
+
             $.ajax({
                 type: "GET",
-                url: "/announcement/findAnnouncementHistory",
+                url: "/announcement/announcementsToBottomAndTopScroll",
                 success: function (result) {
                     $.each(result, function (i, announcementData) {
                         i++;
-                        if (announcementData.announcementActivePasive != 'aActive') {
-                            allAnnouncements += i + ' - ' + announcementData.announcementTitle;
-                            allAnnouncements += ' - \n' + announcementData.announcementText;
-                            allAnnouncements += ' \n ¤¤¤¤¤¤ \n ';
-                        }
+                        allAnnouncements += i + ' - ' + announcementData.announcementTitle;
+                        allAnnouncements += ' - \n' + announcementData.announcementText;
+                        allAnnouncements += ' \n ¤¤¤¤¤¤ \n ';
                     });
                     if (allAnnouncements.length > 500) {
-                        document.getElementById('bottomScrollP4').style.animationDuration = '80s';
-                        document.getElementById('bottomScrollP5').style.animationDuration = '80s';
+                        if ($('#bottomScrollP4').length > 0) {
+                            document.getElementById('bottomScrollP4').style.animationDuration = '80s';
+                        }
+
+                        if ($('#bottomScrollP5').length > 0) {
+                            document.getElementById('bottomScrollP5').style.animationDuration = '80s';
+                        }
                     }
+
                     $('#bottomScrollP4').text(allAnnouncements)
                     $('#bottomScrollP5').text(allAnnouncements)
                     $('#topScroolAnnouncement').text(allAnnouncements)
                 },
                 error: function (e) {
                     toastr.error('announcementsToBottomAndTopScroll couldnt work! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillAnnouncementStatusTable: function fillAnnouncementStatusTable() {
+
+            $('#announcementStatusTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/announcement/fillAnnouncementStatusTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#announcementStatusTable> tbody").append(
+                            "<tr class='announcementStatusRow'><td class='announcementStatus'>"
+                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('announcementStatusRow couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillAnnouncementUserGroupTable: function fillAnnouncementUserGroupTable() {
+
+            $('#announcementUserGroupTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/announcement/fillAnnouncementUserGroupTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#announcementUserGroupTable> tbody").append(
+                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>"
+                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('announcementStatusRow couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillAnnouncementMajorDisciplineTable: function fillAnnouncementMajorDisciplineTable() {
+
+            $('#announcementMajorDisciplineTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/announcement/fillAnnouncementMajorDisciplineTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#announcementMajorDisciplineTable> tbody").append(
+                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>"
+                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('fillAnnouncementMajorDisciplineTable couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillAnnouncementClinicPolyclinicTable: function fillAnnouncementClinicPolyclinicTable() {
+
+            $('#announcementClinicPolyclinicTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/announcement/fillAnnouncementClinicPolyclinicTable",
+                success: function (docs) {
+                    $.each(docs, function (i) {
+                        $("#announcementClinicPolyclinicTable> tbody").append(
+                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>"
+                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('fillAnnouncementClinicPolyclinicTable couldnt count! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fillAnnouncementExpirationDateTable: function fillAnnouncementExpirationDateTable() {
+
+            $('#announcementExpirationDateTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/announcement/fillAnnouncementExpirationDateTable",
+                success: function (docs) {
+                    $.each(docs, function (i, announcementData) {
+                        i++
+                        $("#announcementExpirationDateTable> tbody").append(
+                            "<tr class='announcementExpirationDate'><td class='announcementExpirationDate'>"
+                            + announcementData.announcementTitle + "</td><td class='expirationDate'>"
+                            + announcementData.announcementEndDate + "</td></tr>");
+                    });
+                },
+                error: function (e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('fillAnnouncementExpirationDateTable couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });

@@ -56,6 +56,22 @@ module.exports.findAnnouncementHistory = (req, res) => {
         });
 };
 
+module.exports.announcementsToBottomAndTopScroll = (req, res) => {
+    var today = myMoment().format('DD-MM-YYYY');
+
+    myAnnouncementModel.find({
+        announcementActivePasive: 'Active', announcementEndDate: { $gte: today }
+    })
+        .then(announcementData => {
+            res.send(announcementData);
+            // console.log("announcementData found! = " + announcementData);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
 module.exports.findByAnnouncementId = (req, res) => {
     myAnnouncementModel.findOne(req.query)
         .then(patientData => {
@@ -96,235 +112,96 @@ module.exports.updateAnnouncementData = (req, res) => {
         });
 };
 
-// module.exports.fillPatientAppointmentStatusTable = (req, res) => {
-//     myAppointmentModel.find(req.query)
-//         .then(appointmentData => {
-//             res.send(appointmentData);
-//             // console.log("appointment found! = " + appointmentData);
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
+module.exports.fillAnnouncementStatusTable = (req, res) => {
+    myAnnouncementModel.aggregate([
+        {
+            $group: {
+                '_id': "$announcementActivePasive",
+                'count': { $sum: 1 }
+            }
+        },
+        { $sort: { _id: 1 } }
+    ])
+        .then(announcement => {
+            res.send(announcement);
+            // console.log('announcement = '+ announcement);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
 
-// module.exports.fillPatientUpcomingAppointmentTable = (req, res) => {
-//     var today = myMoment().format('DD-MM-YYYY');
-//     myAppointmentModel.find(
-//         {
-//             patientId: (+req.query.patientId),
-//             appointmentStatus: 'Valid',
-//             appointmentDate: { $gte: today }
-//         })
-//         .then(appData => {
-//             res.send(appData);
-//             // console.log('appData= ' + appData);
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
+module.exports.fillAnnouncementUserGroupTable = (req, res) => {
+    myAnnouncementModel.aggregate([
+        {
+            $group: {
+                '_id': "$announcementUserGroup",
+                'count': { $sum: 1 }
+            }
+        },
+        { $sort: { _id: 1 } }
+    ])
+        .then(announcement => {
+            res.send(announcement);
+            // console.log('announcement = '+ announcement);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
 
-// module.exports.fillPatientVisitStatisticsTable = (req, res) => {
-//     myPolExamModel.aggregate([
-//         {
-//             $match: {
-//                 patientId: (+req.query.patientId),
-//                 statusSelect: 'Valid'
-//             }
-//         },
-//         {
-//             $group: {
-//                 '_id': "$polyclinicSelect",
-//                 'count': { $sum: 1 }
-//             }
-//         },
-//         {
-//             $sort: { _id: 1 }
-//         }
-//     ])
-//         .then(polData => {
-//             res.send(polData);
-//             // console.log('polData= ' + polData);
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
+module.exports.fillAnnouncementMajorDisciplineTable = (req, res) => {
+    myAnnouncementModel.aggregate([
+        {
+            $group: {
+                '_id': "$announcementUserMajorDiscipline",
+                'count': { $sum: 1 }
+            }
+        },
+        { $sort: { _id: 1 } }
+    ])
+        .then(announcement => {
+            res.send(announcement);
+            // console.log('announcement = '+ announcement);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
 
-// module.exports.fillPolyclinicPatientCountTable = (req, res) => {
-//     myPolExamModel.aggregate([
-//         {
-//             $match: {
-//                 patientPolExamDate: (req.query.patientPolExamDate),
-//                 statusSelect: 'Valid'
-//             }
-//         },
-//         {
-//             $group: {
-//                 '_id': "$polyclinicSelect",
-//                 'count': { $sum: 1 }
-//             }
-//         },
-//         {
-//             $sort: { _id: 1 }
-//         }
-//     ])
-//         .then(polData => {
-//             res.send(polData);
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
+module.exports.fillAnnouncementClinicPolyclinicTable = (req, res) => {
+    myAnnouncementModel.aggregate([
+        {
+            $group: {
+                '_id': "$announcementUserClinic",
+                'count': { $sum: 1 }
+            }
+        },
+        { $sort: { _id: 1 } }
+    ])
+        .then(announcement => {
+            res.send(announcement);
+            // console.log('announcement = '+ announcement);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
 
-// module.exports.fillPatientHealtInsuranceTable = (req, res) => {
-//     myPolExamModel.aggregate([
-//         {
-//             $match: {
-//                 patientPolExamDate: (req.query.patientPolExamDate),
-//                 statusSelect: 'Valid'
-//             }
-//         },
-//         {
-//             $group: {
-//                 '_id': {
-//                     polyclinicSelect: "$polyclinicSelect",
-//                     insuranceSelect: "$insuranceSelect"
-//                 },
-//                 'count': { $sum: 1 }
-//             }
-//         },
-//         {
-//             $sort: { _id: 1 }
-//         }
-//     ])
-//         .then(polData => {
-//             res.send(polData);
-//             // console.log(polData)
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
+module.exports.fillAnnouncementExpirationDateTable = (req, res) => {
+    var today = myMoment().format('DD-MM-YYYY');
 
-// module.exports.fillPatientGenderTable = (req, res) => {
-//     myPolExamModel.aggregate([
-//         {
-//             $match: {
-//                 patientPolExamDate: (req.query.patientPolExamDate),
-//                 statusSelect: 'Valid'
-//             }
-//         },
-//         {
-//             $group: {
-//                 '_id': {
-//                     polyclinicSelect: "$polyclinicSelect",
-//                     patientGender: "$patientGender"
-//                 },
-//                 'count': { $sum: 1 }
-//             }
-//         },
-//         {
-//             $sort: { _id: 1 }
-//         }
-//     ])
-//         .then(polData => {
-//             res.send(polData);
-//             // console.log(polData)
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
-
-// module.exports.fillDoctorPatientTable = (req, res) => {
-//     myPolExamModel.aggregate([
-//         {
-//             $match: {
-//                 patientPolExamDate: (req.query.patientPolExamDate),
-//                 statusSelect: 'Valid'
-//             }
-//         },
-//         {
-//             $group: {
-//                 '_id': {
-//                     doctorSelector: "$doctorSelector",
-//                     polyclinicSelect: "$polyclinicSelect"
-//                 },
-//                 'count': { $sum: 1 }
-//             }
-//         },
-//         {
-//             $sort: { _id: 1 }
-//         }
-//     ])
-//         .then(doctorData => {
-//             res.send(doctorData);
-//             // console.log('fillDoctorPatientTable= ', doctorData)
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
-
-// module.exports.fillDoctorAppointmentTable = (req, res) => {
-//     var today = myMoment().format('DD-MM-YYYY');
-//     myAppointmentModel.aggregate([
-//         {
-//             $match: {
-//                 appointmentDate: today,
-//                 appointmentStatus: 'Valid'
-//             }
-//         },
-//         {
-//             $group: {
-//                 '_id': "$appointmentDoctor",
-//                 'count': { $sum: 1 }
-//             }
-//         },
-//         {
-//             $sort: { _id: 1 }
-//         }
-//     ])
-//         .then(doctorAppData => {
-//             res.send(doctorAppData);
-//             // console.log(doctorAppData)
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
-
-// module.exports.fillDoctorOnLeaveTable = (req, res) => {
-//     var today = myMoment().toDate();
-
-//     myStaffModel.aggregate(
-//         [
-//             {
-//                 $match: {
-//                     'staffLeaveEndDate': { $gte: today },
-//                     staffGroup: 'Doctor'
-//                 }
-//             },
-//             {
-//                 $sort: { _id: 1 }
-//             }
-//         ]
-//     )
-//         .then(doctorOnLeave => {
-//             res.send(doctorOnLeave);
-//             // console.log('doctorOnLeave = ', doctorOnLeave);
-//         }).catch(err => {
-//             res.status(500).send({
-//                 message: err.message
-//             });
-//         });
-// };
+    myAnnouncementModel.find({ announcementEndDate: { $lte: today } })
+        .then(announcement => {
+            res.send(announcement);
+            // console.log("announcement found! = " + announcement);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
