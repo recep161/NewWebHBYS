@@ -7,8 +7,7 @@
     <title>Polyclinic Module</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript"
-        src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
@@ -18,8 +17,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
-    <link rel="stylesheet" media="all"
-        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -69,18 +67,14 @@
     <div class="mainContainer" id="mainContainer">
         <div class="headerDiv" id="headerDiv">
             <div class="subHeadDiv" id="subHeadDiv">
-                <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('polyclinic')"
-                    title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab"
-                        src="/public/images/open-new-tab.png" alt=""></div>
+                <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('polyclinic')" title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab" src="/public/images/open-new-tab.png" alt=""></div>
                 <div id="modulNameText"> Polyclinic Module </div>
                 <div>
-                    <img class="modulAvatar" src="/public/images/Medical-icons/polyclinic-doctor.png"
-                        title="Anasayfa için tıklayınız." onclick="window.location.href='/public/htmls/index.html'">
+                    <img class="modulAvatar" src="/public/images/Medical-icons/polyclinic-doctor.png" title="Anasayfa için tıklayınız." onclick="window.location.href='/public/htmls/index.html'">
                 </div>
             </div>
 
-            <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();"
-                style="margin: 10px ;cursor: default;" title="">Please Login from main page!
+            <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();" style="margin: 10px ;cursor: default;" title="">Please Login from main page!
             </hUserName>
             <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!
             </p>
@@ -111,20 +105,15 @@
         </div>
 
         <div class="bottomScrool">
-            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
-                Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
-                'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
-                yayımladı... &#164;&#164; it's not a mobile device.</p>
+            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı; 'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ
+                VE TANI' adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
         </div>
 
         <div class="subMainContainer" id="subMainContainer">
 
             <div class="patientContainer" id="patientContainer">
                 <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patient List</h10>
-                <input class="searchInputs" type="text" id="searchInput"
-                    onkeydown="PolyclinicMethods.searchInTable('searchInput', 'patientTable')"
-                    placeholder="Search for patients..."
-                    title="Search patients by name, surname, protocol or appointment status.">
+                <input class="searchInputs" type="text" id="searchInput" onkeydown="PolyclinicMethods.searchInTable('searchInput', 'patientTable')" placeholder="Search for patients..." title="Search patients by name, surname, protocol or appointment status.">
                 <table id="patientTable">
                     <thead>
                         <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
@@ -142,25 +131,15 @@
             <div class="anamnezContainer" id="anamnezContainer">
                 Story
 
-                <textarea name="oykusuArea" id="oykusuArea" cols="30" rows="10" placeholder="Story" data-html="true"
-                    data-toggle="tooltip" title="Write story of disease."></textarea>
-
-                Anamnesis <br>
-                <textarea name="anamnezArea" id="anamnezArea" cols="30" rows="10" placeholder="Anamnesis"
-                    data-toggle="tooltip" title="Write anamnesis of disease."></textarea>
-
-                Examination <br>
-                <textarea name="muayeneArea" id="muayeneArea" cols="27" rows="10" placeholder="Examination"
-                    data-toggle="tooltip" title="Write examination result."></textarea>
+                <textarea name="oykusuArea" id="oykusuArea" cols="30" rows="10" placeholder="Story" data-html="true" data-toggle="tooltip" title="Write story of disease."></textarea> Anamnesis <br>
+                <textarea name="anamnezArea" id="anamnezArea" cols="30" rows="10" placeholder="Anamnesis" data-toggle="tooltip" title="Write anamnesis of disease."></textarea> Examination <br>
+                <textarea name="muayeneArea" id="muayeneArea" cols="27" rows="10" placeholder="Examination" data-toggle="tooltip" title="Write examination result."></textarea>
 
                 <div class="dropdown">
-                    <button
-                        onclick="InpatientMethods.showDropDownInside('polDiagnosis');PolyclinicMethods.fillDiagnosisDropDown();"
-                        class="polyclinicButtons btn--swap" id="polMuayeneTaniBtn">Diagnosis <span>ICD-10 Diagnosis
+                    <button onclick="InpatientMethods.showDropDownInside('polDiagnosis');PolyclinicMethods.fillDiagnosisDropDown();" class="polyclinicButtons btn--swap" id="polMuayeneTaniBtn">Diagnosis <span>ICD-10 Diagnosis
                             List</span></button>
                     <div id="polDiagnosis" class="dropdown-content">
-                        <input type="text" placeholder="Search.." id="polDiagnosisSearch" autofocus
-                            onkeyup="InpatientMethods.filterTaniDropdown('polDiagnosisSearch', 'polDiagnosis')">
+                        <input type="text" placeholder="Search.." id="polDiagnosisSearch" autofocus onkeyup="InpatientMethods.filterTaniDropdown('polDiagnosisSearch', 'polDiagnosis')">
                     </div>
                 </div>
                 <br><br>
@@ -183,32 +162,28 @@
                     </table>
                 </div>
                 <br><br>
-                <button class="anamnezBtns btn-success" id="poylclinicAnamnesisSave"
-                    onclick="PolyclinicMethods.savePolExamAnamnesis()" title="Click for save your data.">Save</button>
+                <button class="anamnezBtns btn-success" id="poylclinicAnamnesisSave" onclick="PolyclinicMethods.savePolExamAnamnesis()" title="Click for save your data.">Save</button>
             </div>
 
             <div class="buttonContainer" id="buttonContainer" style="width: 25%;border-style: ridge;">
                 <button id="yatisIslemleriBtn" onclick="ShowOrHideMethods.showPopUpModal('yatisEkrani');
                     AdministrationMethods.fetchUnits('Clinic', 'clinicSelector');
-                    AdministrationMethods.getBeds();PolyclinicMethods.patientDataForHospitalization()"
-                    class="polyclinicButtons btn--swap">Hospitalization Procedure <span>Primum
+                    AdministrationMethods.fetchStaff('Doctor', 'polExamDoctorSelector');
+                    AdministrationMethods.getBeds();PolyclinicMethods.patientDataForHospitalization()" class="polyclinicButtons btn--swap">Hospitalization Procedure <span>Primum
                         non nocere.</span></button>
 
                 <button onclick="ShowOrHideMethods.showPopUpModal('konsultasyonEkrani');
                     AdministrationMethods.fetchUnits('Polyclinic', 'konsPolyclinicSelector');
+                    AdministrationMethods.fetchStaff('Doctor', 'konsDoctorSelector');
                     PolyclinicMethods.patientProtocolandNameFromCookieForConsultation('konsPatientProtocol', 'konsPatientName');
                     AdministrationMethods.getConsultationCount('konsPolyclinicSelector');
                     PolyclinicMethods.fillConsultationHistoryTable()" class="polyclinicButtons btn--swap">Consultation
                     <span>Primum non nocere.</span>
                 </button>
 
-                <button
-                    onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');AdministrationMethods.fetchTests('Laboratory', 'labIstemTable');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('labTodaysRequestTable','Laboratory');"
-                    class="polyclinicButtons btn--swap">Laboratuary <span>Primum non nocere.</span></button>
+                <button onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');AdministrationMethods.fetchTests('Laboratory', 'labIstemTable');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('labTodaysRequestTable','Laboratory');" class="polyclinicButtons btn--swap">Laboratuary <span>Primum non nocere.</span></button>
 
-                <button
-                    onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');AdministrationMethods.fetchTests('Radiology', 'radiologyIstemTable');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('radTodaysRequestTable','Radiology');"
-                    class="polyclinicButtons btn--swap">Imaging and Radiology<span>Primum non nocere.</span></button>
+                <button onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');AdministrationMethods.fetchTests('Radiology', 'radiologyIstemTable');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('radTodaysRequestTable','Radiology');" class="polyclinicButtons btn--swap">Imaging and Radiology<span>Primum non nocere.</span></button>
 
                 <button class="polyclinicButtons btn--swap">Button 5 <span>Primum non nocere.</span></button>
                 <button class="polyclinicButtons btn--swap">Button 6 <span>Primum non nocere.</span></button>
@@ -262,12 +237,9 @@
             <!-- cards -->
             <div class="card-container" id="poly-card-container">
 
-                <div class="baseCard" id="statics1"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
+                <div class="baseCard" id="statics1" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');" onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
                     <div class="card" id="polExamStatics1">
-                        <div id="analytcStatics2" class="front"
-                            style="background-image: url('/public/images/patient-appointment-statistics.png');background-size: cover;">
+                        <div id="analytcStatics2" class="front" style="background-image: url('/public/images/patient-appointment-statistics.png');background-size: cover;">
                             <div class="card-title">
                                 <header>
                                     <h4>
@@ -277,37 +249,31 @@
                             </div>
                         </div>
                         <div class="back" style="overflow-y: scroll !important;">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="This statistic shows status of patient's appointment."></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows status of patient's appointment."></button>
                             <p class="cardP">
-                            <table id="patientAppointmentStatusTable">
-                                <thead>
-                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
-                                        <td
-                                            style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                            Patient
-                                        </td>
-                                        <td
-                                            style="border-right: 1px solid #b9c8d2 !important;border-top:none;border-bottom:none;">
-                                            Date</td>
-                                        <td style="border-top-right-radius: 8px;">Doctor</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                <table id="patientAppointmentStatusTable">
+                                    <thead>
+                                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                            <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                Patient
+                                            </td>
+                                            <td style="border-right: 1px solid #b9c8d2 !important;border-top:none;border-bottom:none;">
+                                                Date</td>
+                                            <td style="border-top-right-radius: 8px;">Doctor</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics2"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
+                <div class="baseCard" id="statics2" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');" onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
                     <div class="card" id="polExamStatics2">
-                        <div id="analytcStatics2" class="front"
-                            style="background-image: url('/public/images/polyclinic-healt-insurance.png');background-size: cover;">
+                        <div id="analytcStatics2" class="front" style="background-image: url('/public/images/polyclinic-healt-insurance.png');background-size: cover;">
                             <div class="card-title">
                                 <header>
                                     <h4>
@@ -317,35 +283,29 @@
                             </div>
                         </div>
                         <div class="back" style="overflow-y: scroll !important;">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="This statistic shows which health insurance the patients in the polyclinic belong to."></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows which health insurance the patients in the polyclinic belong to."></button>
                             <p class="cardP">
-                            <table id="patientHealtInsuranceTable" style="margin-left: -16px;">
-                                <thead>
-                                    <tr id="tableHeader"
-                                        style="background-color: #49A681 !important; color: white;font-size: 9px;">
-                                        <td
-                                            style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                            Insurance
-                                        </td>
-                                        <td style="border-top-right-radius: 8px;">Count</td>
-                                    </tr>
-                                </thead>
-                                <tbody style="background-color: inherit !important;font-size: 8px;">
+                                <table id="patientHealtInsuranceTable" style="margin-left: -16px;">
+                                    <thead>
+                                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;font-size: 9px;">
+                                            <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                Insurance
+                                            </td>
+                                            <td style="border-top-right-radius: 8px;">Count</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="background-color: inherit !important;font-size: 8px;">
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics3"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
+                <div class="baseCard" id="statics3" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');" onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
                     <div class="card" id="polExamStatics3">
-                        <div id="analytcStatics3" class="front"
-                            style="background-image: url('/public/images/polyclinic-gender.png');background-size: cover;">
+                        <div id="analytcStatics3" class="front" style="background-image: url('/public/images/polyclinic-gender.png');background-size: cover;">
                             <div class="card-title">
                                 <header>
                                     <h4>
@@ -355,35 +315,29 @@
                             </div>
                         </div>
                         <div class="back" style="overflow-y: scroll !important;">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="This statistic shows the gender distribution of patients in the polyclinic."></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows the gender distribution of patients in the polyclinic."></button>
                             <p class="cardP">
-                            <table id="patientGenderTable" style="margin-left: -15px;">
-                                <thead>
-                                    <tr id="tableHeader"
-                                        style="background-color: #49A681 !important; color: white;font-size: 9px;">
-                                        <td
-                                            style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                            Gender
-                                        </td>
-                                        <td style="border-top-right-radius: 8px;">Count</td>
-                                    </tr>
-                                </thead>
-                                <tbody style="background-color: inherit !important;font-size: 9px;">
+                                <table id="patientGenderTable" style="margin-left: -15px;">
+                                    <thead>
+                                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;font-size: 9px;">
+                                            <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                Gender
+                                            </td>
+                                            <td style="border-top-right-radius: 8px;">Count</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="background-color: inherit !important;font-size: 9px;">
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics4"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
+                <div class="baseCard" id="statics4" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');" onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5');">
                     <div class="card" id="polExamStatics4">
-                        <div id="analytcStatics4" class="front"
-                            style="background-image: url('/public/images/patient-visit-2.png');background-size: contain; ">
+                        <div id="analytcStatics4" class="front" style="background-image: url('/public/images/patient-visit-2.png');background-size: contain; ">
                             <div class="card-title">
                                 <header>
                                     <h4>
@@ -393,39 +347,32 @@
                             </div>
                         </div>
                         <div class="back" style="overflow-y: scroll !important;">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="This statistic shows the doctors' examined patient count."></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows the doctors' examined patient count."></button>
                             <p class="cardP">
-                            <table id="doctorPatientTable" style="margin-left: -13px;">
-                                <thead>
-                                    <tr id="tableHeader"
-                                        style="background-color: #49A681 !important; color: white;font-size: 9px;">
-                                        <td
-                                            style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                            Doctor
-                                        </td>
-                                        <td
-                                            style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
-                                            Polyclinic
-                                        </td>
-                                        <td style="border-top-right-radius: 8px;">Count</td>
-                                    </tr>
-                                </thead>
-                                <tbody style="background-color: inherit !important;font-size: 7px;">
+                                <table id="doctorPatientTable" style="margin-left: -13px;">
+                                    <thead>
+                                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;font-size: 9px;">
+                                            <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                Doctor
+                                            </td>
+                                            <td style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                                Polyclinic
+                                            </td>
+                                            <td style="border-top-right-radius: 8px;">Count</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="background-color: inherit !important;font-size: 7px;">
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics5"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4', 'polExamStatics5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4', 'polExamStatics5');">
+                <div class="baseCard" id="statics5" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4', 'polExamStatics5');" onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4', 'polExamStatics5');">
                     <div class="card" id="polExamStatics5">
-                        <div id="analytcStatics2" class="front"
-                            style="background-image: url('/public/images/percentage-pie-chart-2.png');background-size: contain; ">
+                        <div id="analytcStatics2" class="front" style="background-image: url('/public/images/percentage-pie-chart-2.png');background-size: contain; ">
                             <div class="card-title">
                                 <header>
                                     <h4>
@@ -435,26 +382,24 @@
                             </div>
                         </div>
                         <div class="back" style="overflow-y: scroll;">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Kurum Turu"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Kurum Turu"></button>
                             <p class="cardP">
-                            <h1 id="totalPatient" style="font-size: medium;"></h1>
-                            <h1 id="oldPatient" style="font-size: medium;"></h1>
-                            <h1 id="oldPatientPercentage" style="font-size: medium;"></h1>
-                            <table id="oldPatientTable" style="margin-top: 15px;width: 100%;">
-                                <thead>
-                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
-                                        <td
-                                            style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                            Status
-                                        </td>
-                                        <td style="border-top-right-radius: 8px;">Age</td>
-                                    </tr>
-                                </thead>
-                                <tbody style="background-color: inherit !important;font-size: 13px;">
+                                <h1 id="totalPatient" style="font-size: medium;"></h1>
+                                <h1 id="oldPatient" style="font-size: medium;"></h1>
+                                <h1 id="oldPatientPercentage" style="font-size: medium;"></h1>
+                                <table id="oldPatientTable" style="margin-top: 15px;width: 100%;">
+                                    <thead>
+                                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                            <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                Status
+                                            </td>
+                                            <td style="border-top-right-radius: 8px;">Age</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="background-color: inherit !important;font-size: 13px;">
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             </p>
                         </div>
                     </div>
@@ -469,8 +414,7 @@
     <div id="yatisEkrani" class="modal" style="padding: 60px;">
         <div id="modal-content" class="yatisEkraniContent animate">
             <div id="yatisImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('yatisEkrani').style.display='none'" id="yatisCloseBtn"
-                    class="close" title="Close Modal">&times;</span>
+                <span onclick="document.getElementById('yatisEkrani').style.display='none'" id="yatisCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="myAvatar" src="/public/images/Medical-icons/nurse.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;">Hospitalization Procedure</h11>
@@ -492,12 +436,9 @@
                     </div>
 
                     <div class="yatisEkraniInputs">
-                        <input type="text" id="patientProtocol" name="patientProtocol" placeholder="Patient Protocol No"
-                            autofocus required disabled style="background-color: lightgrey;">
+                        <input type="text" id="patientProtocol" name="patientProtocol" placeholder="Patient Protocol No" autofocus required disabled style="background-color: lightgrey;">
                         <br>
-                        <input type="text" id="patientNameSurname" name="patientNameSurname"
-                            placeholder="Patient Name Surname" autofocus required disabled
-                            style="background-color: lightgrey;">
+                        <input type="text" id="patientNameSurname" name="patientNameSurname" placeholder="Patient Name Surname" autofocus required disabled style="background-color: lightgrey;">
                         <br>
                         <select name="doctorSelect" id="polExamDoctorSelector" class="doctorSelect">
                             <option value="ProfDrAhmetSAYLAN">Prof. Dr. Ahmet SAYLAN</option>
@@ -507,8 +448,7 @@
                         <br>
                         <input type="text" id="clinicDate">
                         <br>
-                        <select name="clinicSelect" id="clinicSelector" class="clinicSelect"
-                            onchange="AdministrationMethods.getBeds()">
+                        <select name="clinicSelect" id="clinicSelector" class="clinicSelect" onchange="AdministrationMethods.getBeds()">
                         </select>
                     </div>
                 </div>
@@ -588,19 +528,15 @@
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="hospitalizationSave"
-                        onclick="PolyclinicMethods.hospitalizationProcedure()" data-toggle="tooltip"
-                        title="Click for save.">Save</button></div>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="hospitalizationSave" onclick="PolyclinicMethods.hospitalizationProcedure()" data-toggle="tooltip" title="Click for save.">Save</button></div>
             </div>
         </div>
     </div>
 
     <div id="konsultasyonEkrani" class="modal" style="padding: 10px;">
         <div id="konsultasyonImgcontainer" class="imgcontainer">
-            <span onclick="document.getElementById('konsultasyonEkrani').style.display='none'" id="konsCloseBtn"
-                class="close" title="Close Modal">&times;</span>
-            <img id="myAvatar" src="/public/images/Medical-icons/cons-doctor.png" alt="Avatar" class="avatar"
-                style="margin:75px 0px -20px 0px; width: 6%;">
+            <span onclick="document.getElementById('konsultasyonEkrani').style.display='none'" id="konsCloseBtn" class="close" title="Close Modal">&times;</span>
+            <img id="myAvatar" src="/public/images/Medical-icons/cons-doctor.png" alt="Avatar" class="avatar" style="margin:75px 0px -20px 0px; width: 6%;">
         </div>
         <div id="kons-modal-content" class="konsultasyonEkraniContent animate">
             <div id="consultationDataDiv" style="padding: 10px;">
@@ -609,24 +545,18 @@
                     <div class="konsultasyonInputsAndLabels">
                         <div class="konsultasyonEkraniInputs">
                             Protocol No:
-                            <input type="text" id="konsPatientProtocol" name="konsPatientProtocol"
-                                placeholder="Patient Protocol No" autofocus required>
-                            Patient Name Surname:<br>
-                            <input type="text" id="konsPatientName" name="konsPatientName"
-                                placeholder="Patient Name Surname" autofocus required>
-                            Doctor:<br>
+                            <input type="text" id="konsPatientProtocol" name="konsPatientProtocol" placeholder="Patient Protocol No" autofocus required> Patient Name Surname:<br>
+                            <input type="text" id="konsPatientName" name="konsPatientName" placeholder="Patient Name Surname" autofocus required> Doctor:
+                            <br>
                             <select name="konsDoctorSelect" id="konsDoctorSelector" class="konsDoctorSelect">
                                 <option value="ProfDrAhmetSAYLAN">Prof. Dr. Ahmet SAYLAN</option>
                                 <option value="DocDrHuseyinIKIRCIKLI">Doc. Dr. Huseyin IKIRCIKLI</option>
                                 <option value="UzmDrHulyaBULUT">Uzm. Dr. Hulya BULUT</option>
-                            </select>
-                            Date:<br>
-                            <input type="text" id="konsDate">
-                            Polyclinic / Clinic<br>
-                            <select name="konsPolyclinicSelector" id="konsPolyclinicSelector" class="konsClinicSelect"
-                                onchange="AdministrationMethods.getConsultationCount('konsPolyclinicSelector')">
-                            </select>
-                            Consultation Note:<br>
+                            </select> Date:
+                            <br>
+                            <input type="text" id="konsDate"> Polyclinic / Clinic<br>
+                            <select name="konsPolyclinicSelector" id="konsPolyclinicSelector" class="konsClinicSelect" onchange="AdministrationMethods.getConsultationCount('konsPolyclinicSelector')">
+                            </select> Consultation Note:<br>
                             <textarea name="konsNote" id="konsNote" cols="50" rows="10"></textarea>
                         </div>
                     </div>
@@ -652,9 +582,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="buttonDiv"><button class="anamnezBtns btn-success" id="consultationSave"
-                            onclick="PolyclinicMethods.saveConsultation()" data-toggle="tooltip"
-                            title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
+                    <div class="buttonDiv"><button class="anamnezBtns btn-success" id="consultationSave" onclick="PolyclinicMethods.saveConsultation()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
                 </div>
             </div>
 
@@ -682,16 +610,12 @@
     <div id="labIstemEkrani" class="modal" style="padding: 60px;">
         <div id="labIstem-modal-content" class="labIstemEkraniContent animate">
             <div id="labIstemImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('labIstemEkrani').style.display='none'" id="labIstemCloseBtn"
-                    class="close" title="Close Modal">&times;</span>
-                <img id="myAvatar" src="/public/images/Medical-icons/microscope.png" alt="Avatar" class="avatar"
-                    style="width: 8%;">
+                <span onclick="document.getElementById('labIstemEkrani').style.display='none'" id="labIstemCloseBtn" class="close" title="Close Modal">&times;</span>
+                <img id="myAvatar" src="/public/images/Medical-icons/microscope.png" alt="Avatar" class="avatar" style="width: 8%;">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;">Laboratory Test Request</h11>
             <h11 id="labPatientData" class="historyHeaders" style="margin: 5px 0px 5px 65%;color: white;"></h11>
-            <input class="searchInputs" type="text" id="tetkikAra"
-                onkeydown="PolyclinicMethods.searchInTable('tetkikAra', 'labIstemTable')"
-                placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
+            <input class="searchInputs" type="text" id="tetkikAra" onkeydown="PolyclinicMethods.searchInTable('tetkikAra', 'labIstemTable')" placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
 
             <div style="display: flex;">
                 <div id="labIstemEkraniContainer" class="labIstemEkraniContainer">
@@ -741,9 +665,8 @@
                     </table>
                 </div>
                 <div class="buttonDiv">
-                    <button class="anamnezBtns btn-success" id="labTetkikKaydet"
-                        onclick="PolyclinicMethods.checkAndSaveExaminations('totalExam','labTetkikKaydet');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('labTodaysRequestTable','Laboratory');"
-                        data-toggle="tooltip" title="Click for save examinations.">Save</button>
+                    <button class="anamnezBtns btn-success" id="labTetkikKaydet" onclick="PolyclinicMethods.checkAndSaveExaminations('totalExam','labTetkikKaydet');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('labTodaysRequestTable','Laboratory');" data-toggle="tooltip"
+                        title="Click for save examinations.">Save</button>
                 </div>
             </div>
         </div>
@@ -752,17 +675,13 @@
     <div id="radiologyIstemEkrani" class="modal" style="padding: 60px;">
         <div id="radiology-modal-content" class="radiologyIstemEkraniContent animate">
             <div id="radiologyIstemImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('radiologyIstemEkrani').style.display='none'"
-                    id="radiologyIstemCloseBtn" class="close" title="Close Modal">&times;</span>
-                <img id="myRadiologyAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico" alt="Avatar"
-                    class="avatar" style="width: 8%;">
+                <span onclick="document.getElementById('radiologyIstemEkrani').style.display='none'" id="radiologyIstemCloseBtn" class="close" title="Close Modal">&times;</span>
+                <img id="myRadiologyAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico" alt="Avatar" class="avatar" style="width: 8%;">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;">Radiology and Imaging Request
             </h11>
             <h11 id="radPatientData" class="historyHeaders" style="margin: 5px 0px 5px 65%;color: white;"></h11>
-            <input class="searchInputs" type="text" id="radiologyTetkikAra"
-                onkeydown="PolyclinicMethods.searchInTable('radiologyTetkikAra', 'radiologyIstemTable')"
-                placeholder="Search for examinations..." title="Search for examinations by name or code.">
+            <input class="searchInputs" type="text" id="radiologyTetkikAra" onkeydown="PolyclinicMethods.searchInTable('radiologyTetkikAra', 'radiologyIstemTable')" placeholder="Search for examinations..." title="Search for examinations by name or code.">
             <div style="display: flex;">
                 <div id="radiologyIstemEkraniContainer" class="radiologyIstemEkraniContainer">
                     <table id="radiologyIstemTable">
@@ -774,9 +693,9 @@
                                 <td>Laboratory</td>
                                 <td>Quantity</td>
                             </tr>
-                        <tbody id="radiologyIstemTableTBody">
+                            <tbody id="radiologyIstemTableTBody">
 
-                        </tbody>
+                            </tbody>
                         </thead>
                     </table>
                 </div>
@@ -811,8 +730,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="radiologyTetkikKaydet"
-                        onclick="PolyclinicMethods.checkAndSaveExaminations('totalRadiologyExam','radiologyTetkikKaydet');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('radTodaysRequestTable','Radiology');"
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="radiologyTetkikKaydet" onclick="PolyclinicMethods.checkAndSaveExaminations('totalRadiologyExam','radiologyTetkikKaydet');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('radTodaysRequestTable','Radiology');"
                         data-toggle="tooltip" title="Click for save.">Save</button></div>
             </div>
         </div>
@@ -827,32 +745,28 @@
             <!-- Social buttons -->
             <ul class="list-unstyled list-inline text-center">
                 <li class="list-inline-item">
-                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
+                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page" onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
                         <a class="btn-floating btn-fb fa-2x">
                             <i class="fa fa-facebook-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
+                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page" onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
                         <a class="btn-floating btn-tw fa-2x">
                             <i class="fa fa-twitter-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
+                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page" onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
                         <a id="googlePlusBtn" class="btn-floating btn-gplus fa-2x">
                             <i class="fa fa-google-plus-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
+                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page" onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
                         <a id="linkedinBtn" class="btn-floating btn-li fa-2x">
                             <i class=" fa fa-linkedin-square"> </i>
                         </a>
@@ -866,8 +780,7 @@
         <!-- Copyright -->
         <div class="footer-copyright text-center" style="font-size: large;color: black;padding: 10px;">
             © since 2020 Copyright:
-            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')"
-                title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
+            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')" title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
                 <span class="nameLetters">R</span>
                 <span class="nameLetters">e</span>
                 <span class="nameLetters">c</span>
@@ -885,18 +798,15 @@
     </footer>
 
     <div class="bottomScrool">
-        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
-            Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
-            'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
-            yayımladı... &#164;&#164; it's not a mobile device.</p>
+        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı; 'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ
+            VE TANI' adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
     </div>
     <!-- end of Footer -->
 
     <div id="userStatistics" class="modal" style="padding: 60px;">
         <div id="userStatistics-modal-content" class="userStatisticsContent animate">
             <div id="userStatisticsImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userStatistics').style.display='none'"
-                    id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userStatistics').style.display='none'" id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/statistics-12.png" alt="Avatar" class="avatar">
             </div>
             <div id="userStatisticsContainer" class="userStatisticsContainer">
@@ -941,8 +851,7 @@
     <div id="userTraining" class="modal" style="padding: 60px;">
         <div id="userTraining-modal-content" class="userTrainingContent animate" action="?action=add" method="post">
             <div id="userTrainingImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn"
-                    class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/training-4.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Incoming Trainings</h11>
@@ -961,8 +870,7 @@
                         <td>01.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a id="documentOpenLink1" class="modulLink"
-                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                            <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -971,8 +879,7 @@
                         <td>12.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                target="_blank">Open File</a>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                 </table>
@@ -993,8 +900,7 @@
                         <td>01.03.2020 09:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a id="documentOpenLink1" class="modulLink"
-                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                            <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -1003,8 +909,7 @@
                         <td>12.01.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                target="_blank">Open File</a>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                 </table>
@@ -1015,36 +920,23 @@
     <div id="userSettings" class="modal" style="padding: 60px;">
         <div id="userSettings-modal-content" class="userSettingsContent animate" action="?action=add" method="post">
             <div id="userSettingsImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn"
-                    class="close" title="Close!">&times;</span>
-                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar"
-                    class="avatar">
+                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn" class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Settings</h11>
             <div id="userSettingsContainer" class="userSettingsContainer">
                 Old Password: <br>
-                <input type="password" name="userOldPassword" id="userOldPassword"
-                    placeholder="Please enter your current password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
-                <br>
-                New Password: <br>
-                <input type="password" name="userNewPassword" id="userNewPassword"
-                    placeholder="Please enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <input type="password" name="userOldPassword" id="userOldPassword" placeholder="Please enter your current password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <br> New Password: <br>
+                <input type="password" name="userNewPassword" id="userNewPassword" placeholder="Please enter your new password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <span for='userNewPassword' class="p-viewer">
                     <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
                         onclick="ShowOrHideMethods.showPassword('userNewPassword','showPasswordIcon1')">
                     </i>
                 </span>
-                <br>
-                New Password Repeat: <br>
-                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
-                    placeholder="Please re-enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
+                <br> New Password Repeat: <br>
+                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat" placeholder="Please re-enter your new password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
                     CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
                 <span for='userNewPasswordRepeat' class="p-viewer">
                     <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
@@ -1055,8 +947,7 @@
                 <br>
                 <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
-                    title="Change password!">Change Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()" title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -1065,8 +956,7 @@
     <div id="userMessaging" class="modal" style="padding: 60px;">
         <div id="userMessaging-modal-content" class="userMessagingContent animate">
             <div id="userMessagingImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn"
-                    class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/message-2.png" alt="Avatar" class="avatar">
             </div>
             <div id="userMessageSubContainer">
@@ -1087,8 +977,7 @@
                                 <td>01.03.2020 09:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a id="documentOpenLink1" class="modulLink"
-                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                    <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -1098,8 +987,7 @@
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                        target="_blank">Open Message</a>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open Message</a>
                                 </td>
                             </tr>
                         </table>
@@ -1120,8 +1008,7 @@
                                 <td>01.03.2020 09:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a id="documentOpenLink1" class="modulLink"
-                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                    <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -1131,8 +1018,7 @@
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                        target="_blank">Open Message</a>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open Message</a>
                                 </td>
                             </tr>
                         </table>
@@ -1141,22 +1027,17 @@
 
                 <div id="userNewMessageDiv">
                     <h11 class="historyHeaders" style="margin: 5px;color: white;">Send Message</h11>
-                    <br><br>
-                    Subject: <br>
+                    <br><br> Subject: <br>
                     <input type="text" name="userMessageSubject" id="userMessageSubject">
-                    <br>
-                    To: <br>
+                    <br> To: <br>
                     <input type="text" name="userMessageTo" id="userMessageTo">
                     <br>
                     <!-- kisiler -->
                     <div class="dropdown">
-                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')"
-                            class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
+                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')" class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
                                 style="font-size: 16px;">Add person!</span></button>
-                        <div id="userMessagePerson" class="dropdown-content"
-                            onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
-                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus
-                                onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
+                        <div id="userMessagePerson" class="dropdown-content" onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
+                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
                             <a>Recep CELIK</a>
                             <a>Adnan YILDIRIM</a>
                             <a>Onder KARABULUT</a>
@@ -1167,8 +1048,7 @@
                     Message: <br>
                     <textarea name="userMessageBody" id="userMessageBody" cols="87" rows="7"></textarea>
                     <br>
-                    <button class="inpatientBtn btn-primary" id="userMessageSend"
-                        onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
+                    <button class="inpatientBtn btn-primary" id="userMessageSend" onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
                     </button>
                     <br>
                 </div>
@@ -1191,12 +1071,9 @@
                 LoginProcess.userLoginStatistics();
                 LoginProcess.getLastPasswordChangeStatistics();">
                 <i class="fa fa-bar-chart"></i> </a>
-            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i
-                    class='fa fa-file-text'></i></a>
-            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i
-                    class="fa fa-cog   fa-fw"></i> </a>
-            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i
-                    class="fa fa-envelope"></i> </a>
+            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
+            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
+            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
             <a class="menu-item"> <i class="fa fa-cog"></i> </a>
 
         </nav>

@@ -11,7 +11,7 @@ var myStaffModel = myMongoose.model('staffs');
 // redirect to staff
 module.exports.redirectToStaffTab = (req, res) => {
     res.render('staff')
-    // console.log('redirectToStaffTab')
+        // console.log('redirectToStaffTab')
 };
 
 // Save FormData - staff to MongoDB
@@ -54,7 +54,7 @@ module.exports.saveStaff = (req, res) => {
         }).catch(err => {
             res.status(500).send({
                 message: err.message
-                // , myerr: console.log(err.message)
+                    // , myerr: console.log(err.message)
             });
         });
 };
@@ -153,9 +153,7 @@ module.exports.updateStaffData = (req, res) => {
         myStaffMajorDicipline = req.body.staffMajorDicipline,
         myStaffGroup = req.body.staffGroup;
 
-    myStaffModel.findOneAndUpdate(
-        { staffId: myStaffId },
-        {
+    myStaffModel.findOneAndUpdate({ staffId: myStaffId }, {
             $set: {
                 "staffIdNumber": myStaffTc,
                 "staffName": myStaffName,
@@ -190,15 +188,14 @@ module.exports.getMaxStaffId = (req, res) => {
 };
 
 module.exports.fillStaffStatisticsTable = (req, res) => {
-    myStaffModel.aggregate([
-        {
-            $group: {
-                '_id': "$staffGroup",
-                'count': { $sum: 1 }
-            }
-        },
-        { $sort: { _id: 1 } }
-    ])
+    myStaffModel.aggregate([{
+                $group: {
+                    '_id': "$staffGroup",
+                    'count': { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ])
         .then(docs => {
             res.send(docs);
             // console.log(docs);
@@ -210,7 +207,7 @@ module.exports.fillStaffStatisticsTable = (req, res) => {
 };
 
 module.exports.countTableAndRows = (req, res) => {
-    myMongoose.connection.db.listCollections().toArray(function (err, names) {
+    myMongoose.connection.db.listCollections().toArray(function(err, names) {
         res.send(names)
     });
 
@@ -223,21 +220,20 @@ module.exports.fillStafOnLeaveTable = (req, res) => {
     var today = myMoment().toDate();
 
     myStaffModel.aggregate(
-        [
-            {
-                $match: { 'staffLeaveEndDate': { $gte: today } }
-            },
-            {
-                $group: {
-                    '_id': "$staffGroup",
-                    'count': { $sum: 1 }
+            [{
+                    $match: { 'staffLeaveEndDate': { $gte: today } }
+                },
+                {
+                    $group: {
+                        '_id': "$staffGroup",
+                        'count': { $sum: 1 }
+                    }
+                },
+                {
+                    $sort: { _id: 1 }
                 }
-            },
-            {
-                $sort: { _id: 1 }
-            }
-        ]
-    )
+            ]
+        )
         .then(staffOnLeave => {
             res.send(staffOnLeave);
             // console.log('staffOnLeave = ', staffOnLeave);
@@ -247,3 +243,15 @@ module.exports.fillStafOnLeaveTable = (req, res) => {
             });
         });
 }
+
+module.exports.fetchStaff = (req, res) => {
+    myStaffModel.find(req.query).sort({ 'staffName': 1 })
+        .then(staff => {
+            res.send(staff);
+            // console.log("All staff Listed: " + staff);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};

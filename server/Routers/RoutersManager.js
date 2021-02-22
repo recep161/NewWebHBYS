@@ -6,7 +6,7 @@ var routerIndex = require('./IndexRouter'),
     routerAnnouncement = require('./announcementRouter'),
     routerAdmin = require('./AdminRouter');
 
-module.exports = function (app) {
+module.exports = function(app) {
     app.use('/', routerIndex);
     app.use('/admin', routerAdmin);
     app.use('/hastakimlik', routerPatient);

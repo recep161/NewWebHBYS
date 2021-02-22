@@ -7,8 +7,7 @@
     <title>Polyclinic Module</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript"
-        src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
@@ -18,8 +17,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
-    <link rel="stylesheet" media="all"
-        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -54,6 +52,7 @@
                             ShowOrHideMethods.adjustHtmlsBackground('polyclinicExaminationBody');
                             AdministrationMethods.takeUserInfoFromCookie();
                             AdministrationMethods.fetchUnits('Polyclinic', 'polyclinicSelect');
+                            AdministrationMethods.fetchStaff('Doctor', 'doctorSelector');
                             AnnouncementMethods.announcementsToBottomAndTopScroll(); 
                         //  ShowOrHideMethods.myStickHeader('polyclinicExamSubHeadDiv');
     ">
@@ -69,26 +68,20 @@
 
         <div class="polyclinicExamHeaderDiv" id="polyclinicExamHeaderDiv">
             <div class="polyclinicExamSubHeadDiv" id="polyclinicExamSubHeadDiv">
-                <div id="newTabButton" onclick="window.open('\http:\/\/localhost:1609/polExam', '_blank');"
-                    title="Click for open in new tab."><img class="openInNewTab" id="hastaKimlikOpenInNewTab"
-                        src="/public/images/open-new-tab.png" alt=""></div>
+                <div id="newTabButton" onclick="window.open('\http:\/\/localhost:1609/polExam', '_blank');" title="Click for open in new tab."><img class="openInNewTab" id="hastaKimlikOpenInNewTab" src="/public/images/open-new-tab.png" alt=""></div>
                 <div id="polyclinicExamModulNameText"> Polyclinic Examination Module </div>
                 <div>
-                    <img class="modulAvatar" src="/public/images/exam_2.png" title="Anasayfa için tıklayınız."
-                        onclick="AdministrationMethods.redirectToAdminTab('')">
+                    <img class="modulAvatar" src="/public/images/exam_2.png" title="Anasayfa için tıklayınız." onclick="AdministrationMethods.redirectToAdminTab('')">
                 </div>
             </div>
-            <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;"
-                onmouseover="LoginProcess.showUserDataOnHover();" title="">Please Login from main page!</hUserName>
+            <hUserName id="hUserName" class="historyHeaders" style="margin: 10px ;cursor: default;height: 35px;" onmouseover="LoginProcess.showUserDataOnHover();" title="">Please Login from main page!</hUserName>
             <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!
             </p>
         </div>
 
         <div class="bottomScrool" id="polExamTopScrool" style="margin-bottom: 20px;">
-            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
-                Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
-                'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
-                yayımladı... &#164;&#164; it's not a mobile device.</p>
+            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı; 'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ
+                VE TANI' adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
         </div>
 
         <div class="subMainContainer" id="subMainContainer">
@@ -96,84 +89,55 @@
                 <div class="inputAndImageDiv">
                     <div class="patientInputsMain">
                         Protocol No <br>
-                        <input class="patientInputs" type="number" name="patientProtocolNo" id="patientProtocolNo"
-                            style="width: 105%;" readonly><br>
-                        Patient ID No <br>
-                        <input class="patientInputs" type="number" name="patientIdNo" id="patientIdNo"
-                            oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}"
-                            style="width: 105%;" onkeydown="PolyclinicExamMethods.searchByEnter('patientIdNo');"
-                            maxlength="11" minlength="11"><br>
-                        Patient No <br>
-                        <input class="patientInputs" type="number" name="patientId" id="patientId" style="width: 105%;"
-                            onkeydown="PolyclinicExamMethods.searchByEnter('patientId');"><br>
-                        Name Surname <br>
-                        <input class="patientInputs" type="text" name="patientNameSurname" id="patientNameSurname"
-                            style="width: 105%;" readonly><br>
-                        Father Name <br>
-                        <input class="patientInputs" type="text" name="patientFatherName" id="patientFatherName"
-                            style="width: 105%;" readonly><br>
-                        Mother Name <br>
-                        <input class="patientInputs" type="text" name="patientMotherName" id="patientMotherName"
-                            style="width: 105%;" readonly><br>
-                        Gender <br>
-                        <input class="patientInputs" type="text" name="patientGender" id="patientGender" readonly><br>
-                        Birt Place <br>
-                        <input class="patientInputs" type="text" name="patientBirthPlace" id="patientBirthPlace"
-                            readonly><br>
-                        Birth Date <br>
+                        <input class="patientInputs" type="number" name="patientProtocolNo" id="patientProtocolNo" style="width: 105%;" readonly><br> Patient ID No <br>
+                        <input class="patientInputs" type="number" name="patientIdNo" id="patientIdNo" oninput="javascript: if (this.value.length > this.maxLength) {this.value = this.value.slice(0, this.maxLength)}" style="width: 105%;" onkeydown="PolyclinicExamMethods.searchByEnter('patientIdNo');"
+                            maxlength="11" minlength="11"><br> Patient No <br>
+                        <input class="patientInputs" type="number" name="patientId" id="patientId" style="width: 105%;" onkeydown="PolyclinicExamMethods.searchByEnter('patientId');"><br> Name Surname <br>
+                        <input class="patientInputs" type="text" name="patientNameSurname" id="patientNameSurname" style="width: 105%;" readonly><br> Father Name <br>
+                        <input class="patientInputs" type="text" name="patientFatherName" id="patientFatherName" style="width: 105%;" readonly><br> Mother Name <br>
+                        <input class="patientInputs" type="text" name="patientMotherName" id="patientMotherName" style="width: 105%;" readonly><br> Gender <br>
+                        <input class="patientInputs" type="text" name="patientGender" id="patientGender" readonly><br> Birt Place <br>
+                        <input class="patientInputs" type="text" name="patientBirthPlace" id="patientBirthPlace" readonly><br> Birth Date <br>
                         <input class="patientInputs" type="text" name="patientBirthDate" id="patientBirthDate" readonly>
-                        <br>
-                        Polyclinic Examination Date <br>
-                        <input class="patientInputs" type="text" name="patientPolExamDate" id="patientPolExamDate"
-                            readonly>
-                        <br>
-                        Insurance <br>
+                        <br> Polyclinic Examination Date <br>
+                        <input class="patientInputs" type="text" name="patientPolExamDate" id="patientPolExamDate" readonly>
+                        <br> Insurance <br>
                         <select name="insuranceSelect" id="insuranceSelect" class="polyclinicExamSelect">
                             <option value="GeneralInsurance">General Insurance</option>
                             <option value="PrivateInsurance">Private Insurance</option>
                             <option value="Non-Insurance">Non-Insurance</option>
-                        </select> <br>
-                        Polyclinic <br>
+                        </select> <br> Polyclinic <br>
                         <select name="polyclinicSelect" id="polyclinicSelect" class="polyclinicExamSelect">
                             <option value="GeneralSurgeryPolyclinic">General Surgery Polyclinic</option>
                             <option value="OrthopedicPolyclinic">Orthopedic Polyclinic</option>
                             <option value="CardiologyPolyclinic">Cardiology Polyclinic</option>
                             <option value="UrologyPolyclinic">Urology Polyclinic</option>
-                        </select> <br>
-                        Doctor <br>
+                        </select> <br> Doctor <br>
                         <select name="doctorSelect" id="doctorSelector" class="polyclinicExamSelect">
                             <option value="ProfDrAhmetSAYLAN">Prof. Dr. Ahmet SAYLAN</option>
                             <option value="DocDrHuseyinIKIRCIKLI">Doc. Dr. Huseyin IKIRCIKLI</option>
                             <option value="UzmDrHulyaBULUT">Uzm. Dr. Hulya BULUT</option>
-                        </select> <br>
-                        Status <br>
+                        </select> <br> Status <br>
                         <select name="statusSelect" id="statusSelect" class="polyclinicExamSelect">
                             <option value="Valid">Valid</option>
                             <option value="Canceled">Canceled</option>
                         </select> <br>
 
                         <div id="polExamButtonDiv">
-                            <button class="anamnezBtns btn-success" id="polExamSave"
-                                onclick="PolyclinicExamMethods.savePolExam();PolyclinicExamMethods.fillPatientLabRadHistoryTable();"
-                                data-toggle="tooltip" title="Click for save.">Save
+                            <button class="anamnezBtns btn-success" id="polExamSave" onclick="PolyclinicExamMethods.savePolExam();PolyclinicExamMethods.fillPatientLabRadHistoryTable();" data-toggle="tooltip" title="Click for save.">Save
                             </button>
 
-                            <button class="anamnezBtns btn-danger" id="polNewPatient"
-                                onclick="PolyclinicExamMethods.clearForNewPatient()" data-toggle="tooltip"
-                                title="Click for new patient.">New Patient
+                            <button class="anamnezBtns btn-danger" id="polNewPatient" onclick="PolyclinicExamMethods.clearForNewPatient()" data-toggle="tooltip" title="Click for new patient.">New Patient
                             </button>
 
-                            <button class="anamnezBtns btn-info" id="polSearch"
-                                onclick="PolyclinicExamMethods.findPatient();PolyclinicExamMethods.fillPatientLabRadHistoryTable();"
-                                data-toggle="tooltip" title="Click for new patient.">Search
+                            <button class="anamnezBtns btn-info" id="polSearch" onclick="PolyclinicExamMethods.findPatient();PolyclinicExamMethods.fillPatientLabRadHistoryTable();" data-toggle="tooltip" title="Click for new patient.">Search
                             </button>
                         </div>
                     </div>
 
                     <div class="patientPhoto">
                         <img id="patientPhotoId" src="/public/images/Patient_Male.ico" alt="Patient Photo">
-                        <button class="polyclinicButtons btn--swap" id="changeImage"
-                            onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">
+                        <button class="polyclinicButtons btn--swap" id="changeImage" onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');">
                             Degistir <span id="degistirSpan">Change patient <br> photo.</span>
                         </button>
                         <button class="polyclinicButtons btn--swap" id="polExamIdDetails" style="width: 109%;" onclick="ShowOrHideMethods.showPopUpModal('polExamIframeContainer');
@@ -189,12 +153,10 @@
                         <h10 class="historyHeaders" id="patientStatisticsHeader">Patient Statistics</h10> <br>
                         <div class="card-container" id="poly-exam-card-container">
 
-                            <div class="baseCard" id="statics1"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics1" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics1">
-                                    <div id="analytcStatics1" class="front"
-                                        style="background-image: url('/public/images/statics-6.png');background-size: cover;">
+                                    <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-6.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -204,36 +166,31 @@
                                         </div>
                                     </div>
                                     <div class="back" style="overflow-y: scroll !important;">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="This statistic shows which polyclinics and how many times the patient visited.">
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows which polyclinics and how many times the patient visited.">
                                         </button>
                                         <p class="cardP">
-                                        <table id="patientVisitStatisticsTable">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Polyclinic
-                                                    </td>
-                                                    <td style="border-top-right-radius: 8px;">Count</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="background-color: inherit !important;">
+                                            <table id="patientVisitStatisticsTable">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Polyclinic
+                                                        </td>
+                                                        <td style="border-top-right-radius: 8px;">Count</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: inherit !important;">
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="baseCard" id="statics2"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics2" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics2">
-                                    <div id="analytcStatics2" class="front"
-                                        style="background-image: url('/public/images/patient-appointment-statistics.png');background-size: cover;">
+                                    <div id="analytcStatics2" class="front" style="background-image: url('/public/images/patient-appointment-statistics.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -243,38 +200,32 @@
                                         </div>
                                     </div>
                                     <div class="back" style="overflow-y: scroll !important;">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="This statistic shows status of patient's appointment."></button>
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows status of patient's appointment."></button>
                                         <p class="cardP">
-                                        <table id="patientAppointmentStatusTable">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Polyclinic
-                                                    </td>
-                                                    <td
-                                                        style="border-right: 1px solid #b9c8d2 !important;border-top:none;border-bottom:none;">
-                                                        Date</td>
-                                                    <td style="border-top-right-radius: 8px;">Status</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                            <table id="patientAppointmentStatusTable">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Polyclinic
+                                                        </td>
+                                                        <td style="border-right: 1px solid #b9c8d2 !important;border-top:none;border-bottom:none;">
+                                                            Date</td>
+                                                        <td style="border-top-right-radius: 8px;">Status</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="baseCard" id="statics3"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics3" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics3">
-                                    <div id="analytcStatics3" class="front"
-                                        style="background-image: url('/public/images/patient-appointment-statistics-2.png');background-size: cover;">
+                                    <div id="analytcStatics3" class="front" style="background-image: url('/public/images/patient-appointment-statistics-2.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -284,24 +235,21 @@
                                         </div>
                                     </div>
                                     <div class="back" style="overflow-y: scroll !important;">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="This statistic shows patient's upcoming appointments."></button>
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows patient's upcoming appointments."></button>
                                         <p class="cardP">
-                                        <table id="patientUpcomingAppointmentTable" style="width: 113%;">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Polyclinic
-                                                    </td>
-                                                    <td style="border-top-right-radius: 8px;">Date</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="background-color: inherit !important;">
+                                            <table id="patientUpcomingAppointmentTable" style="width: 113%;">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Polyclinic
+                                                        </td>
+                                                        <td style="border-top-right-radius: 8px;">Date</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: inherit !important;">
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
@@ -314,12 +262,10 @@
                         <h10 class="historyHeaders" id="patientStatisticsHeader">Polyclinic Statistics</h10> <br>
                         <div class="card-container" id="poly-exam-card-container">
 
-                            <div class="baseCard" id="statics6"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics6" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics1">
-                                    <div id="analytcStatics1" class="front"
-                                        style="background-image: url('/public/images/polyclinic-statistics.png');background-size: cover;">
+                                    <div id="analytcStatics1" class="front" style="background-image: url('/public/images/polyclinic-statistics.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -332,32 +278,28 @@
                                         <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows how many patients were examined or awaited in the
                                             polyclinic."></button>
                                         <p class="cardP">
-                                        <table id="polyclinicPatientCountTable">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Polyclinic
-                                                    </td>
-                                                    <td style="border-top-right-radius: 8px;">Count</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="background-color: inherit !important;">
+                                            <table id="polyclinicPatientCountTable">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Polyclinic
+                                                        </td>
+                                                        <td style="border-top-right-radius: 8px;">Count</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: inherit !important;">
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="baseCard" id="statics7"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics7" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics2">
-                                    <div id="analytcStatics2" class="front"
-                                        style="background-image: url('/public/images/polyclinic-healt-insurance.png');background-size: cover;">
+                                    <div id="analytcStatics2" class="front" style="background-image: url('/public/images/polyclinic-healt-insurance.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -367,38 +309,32 @@
                                         </div>
                                     </div>
                                     <div class="back" style="overflow-y: scroll !important;">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="This statistic shows which health insurance the patients in the polyclinic belong to."></button>
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows which health insurance the patients in the polyclinic belong to."></button>
                                         <p class="cardP">
-                                        <table id="patientHealtInsuranceTable" style="margin-left: -16px;">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;font-size: 9px;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Polyclinic
-                                                    </td>
-                                                    <td
-                                                        style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
-                                                        Insurance</td>
-                                                    <td style="border-top-right-radius: 8px;">Count</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="background-color: inherit !important;font-size: 8px;">
+                                            <table id="patientHealtInsuranceTable" style="margin-left: -16px;">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;font-size: 9px;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Polyclinic
+                                                        </td>
+                                                        <td style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                                            Insurance</td>
+                                                        <td style="border-top-right-radius: 8px;">Count</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: inherit !important;font-size: 8px;">
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="baseCard" id="statics8"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics8" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics3">
-                                    <div id="analytcStatics3" class="front"
-                                        style="background-image: url('/public/images/polyclinic-gender.png');background-size: cover;">
+                                    <div id="analytcStatics3" class="front" style="background-image: url('/public/images/polyclinic-gender.png');background-size: cover;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -408,27 +344,23 @@
                                         </div>
                                     </div>
                                     <div class="back" style="overflow-y: scroll !important;">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="This statistic shows the gender distribution of patients in the polyclinic."></button>
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows the gender distribution of patients in the polyclinic."></button>
                                         <p class="cardP">
-                                        <table id="patientGenderTable" style="margin-left: -15px;">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;font-size: 9px;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Polyclinic
-                                                    </td>
-                                                    <td
-                                                        style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
-                                                        Gender</td>
-                                                    <td style="border-top-right-radius: 8px;">Count</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="background-color: inherit !important;font-size: 9px;">
+                                            <table id="patientGenderTable" style="margin-left: -15px;">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;font-size: 9px;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Polyclinic
+                                                        </td>
+                                                        <td style="border-top: none;border-bottom: none;border-right: 1px solid #b9c8d2 !important;">
+                                                            Gender</td>
+                                                        <td style="border-top-right-radius: 8px;">Count</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: inherit !important;font-size: 9px;">
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
@@ -441,12 +373,10 @@
                         <h10 class="historyHeaders" id="patientStatisticsHeader">Doctor Statistics</h10> <br>
                         <div class="card-container" id="poly-exam-card-container">
 
-                            <div class="baseCard" id="statics4"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics4" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics4">
-                                    <div id="analytcStatics4" class="front"
-                                        style="background-image: url('/public/images/patient-visit-2.png');background-size: contain; ">
+                                    <div id="analytcStatics4" class="front" style="background-image: url('/public/images/patient-visit-2.png');background-size: contain; ">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -456,39 +386,33 @@
                                         </div>
                                     </div>
                                     <div class="back" style="overflow-y: scroll !important;">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="This statistic shows the doctors' examined patient count."></button>
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows the doctors' examined patient count."></button>
                                         <p class="cardP">
-                                        <table id="doctorPatientTable" style="margin-left: -13px;">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;font-size: 9px;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Doctor
-                                                    </td>
-                                                    <td
-                                                        style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
-                                                        Polyclinic
-                                                    </td>
-                                                    <td style="border-top-right-radius: 8px;">Count</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="background-color: inherit !important;font-size: 7px;">
+                                            <table id="doctorPatientTable" style="margin-left: -13px;">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;font-size: 9px;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Doctor
+                                                        </td>
+                                                        <td style="border-bottom: none;border-top: none;border-right: 1px solid #b9c8d2 !important;">
+                                                            Polyclinic
+                                                        </td>
+                                                        <td style="border-top-right-radius: 8px;">Count</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: inherit !important;font-size: 7px;">
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="baseCard" id="statics5"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics5" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics5">
-                                    <div id="analytcStatics5" class="front"
-                                        style="background-image: url('/public/images/polyclinic-doctor-appointment-2.png');background-size: contain;">
+                                    <div id="analytcStatics5" class="front" style="background-image: url('/public/images/polyclinic-doctor-appointment-2.png');background-size: contain;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -498,35 +422,30 @@
                                         </div>
                                     </div>
                                     <div class="back" style="overflow-y: scroll !important;">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="This statistic shows the doctors' appointment patient count."></button>
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows the doctors' appointment patient count."></button>
                                         <p class="cardP">
-                                        <table id="doctorAppointmentTable">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Doctor
-                                                    </td>
-                                                    <td style="border-top-right-radius: 8px;">Count</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="background-color: inherit !important;">
+                                            <table id="doctorAppointmentTable">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Doctor
+                                                        </td>
+                                                        <td style="border-top-right-radius: 8px;">Count</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: inherit !important;">
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="baseCard" id="statics9"
-                                onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
+                            <div class="baseCard" id="statics9" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );"
                                 onmouseout="return PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3', 'polExamStatics4', 'polExamStatics5', 'polExamStatics6', 'polExamStatics7', 'polExamStatics8', 'polExamStatics9' );">
                                 <div class="card" id="polExamStatics4">
-                                    <div id="analytcStatics4" class="front"
-                                        style="background-image: url('/public/images/staff-leave.png');background-size: contain;">
+                                    <div id="analytcStatics4" class="front" style="background-image: url('/public/images/staff-leave.png');background-size: contain;">
                                         <div class="card-title">
                                             <header>
                                                 <h4>
@@ -536,26 +455,21 @@
                                         </div>
                                     </div>
                                     <div class="back" style="overflow-y: scroll !important;">
-                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                            title="This statistic shows the doctors on leave."></button>
+                                        <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="This statistic shows the doctors on leave."></button>
                                         <p class="cardP">
-                                        <table id="doctorOnLeaveTable"
-                                            style="margin: -35px 0px 0px -14px !important;width: 113% !important;">
-                                            <thead>
-                                                <tr id="tableHeader"
-                                                    style="background-color: #49A681 !important; color: white;font-size: smaller;">
-                                                    <td
-                                                        style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
-                                                        Doctor
-                                                    </td>
-                                                    <td style="border-top-right-radius: 8px;">Return Date</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody
-                                                style="background-color: inherit !important;font-size: small !important  ;">
+                                            <table id="doctorOnLeaveTable" style="margin: -35px 0px 0px -14px !important;width: 113% !important;">
+                                                <thead>
+                                                    <tr id="tableHeader" style="background-color: #49A681 !important; color: white;font-size: smaller;">
+                                                        <td style="border-top-left-radius: 8px !important;border-right: 1px solid #b9c8d2 !important;">
+                                                            Doctor
+                                                        </td>
+                                                        <td style="border-top-right-radius: 8px;">Return Date</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: inherit !important;font-size: small !important  ;">
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                         </p>
                                     </div>
                                 </div>
@@ -611,12 +525,10 @@
         <form id="polExam-modal-content" class="polExamIframeContent animate" action="?action=add" method="post">
             <div id="polExamIframeImgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('polExamIframeContainer').style.display='none'; 
-                document.getElementById('polSearch').click();" id="polExamIframeCloseBtn" class="close"
-                    title="Close Modal">&times;</span>
+                document.getElementById('polSearch').click();" id="polExamIframeCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="polExamAvatar" src="/public/images/id-3.png" alt="Avatar" class="avatar">
             </div>
-            <iframe src="/public/htmls/hastaKimlik.html" name="polExamIframe" id="polExamIframe"
-                allowTransparency="true" frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
+            <iframe src="/public/htmls/hastaKimlik.html" name="polExamIframe" id="polExamIframe" allowTransparency="true" frameborder="1" onload="ColorAndAdjustmentMethods.scaleForMobile();">
             </iframe>
         </form>
     </div>
@@ -631,32 +543,28 @@
             <!-- Social buttons -->
             <ul class="list-unstyled list-inline text-center">
                 <li class="list-inline-item">
-                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
+                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page" onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
                         <a class="btn-floating btn-fb fa-2x">
                             <i class="fa fa-facebook-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
+                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page" onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
                         <a class="btn-floating btn-tw fa-2x">
                             <i class="fa fa-twitter-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
+                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page" onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
                         <a id="googlePlusBtn" class="btn-floating btn-gplus fa-2x">
                             <i class="fa fa-google-plus-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
+                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page" onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
                         <a id="linkedinBtn" class="btn-floating btn-li fa-2x">
                             <i class=" fa fa-linkedin-square"> </i>
                         </a>
@@ -671,8 +579,7 @@
         <!-- Copyright -->
         <div class="footer-copyright text-center" style="font-size: large;color: black;padding: 10px;">
             © since 2020 Copyright:
-            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')"
-                title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
+            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')" title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
                 <span class="nameLetters">R</span>
                 <span class="nameLetters">e</span>
                 <span class="nameLetters">c</span>
@@ -692,8 +599,7 @@
     <div id="userStatistics" class="modal" style="padding: 60px;">
         <div id="userStatistics-modal-content" class="userStatisticsContent animate" action="?action=add" method="post">
             <div id="userStatisticsImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userStatistics').style.display='none'"
-                    id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userStatistics').style.display='none'" id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/statistics-12.png" alt="Avatar" class="avatar">
             </div>
             <div id="userStatisticsContainer" class="userStatisticsContainer">
@@ -738,8 +644,7 @@
     <div id="userTraining" class="modal" style="padding: 60px;">
         <div id="userTraining-modal-content" class="userTrainingContent animate" action="?action=add" method="post">
             <div id="userTrainingImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn"
-                    class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/training-4.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Incoming Trainings</h11>
@@ -758,8 +663,7 @@
                         <td>01.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a id="documentOpenLink1" class="modulLink"
-                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                            <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -768,8 +672,7 @@
                         <td>12.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                target="_blank">Open File</a>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                 </table>
@@ -790,8 +693,7 @@
                         <td>01.03.2020 09:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a id="documentOpenLink1" class="modulLink"
-                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                            <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -800,8 +702,7 @@
                         <td>12.01.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                target="_blank">Open File</a>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                 </table>
@@ -812,36 +713,23 @@
     <div id="userSettings" class="modal" style="padding: 60px;">
         <div id="userSettings-modal-content" class="userSettingsContent animate" action="?action=add" method="post">
             <div id="userSettingsImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn"
-                    class="close" title="Close!">&times;</span>
-                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar"
-                    class="avatar">
+                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn" class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Settings</h11>
             <div id="userSettingsContainer" class="userSettingsContainer">
                 Old Password: <br>
-                <input type="password" name="userOldPassword" id="userOldPassword"
-                    placeholder="Please enter your current password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
-                <br>
-                New Password: <br>
-                <input type="password" name="userNewPassword" id="userNewPassword"
-                    placeholder="Please enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <input type="password" name="userOldPassword" id="userOldPassword" placeholder="Please enter your current password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <br> New Password: <br>
+                <input type="password" name="userNewPassword" id="userNewPassword" placeholder="Please enter your new password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <span for='userNewPassword' class="p-viewer">
                     <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
                         onclick="ShowOrHideMethods.showPassword('userNewPassword','showPasswordIcon1')">
                     </i>
                 </span>
-                <br>
-                New Password Repeat: <br>
-                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
-                    placeholder="Please re-enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
+                <br> New Password Repeat: <br>
+                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat" placeholder="Please re-enter your new password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
                     CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
                 <span for='userNewPasswordRepeat' class="p-viewer">
                     <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
@@ -852,8 +740,7 @@
                 <br>
                 <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()"
-                    title="Change password!">Change Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="LoginProcess.changeUserPassword()" title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -862,8 +749,7 @@
     <div id="userMessaging" class="modal" style="padding: 60px;">
         <div id="userMessaging-modal-content" class="userMessagingContent animate">
             <div id="userMessagingImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn"
-                    class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/message-2.png" alt="Avatar" class="avatar">
             </div>
             <div id="userMessageSubContainer">
@@ -884,8 +770,7 @@
                                 <td>01.03.2020 09:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a id="documentOpenLink1" class="modulLink"
-                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                    <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -895,8 +780,7 @@
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                        target="_blank">Open Message</a>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open Message</a>
                                 </td>
                             </tr>
                         </table>
@@ -917,8 +801,7 @@
                                 <td>01.03.2020 09:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a id="documentOpenLink1" class="modulLink"
-                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                    <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -928,8 +811,7 @@
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                        target="_blank">Open Message</a>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open Message</a>
                                 </td>
                             </tr>
                         </table>
@@ -938,22 +820,17 @@
 
                 <div id="userNewMessageDiv">
                     <h11 class="historyHeaders" style="margin: 5px;color: white;">Send Message</h11>
-                    <br><br>
-                    Subject: <br>
+                    <br><br> Subject: <br>
                     <input type="text" name="userMessageSubject" id="userMessageSubject">
-                    <br>
-                    To: <br>
+                    <br> To: <br>
                     <input type="text" name="userMessageTo" id="userMessageTo">
                     <br>
                     <!-- kisiler -->
                     <div class="dropdown">
-                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')"
-                            class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
+                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')" class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
                                 style="font-size: 16px;">Add person!</span></button>
-                        <div id="userMessagePerson" class="dropdown-content"
-                            onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
-                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus
-                                onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
+                        <div id="userMessagePerson" class="dropdown-content" onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
+                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
                             <a>Recep CELIK</a>
                             <a>Adnan YILDIRIM</a>
                             <a>Onder KARABULUT</a>
@@ -964,8 +841,7 @@
                     Message: <br>
                     <textarea name="userMessageBody" id="userMessageBody" cols="87" rows="7"></textarea>
                     <br>
-                    <button class="inpatientBtn btn-primary" id="userMessageSend"
-                        onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
+                    <button class="inpatientBtn btn-primary" id="userMessageSend" onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
                     </button>
                     <br>
                 </div>
@@ -988,12 +864,9 @@
                 LoginProcess.userLoginStatistics();
                 LoginProcess.getLastPasswordChangeStatistics();">
                 <i class="fa fa-bar-chart"></i> </a>
-            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i
-                    class='fa fa-file-text'></i></a>
-            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i
-                    class="fa fa-cog   fa-fw"></i> </a>
-            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i
-                    class="fa fa-envelope"></i> </a>
+            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
+            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
+            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
             <a class="menu-item"> <i class="fa fa-cog"></i> </a>
 
         </nav>
@@ -1029,10 +902,8 @@
     <!--end of back to top button -->
 
     <div class="bottomScrool" id="polExamBottomScrool">
-        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
-            Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
-            'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
-            yayımladı... &#164;&#164; it's not a mobile device.</p>
+        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı; 'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ
+            VE TANI' adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
     </div>
     <!-- end of Footer -->
 

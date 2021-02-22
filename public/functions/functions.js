@@ -6,7 +6,7 @@ var
         showSelectedDivAndHideOthers: function showSelectedDivAndHideOthers(showDivId, hideDiv) {
             var showDiv = document.getElementById(showDivId),
                 hideDiv = document.getElementById(hideDiv);
-            $(hideDiv).fadeOut('slow', function () {
+            $(hideDiv).fadeOut('slow', function() {
                 $(showDiv).fadeIn('slow');
             });
         },
@@ -24,7 +24,7 @@ var
             mywindow.focus(); // necessary for IE >= 10*/
 
 
-            setTimeout(function () {
+            setTimeout(function() {
                 mywindow.print();
                 mywindow.close();
             }, 1000)
@@ -32,7 +32,7 @@ var
         },
 
         showSelectedElementInDropdown: function showSelectedElementInDropdown(divId, personInputId) {
-            $('#' + divId).on('click', function (e) {
+            $('#' + divId).on('click', function(e) {
                 var myPersonInputId = document.getElementById(personInputId);
                 if (this !== e.target)
                     myPersonInputId.value = e.target.text;
@@ -62,13 +62,12 @@ var
 
             if (userId != '' || userId > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?', {
                         allowHtml: true,
                         progressBar: true,
                         timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
+                        onShown: function(toast) {
+                            $("#clearConfirmBtn").on('click', function() {
                                 AdministrationMethods.findAllUsers();
                                 AdministrationMethods.getMaxUserId();
                                 document.getElementById('saveUser').innerHTML = 'Save';
@@ -93,17 +92,16 @@ var
                 type: "GET",
                 url: "/admin/user/checkUserFromDatabase",
                 data: { personalIdNumber: $("#userTc").val() },
-                success: function (user) {
+                success: function(user) {
                     if (user.length != 0 || user != null) {
                         var btn = document.getElementById('saveUser');
                         btn.innerHTML = 'Update';
-                    }
-                    else {
+                    } else {
                         btn.innerHTML = 'Save';
                     }
                 },
 
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('User couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -139,7 +137,7 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/admin/user/save',
-                    success: function () {
+                    success: function() {
                         jQueryMethods.toastrOptions();
                         toastr.success('User successfully saved!', 'User Save');
                         AdministrationMethods.findOneUser();
@@ -154,7 +152,7 @@ var
                         $("#userSurname").val('');
                         $("#userTc").val('');
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('User couldnt save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
@@ -188,18 +186,18 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/user/all",
-                success: function (result) {
-                    $.each(result, function (i, users) {
+                success: function(result) {
+                    $.each(result, function(i, users) {
                         i++;
                         $("#usersList> tbody").append(
-                            "<tr class='userRow' id='userRowId" + i + "' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRowId" + i + "\")' title=''><td class='idTd' title=''>" + users.userId + "</td><td>" + users.userName + "</td><td>"
-                            + users.name + "</td><td>" + users.surname + "</td><td>" + users.personalIdNumber + "</td><td>"
-                            + users.majorDicipline + "</td><td>" + users.userGroup + "<td class='photoSrcTd'>"
-                            + users.userPhotoSrc + "</td><td>-</td></tr>");
+                            "<tr class='userRow' id='userRowId" + i + "' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRowId" + i + "\")' title=''><td class='idTd' title=''>" + users.userId + "</td><td>" + users.userName + "</td><td>" +
+                            users.name + "</td><td>" + users.surname + "</td><td>" + users.personalIdNumber + "</td><td>" +
+                            users.majorDicipline + "</td><td>" + users.userGroup + "<td class='photoSrcTd'>" +
+                            users.userPhotoSrc + "</td><td>-</td></tr>");
                     });
 
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Users couldnt list! \n' + message.err, 'Error!')
                     console.log("ERROR: ", e);
@@ -220,7 +218,7 @@ var
                 type: "GET",
                 url: "/admin/user/findOneUser",
                 data: { personalIdNumber: $("#userTc").val() },
-                success: function (user) {
+                success: function(user) {
                     jQueryMethods.toastrOptions();
                     if (user.userId == '' || user.userId == null || user.userId == 'undefind') {
                         toastr.error('User couldnt find! \n\n\n', 'Error!')
@@ -237,15 +235,15 @@ var
                         userSearchInput.style.maxWidth = '93%';
 
                         $("#usersList> tbody").append(
-                            "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + user.userId + "</td><td>" + user.userName + "</td><td>"
-                            + user.name + "</td><td>" + user.surname + "</td><td>" + user.personalIdNumber + "</td><td>"
-                            + user.majorDicipline + "</td><td>" + user.userGroup + "</td><td class='photoSrcTd'>" + user.userPhotoSrc + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteUser()'>Delete</button></td></tr>");
+                            "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + user.userId + "</td><td>" + user.userName + "</td><td>" +
+                            user.name + "</td><td>" + user.surname + "</td><td>" + user.personalIdNumber + "</td><td>" +
+                            user.majorDicipline + "</td><td>" + user.userGroup + "</td><td class='photoSrcTd'>" + user.userPhotoSrc + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteUser()'>Delete</button></td></tr>");
 
                         toastr.info('User who has - ' + user.personalIdNumber + ' - id number found!', 'User Search');
                     }
                 },
 
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('User couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -255,18 +253,17 @@ var
 
         deleteUser: function deleteUser() {
             toastr.warning(
-                "<br/><br/><button type='button' id='deleteConfirmBtn' class='inpatientBtn btn-danger' style='width: 210px !important;'>Yes</button>", 'Do you want to DELETE user?',
-                {
+                "<br/><br/><button type='button' id='deleteConfirmBtn' class='inpatientBtn btn-danger' style='width: 210px !important;'>Yes</button>", 'Do you want to DELETE user?', {
                     allowHtml: true,
                     progressBar: false,
                     timeOut: 10000,
-                    onShown: function (toast) {
-                        $("#deleteConfirmBtn").on('click', function () {
+                    onShown: function(toast) {
+                        $("#deleteConfirmBtn").on('click', function() {
                             $.ajax({
                                 type: "GET",
                                 url: "/admin/user/deleteUser",
                                 data: { personalIdNumber: $("#userTc").val() },
-                                success: function () {
+                                success: function() {
                                     jQueryMethods.toastrOptions();
                                     AdministrationMethods.findAllUsers();
                                     AdministrationMethods.getMaxUserId();
@@ -280,7 +277,7 @@ var
                                     $("#userSurname").val('');
                                     $("#userTc").val('');
                                 },
-                                error: function (e) {
+                                error: function(e) {
                                     jQueryMethods.toastrOptions();
                                     toastr.error('User couldnt deleted! \n' + e.body, 'Error!')
                                     console.log("ERROR: ", e);
@@ -292,11 +289,10 @@ var
         },
 
         resetPassword: function resetPassword() {
-            var myData =
-            {
-                userId: $("#userId").val(),
-                userPassword: $("#userPassword").val()
-            },
+            var myData = {
+                    userId: $("#userId").val(),
+                    userPassword: $("#userPassword").val()
+                },
                 myUserPassword = $("#userPassword").val(),
                 myUserTc = $("#userTc").val();
 
@@ -315,12 +311,12 @@ var
                         contentType: 'application/json',
                         datatype: "json",
                         url: '/admin/user/resetPassword',
-                        success: function () {
+                        success: function() {
                             jQueryMethods.toastrOptions();
                             toastr.success('Password reseted!', 'Password Reset');
                             // AdministrationMethods.findOneUser();
                         },
-                        error: function (e) {
+                        error: function(e) {
                             jQueryMethods.toastrOptions();
                             toastr.error('User couldnt save! \n\n\n' + e.responseText, 'Error!')
                             console.log("ERROR: ", e.responseText);
@@ -351,12 +347,12 @@ var
                 contentType: 'application/json',
                 datatype: "json",
                 url: '/admin/user/updateUserData',
-                success: function () {
+                success: function() {
                     jQueryMethods.toastrOptions();
                     AdministrationMethods.findOneUser();
                     toastr.success('User data updated!', 'User Data Update');
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error(userOrStaff + ' couldnt save! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -365,11 +361,10 @@ var
         },
 
         updatePhoto: function updatePhoto(userOrStaff) {
-            var myData =
-            {
-                userId: $("#userId").val(),
-                userPhoto: $('#userPhotoId')[0].src
-            },
+            var myData = {
+                    userId: $("#userId").val(),
+                    userPhoto: $('#userPhotoId')[0].src
+                },
                 myUserTc = $("#userTc").val();
 
             if (myUserTc == '' || myUserTc.length <= 0) {
@@ -383,12 +378,12 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/admin/user/updatePhoto',
-                    success: function () {
+                    success: function() {
                         jQueryMethods.toastrOptions();
                         toastr.success('Photo updated!', 'Photo Update');
                         // AdministrationMethods.findOneUser();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error(userOrStaff + ' couldnt save! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -401,12 +396,16 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/user/getMaxUserId",
-                success: function (user) {
-                    $("#userId").val(user.userId + 1);
-                    // console.log(user.userId);
+                success: function(user) {
+                    if (user.length < 1) {
+                        $("#userId").val(1);
+                    } else {
+                        $("#userId").val(user.userId + 1);
+                        // console.log(user.userId);
+                    }
                 },
 
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max id! \n\n\n' + e.responseText, 'Error!")
                     console.log("ERROR: ", e.responseText);
@@ -424,7 +423,7 @@ var
 
             myPhotoSrc = $('#' + userRowid + '').children("td:nth-child(8)").text();
 
-            $(function () {
+            $(function() {
                 s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">';
                 s += '<tr style="border-style:ridge;border:5px solid #761c54;"><img src="' + myPhotoSrc + '" style="width:200px; height:200px;align-items:center;box-shadow:"/> </td><td valign="top">' + userNameSurname + '</td></tr>';
                 s += '<td class="Text">' + userMajorDicipline + ' - ' + userGroup + ' <br/>' + userIDText + '</td>';
@@ -453,11 +452,11 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/user/fillUserStatisticsTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#userStatisticsTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='userGroup'>"
-                            + docs[i]["_id"] + "</td><td class='userCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='userGroup'>" +
+                            docs[i]["_id"] + "</td><td class='userCount'>" + docs[i]["count"] + "</td></tr>");
 
                         total += docs[i]['count'];
 
@@ -468,7 +467,7 @@ var
                     userStatisticsCardBack.innerHTML = 'User Statistics: <br> Total Staff = ' + total;
                 },
 
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('User group couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -484,13 +483,12 @@ var
 
             if (staffId != '' || staffId > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?', {
                         allowHtml: true,
                         progressBar: true,
                         timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
+                        onShown: function(toast) {
+                            $("#clearConfirmBtn").on('click', function() {
                                 AdministrationMethods.findAllStaffs();
                                 AdministrationMethods.getMaxStaffId();
 
@@ -521,17 +519,16 @@ var
                 type: "GET",
                 url: "/admin/staff/checkStaffFromDatabase",
                 data: { staffIdNumber: $("#staffTc").val() },
-                success: function (staff) {
-                    if (staff.staffIdNumber == 0 || staff.staffIdNumber == null
-                        || staff.staffIdNumber == undefined || staff.staffIdNumber == 'undefined') {
+                success: function(staff) {
+                    if (staff.staffIdNumber == 0 || staff.staffIdNumber == null ||
+                        staff.staffIdNumber == undefined || staff.staffIdNumber == 'undefined') {
                         btn.innerHTML = 'Save';
-                    }
-                    else {
+                    } else {
                         btn.innerHTML = 'Update';
                     }
                 },
 
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -575,7 +572,7 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/admin/staff/save',
-                    success: function () {
+                    success: function() {
                         jQueryMethods.toastrOptions();
                         toastr.success('Staff successfully saved!', 'Staff Save');
                         console.log(myData + ' = staffSave function sent me!')
@@ -589,7 +586,7 @@ var
                         $("#staffSurname").val('');
                         $("#staffDiplomaNo").val('');
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Staff couldnt save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
@@ -620,30 +617,30 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/staff/findAllStaffs",
-                success: function (result) {
-                    $.each(result, function (i, staff) {
+                success: function(result) {
+                    $.each(result, function(i, staff) {
                         staffListDiv.style.width = '262%'
                         staffListDiv.style.maxWidth = '262%'
 
-                        if (staff.staffLeaveStartDate == ''
-                            || staff.staffLeaveStartDate == undefined
-                            || staff.staffLeaveStartDate == 'undefined') {
+                        if (staff.staffLeaveStartDate == '' ||
+                            staff.staffLeaveStartDate == undefined ||
+                            staff.staffLeaveStartDate == 'undefined') {
                             staff.staffLeaveStartDate = x;
                             staff.staffLeaveEndDate = x;
                         }
 
                         i++;
                         $("#staffList> tbody").append(
-                            "<tr class='staffRow' id='staffRowId" + i + "' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"staffRowId" + i + "\")' title='' style='background-color=''><td class='idTd' title=''>" + i + "</td><td>"
-                            + staff.staffIdNumber + "</td><td>"
-                            + staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>"
-                            + staff.staffDiplomaNo + "</td><td>"
-                            + staff.majorDicipline + "</td><td>" + staff.staffGroup + "<td class='photoSrcTd'>"
-                            + staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate.substring(0, 10) + "</td><td>"
-                            + staff.staffLeaveEndDate.substring(0, 10) + "</td><td>-</td></tr>");
+                            "<tr class='staffRow' id='staffRowId" + i + "' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"staffRowId" + i + "\")' title='' style='background-color=''><td class='idTd' title=''>" + i + "</td><td>" +
+                            staff.staffIdNumber + "</td><td>" +
+                            staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>" +
+                            staff.staffDiplomaNo + "</td><td>" +
+                            staff.majorDicipline + "</td><td>" + staff.staffGroup + "<td class='photoSrcTd'>" +
+                            staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate.substring(0, 10) + "</td><td>" +
+                            staff.staffLeaveEndDate.substring(0, 10) + "</td><td>-</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff couldnt list! \n' + message.err, 'Error!')
                     console.log("ERROR: ", e);
@@ -660,7 +657,7 @@ var
                 type: "GET",
                 url: "/admin/staff/findOneStaff",
                 data: { staffIdNumber: $("#staffTc").val() },
-                success: function (staff) {
+                success: function(staff) {
                     jQueryMethods.toastrOptions();
                     if (staff.staffName == '' || staff.staffName == null || staff.staffName == 'undefined') {
                         toastr.error('Staff couldnt find! \n\n\n', 'Error!')
@@ -674,24 +671,24 @@ var
                         staffListDiv.style.width = '265%'
                         staffListDiv.style.maxWidth = '265%'
 
-                        if (staff.staffLeaveStartDate == ''
-                            || staff.staffLeaveStartDate == undefined
-                            || staff.staffLeaveStartDate == 'undefined') {
+                        if (staff.staffLeaveStartDate == '' ||
+                            staff.staffLeaveStartDate == undefined ||
+                            staff.staffLeaveStartDate == 'undefined') {
                             staff.staffLeaveStartDate = x;
                             staff.staffLeaveEndDate = x;
                         }
 
                         $("#staffList> tbody").append(
-                            "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + staff.staffId + "</td><td>" + staff.staffIdNumber + "</td><td>"
-                            + staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>" + staff.staffDiplomaNo + "</td><td>"
-                            + staff.majorDicipline + "</td><td>" + staff.staffGroup + "</td><td class='photoSrcTd'>"
-                            + staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate.substring(0, 10) + "</td><td>"
-                            + staff.staffLeaveEndDate.substring(0, 10) + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteStaff()'>Delete</button></td></tr>");
+                            "<tr class='userRow' id='userRow1' onmouseover='AdministrationMethods.showUserPhotoOnHover(\"userRow1\")' title=''><td class='idTd' title=''>" + staff.staffId + "</td><td>" + staff.staffIdNumber + "</td><td>" +
+                            staff.staffName + "</td><td>" + staff.staffSurname + "</td><td>" + staff.staffDiplomaNo + "</td><td>" +
+                            staff.majorDicipline + "</td><td>" + staff.staffGroup + "</td><td class='photoSrcTd'>" +
+                            staff.staffPhotoSrc + "</td><td>" + staff.staffLeaveStartDate.substring(0, 10) + "</td><td>" +
+                            staff.staffLeaveEndDate.substring(0, 10) + "</td><td><button class='inpatientBtn btn-danger' title='Click for delete user.' onclick='AdministrationMethods.deleteStaff()'>Delete</button></td></tr>");
 
                         toastr.info('Staff who has - ' + staff.staffIdNumber + ' - id number found!', 'User Search');
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -701,24 +698,23 @@ var
 
         deleteStaff: function deleteStaff() {
             toastr.warning(
-                "<br/><h21>You will delete staff from database permanently!<h21/><br/><br/><button type='button' id='deleteConfirmBtn' class='inpatientBtn btn-danger' style='width: 210px !important;'>Yes</button>", 'Do you want to DELETE staff?',
-                {
+                "<br/><h21>You will delete staff from database permanently!<h21/><br/><br/><button type='button' id='deleteConfirmBtn' class='inpatientBtn btn-danger' style='width: 210px !important;'>Yes</button>", 'Do you want to DELETE staff?', {
                     allowHtml: true,
                     progressBar: false,
                     timeOut: 10000,
-                    onShown: function (toast) {
-                        $("#deleteConfirmBtn").on('click', function () {
+                    onShown: function(toast) {
+                        $("#deleteConfirmBtn").on('click', function() {
                             $.ajax({
                                 type: "GET",
                                 url: "/admin/staff/deleteStaff",
                                 data: { staffIdNumber: $("#staffTc").val() },
-                                success: function () {
+                                success: function() {
                                     jQueryMethods.toastrOptions();
                                     toastr.success($("#staffTc").val() + ' - ' + $("#staffName").val() + ' - ' +
                                         $("#staffSurname").val() + ' - Deleted!', 'Staff Delete');
                                     AdministrationMethods.clearForNewStaff();
                                 },
-                                error: function (e) {
+                                error: function(e) {
                                     jQueryMethods.toastrOptions();
                                     toastr.error('Staff couldnt deleted! \n' + e.body, 'Error!')
                                     console.log("ERROR: ", e);
@@ -761,12 +757,12 @@ var
                 contentType: 'application/json',
                 datatype: "json",
                 url: '/admin/staff/updateStaffData',
-                success: function () {
+                success: function() {
                     jQueryMethods.toastrOptions();
                     toastr.success('Staff data updated!', 'Staff Data Update');
                     AdministrationMethods.findOneStaff();
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff couldnt update! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -775,11 +771,10 @@ var
         },
 
         updateStaffPhoto: function updateStaffPhoto(userOrStaff) {
-            var myData =
-            {
-                staffId: $("#staffId").val(),
-                staffPhoto: $('#staffPhotoId')[0].src
-            },
+            var myData = {
+                    staffId: $("#staffId").val(),
+                    staffPhoto: $('#staffPhotoId')[0].src
+                },
                 myStaffTc = $("#staffTc").val();
 
             if (myStaffTc == '' || myStaffTc.length <= 0) {
@@ -793,12 +788,12 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/admin/staff/updatePhoto',
-                    success: function () {
+                    success: function() {
                         jQueryMethods.toastrOptions();
                         toastr.success('Photo updated!', 'Photo Update');
                         AdministrationMethods.findOneStaff();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error(userOrStaff + ' couldnt Update! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -811,15 +806,15 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/staff/getMaxStaffId",
-                success: function (staff) {
-                    if (staff.staffId == 0 || staff.staffId == 'NaN' || staff.staffId == 'undefined') {
+                success: function(staff) {
+                    if (staff.length < 1) {
                         $("#staffId").val(1);
                     } else {
                         $("#staffId").val(staff.staffId + 1);
                         // console.log(staff.staffId);
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     console.log(staff.staffId);
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max id from staff table! \n\n\n' + e.responseText, 'Error!")
@@ -837,11 +832,11 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/staff/fillStaffStatisticsTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#staffStatisticsTable> tbody").append(
-                            "<tr class='staffStatisticsRow'><td class='staffGroup'>"
-                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='staffStatisticsRow'><td class='staffGroup'>" +
+                            docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
 
                         total += docs[i]["count"];
 
@@ -850,7 +845,7 @@ var
                     });
                     cardFrontHeader.innerHTML = 'Staff Statistics: <br> Total Staff = ' + total;
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff group couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -864,18 +859,18 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/staff/countTableAndRows",
-                success: function (names) {
-                    $.each(names, function (i) {
+                success: function(names) {
+                    $.each(names, function(i) {
                         $("#databaseStatusTable> tbody").append(
-                            "<tr class='databaseStatisticsRow'><td class='databaseGroup'>"
-                            + names[i]["name"] + "</td><td class='databaseCount'>" + names[i]["count"] + "</td></tr>");
+                            "<tr class='databaseStatisticsRow'><td class='databaseGroup'>" +
+                            names[i]["name"] + "</td><td class='databaseCount'>" + names[i]["count"] + "</td></tr>");
 
                         // jQueryMethods.toastrOptions();
                         // toastr.info('User group counted!', 'User Count');
                     })
                 },
 
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('databaseStatusTable couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -895,8 +890,7 @@ var
                 staffLeaveStartDateLbl.style.display = 'block'
                 staffLeaveEndDate.style.display = 'block'
                 staffLeaveEndDateLbl.style.display = 'block'
-            }
-            else {
+            } else {
                 staffLeaveStartDate.style.display = 'none'
                 staffLeaveStartDateLbl.style.display = 'none'
                 staffLeaveEndDate.style.display = 'none'
@@ -913,27 +907,26 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/staff/fillStafOnLeaveTable",
-                success: function (docs) {
+                success: function(docs) {
                     if (docs.length > 0) {
-                        $.each(docs, function (i) {
+                        $.each(docs, function(i) {
                             $("#staffLeaveStatisticsTable> tbody").append(
-                                "<tr class='staffOnLeaveRow'><td class='staffGroup'>"
-                                + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                                "<tr class='staffOnLeaveRow'><td class='staffGroup'>" +
+                                docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
 
                             total += docs[i]['count'];
                             // jQueryMethods.toastrOptions();
                             // toastr.info('User group counted!', 'User Count');
                         });
                         staffOnLeaveBackCard.innerHTML = 'Staff on Leave Statistics: <br> Total = ' + total;
-                    }
-                    else {
+                    } else {
                         $("#staffLeaveStatisticsTable> tbody").append(
                             "<tr class='staffOnLeaveRow'><td class='staffGroup'>No Staff</td><td class='staffCount'>On Leave </td></tr>");
                     }
 
                 },
 
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff on leave couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -949,13 +942,12 @@ var
 
             if (unitName != '' || unitName > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?', {
                         allowHtml: true,
                         progressBar: true,
                         timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
+                        onShown: function(toast) {
+                            $("#clearConfirmBtn").on('click', function() {
                                 document.getElementById('saveUnit').innerHTML = 'Save';
 
                                 $("#unitName").val('');
@@ -975,16 +967,15 @@ var
                 type: "GET",
                 url: "/admin/units/checkUnitFromDatabase",
                 data: { unitId: $("#unitId").val() },
-                success: function (unit) {
+                success: function(unit) {
                     if (unit.length != 0 || unit != null) {
                         var btn = document.getElementById('saveUnit');
                         btn.innerHTML = 'Update';
-                    }
-                    else {
+                    } else {
                         btn.innerHTML = 'Save';
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Unit couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1023,7 +1014,7 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/admin/units/save',
-                    success: function () {
+                    success: function() {
                         jQueryMethods.toastrOptions();
                         toastr.success('Unit successfully saved!', 'Staff Save');
 
@@ -1035,7 +1026,7 @@ var
                         $("#unitName").val('');
                         $("#beds").val('');
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Unit couldnt save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
@@ -1064,20 +1055,20 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/units/findAllUnits",
-                success: function (result) {
-                    $.each(result, function (i, units) {
+                success: function(result) {
+                    $.each(result, function(i, units) {
                         i++;
                         $("#unitListTable> tbody").append(
-                            "<tr class='unitRow' id='unitRowId" + i + " title='' ><td class='idTd' title=''>"
-                            + i + "</td><td>"
-                            + units.unitId + "</td><td>"
-                            + units.unitName + "</td><td>"
-                            + units.unitType + "</td><td>"
-                            + units.unitMajorDicipline + "</td><td>"
-                            + units.unitActivePassive + "</td></tr>");
+                            "<tr class='unitRow' id='unitRowId" + i + " title='' ><td class='idTd' title=''>" +
+                            i + "</td><td>" +
+                            units.unitId + "</td><td>" +
+                            units.unitName + "</td><td>" +
+                            units.unitType + "</td><td>" +
+                            units.unitMajorDicipline + "</td><td>" +
+                            units.unitActivePassive + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Unit couldnt list! \n' + message.err, 'Error!')
                     console.log("ERROR: ", e);
@@ -1093,7 +1084,7 @@ var
                 type: "GET",
                 url: "/admin/units/findOneUnit",
                 data: { unitName: searchName },
-                success: function (unit) {
+                success: function(unit) {
                     jQueryMethods.toastrOptions();
                     if (unit.unitName == '' || unit.unitName == null || unit.unitName == 'undefined') {
                         $("#unitId").val('');
@@ -1107,18 +1098,18 @@ var
                         $("#unitActivePassive").val(unit.unitActivePassive);
 
                         $("#unitListTable> tbody").append(
-                            "<tr class='unitRow' id='unitRow1' title=''><td class='idTd' title=''>"
-                            + "#" + "</td><td id='idTd1'>"
-                            + unit.unitId + "</td><td>"
-                            + unit.unitName + "</td><td>"
-                            + unit.unitType + "</td><td>"
-                            + unit.unitMajorDicipline + "</td><td>"
-                            + unit.unitActivePassive + "</td></tr>");
+                            "<tr class='unitRow' id='unitRow1' title=''><td class='idTd' title=''>" +
+                            "#" + "</td><td id='idTd1'>" +
+                            unit.unitId + "</td><td>" +
+                            unit.unitName + "</td><td>" +
+                            unit.unitType + "</td><td>" +
+                            unit.unitMajorDicipline + "</td><td>" +
+                            unit.unitActivePassive + "</td></tr>");
 
                         toastr.info('Unit - ' + unit.unitName + ' -  found!', 'Unit Search');
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Unit couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1146,12 +1137,12 @@ var
                 contentType: 'application/json',
                 datatype: "json",
                 url: '/admin/units/updateUnitData',
-                success: function () {
+                success: function() {
                     jQueryMethods.toastrOptions();
                     AdministrationMethods.findOneUnit();
                     toastr.success('Unit data updated!', 'Unit Data Update');
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Unit couldnt update! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1163,15 +1154,15 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/units/getMaxUnitId",
-                success: function (unit) {
-                    if (unit.unitId == 0 || unit.unitId == 'NaN' || unit.unitId == 'undefined') {
+                success: function(unit) {
+                    if (unit.length < 1) {
                         $("#unitId").val(1);
                     } else {
                         $("#unitId").val(unit.unitId + 1);
                         // console.log(unit.unitId);
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     console.log(unit.unitId);
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max id from units table! \n\n\n' + e.responseText, 'Error!")
@@ -1191,13 +1182,13 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/units/fillUnitStatisticsTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#unitStatisticsTable> tbody").append(
-                            "<tr class='unitStatisticsRow'><td class='unitGroup'>"
-                            + docs[i]["_id"]['unitType']
-                            + "</td><td id='activePassive'>" + docs[i]['_id']['unitActivePassive']
-                            + "</td><td class='unitCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='unitStatisticsRow'><td class='unitGroup'>" +
+                            docs[i]["_id"]['unitType'] +
+                            "</td><td id='activePassive'>" + docs[i]['_id']['unitActivePassive'] +
+                            "</td><td class='unitCount'>" + docs[i]["count"] + "</td></tr>");
 
                         total += docs[i]["count"];
 
@@ -1211,7 +1202,7 @@ var
                     });
                     cardBackHeader.innerHTML = 'Unit Statistics: <br> Unit Total = ' + total + '<br> Active Total = ' + activeTotal + '<br> Passive Total = ' + passiveTotal;
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Staff group couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1226,13 +1217,12 @@ var
 
             if (testName != '' || testName > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to CLEAR form?', {
                         allowHtml: true,
                         progressBar: true,
                         timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
+                        onShown: function(toast) {
+                            $("#clearConfirmBtn").on('click', function() {
                                 document.getElementById('saveTest').innerHTML = 'Save';
 
                                 $("#testName").val('');
@@ -1256,15 +1246,14 @@ var
                 type: "GET",
                 url: "/admin/tests/checkTestFromDatabase",
                 data: { testCode: $("#testCode").val() },
-                success: function (test) {
+                success: function(test) {
                     if (test.length != 0 || test != null) {
                         btn.innerHTML = 'Update';
-                    }
-                    else {
+                    } else {
                         btn.innerHTML = 'Save';
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Test couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1299,14 +1288,14 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/admin/tests/saveTest',
-                    success: function () {
+                    success: function() {
                         jQueryMethods.toastrOptions();
                         toastr.success('Test successfully saved!', 'Test Save');
 
                         AdministrationMethods.findAllTests();
                         AdministrationMethods.getMaxTestId();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Test couldnt save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
@@ -1334,23 +1323,23 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/tests/findAllTests",
-                success: function (result) {
-                    $.each(result, function (i, tests) {
+                success: function(result) {
+                    $.each(result, function(i, tests) {
                         i++;
                         $("#testListTable> tbody").append(
-                            "<tr class='testRow' id='testRowId" + i + " title='' ><td class='idTd' title=''>"
-                            + i + "</td><td>"
-                            + tests.testId + "</td><td>"
-                            + tests.testCode + "</td><td>"
-                            + tests.testName + "</td><td>"
-                            + tests.testType + "</td><td>"
-                            + tests.testLab + "</td><td>"
-                            + tests.testHint + "</td><td>"
-                            + tests.maxRequest + "</td><td>"
-                            + tests.testActivePassive + "</td></tr>");
+                            "<tr class='testRow' id='testRowId" + i + " title='' ><td class='idTd' title=''>" +
+                            i + "</td><td>" +
+                            tests.testId + "</td><td>" +
+                            tests.testCode + "</td><td>" +
+                            tests.testName + "</td><td>" +
+                            tests.testType + "</td><td>" +
+                            tests.testLab + "</td><td>" +
+                            tests.testHint + "</td><td>" +
+                            tests.maxRequest + "</td><td>" +
+                            tests.testActivePassive + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Test couldnt list! \n' + message.err, 'Error!')
                     console.log("ERROR: ", e);
@@ -1366,7 +1355,7 @@ var
                 type: "GET",
                 url: "/admin/tests/findOneTest",
                 data: { testCode: searchCode },
-                success: function (test) {
+                success: function(test) {
                     if (test.testName == '' || test.testName == null || test.testName == 'undefined') {
                         $("#testName").val('');
                         toastr.error('Test couldnt find! \n\n\n', 'Error!')
@@ -1381,21 +1370,21 @@ var
                         $("#testActivePassive").val(test.testActivePassive);
 
                         $("#testListTable> tbody").append(
-                            "<tr class='unitRow' id='unitRow1' title=''><td class='idTd' title=''>"
-                            + "#" + "</td><td id='idTd1'>"
-                            + test.testId + "</td><td>"
-                            + test.testCode + "</td><td>"
-                            + test.testName + "</td><td>"
-                            + test.testType + "</td><td>"
-                            + test.testLab + "</td><td>"
-                            + test.testHint + "</td><td>"
-                            + test.maxRequest + "</td><td>"
-                            + test.testActivePassive + "</td></tr>");
+                            "<tr class='unitRow' id='unitRow1' title=''><td class='idTd' title=''>" +
+                            "#" + "</td><td id='idTd1'>" +
+                            test.testId + "</td><td>" +
+                            test.testCode + "</td><td>" +
+                            test.testName + "</td><td>" +
+                            test.testType + "</td><td>" +
+                            test.testLab + "</td><td>" +
+                            test.testHint + "</td><td>" +
+                            test.maxRequest + "</td><td>" +
+                            test.testActivePassive + "</td></tr>");
 
                         toastr.info('Test - ' + test.testCode + ' - ' + test.testName + ' -  found!', 'Test Search');
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Test couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -1424,12 +1413,12 @@ var
                 contentType: 'application/json',
                 datatype: "json",
                 url: '/admin/tests/updateTestData',
-                success: function () {
+                success: function() {
                     jQueryMethods.toastrOptions();
                     AdministrationMethods.findOneTest();
                     toastr.success('Test data updated!', 'Test Data Update');
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Test couldnt update! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1441,7 +1430,7 @@ var
             $.ajax({
                 type: "GET",
                 url: "/admin/tests/getMaxTestId",
-                success: function (test) {
+                success: function(test) {
                     if (test.testId == 0 || test.testId == 'NaN' || test.testId == 'undefined' || test.length < 1) {
                         $("#testId").val(1);
                     } else {
@@ -1449,7 +1438,7 @@ var
                         // console.log(test.testId);
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     console.log(unit.unitId);
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max id from test model! \n\n\n' + e.responseText, 'Error!")
@@ -1465,14 +1454,15 @@ var
                 type: "GET",
                 url: "/admin/units/fetchUnits",
                 data: { unitType: unitType, unitActivePassive: 'Active' },
-                success: function (result) {
-                    $.each(result, function (i, unitData) {
+                success: function(result) {
+                    $.each(result, function(i, unitData) {
                         i++
                         var name = unitData.unitName;
-                        $('#' + selectId + '').append("<option value='" + name.replace(/\s/g, '') + "'>" + unitData.unitName + "</option>");
+                        $('#' + selectId + '').append("<option value='" + name.replace(/\s/g, '') + "'>" +
+                            unitData.unitName + "</option>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Couldn\'t fetch units! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -1493,21 +1483,42 @@ var
                 type: "GET",
                 url: "/admin/tests/fetchTests",
                 data: { testType: testType, testActivePassive: 'Active' },
-                success: function (result) {
-                    $.each(result, function (i, tests) {
+                success: function(result) {
+                    $.each(result, function(i, tests) {
                         i++
                         $('#' + tableId + ' > tbody').append(
-                            "<tr class='testRow' id='testRowId" + i + "' title='" + tests.testHint + "' >"
-                            + "<td><input type='checkbox' class='labRadIstemChckbx' id='customCheck" + i
-                            + "' onchange='PolyclinicMethods.tetkikSelect(\"customCheck" + i + "\", \"labRadIstemChckbx\", \"" + selectTable + "\", \"" + selectTotal + "\")'></td><td id='testCode" + i + "'> "
-                            + tests.testCode + "</td><td id='testName" + i + "'> "
-                            + tests.testName + "</td><td id=testLab" + i + "'> "
-                            + tests.testLab + "</td><td>"
-                            + "<input type='number' name='labQuantity' id='labQuantity" + i + "\' min='1' value='1' style = 'text-align: center;' ></td ></tr > ");
+                            "<tr class='testRow' id='testRowId" + i + "' title='" + tests.testHint + "' >" +
+                            "<td><input type='checkbox' class='labRadIstemChckbx' id='customCheck" + i +
+                            "' onchange='PolyclinicMethods.tetkikSelect(\"customCheck" + i + "\", \"labRadIstemChckbx\", \"" + selectTable + "\", \"" + selectTotal + "\")'></td><td id='testCode" + i + "'> " +
+                            tests.testCode + "</td><td id='testName" + i + "'> " +
+                            tests.testName + "</td><td id=testLab" + i + "'> " +
+                            tests.testLab + "</td><td>" +
+                            "<input type='number' name='labQuantity' id='labQuantity" + i + "\' min='1' value='1' style = 'text-align: center;' ></td ></tr > ");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Couldn\'t fetch units! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        fetchStaff: function fetchStaff(staffGroup, selectId) {
+            $('#' + selectId).empty();
+            $.ajax({
+                type: "GET",
+                url: "/admin/staff/fetchStaff",
+                data: { staffGroup: staffGroup, staffLeaveStartDate: '' },
+                success: function(result) {
+                    $.each(result, function(i, staffData) {
+                        i++
+                        var name = staffData.staffName + ' ' + staffData.staffSurname;
+                        $('#' + selectId + '').append("<option value='" + name.replace(/\s/g, '') + "'>" +
+                            name + "</option>");
+                    });
+                },
+                error: function(e) {
+                    toastr.error('Couldn\'t fetch staff! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
             });
@@ -1531,7 +1542,7 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/getBeds",
                 data: { unitName: unitName, unitActivePassive: 'Active' },
-                success: function (result) {
+                success: function(result) {
                     if (result.length > 0) {
                         $('#bedsDiv').empty();
                         $('#totalBedCount').text(result[0].beds);
@@ -1540,12 +1551,11 @@ var
                         for (let i = 0; i < x; i++) {
                             $('#bedsDiv').append("<img id='bed" + i + "' onclick='AdministrationMethods.bedSelect(\"bed" + i + "\");' class='bedImages' src='/public/images/Medical-icons/empty bed.png' alt='bed'></img>");
                         }
-                    }
-                    else {
+                    } else {
                         $('#bedsDiv').empty();
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Couldn\'t fetch beds! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -1560,19 +1570,18 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/countFullandEmptyBeds",
                 data: { clinicSelect: unitName },
-                success: function (result) {
+                success: function(result) {
                     if (result.length > 0) {
                         fullBeds = result[0]['count'];
                         emptyBeds = totalBeds - fullBeds;
 
                         $('#emptyBedCount').text(emptyBeds);
                         $('#fullBedCount').text(result[0]['count'])
-                    }
-                    else {
+                    } else {
                         $('#emptyBeds').text(emptyBeds)
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Couldn\'t fetch beds! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -1589,7 +1598,7 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/getConsultationCount",
                 data: { unitName },
-                success: function (result) {
+                success: function(result) {
                     if (result[0].Total > 0) {
                         $('#totalCons').text(result[0].Total);
                         $('#waitingCons').text(result[0].Waiting);
@@ -1599,14 +1608,13 @@ var
                         } else {
                             $('#doneCons').text(done);
                         }
-                    }
-                    else {
+                    } else {
                         $('#totalCons').text('0');
                         $('#waitingCons').text('0');
                         $('#doneCons').text('0');
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Couldn\'t fetch consultation! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -1632,8 +1640,7 @@ var
                     emptyBedCount.innerHTML = totalBedCount.innerHTML - fullBedCount.innerHTML;
                 } else if (selectedBed != null && bedId != selectedBed.id) {
                     alert('You can\'t choose 2 beds!')
-                }
-                else {
+                } else {
                     bed.alt = 'selected';
                     bed.style.border = '5px inset red';
                     bed.style.backgroundColor = 'grey';
@@ -1651,13 +1658,12 @@ var
 
             if (myAnnouncementTitle != '') {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?', {
                         allowHtml: true,
                         progressBar: true,
                         timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
+                        onShown: function(toast) {
+                            $("#clearConfirmBtn").on('click', function() {
                                 AnnouncementMethods.getMaxAnnouncementId();
                                 AnnouncementMethods.findAnnouncementHistory();
 
@@ -1699,7 +1705,7 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/announcement/saveAnnouncement',
-                    success: function () {
+                    success: function() {
                         toastr.success('Announcement successfully saved!', 'Save');
                         AnnouncementMethods.findAnnouncementHistory();
                         // AppointmentMethods.fillCanceledValidAppointmentTable();
@@ -1710,7 +1716,7 @@ var
                         // PolyclinicExamMethods.fillDoctorAppointmentTable();
                         // PolyclinicExamMethods.fillDoctorOnLeaveTable();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Announcement couldnt save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
                     }
@@ -1722,14 +1728,14 @@ var
             $.ajax({
                 type: "GET",
                 url: "/announcement/getMaxAnnouncementId",
-                success: function (announcement) {
+                success: function(announcement) {
                     if (announcement.length < 1) {
                         $("#announcementId").val(1);
                     } else {
                         $("#announcementId").val(announcement.announcementId + 1);
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max appointmentId!", "Error!")
                     console.log("ERROR: ", e.responseText);
@@ -1746,9 +1752,9 @@ var
                 type: "GET",
                 url: "/announcement/findByAnnouncementId",
                 data: { announcementId: myAnnouncementId },
-                success: function (announcement) {
-                    if (announcement.announcementId == '' || announcement.announcementId == null
-                        || announcement.announcementId == 'undefind') {
+                success: function(announcement) {
+                    if (announcement.announcementId == '' || announcement.announcementId == null ||
+                        announcement.announcementId == 'undefind') {
                         toastr.error('Announcement found but data couldnt set to form! \n\n\n', 'Error!')
                     } else {
                         $("#announcementId").val(announcement.announcementId);
@@ -1768,7 +1774,7 @@ var
                         toastr.info('Announcement Id: ' + announcement.announcementId + ' - selected!', 'Announcement Search');
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Announcement couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -1791,8 +1797,7 @@ var
 
             if ($("#announcementId").val() == '') {
                 toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: 'PUT',
                     data: JSON.stringify(myData),
@@ -1800,11 +1805,11 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/announcement/updateAnnouncementData',
-                    success: function (patient) {
+                    success: function(patient) {
                         toastr.success('Announcement updated! \n\n\n', 'Announcement Update');
                         AnnouncementMethods.findAnnouncementHistory();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Announcement couldnt update! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -1819,22 +1824,22 @@ var
             $.ajax({
                 type: "GET",
                 url: "/announcement/findAnnouncementHistory",
-                success: function (result) {
-                    $.each(result, function (i, announcementData) {
+                success: function(result) {
+                    $.each(result, function(i, announcementData) {
                         i++;
                         $("#announcementHistoryTable> tbody").append(
-                            "<tr class='announcementHistory' id='announcementHistory" + i + "' title=''>"
-                            + "<td id='announcementId" + i + "'>" + announcementData.announcementId + "</td>"
-                            + "<td id='announcementTitle" + i + "'>" + announcementData.announcementTitle + "</td>"
-                            + "<td id='announcementUserMajorDiscipline" + i + "'>" + announcementData.announcementUserMajorDiscipline + "</td>"
-                            + "<td id='announcementUserGroup" + i + "'>" + announcementData.announcementUserGroup + "</td>"
-                            + "<td id='announcementUserClinic" + i + "'>" + announcementData.announcementUserClinic + "</td>"
-                            + "<td id='announcementUserDate" + i + "'>" + announcementData.announcementStartDate + " - " + announcementData.announcementEndDate + "</td>"
-                            + "<td id='announcementShowTime" + i + "'>" + announcementData.announcementShowTime + "</td>"
-                            + "<td id='announcementActivePasive" + i + "'>" + announcementData.announcementActivePasive + "</td>"
-                            + "<td><div class='announcementTextDiv' id='announcementTextDiv" + i + "'>" + announcementData.announcementText + "</td>"
-                            + "</div><td id='announcementSavedUser" + i + "'>" + announcementData.announcementSavedUser + "</td>"
-                            + "<td><button class='inpatientBtn btn-success' title='Click for select announcement.' onclick=\"AnnouncementMethods.findByAnnouncementId(\'announcementHistory" + i + "\')\">Select</button></td></tr>"
+                            "<tr class='announcementHistory' id='announcementHistory" + i + "' title=''>" +
+                            "<td id='announcementId" + i + "'>" + announcementData.announcementId + "</td>" +
+                            "<td id='announcementTitle" + i + "'>" + announcementData.announcementTitle + "</td>" +
+                            "<td id='announcementUserMajorDiscipline" + i + "'>" + announcementData.announcementUserMajorDiscipline + "</td>" +
+                            "<td id='announcementUserGroup" + i + "'>" + announcementData.announcementUserGroup + "</td>" +
+                            "<td id='announcementUserClinic" + i + "'>" + announcementData.announcementUserClinic + "</td>" +
+                            "<td id='announcementUserDate" + i + "'>" + announcementData.announcementStartDate + " - " + announcementData.announcementEndDate + "</td>" +
+                            "<td id='announcementShowTime" + i + "'>" + announcementData.announcementShowTime + "</td>" +
+                            "<td id='announcementActivePasive" + i + "'>" + announcementData.announcementActivePasive + "</td>" +
+                            "<td><div class='announcementTextDiv' id='announcementTextDiv" + i + "'>" + announcementData.announcementText + "</td>" +
+                            "</div><td id='announcementSavedUser" + i + "'>" + announcementData.announcementSavedUser + "</td>" +
+                            "<td><button class='inpatientBtn btn-success' title='Click for select announcement.' onclick=\"AnnouncementMethods.findByAnnouncementId(\'announcementHistory" + i + "\')\">Select</button></td></tr>"
                         );
 
                         if (announcementData.announcementActivePasive == 'Passive') {
@@ -1843,7 +1848,7 @@ var
                         }
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Announcement History couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1864,7 +1869,7 @@ var
             mywindow.focus(); // necessary for IE >= 10*/
 
 
-            setTimeout(function () {
+            setTimeout(function() {
                 mywindow.print();
                 mywindow.close();
             }, 1000)
@@ -1901,8 +1906,8 @@ var
             $.ajax({
                 type: "GET",
                 url: "/announcement/announcementsToBottomAndTopScroll",
-                success: function (result) {
-                    $.each(result, function (i, announcementData) {
+                success: function(result) {
+                    $.each(result, function(i, announcementData) {
                         i++;
                         allAnnouncements += i + ' - ' + announcementData.announcementTitle;
                         allAnnouncements += ' - \n' + announcementData.announcementText;
@@ -1922,7 +1927,7 @@ var
                     $('#bottomScrollP5').text(allAnnouncements)
                     $('#topScroolAnnouncement').text(allAnnouncements)
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('announcementsToBottomAndTopScroll couldnt work! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -1936,14 +1941,14 @@ var
             $.ajax({
                 type: "GET",
                 url: "/announcement/fillAnnouncementStatusTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#announcementStatusTable> tbody").append(
-                            "<tr class='announcementStatusRow'><td class='announcementStatus'>"
-                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='announcementStatusRow'><td class='announcementStatus'>" +
+                            docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('announcementStatusRow couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1958,14 +1963,14 @@ var
             $.ajax({
                 type: "GET",
                 url: "/announcement/fillAnnouncementUserGroupTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#announcementUserGroupTable> tbody").append(
-                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>"
-                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>" +
+                            docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('announcementStatusRow couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -1980,14 +1985,14 @@ var
             $.ajax({
                 type: "GET",
                 url: "/announcement/fillAnnouncementMajorDisciplineTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#announcementMajorDisciplineTable> tbody").append(
-                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>"
-                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>" +
+                            docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillAnnouncementMajorDisciplineTable couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -2002,14 +2007,14 @@ var
             $.ajax({
                 type: "GET",
                 url: "/announcement/fillAnnouncementClinicPolyclinicTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#announcementClinicPolyclinicTable> tbody").append(
-                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>"
-                            + docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='announcementUserGroupRow'><td class='announcementUserGroup'>" +
+                            docs[i]["_id"] + "</td><td class='staffCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillAnnouncementClinicPolyclinicTable couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -2024,16 +2029,16 @@ var
             $.ajax({
                 type: "GET",
                 url: "/announcement/fillAnnouncementExpirationDateTable",
-                success: function (docs) {
-                    $.each(docs, function (i, announcementData) {
+                success: function(docs) {
+                    $.each(docs, function(i, announcementData) {
                         i++
                         $("#announcementExpirationDateTable> tbody").append(
-                            "<tr class='announcementExpirationDate'><td class='announcementExpirationDate'>"
-                            + announcementData.announcementTitle + "</td><td class='expirationDate'>"
-                            + announcementData.announcementEndDate + "</td></tr>");
+                            "<tr class='announcementExpirationDate'><td class='announcementExpirationDate'>" +
+                            announcementData.announcementTitle + "</td><td class='expirationDate'>" +
+                            announcementData.announcementEndDate + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillAnnouncementExpirationDateTable couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -2056,13 +2061,12 @@ var
 
             if (myPatientId != '' || myPatientId > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?', {
                         allowHtml: true,
                         progressBar: true,
                         timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
+                        onShown: function(toast) {
+                            $("#clearConfirmBtn").on('click', function() {
                                 AppointmentMethods.getMaxAppointmentId();
                                 jQueryMethods.setCalenderValueToday('appointmentDate');
                                 $('#patientHistoryTable > tbody').empty();
@@ -2124,8 +2128,7 @@ var
                         y++
                     }
                 }
-            }
-            else {
+            } else {
                 grandParent.style.backgroundColor = '#dddddd';
 
             }
@@ -2156,7 +2159,7 @@ var
                     type: "GET",
                     url: "/appSave/findPatient",
                     data: myQuery,
-                    success: function (patient) {
+                    success: function(patient) {
                         jQueryMethods.toastrOptions();
                         if (patient.patientId == '' || patient.patientId == null || patient.patientId == 'undefind') {
                             toastr.error('Patient couldnt find! \n\n\n', 'Error!')
@@ -2188,7 +2191,7 @@ var
                             toastr.info('Patient - ' + $("#patientName").val() + $("#patientSurname").val() + ' - found!', 'Patient Search');
                         }
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Patient couldnt find! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -2231,7 +2234,7 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/appSave/saveAppointment',
-                    success: function () {
+                    success: function() {
                         toastr.success('Appointment successfully saved!', 'Save');
                         AppointmentMethods.fillPolyclinicAppointmentStatusTable();
                         AppointmentMethods.fillCanceledValidAppointmentTable();
@@ -2242,7 +2245,7 @@ var
                         PolyclinicExamMethods.fillDoctorAppointmentTable();
                         PolyclinicExamMethods.fillDoctorOnLeaveTable();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Appointment couldnt save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
                     }
@@ -2254,10 +2257,14 @@ var
             $.ajax({
                 type: "GET",
                 url: "/appSave/getMaxAppointmentId",
-                success: function (patient) {
-                    $("#appointmentId").val(patient.appointmentId + 1);
+                success: function(appointment) {
+                    if (appointment.length < 1) {
+                        $("#appointmentId").val(1);
+                    } else {
+                        $("#appointmentId").val(appointment.appointmentId + 1);
+                    }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max appointmentId!", "Error!")
                     console.log("ERROR: ", e.responseText);
@@ -2270,8 +2277,7 @@ var
             var myStatusSelect = document.getElementById('appointmentStatus'),
                 myAppointmentHour = document.getElementById('appointmentHour').value,
                 myAppointmentId = document.getElementById('appointmentId').value,
-                myData =
-                {
+                myData = {
                     appointmentId: myAppointmentId,
                     appointmentHour: myAppointmentHour,
                     appointmentStatus: myStatusSelect.options[myStatusSelect.selectedIndex].value
@@ -2281,8 +2287,7 @@ var
 
             if ($("#patientIdNo").val() == '') {
                 toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: 'PUT',
                     data: JSON.stringify(myData),
@@ -2290,7 +2295,7 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/appSave/updateAppointmentData',
-                    success: function (patient) {
+                    success: function(patient) {
                         toastr.success('Appointment updated! \n\n\n', 'Appointment Update');
                         AppointmentMethods.fillPolyclinicAppointmentStatusTable();
                         AppointmentMethods.fillCanceledValidAppointmentTable();
@@ -2301,7 +2306,7 @@ var
                         PolyclinicExamMethods.fillDoctorAppointmentTable();
                         PolyclinicExamMethods.fillDoctorOnLeaveTable();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Appointment couldnt update! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -2317,20 +2322,20 @@ var
                 type: "GET",
                 url: "/appSave/findPatientAppointmentHistory",
                 data: { patientIdNo: $("#patientIdNo").val() },
-                success: function (result) {
-                    $.each(result, function (i, appointmentData) {
+                success: function(result) {
+                    $.each(result, function(i, appointmentData) {
                         i++;
                         $("#patientHistoryTable> tbody").append(
-                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >"
-                            + i + "</td><td>" + appointmentData.appointmentId + "</td><td>"
-                            + appointmentData.appointmentDate + " - " + appointmentData.appointmentHour + "</td><td>"
-                            + appointmentData.appointmentPolyclinic + "</td><td>"
-                            + appointmentData.appointmentDoctor + "</td><td>"
-                            + appointmentData.appointmentStatus + "</td><td><button class='inpatientBtn btn-success' title='Click for select appointment.' onclick=\"AppointmentMethods.findByAppointmentId(\'patientHistory" + i + "\')\">Select</button></td></tr>");
+                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >" +
+                            i + "</td><td>" + appointmentData.appointmentId + "</td><td>" +
+                            appointmentData.appointmentDate + " - " + appointmentData.appointmentHour + "</td><td>" +
+                            appointmentData.appointmentPolyclinic + "</td><td>" +
+                            appointmentData.appointmentDoctor + "</td><td>" +
+                            appointmentData.appointmentStatus + "</td><td><button class='inpatientBtn btn-success' title='Click for select appointment.' onclick=\"AppointmentMethods.findByAppointmentId(\'patientHistory" + i + "\')\">Select</button></td></tr>");
                     });
                     AppointmentMethods.colorRedCanceledAppointmentId('patientHistoryTable', 5);
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -2342,8 +2347,8 @@ var
             var table = document.getElementById(tableId);
             for (var r = 0, n = table.rows.length; r < n; r++) {
                 for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
-                    if (table.rows[r].cells[cellId].innerHTML == 'Canceled-Doctor-Operation'
-                        || table.rows[r].cells[cellId].innerHTML == 'Canceled-By-Patient') {
+                    if (table.rows[r].cells[cellId].innerHTML == 'Canceled-Doctor-Operation' ||
+                        table.rows[r].cells[cellId].innerHTML == 'Canceled-By-Patient') {
                         table.rows[r].style.background = 'linear-gradient(90deg,rgb(229 48 62),lightgrey)';
                         table.rows[r].style.color = 'white  ';
                     }
@@ -2368,9 +2373,9 @@ var
                 type: "GET",
                 url: "/appSave/findByAppointmentId",
                 data: { appointmentId: myAppointmentId },
-                success: function (patient) {
-                    if (patient.appointmentId == '' || patient.appointmentId == null
-                        || patient.appointmentId == 'undefind') {
+                success: function(patient) {
+                    if (patient.appointmentId == '' || patient.appointmentId == null ||
+                        patient.appointmentId == 'undefind') {
                         toastr.error('Patient appointment found by data couldnt set to form! \n\n\n', 'Error!')
                     } else {
                         $("#patientId").val(patient.patientId);
@@ -2405,7 +2410,7 @@ var
                         toastr.info('Appointment No: ' + patient.appointmentId + ' - selected!', 'Patient Appointment Search');
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Patient appointment couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -2423,17 +2428,17 @@ var
             $.ajax({
                 type: "GET",
                 url: "/appSave/fillPolyclinicAppointmentStatusTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#polyclinicAppointmentStatusTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["_id"]
-                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>" +
+                            docs[i]["_id"] +
+                            "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
                     });
 
                     appMonth.innerHTML = 'Appointments between = <br>' + firstDay + ' - ' + lastDay;
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Polyclinic appointments couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -2442,22 +2447,26 @@ var
         },
 
         fillCanceledValidAppointmentTable: function fillCanceledValidAppointmentTable() {
-            var canceled = 0, valid = 0, percentageValid = 0, percentageCanceled = 0, total = 0;
+            var canceled = 0,
+                valid = 0,
+                percentageValid = 0,
+                percentageCanceled = 0,
+                total = 0;
 
             $('#canceledValidAppointmentTable > tbody').empty();
 
             $.ajax({
                 type: "GET",
                 url: "/appSave/fillCanceledValidAppointmentTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#canceledValidAppointmentTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["_id"]['appointmentStatus']
-                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>" +
+                            docs[i]["_id"]['appointmentStatus'] +
+                            "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
 
-                        if (docs[i]["_id"]['appointmentStatus'] == 'Canceled-Doctor-Operation'
-                            || docs[i]["_id"]['appointmentStatus'] == 'Canceled-By-Patient') {
+                        if (docs[i]["_id"]['appointmentStatus'] == 'Canceled-Doctor-Operation' ||
+                            docs[i]["_id"]['appointmentStatus'] == 'Canceled-By-Patient') {
                             canceled = docs[i]["count"];
                         } else {
                             valid = docs[i]["count"];
@@ -2471,7 +2480,7 @@ var
                     document.getElementById('appValid').innerHTML = 'Valid percentage = % ' + Math.round(percentageValid);
                     document.getElementById('appCanceled').innerHTML = 'Canceled percentage = % ' + Math.round(percentageCanceled);
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Canceled / Valid Appointments couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -2490,18 +2499,18 @@ var
             $.ajax({
                 type: "GET",
                 url: "/appSave/fillAppointmentGenderTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#appointmentGenderTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"]["appointmentPolyclinic"]
-                            + "</td><td class='patientGender'>" + docs[i]["_id"]["patientGender"]
-                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='patientData'>" +
+                            docs[i]["_id"]["appointmentPolyclinic"] +
+                            "</td><td class='patientGender'>" + docs[i]["_id"]["patientGender"] +
+                            "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
                     });
 
                     appGenderTableDate.innerHTML = 'Appointments between = <br>' + firstDay + ' - ' + lastDay;
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Appointment gender couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -2515,23 +2524,23 @@ var
             $.ajax({
                 type: "GET",
                 url: "/appSave/fillPolAppointmentStatusTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#polStatusTable> tbody").append(
                             "<tr class='appPol' id='appPolRowId" + i + "' colspan='0'><td class='doctorSelector'>" + docs[i]['_id']
                         );
                         for (let i2 = 0; i2 < docs[i]["data"].length; i2++) {
                             $("#appPolRowId" + i).append(
-                                "</td><td class='appHour'>"
-                                + docs[i]["data"][i2]["patientName"] + " " + docs[i]["data"][i2]["patientSurname"] + "<br>"
-                                + docs[i]["data"][i2]["appointmentDate"] + " - " + docs[i]["data"][i2]["appointmentHour"]
-                                + "<br> Appointment Id: "
-                                + docs[i]["data"][i2]["appointmentId"]
-                                + "</td></tr>");
+                                "</td><td class='appHour'>" +
+                                docs[i]["data"][i2]["patientName"] + " " + docs[i]["data"][i2]["patientSurname"] + "<br>" +
+                                docs[i]["data"][i2]["appointmentDate"] + " - " + docs[i]["data"][i2]["appointmentHour"] +
+                                "<br> Appointment Id: " +
+                                docs[i]["data"][i2]["appointmentId"] +
+                                "</td></tr>");
                         };
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillPolStatusTable couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -2556,25 +2565,21 @@ var
                 // colors selected indexchange
                 var selectElem1 = document.querySelector('#chooseClassColor');
                 // When a new <option> is selected
-                selectElem1.addEventListener('change', function () {
+                selectElem1.addEventListener('change', function() {
                     var index = selectElem1.selectedIndex;
                     for (let i = 0; i < elements.length; i++) {
 
                         if (index == "0") {
                             elements[i].style.backgroundColor = ColorAndAdjustmentMethods.getSoftColor();
-                        }
-                        else if (index == "1") {
+                        } else if (index == "1") {
                             elements[i].style.backgroundColor = ColorAndAdjustmentMethods.randomDarkColor();
-                        }
-                        else if (index == "2") {
+                        } else if (index == "2") {
                             elements[i].style.backgroundColor = ColorAndAdjustmentMethods.myColors();
-                        }
-                        else if (index == "3") {
+                        } else if (index == "3") {
                             elements[i].style.backgroundColor = ColorAndAdjustmentMethods.nightModeColors();
                             document.body.style.backgroundColor = 'grey';
                             elements[i].style.color = 'darkgrey';
-                        }
-                        else {
+                        } else {
                             elements[i].style.backgroundColor = ColorAndAdjustmentMethods.myColors();
                         }
                     }
@@ -2594,8 +2599,7 @@ var
                 diyetModuleBaseParent = document.getElementById('diyetModuleBaseParent'),
                 announcementBaseParent = document.getElementById('announcementBaseParent'),
                 inpatientBaseParent = document.getElementById('inpatientBaseParent'),
-                administrationBaseParent = document.getElementById('administrationBaseParent')
-                ;
+                administrationBaseParent = document.getElementById('administrationBaseParent');
 
             // ================ slide right
 
@@ -2653,10 +2657,9 @@ var
 
                 if (line2Cards.includes(cardId)) { // if card belongs line 2
                     line2.appendChild(card);
-                } else if (line3Cards.includes(cardId)) {// if card belongs line 3
+                } else if (line3Cards.includes(cardId)) { // if card belongs line 3
                     line3.appendChild(card)
-                }
-                else { line1.appendChild(card); } // add line 1
+                } else { line1.appendChild(card); } // add line 1
 
                 CardAnimationAndAdjustmentMethods.cardsPreviousLine();
                 ShowOrHideMethods.showRemoveAlert();
@@ -2715,7 +2718,7 @@ var
             }
         },
 
-        checksBeforeExit: function checksBeforeExit(iframeId, Tagname, containerTabId) {// checks if there is any value on iframe 
+        checksBeforeExit: function checksBeforeExit(iframeId, Tagname, containerTabId) { // checks if there is any value on iframe 
             var x = document.getElementById(iframeId).contentDocument
                 .querySelectorAll(Tagname);
             var hasvalue = [];
@@ -2769,7 +2772,7 @@ var
 
         isMobile: function isMobile() { // check if user device is mobile or not
             var check = false;
-            (function (a) {
+            (function(a) {
                 if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4)))
                     check = true;
             })(navigator.userAgent || navigator.vendor || window.opera);
@@ -2813,11 +2816,10 @@ var
 
         scroolCloseBtn: function scroolCloseBtn() {
             let mybtn = document.querySelectorAll(".closeBtn");
-            window.onscroll = function () { scroolCloseBtn() };
+            window.onscroll = function() { scroolCloseBtn() };
             if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
                 mybtn.style.display = "block";
-            }
-            else {
+            } else {
                 mybtn.style.display = "none";
             }
         },
@@ -2844,10 +2846,10 @@ var
             return `#${color}`;
         },
 
-        classColor: function classColor() {//class background color
+        classColor: function classColor() { //class background color
             var colorStop = document.getElementById('colorChk').checked, // when color change stop checkbox checked
                 nightMode = document.getElementById('chooseClassColor'),
-                elements = document.querySelectorAll(".column"),// get all columns
+                elements = document.querySelectorAll(".column"), // get all columns
                 navWrapper = document.getElementById('nav-wrapper');
 
             if (colorStop == true && nightMode != '3') {
@@ -2862,7 +2864,7 @@ var
                 }
                 // colors selected indexchange -- for columns (list and grid) and cards
                 var selectElem = document.getElementById('chooseClassColor');
-                selectElem.addEventListener('change', function () {
+                selectElem.addEventListener('change', function() {
                     var index = selectElem.selectedIndex,
                         myHeadTitle = document.getElementById('title'),
                         cards = document.querySelectorAll(".card"); // for cards
@@ -2871,7 +2873,7 @@ var
                     myHeadTitle.style.backgroundRepeat = 'no-repeat';
                     myHeadTitle.style.backgroundSize = '100% 120%';
 
-                    for (let i = 0; i < elements.length; i++) {// for columns
+                    for (let i = 0; i < elements.length; i++) { // for columns
 
                         if (index == "0") { // light colors
                             elements[i].style.background =
@@ -2887,8 +2889,7 @@ var
                             elements[i].style.color = 'white';
                             document.getElementById('colorChk').checked = true;
                             navWrapper.style.backgroundColor = 'white';
-                        }
-                        else if (index == "1") { // dark colors
+                        } else if (index == "1") { // dark colors
                             elements[i].style.background =
                                 'linear-gradient(90deg,' +
                                 ColorAndAdjustmentMethods.randomDarkColor() +
@@ -2903,8 +2904,7 @@ var
                             elements[i].style.color = 'white';
                             document.getElementById('colorChk').checked = true;
                             navWrapper.style.backgroundColor = 'white';
-                        }
-                        else if (index == "2") { //all colors
+                        } else if (index == "2") { //all colors
                             elements[i].style.background =
                                 'linear-gradient(90deg,' +
                                 ColorAndAdjustmentMethods.myColors() +
@@ -2918,8 +2918,7 @@ var
                             elements[i].style.color = 'white';
                             document.getElementById('colorChk').checked = true;
                             navWrapper.style.backgroundColor = 'white';
-                        }
-                        else if (index == "3") { // nightmode
+                        } else if (index == "3") { // nightmode
                             for (let i = 0; i < elements.length; i++) {
                                 elements[i].style.background = ColorAndAdjustmentMethods.nightModeColors();
                                 document.body.style.backgroundColor = 'grey';
@@ -2935,8 +2934,7 @@ var
                                 document.body.style.backgroundColor = 'white';
                                 cards[i2].style.color = 'white';
                                 document.getElementById('colorChk').checked = true;
-                            }
-                            else if (index == "1") {
+                            } else if (index == "1") {
                                 cards[i2].style.backgroundColor = ColorAndAdjustmentMethods.randomDarkColor();
                                 ColorAndAdjustmentMethods.adjustClassColor(elements[i].id);
                                 cards[i2].style.borderStyle = 'none';
@@ -2944,22 +2942,19 @@ var
                                 document.body.style.backgroundColor = 'white';
                                 cards[i2].style.color = 'white';
                                 document.getElementById('colorChk').checked = true;
-                            }
-                            else if (index == "2") {
+                            } else if (index == "2") {
                                 cards[i2].style.backgroundColor = ColorAndAdjustmentMethods.myColors();
                                 cards[i2].style.borderStyle = 'none';
                                 cards[i2].style.borderRadius = '';
                                 document.body.style.backgroundColor = 'white';
                                 cards[i2].style.color = 'white';
                                 document.getElementById('colorChk').checked = true;
-                            }
-                            else if (index == "3") {
+                            } else if (index == "3") {
                                 cards[i2].style.backgroundColor = ColorAndAdjustmentMethods.nightModeColors();
                                 document.body.style.backgroundColor = 'grey';
                                 cards[i2].style.color = 'darkgrey';
                                 document.getElementById('colorChk').checked = false;
-                            }
-                            else {
+                            } else {
                                 cards[i2].style.backgroundColor = ColorAndAdjustmentMethods.myColors();
                                 cards[i2].style.borderStyle = 'none';
                                 cards[i2].style.borderRadius = '';
@@ -3003,8 +2998,7 @@ var
                             columns[i].style.borderStyle = 'none';
                             columns[i].style.borderRadius = '';
                         }
-                    }
-                    else {
+                    } else {
                         alert('Moduls color will change after every change.')
                         ColorAndAdjustmentMethods.classColor();
                         CardAnimationAndAdjustmentMethods.cardColor();
@@ -3026,8 +3020,7 @@ var
                     }
                     if (index == 1) {
                         alert("Modüllerin rengi sabitlendi.")
-                    }
-                    else {
+                    } else {
                         alert("Moduls color fixed and won't change.")
                     }
                 }
@@ -3041,10 +3034,9 @@ var
                 var columns = document.querySelectorAll(".column"), // get all columns
                     front = document.querySelectorAll(".front"), // get all cards front side
                     cards = document.querySelectorAll(".card"), // get all cards front side
-                    mystabledColors = document.getElementById('stabledColors')
-                    ;
+                    mystabledColors = document.getElementById('stabledColors');
 
-                mystabledColors.addEventListener('change', function () {
+                mystabledColors.addEventListener('change', function() {
                     var myStableColorIndex = mystabledColors.selectedIndex;
 
                     if (myStableColorIndex == 0) { //renkli - colorful
@@ -3076,9 +3068,7 @@ var
                             front[9].style.backgroundImage = 'url("/public/images/Medical-icons/X-Ray_Hand.ico")';
                             front[10].style.backgroundImage = 'url("/public/images/settings-1.png")';
                         }
-                    }
-
-                    else if (myStableColorIndex == 1) {//yesil - green
+                    } else if (myStableColorIndex == 1) { //yesil - green
                         for (var i = 0; i < columns.length; i++) {
                             columns[i].style.background = 'linear-gradient(90deg, green, transparent)';
                             columns[i].style.borderStyle = 'solid';
@@ -3107,9 +3097,7 @@ var
                             front[9].style.backgroundImage = 'url("/public/images/Medical-icons/X-Ray_Hand.ico")';
                             front[10].style.backgroundImage = 'url("/public/images/settings-1.png")';
                         }
-                    }
-
-                    else if (myStableColorIndex == 2) {// kirmizi - red
+                    } else if (myStableColorIndex == 2) { // kirmizi - red
                         for (var i = 0; i < columns.length; i++) {
                             columns[i].style.background = 'linear-gradient(90deg, red, transparent)';
                             columns[i].style.borderStyle = 'solid';
@@ -3138,8 +3126,7 @@ var
                             front[9].style.backgroundImage = 'url("/public/images/Medical-icons/X-Ray_Hand.ico")';
                             front[10].style.backgroundImage = 'url("/public/images/settings-1.png")';
                         }
-                    }
-                    else if (myStableColorIndex == 3) {// mavi - blue
+                    } else if (myStableColorIndex == 3) { // mavi - blue
                         for (var i = 0; i < columns.length; i++) {
                             columns[i].style.background = 'linear-gradient(90deg, cornflowerblue, transparent)';
                             columns[i].style.borderStyle = 'solid';
@@ -3193,7 +3180,7 @@ var
 
         nightModeColors: function nightModeColors() {
             document.getElementById('colorChk').checked = false;
-            var elements = document.querySelectorAll(".column"),// for columns
+            var elements = document.querySelectorAll(".column"), // for columns
                 footerName = document.querySelectorAll('.shadows'),
                 myHeadTitle = document.getElementById('title');
 
@@ -3263,8 +3250,7 @@ var
             if (brightness == 'dark') {
                 element.style.backgroundColor = 'cornflowerblue';
                 // alert('dark ' + element.style.backgroundColor);
-            }
-            else {
+            } else {
 
             }
         },
@@ -3280,14 +3266,12 @@ var
                 r = color[1];
                 g = color[2];
                 b = color[3];
-            }
-            else {
+            } else {
 
                 // If RGB --> Convert it to HEX:
                 color = +("0x" + color.slice(1).replace(
                     color.length < 5 && /./g, '$&$&'
-                )
-                );
+                ));
 
                 r = color >> 16;
                 g = color >> 8 & 255;
@@ -3303,8 +3287,7 @@ var
             // Using the HSP value, determine whether the color is light or dark
             if (hsp > 70) {
                 return 'light';
-            }
-            else {
+            } else {
                 return 'dark';
             }
         },
@@ -3374,8 +3357,7 @@ var
                 mymodulLinks = document.querySelectorAll('.modulLink'),
                 myColorandLogo = document.getElementById('colorAndLogo'),
                 myLikeButton = document.querySelectorAll('.like-button'),
-                myhelpButtons = document.querySelectorAll('.helpButtons')
-                ;
+                myhelpButtons = document.querySelectorAll('.helpButtons');
 
 
             if (CheckAndClearMethods.isMobile() == true) {
@@ -3450,8 +3432,7 @@ var
 
                     if (myhelpButtons[i].parentElement.classList.contains('back')) {
                         myhelpButtons[i].style.margin = '0px 0px 5px 0px';
-                    }
-                    else { myhelpButtons[i].style.margin = '0px 0px 5px -15px'; }
+                    } else { myhelpButtons[i].style.margin = '0px 0px 5px -15px'; }
 
                 }
 
@@ -3640,13 +3621,12 @@ var
 
             if (myPatientId != '' || myPatientId > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?', {
                         allowHtml: true,
                         progressBar: true,
                         timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
+                        onShown: function(toast) {
+                            $("#clearConfirmBtn").on('click', function() {
                                 HastaKimlikMethods.getMaxPatientId();
                                 $("#patientIdNo").val('');
                                 $("#patientName").val('');
@@ -3687,10 +3667,14 @@ var
             $.ajax({
                 type: "GET",
                 url: "/hastakimlik/getMaxPatientId",
-                success: function (patient) {
-                    $("#patientId").val(patient.patientId + 1);
+                success: function(patient) {
+                    if (patient.length < 1) {
+                        $("#patientId").val(1);
+                    } else {
+                        $("#patientId").val(patient.patientId + 1);
+                    }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max id!", "Error!")
                     console.log("ERROR: ", e.responseText);
@@ -3702,8 +3686,7 @@ var
             var btn = document.getElementById('savePatient');
             if (btn.innerHTML == 'Update') {
                 HastaKimlikMethods.updatePatientData();
-            }
-            else {
+            } else {
                 HastaKimlikMethods.savePatient();
             }
         },
@@ -3712,10 +3695,10 @@ var
             jQueryMethods.toastrOptions();
             var btn = document.getElementById('savePatient');
 
-            if ($.cookie('username') == null
-                || $.cookie('username') == ''
-                || $.cookie('username') == undefined
-                || $.cookie('username') == 'undefined') {
+            if ($.cookie('username') == null ||
+                $.cookie('username') == '' ||
+                $.cookie('username') == undefined ||
+                $.cookie('username') == 'undefined') {
                 toastr.error('Please Login from main page! ! \n' + e, 'Error!')
             } else {
                 if (btn.innerHTML == 'Update') {
@@ -3745,7 +3728,7 @@ var
                         contentType: 'application/json',
                         datatype: "json",
                         url: '/hastakimlik/savePatient',
-                        success: function () {
+                        success: function() {
                             toastr.success('Patient successfully saved!', 'Patient Save');
                             // AdministrationMethods.findOneUser();
                             // AdministrationMethods.getMaxUserId();
@@ -3761,7 +3744,7 @@ var
                             $("#patientPhone").val('');
                             $("#patientAdress").val('');
                         },
-                        error: function (e) {
+                        error: function(e) {
                             jQueryMethods.toastrOptions();
                             toastr.error('User couldnt list! \n' + e, 'Error!');
                             console.log("ERROR: ", e);
@@ -3780,17 +3763,16 @@ var
 
             if ($("#patientIdNo").val() == '') {
                 toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: "GET",
                     url: "/hastakimlik/findOnePatient",
                     data: { patientIdNo: $("#patientIdNo").val() },
-                    success: function (patient) {
+                    success: function(patient) {
                         var x = '----------';
-                        if (patient.patientBirthDate == ''
-                            || patient.patientBirthDate == undefined
-                            || patient.patientBirthDate == 'undefined') {
+                        if (patient.patientBirthDate == '' ||
+                            patient.patientBirthDate == undefined ||
+                            patient.patientBirthDate == 'undefined') {
                             patient.patientBirthDate = x;
                             patient.patientBirthDate = x;
                         }
@@ -3816,7 +3798,7 @@ var
                             toastr.info('Patient - ' + patient.patientIdNo + ' -  found!', 'Patient Search');
                         }
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Patient couldnt find! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -3846,8 +3828,7 @@ var
 
             if ($("#patientIdNo").val() == '') {
                 toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: 'PUT',
                     data: JSON.stringify(myData),
@@ -3855,11 +3836,11 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/hastakimlik/updatePatientData',
-                    success: function (patient) {
+                    success: function(patient) {
                         toastr.success('Patient updated! \n\n\n', 'Patient Update');
                         HastaKimlikMethods.findOnePatient();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Patient couldnt update! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -3871,14 +3852,14 @@ var
 
     InpatientMethods = {
         animateTabDiv: function animateTabDiv() {
-            $(function () {
+            $(function() {
                 $('.tab-content:not(:first)').hide();
-                $('#tabs-nav a').bind('click', function (e) {
+                $('#tabs-nav a').bind('click', function(e) {
                     e.preventDefault();
                     $this = $(this);
                     $target = $(this.hash);
                     $('#tabs-nav a.current').removeClass('current');
-                    $('.tab-content:visible').fadeOut("medium", function () {
+                    $('.tab-content:visible').fadeOut("medium", function() {
                         $this.addClass('current');
                         $target.fadeIn("medium");
                     });
@@ -3912,8 +3893,7 @@ var
                 document.getElementById('th-tab-five').style.display = 'none';
                 InpatientMethods.yourOwnTabShow('th-tab-six');
                 document.getElementById('inpatientTabDiv').style.width = '70%'
-            }
-            else {
+            } else {
                 alert('Daha fazla tab ekleyemezsiniz!')
             }
         },
@@ -3929,7 +3909,7 @@ var
         },
 
         colorSelectedPatient: function colorSelectedPatient() {
-            $("tr").click(function () {
+            $("tr").click(function() {
                 $(this).addClass("selected").siblings().removeClass("selected");
             });
         },
@@ -3957,7 +3937,7 @@ var
         showDetailTable: function showDetailTable(showDetailDivId, hideOtherDetailDiv) {
             var detailTable = document.getElementById(showDetailDivId),
                 hideDetailTable = document.getElementById(hideOtherDetailDiv);
-            $(hideDetailTable).fadeOut('slow', function () {
+            $(hideDetailTable).fadeOut('slow', function() {
                 $(detailTable).fadeIn('slow');
             });
         }
@@ -3996,7 +3976,7 @@ var
             var numberResult = document.getElementById(numberCell),
                 resulText = document.getElementById(textCell),
                 myRow = document.getElementById(rowId).id;
-            $('#' + myRow).on('contextmenu', function (e) {
+            $('#' + myRow).on('contextmenu', function(e) {
                 var top = e.pageY - 10;
                 var left = e.pageX - 0;
 
@@ -4008,7 +3988,7 @@ var
                 return false;
             })
 
-            $(".custom-menu li").on('click', function () {
+            $(".custom-menu li").on('click', function() {
 
                 // This is the triggered action name
                 switch ($(this).attr("data-action")) {
@@ -4035,8 +4015,7 @@ var
                 acceptedTestTable = document.getElementById('acceptedTestTable'),
                 resultedTestTable = document.getElementById('resultedTestTable'),
                 confirmedTestTable = document.getElementById('confirmedTestTable'),
-                tableName = document.getElementById('labTestTableName')
-                ;
+                tableName = document.getElementById('labTestTableName');
 
             if (selectedTableId == 'testTable') {
                 tableName.innerHTML = 'Awaiting Tests';
@@ -4171,7 +4150,11 @@ var
 
                     // Optional; add a title and set the width and height of the chart
                     var options = {
-                        'title': 'Test per Lab Group', 'width': 550, 'height': 400, is3D: true, 'backgroundColor': 'inherit',
+                        'title': 'Test per Lab Group',
+                        'width': 550,
+                        'height': 400,
+                        is3D: true,
+                        'backgroundColor': 'inherit',
                         animation: {
                             duration: 1000,
                             easing: 'out',
@@ -4263,8 +4246,7 @@ var
                     myloginPassword = document.getElementById('loginPassword'),
                     myinnerLoginBtn = document.getElementById('innerLoginBtn'),
                     myrememberChkbxlbl = document.getElementById('rememberChkbxlbl'),
-                    myforgotPass = document.getElementById('forgotPass')
-                    ;
+                    myforgotPass = document.getElementById('forgotPass');
                 if (index == 1) {
                     myloginUserNameLbl.innerHTML = 'Kullanıcı adı'
                     myloginUserName.placeholder = 'Kullanıcı adını giriniz'
@@ -4273,8 +4255,7 @@ var
                     myinnerLoginBtn.innerHTML = 'Giriş';
                     myrememberChkbxlbl.innerHTML = '<input id="rememberChkbx" type="checkbox" checked="checked" name="remember" style="color: black;float: right;margin: 3px 0px 0px 15px;"> Beni hatırla';
                     myforgotPass.innerHTML = 'Şifrenizi mi unuttunuz?';
-                }
-                else {
+                } else {
                     myloginUserNameLbl.innerHTML = 'Username'
                     myloginUserName.placeholder = 'Enter username'
                     myloginPasswordLbl.innerHTML = 'Password'
@@ -4326,10 +4307,10 @@ var
             var saveButton = document.getElementById(saveBtn),
                 searchButton = document.getElementById(searchBtn);
 
-            if ($.cookie('username') == null
-                || $.cookie('username') == 'null'
-                || $.cookie('username') == undefined
-                || $.cookie('username') == 'undefined') {
+            if ($.cookie('username') == null ||
+                $.cookie('username') == 'null' ||
+                $.cookie('username') == undefined ||
+                $.cookie('username') == 'undefined') {
                 saveButton.disabled = true;
                 saveButton.title = 'Button disabled. Please Login from main page!';
                 saveButton.style.backgroundColor = 'lightgrey';
@@ -4352,7 +4333,7 @@ var
                 type: "GET",
                 url: "/findLoginUser",
                 data: { userName: loginUserName, password: loginPassword },
-                success: function (user) {
+                success: function(user) {
                     jQueryMethods.toastrOptions();
                     if (user.userId == '' || user.userId == null || user.userId == 'undefind') {
                         toastr.error('Incorrect username or password, please check your data! \n\n\n', 'Error!')
@@ -4380,11 +4361,11 @@ var
                             contentType: 'application/json',
                             datatype: "json",
                             url: '/userLoginSessionSave',
-                            success: function () {
+                            success: function() {
                                 $("#loginUserName").val('');
                                 $("#loginPassword").val('')
                             },
-                            error: function (e) {
+                            error: function(e) {
                                 jQueryMethods.toastrOptions();
                                 toastr.error('User session couldnt save! \n' + e, 'Error!')
                                 console.log("ERROR: ", e);
@@ -4411,7 +4392,7 @@ var
                         }
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('User couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -4426,7 +4407,7 @@ var
                 userGroup = $.cookie('userGroup'),
                 myPhotoSrc = $.cookie('userPhotoSrc');
 
-            $(function () {
+            $(function() {
                 s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">';
                 s += '<tr style="border-style:ridge;border:5px solid #761c54;"><img src="' + myPhotoSrc + '" style="width:200px; height:200px;align-items:center;box-shadow:"/> </td><td valign="top">' + userNameSurname + '</td></tr>';
                 s += '<td class="Text">' + userMajorDicipline + ' - ' + userGroup + ' <br/>' + userPersonalIdNumber + '</td>';
@@ -4461,15 +4442,14 @@ var
                 contentType: 'application/json',
                 datatype: "json",
                 url: '/closeUserLoginSession',
-                success: function () {
+                success: function() {
                     toastr.warning(
-                        "<br/><br/><button type='button' id='logOutConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to log out? <br><br> You will sign out from entire system if you click YES.',
-                        {
+                        "<br/><br/><button type='button' id='logOutConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;'>Yes</button>", 'Do you want to log out? <br><br> You will sign out from entire system if you click YES.', {
                             allowHtml: true,
                             progressBar: false,
                             timeOut: 10000,
-                            onShown: function (toast) {
-                                $("#logOutConfirmBtn").on('click', function () {
+                            onShown: function(toast) {
+                                $("#logOutConfirmBtn").on('click', function() {
                                     toastr.success('User logged out!', 'User Logout');
                                     loginBtn.innerHTML = 'Login';
                                     document.getElementById('hUserName').innerHTML = 'Please log in!'
@@ -4487,7 +4467,7 @@ var
                             }
                         });
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('User session couldnt closed! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -4503,8 +4483,8 @@ var
                 type: "GET",
                 data: { userName: $.cookie('username') },
                 url: "/userLoginStatistics",
-                success: function (result) {
-                    $.each(result, function (i, myData) {
+                success: function(result) {
+                    $.each(result, function(i, myData) {
 
                         var endDate = new Date(myData.sessionEndDate),
                             startDate = new Date(myData.sessionStartDate),
@@ -4528,29 +4508,29 @@ var
                             loginDuration = days + ' day(s) ' + hours + ' hour(s) ' + minutes + ' minute(s) ' + seconds + ' second(s)';
                         }
 
-                        if (myData.sessionStartDate == ''
-                            || myData.sessionStartDate == undefined
-                            || myData.sessionStartDate == null
-                            || myData.sessionStartDate == 'undefined') {
+                        if (myData.sessionStartDate == '' ||
+                            myData.sessionStartDate == undefined ||
+                            myData.sessionStartDate == null ||
+                            myData.sessionStartDate == 'undefined') {
                             myData.sessionStartDate = x;
-                        } else if (myData.sessionEndDate == ''
-                            || myData.sessionEndDate == undefined
-                            || myData.sessionEndDate == null
-                            || myData.sessionEndDate == 'undefined') {
+                        } else if (myData.sessionEndDate == '' ||
+                            myData.sessionEndDate == undefined ||
+                            myData.sessionEndDate == null ||
+                            myData.sessionEndDate == 'undefined') {
                             loginDuration = 'still loged..';
                         }
 
                         i++;
                         $("#userLoginStatsTable> tbody").append(
-                            "<tr class='userRow' id='userRowId" + i + "' title=''><td class='idTd' title=''>"
-                            + i + "</td><td>"
-                            + myData.ipAdress + "</td><td>"
-                            + myData.computerName + "</td><td>"
-                            + myData.sessionStartDate + "</td><td>"
-                            + loginDuration + "</td></tr>");
+                            "<tr class='userRow' id='userRowId" + i + "' title=''><td class='idTd' title=''>" +
+                            i + "</td><td>" +
+                            myData.ipAdress + "</td><td>" +
+                            myData.computerName + "</td><td>" +
+                            myData.sessionStartDate + "</td><td>" +
+                            loginDuration + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Users couldnt list! \n' + message.err, 'Error!')
                     console.log("ERROR: ", e);
@@ -4563,14 +4543,14 @@ var
                 type: "GET",
                 data: { userName: $.cookie('username') },
                 url: "/getLastPasswordChangeStatistics",
-                success: function (result) {
+                success: function(result) {
                     document.getElementById('lastPasswordChangeStatistics').innerHTML =
                         'Last password change details = ' +
                         result.passwordChangeDate + ' - ' +
                         result.passwordChangeMachineName + ' - ' +
                         result.passwordChangeMachineIp
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Users couldnt list! \n' + message.err, 'Error!')
                     console.log("ERROR: ", e);
@@ -4580,17 +4560,16 @@ var
 
         changeUserPassword: function changeUserPassword() {
             jQueryMethods.toastrOptions();
-            var myData =
-            {
+            var myData = {
                 userName: $.cookie('username'),
                 userOldPassword: $("#userOldPassword").val(),
                 userNewPassword: $("#userNewPassword").val()
             };
 
-            if ($.cookie('username') == null
-                || $.cookie('username') == ''
-                || $.cookie('username') == undefined
-                || $.cookie('username') == 'undefined') {
+            if ($.cookie('username') == null ||
+                $.cookie('username') == '' ||
+                $.cookie('username') == undefined ||
+                $.cookie('username') == 'undefined') {
                 toastr.warning('Please login!', 'Login Error');
             } else {
                 if ($("#userNewPassword").val() != $("#userNewPasswordRepeat").val()) {
@@ -4600,7 +4579,7 @@ var
                         type: "GET",
                         url: "/checkUserPassword",
                         data: { userName: $.cookie('username'), password: $("#userOldPassword").val() },
-                        success: function (user) {
+                        success: function(user) {
                             if (user.length <= 0) {
                                 toastr.error('Incorrect user old password! \n\n\n', 'Error!')
                             } else {
@@ -4611,14 +4590,14 @@ var
                                     contentType: 'application/json',
                                     datatype: "json",
                                     url: '/changeUserPassword',
-                                    success: function () {
+                                    success: function() {
                                         toastr.info('User password has changed!', 'Password Change');
                                         $("#userOldPassword").val('');
                                         $("#userNewPassword").val('');
                                         $("#userNewPasswordRepeat").val('');
 
                                     },
-                                    error: function (e) {
+                                    error: function(e) {
                                         jQueryMethods.toastrOptions();
                                         toastr.error('User password couldnt change! \n\n\n' + e.responseText, 'Error!')
                                         console.log("ERROR: ", e.responseText);
@@ -4626,7 +4605,7 @@ var
                                 });
                             }
                         },
-                        error: function (e) {
+                        error: function(e) {
                             jQueryMethods.toastrOptions();
                             toastr.error('User couldnt find! \n\n\n' + e.responseText, 'Error!')
                             console.log("ERROR: ", e.responseText);
@@ -4664,13 +4643,12 @@ var
 
             if (myPatientId != '' || myPatientId > 0) {
                 toastr.warning(
-                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?',
-                    {
+                    "<br/><h21>You will lose your entered data if you click yes!<h21/><br/><br/><button type='button' id='clearConfirmBtn' class='inpatientBtn btn-danger' style='width: 315px !important;height:35px;border-radius:8px;'>Yes</button>", 'Do you want to CLEAR form?', {
                         allowHtml: true,
                         progressBar: true,
                         timeOut: 10000,
-                        onShown: function (toast) {
-                            $("#clearConfirmBtn").on('click', function () {
+                        onShown: function(toast) {
+                            $("#clearConfirmBtn").on('click', function() {
                                 PolyclinicExamMethods.getMaxProtocolNo();
                                 jQueryMethods.setCalenderValueToday('patientBirthDate');
                                 jQueryMethods.setCalenderValueToday('patientPolExamDate');
@@ -4706,7 +4684,7 @@ var
 
         searchByEnter: function searchByEnter(inputId) {
             const node = document.getElementById(inputId);
-            node.addEventListener("keyup", function (event) {
+            node.addEventListener("keyup", function(event) {
                 if (event.key === "Enter") {
                     document.getElementById('polSearch').click();
                 }
@@ -4738,7 +4716,7 @@ var
                     type: "GET",
                     url: "/polExam/findPatient",
                     data: myQuery,
-                    success: function (patient) {
+                    success: function(patient) {
                         jQueryMethods.toastrOptions();
                         if (patient.patientId == '' || patient.patientId == null || patient.patientId == 'undefind') {
                             toastr.error('Patient couldnt find! \n\n\n', 'Error!')
@@ -4770,7 +4748,7 @@ var
                             toastr.info('Patient - ' + $("#patientNameSurname").val() + ' - found!', 'Patient Search');
                         }
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Patient couldnt find! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -4821,13 +4799,13 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/polExam/savePolExam',
-                    success: function () {
+                    success: function() {
                         toastr.success('Patient polyclinic exam successfully saved!', 'Save');
                         PolyclinicExamMethods.findPatient();
                         PolyclinicExamMethods.getMaxProtocolNo();
                         // findPatientLabRadHistory function will come here
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Patient polyclinic exam couldnt save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
                     }
@@ -4839,10 +4817,15 @@ var
             $.ajax({
                 type: "GET",
                 url: "/polExam/getMaxProtocolNo",
-                success: function (patient) {
-                    $("#patientProtocolNo").val(patient.patientProtocolNo + 1);
+                success: function(patient) {
+                    if (patient.length < 1) {
+                        $("#patientProtocolNo").val(1);
+                    } else {
+                        $("#patientProtocolNo").val(patient.patientProtocolNo + 1);
+                    }
+
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error("Couldn't get max protocol no!", "Error!")
                     console.log("ERROR: ", e.responseText);
@@ -4857,20 +4840,20 @@ var
                 type: "GET",
                 url: "/polExam/findPatientHistory",
                 data: { patientIdNo: $("#patientIdNo").val() },
-                success: function (result) {
-                    $.each(result, function (i, patientData) {
+                success: function(result) {
+                    $.each(result, function(i, patientData) {
                         i++;
                         $("#polExamPatientHistoryTable> tbody").append(
-                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >"
-                            + i + "</td><td>" + patientData.patientProtocolNo + "</td><td>"
-                            + patientData.patientPolExamDate + "</td><td>"
-                            + patientData.polyclinicSelect + "</td><td>"
-                            + patientData.doctorSelector + "</td><td>"
-                            + patientData.statusSelect + "</td><td><button class='inpatientBtn btn-success' title='Click for select protocol.' onclick=\"PolyclinicExamMethods.findByProtocol(\'patientHistory" + i + "\')\">Select</button></td></tr>");
+                            "<tr class='patientHistory' id='patientHistory" + i + "' title=''><td >" +
+                            i + "</td><td>" + patientData.patientProtocolNo + "</td><td>" +
+                            patientData.patientPolExamDate + "</td><td>" +
+                            patientData.polyclinicSelect + "</td><td>" +
+                            patientData.doctorSelector + "</td><td>" +
+                            patientData.statusSelect + "</td><td><button class='inpatientBtn btn-success' title='Click for select protocol.' onclick=\"PolyclinicExamMethods.findByProtocol(\'patientHistory" + i + "\')\">Select</button></td></tr>");
                     });
                     PolyclinicExamMethods.colorRedCanceledPolExams();
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient history couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -4885,22 +4868,22 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/fillPatientLabRadHistoryTable",
                 data: { patientIdNo: $("#patientIdNo").val() },
-                success: function (result) {
-                    $.each(result, function (i, testData) {
+                success: function(result) {
+                    $.each(result, function(i, testData) {
                         i++;
                         if (testData.result == '') {
                             testData.result = 'No Result';
                         }
                         $("#patientLabRadHistoryTable> tbody").append(
-                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='"
-                            + testData.result + "' ><td >"
-                            + i + "</td><td>" + testData.patientProtocolNo + "</td><td>"
-                            + testData.testName + "</td><td>"
-                            + testData.saveDate + "</td><td>"
-                            + testData.testLab + "</td></tr>");
+                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='" +
+                            testData.result + "' ><td >" +
+                            i + "</td><td>" + testData.patientProtocolNo + "</td><td>" +
+                            testData.testName + "</td><td>" +
+                            testData.saveDate + "</td><td>" +
+                            testData.testLab + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Lab. / Rad. history couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -4938,10 +4921,10 @@ var
                 type: "GET",
                 url: "/polExam/findByProtocol",
                 data: { patientProtocolNo: myProtocol },
-                success: function (patient) {
+                success: function(patient) {
                     jQueryMethods.toastrOptions();
-                    if (patient.patientProtocolNo == '' || patient.patientProtocolNo == null
-                        || patient.patientProtocolNo == 'undefind') {
+                    if (patient.patientProtocolNo == '' || patient.patientProtocolNo == null ||
+                        patient.patientProtocolNo == 'undefind') {
                         toastr.error('Patient found by data couldnt set to form! \n\n\n', 'Error!')
                     } else {
                         $("#patientId").val(patient.patientId);
@@ -4967,7 +4950,7 @@ var
                         toastr.info('Patient - ' + patient.patientNameSurname + ' - found!', 'Patient Protocol Search');
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient protocol couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -4981,8 +4964,7 @@ var
                 myStatusSelect = document.getElementById('statusSelect'),
                 myInsuranceSelect = document.getElementById('insuranceSelect'),
                 myPatientProtocolNo = document.getElementById('patientProtocolNo').value,
-                myData =
-                {
+                myData = {
                     patientProtocolNo: myPatientProtocolNo,
                     insuranceSelect: myInsuranceSelect.options[myInsuranceSelect.selectedIndex].value,
                     doctorSelector: myDoctorSelector.options[myDoctorSelector.selectedIndex].value,
@@ -4993,8 +4975,7 @@ var
 
             if ($("#patientIdNo").val() == '') {
                 toastr.error('Please enter patient personal ID number! \n\n\n', 'Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: 'PUT',
                     data: JSON.stringify(myData),
@@ -5002,7 +4983,7 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/polExam/updatePolExam',
-                    success: function (patient) {
+                    success: function(patient) {
                         toastr.success('Polyclinic exam updated! \n\n\n', 'Polyclinic Exam Update');
                         PolyclinicExamMethods.findPatientHistory();
                         PolyclinicExamMethods.fillPatientVisitStatisticsTable();
@@ -5012,7 +4993,7 @@ var
                         PolyclinicExamMethods.fillDoctorPatientTable();
                         PolyclinicExamMethods.fillDoctorOnLeaveTable();
                     },
-                    error: function (e) {
+                    error: function(e) {
                         jQueryMethods.toastrOptions();
                         toastr.error('Polyclinic exam couldnt update! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
@@ -5028,17 +5009,17 @@ var
                 type: "GET",
                 url: "/polExam/fillPatientAppointmentStatusTable",
                 data: { patientId: $("#patientId").val() },
-                success: function (result) {
-                    $.each(result, function (i) {
+                success: function(result) {
+                    $.each(result, function(i) {
                         $("#patientAppointmentStatusTable> tbody").append(
-                            "<tr class='appData'><td class='appPol'>"
-                            + result[i].appointmentPolyclinic
-                            + "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour
-                            + "</td><td class='appStatus'>" + result[i].appointmentStatus + "</td></tr>");
+                            "<tr class='appData'><td class='appPol'>" +
+                            result[i].appointmentPolyclinic +
+                            "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour +
+                            "</td><td class='appStatus'>" + result[i].appointmentStatus + "</td></tr>");
                     });
                     AppointmentMethods.colorRedCanceledAppointmentId('patientAppointmentStatusTable', 2);
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5053,16 +5034,16 @@ var
                 type: "GET",
                 url: "/polExam/fillPatientUpcomingAppointmentTable",
                 data: { patientId: $("#patientId").val() },
-                success: function (result) {
-                    $.each(result, function (i) {
+                success: function(result) {
+                    $.each(result, function(i) {
                         $("#patientUpcomingAppointmentTable> tbody").append(
-                            "<tr class='appData'><td class='appDoctor'>"
-                            + result[i].appointmentDoctor
-                            + "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour
-                            + "</td></tr>");
+                            "<tr class='appData'><td class='appDoctor'>" +
+                            result[i].appointmentDoctor +
+                            "</td><td class='appDate'>" + result[i].appointmentDate + ' <br> ' + result[i].appointmentHour +
+                            "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient appointment history couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5079,14 +5060,14 @@ var
                 type: "GET",
                 data: { patientId: patientId },
                 url: "/polExam/fillPatientVisitStatisticsTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#patientVisitStatisticsTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"] + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='patientData'>" +
+                            docs[i]["_id"] + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient polyclinic visits couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5103,14 +5084,14 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate },
                 url: "/polExam/fillPolyclinicPatientCountTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#polyclinicPatientCountTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"] + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='patientData'>" +
+                            docs[i]["_id"] + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5127,16 +5108,16 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate },
                 url: "/polExam/fillPatientHealtInsuranceTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#patientHealtInsuranceTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"]["polyclinicSelect"]
-                            + "</td><td class='patientInsurance'>" + docs[i]["_id"]["insuranceSelect"]
-                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='patientData'>" +
+                            docs[i]["_id"]["polyclinicSelect"] +
+                            "</td><td class='patientInsurance'>" + docs[i]["_id"]["insuranceSelect"] +
+                            "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5153,16 +5134,16 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate },
                 url: "/polExam/fillPatientGenderTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#patientGenderTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"]["polyclinicSelect"]
-                            + "</td><td class='patientGender'>" + docs[i]["_id"]["patientGender"]
-                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='patientData'>" +
+                            docs[i]["_id"]["polyclinicSelect"] +
+                            "</td><td class='patientGender'>" + docs[i]["_id"]["patientGender"] +
+                            "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5179,16 +5160,16 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate },
                 url: "/polExam/fillDoctorPatientTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#doctorPatientTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["_id"]["doctorSelector"]
-                            + "</td><td class='polyclinicSelect'>" + docs[i]["_id"]["polyclinicSelect"]
-                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>" +
+                            docs[i]["_id"]["doctorSelector"] +
+                            "</td><td class='polyclinicSelect'>" + docs[i]["_id"]["polyclinicSelect"] +
+                            "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5204,15 +5185,15 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate },
                 url: "/polExam/fillDoctorAppointmentTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#doctorAppointmentTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["_id"]
-                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>" +
+                            docs[i]["_id"] +
+                            "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Doctor appointments couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5229,15 +5210,15 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate },
                 url: "/polExam/fillDoctorOnLeaveTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $("#doctorOnLeaveTable> tbody").append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["staffName"] + ' ' + docs[i]["staffSurname"]
-                            + "</td><td class='patientCount'>" + docs[i]["staffLeaveEndDate"].substring(0, 10) + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>" +
+                            docs[i]["staffName"] + ' ' + docs[i]["staffSurname"] +
+                            "</td><td class='patientCount'>" + docs[i]["staffLeaveEndDate"].substring(0, 10) + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5323,14 +5304,12 @@ var
                 }
                 if (y == 0) {
                     totalExam.style.backgroundColor = 'red'
-                }
-                else {
+                } else {
                     totalExam.style.backgroundColor = '#5bc0de'
                 }
                 selectedExam[0].innerHTML = y;
 
-            }
-            else {
+            } else {
                 grandParent.style.backgroundColor = '#dddddd';
 
 
@@ -5341,8 +5320,7 @@ var
                 }
                 if (y == 0) {
                     totalExam.style.backgroundColor = 'red'
-                }
-                else { totalExam.style.backgroundColor = '#5bc0de' }
+                } else { totalExam.style.backgroundColor = '#5bc0de' }
                 selectedExam[0].innerHTML = y;
             }
         },
@@ -5359,8 +5337,7 @@ var
             }
             if (y == 0) {
                 totalExam.style.backgroundColor = 'red'
-            }
-            else { totalExam.style.backgroundColor = '#5bc0de' }
+            } else { totalExam.style.backgroundColor = '#5bc0de' }
             selectedExam[0].innerHTML = y;
         },
 
@@ -5385,7 +5362,7 @@ var
                 patientBirthDate = $.cookie('patientGroup'),
                 myPhotoSrc = $.cookie('patientPhotoSrc');
 
-            $(function () {
+            $(function() {
                 s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">';
                 s += '<tr style="border-style:ridge;border:5px solid #761c54;"><img src="' + myPhotoSrc + '" style="width:200px; height:200px;align-items:center;box-shadow:"/> </td><td valign="top">' + patientNameSurname + '</td></tr>';
                 s += '<td class="Text">' + patientGender + ' - ' + patientBirthDate + ' <br/>' + patientPersonalIdNumber + '</td>';
@@ -5416,8 +5393,8 @@ var
                 data: (myData),
                 contentType: 'application/json',
                 datatype: "json",
-                success: function (result) {
-                    $.each(result, function (i, patientData) {
+                success: function(result) {
+                    $.each(result, function(i, patientData) {
                         i++;
                         $.cookie('patientNameSurname', clickedPatientNameSurname, { expires: 1, path: '/' });
 
@@ -5428,7 +5405,7 @@ var
                     });
                     PolyclinicMethods.getPatientDataToCookie();
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient list couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5447,8 +5424,8 @@ var
                 data: (myData),
                 contentType: 'application/json',
                 datatype: "json",
-                success: function (result) {
-                    $.each(result, function (i, patientData) {
+                success: function(result) {
+                    $.each(result, function(i, patientData) {
                         i++;
                         $.cookie('patientPhotoSrc', patientData.patientPhotoSrc, { expires: 1, path: '/' });
                         $.cookie('patientFatherName', patientData.patientFatherName, { expires: 1, path: '/' });
@@ -5461,7 +5438,7 @@ var
                         $.cookie('patientAge', age, { expires: 1, path: '/' });
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient data couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5496,8 +5473,8 @@ var
                 data: (myData),
                 contentType: 'application/json',
                 datatype: "json",
-                success: function (result) {
-                    $.each(result, function (i, patientAppStatus) {
+                success: function(result) {
+                    $.each(result, function(i, patientAppStatus) {
                         i++;
                         if (result.length > 0) {
                             appointmentStatusCell.innerHTML = 'With Appointment';
@@ -5508,7 +5485,7 @@ var
                         }
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient appointment status couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5518,13 +5495,12 @@ var
 
         findPatientList: function findPatientList() {
             jQueryMethods.toastrOptions();
-            if ($.cookie('username') == null
-                || $.cookie('username') == 'null'
-                || $.cookie('username') == undefined
-                || $.cookie('username') == 'undefined') {
+            if ($.cookie('username') == null ||
+                $.cookie('username') == 'null' ||
+                $.cookie('username') == undefined ||
+                $.cookie('username') == 'undefined') {
                 toastr.error('Please login from Main page!', 'Login error!')
-            }
-            else {
+            } else {
                 var polExamDate = $('#examDate').val(),
                     myPolyclinicSelectValue = $("#polyclinicSelector option:selected").val();
 
@@ -5534,20 +5510,20 @@ var
                     type: "GET",
                     url: "/polExamAnamnesis/findPatientList",
                     data: { polyclinicSelect: myPolyclinicSelectValue, statusSelect: 'Valid', patientPolExamDate: polExamDate },
-                    success: function (result) {
-                        $.each(result, function (i, patientData) {
+                    success: function(result) {
+                        $.each(result, function(i, patientData) {
                             i++;
                             var patientAppStatusId = 'patientAppStatus' + i;
                             $("#patientTable> tbody").append(
-                                "<tr class='patientList' id='patient" + i
-                                + "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable();PolyclinicMethods.fillPatientLabRadHistoryTable()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>"
-                                + patientData.patientProtocolNo + "</td><td>"
-                                + patientData.patientNameSurname + "</td><td id='patientAppStatus" + i
-                                + "' style='background-color:#e77474;'>Without Appointment</td></tr>");
+                                "<tr class='patientList' id='patient" + i +
+                                "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable();PolyclinicMethods.fillPatientLabRadHistoryTable()' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>" +
+                                patientData.patientProtocolNo + "</td><td>" +
+                                patientData.patientNameSurname + "</td><td id='patientAppStatus" + i +
+                                "' style='background-color:#e77474;'>Without Appointment</td></tr>");
                             PolyclinicMethods.checkPatientAppointmentStatus(patientAppStatusId, patientData.patientIdNo)
                         });
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Patient list couldnt find! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
                     }
@@ -5562,15 +5538,15 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/diagnosisList",
                 data: {},
-                success: function (result) {
-                    $.each(result, function (i, diagnosisData) {
+                success: function(result) {
+                    $.each(result, function(i, diagnosisData) {
                         i++;
                         $("#polDiagnosis").append(
-                            "<a class='diagnosisListItems' id='diagnosisListItem" + i
-                            + "'href='#taniAdd' onclick='PolyclinicMethods.addDiagnosisToTableAndDatabase(\"diagnosisListItem" + i + "\");'>" + diagnosisData.icd10 + ' - ' + diagnosisData.diagnosisName + "</a>");
+                            "<a class='diagnosisListItems' id='diagnosisListItem" + i +
+                            "'href='#taniAdd' onclick='PolyclinicMethods.addDiagnosisToTableAndDatabase(\"diagnosisListItem" + i + "\");'>" + diagnosisData.icd10 + ' - ' + diagnosisData.diagnosisName + "</a>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Diagnosis list couldnt find! \n\n\n' + e.responseText, 'Error!');
                     console.log("ERROR: ", e.responseText);
                 }
@@ -5592,22 +5568,21 @@ var
             }
 
             toastr.warning(
-                "<br/><br/><button type='button' id='deleteConfirmBtn' class='inpatientBtn btn-danger' style='width: 325px !important;'>Yes</button>", 'Do you want to DELETE diagnosis?',
-                {
+                "<br/><br/><button type='button' id='deleteConfirmBtn' class='inpatientBtn btn-danger' style='width: 325px !important;'>Yes</button>", 'Do you want to DELETE diagnosis?', {
                     allowHtml: true,
                     progressBar: false,
                     timeOut: 10000,
-                    onShown: function (toast) {
-                        $("#deleteConfirmBtn").on('click', function () {
+                    onShown: function(toast) {
+                        $("#deleteConfirmBtn").on('click', function() {
                             $.ajax({
                                 type: "GET",
                                 url: "/polExamAnamnesis/deletePatientDiagnosis",
                                 data: { patientProtocolNo: clickedPatientProtocol, icd10: icd10Code, diagnosisType: whichDiagnosisText },
-                                success: function () {
+                                success: function() {
                                     toastr.success(icd10FullName + ' - Deleted!', 'Diagnosis Delete');
                                     PolyclinicMethods.findPatientDiagnosisHistory();
                                 },
-                                error: function (e) {
+                                error: function(e) {
                                     jQueryMethods.toastrOptions();
                                     toastr.error('Diagnosis couldnt deleted! \n' + e.body, 'Error!')
                                     console.log("ERROR: ", e);
@@ -5631,11 +5606,11 @@ var
                 contentType: 'application/json',
                 datatype: "json",
                 url: '/polExamAnamnesis/updateDiagnosisType',
-                success: function () {
+                success: function() {
                     toastr.success(icd10FullName + ' diagnosis updated!', 'Diagnosis Update');
                     PolyclinicMethods.findPatientDiagnosisHistory();
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error(icd10FullName + ' couldnt update! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -5654,14 +5629,14 @@ var
                 rowCount = $('.polDiagnosisHistoryTable >tbody >tr').length + 1;
 
             $(".polDiagnosisHistoryTable > tbody").append(
-                "<tr class='patientDiagnosis' id='patientDiagnosis" + rowCount + "'><td style='color:white'>"
-                + $("#" + diagnosisListItemId + "").html() + "</td>"
-                + "<td><select id='diagnosisSelect' style='width:fit-content'><option value='preDiagnosis'>Pre Diagnosis</option><option value='certainDiagnosis'>Certain Diagnosis</option></select></td>"
-                + "<td>" + myDiagnosisUser + "</td>"
-                + "<td>" + userDate + "</td>"
-                + "<td><button class='inpatientBtn btn-danger' onclick='PolyclinicMethods.deletePatientDiagnosis(\"patientDiagnosis" + rowCount + "\")'>Delete</button></td>"
-                + "<td><button class='inpatientBtn btn-primary' style='width:62px;height:42px;' onclick='PolyclinicMethods.updateDiagnosisType(\"patientDiagnosis" + rowCount + "\")'>Update</button></td>"
-                + "</tr>")
+                "<tr class='patientDiagnosis' id='patientDiagnosis" + rowCount + "'><td style='color:white'>" +
+                $("#" + diagnosisListItemId + "").html() + "</td>" +
+                "<td><select id='diagnosisSelect' style='width:fit-content'><option value='preDiagnosis'>Pre Diagnosis</option><option value='certainDiagnosis'>Certain Diagnosis</option></select></td>" +
+                "<td>" + myDiagnosisUser + "</td>" +
+                "<td>" + userDate + "</td>" +
+                "<td><button class='inpatientBtn btn-danger' onclick='PolyclinicMethods.deletePatientDiagnosis(\"patientDiagnosis" + rowCount + "\")'>Delete</button></td>" +
+                "<td><button class='inpatientBtn btn-primary' style='width:62px;height:42px;' onclick='PolyclinicMethods.updateDiagnosisType(\"patientDiagnosis" + rowCount + "\")'>Update</button></td>" +
+                "</tr>")
 
             var myDiagnosisType = $("#diagnosisSelect option:selected").val(),
                 myData = {
@@ -5682,10 +5657,10 @@ var
                 contentType: 'application/json',
                 // datatype: "json",
                 url: '/polExamAnamnesis/savePolExamDiagnosis',
-                success: function () {
+                success: function() {
                     toastr.success($("#" + diagnosisListItemId + "").html() + ' added!', 'Info!')
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Patient diagnosis couldnt save! \n' + e, 'Error!')
                     console.log("ERROR: ", e);
                 }
@@ -5697,41 +5672,40 @@ var
 
             var patientProtocol = $.cookie('patientProtocol');
 
-            if (patientProtocol == null
-                || patientProtocol == 'null'
-                || patientProtocol == undefined
-                || patientProtocol == 'undefined') {
+            if (patientProtocol == null ||
+                patientProtocol == 'null' ||
+                patientProtocol == undefined ||
+                patientProtocol == 'undefined') {
                 toastr.error('Please choose a patient from patient list!', 'Patient Diagnosis List Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: "GET",
                     url: "/polExamAnamnesis/findPatientDiagnosisHistory",
                     data: { patientProtocolNo: patientProtocol },
-                    success: function (result) {
+                    success: function(result) {
                         $('.polDiagnosisHistoryTable > tbody').empty();
-                        $.each(result, function (i, patientDiagnosisData) {
+                        $.each(result, function(i, patientDiagnosisData) {
                             i++
-                            if (result.length > 0
-                                && patientDiagnosisData.icd10 != null
-                                || patientDiagnosisData.icd10 != 'null'
-                                || patientDiagnosisData.icd10 != 'undefined'
-                                || patientDiagnosisData.icd10 != undefined) {
+                            if (result.length > 0 &&
+                                patientDiagnosisData.icd10 != null ||
+                                patientDiagnosisData.icd10 != 'null' ||
+                                patientDiagnosisData.icd10 != 'undefined' ||
+                                patientDiagnosisData.icd10 != undefined) {
                                 $(".polDiagnosisHistoryTable > tbody").append(
-                                    "<tr class='patientDiagnosis' id='patientDiagnosis" + i + "'><td style='color:white'>"
-                                    + patientDiagnosisData.icd10 + ' - ' + patientDiagnosisData.diagnosisName + "</td>"
-                                    + "<td>" + patientDiagnosisData.diagnosisType + "</td>"
-                                    + "<td>" + patientDiagnosisData.diagnosisUser + "</td>"
-                                    + "<td>" + patientDiagnosisData.diagnosisDate + "</td>"
-                                    + "<td><button class='inpatientBtn btn-danger' onclick='PolyclinicMethods.deletePatientDiagnosis(\"patientDiagnosis" + i + "\")'>Delete</button></td>"
-                                    + "<td>Can\'t Update</td>"
-                                    + "</tr>")
+                                    "<tr class='patientDiagnosis' id='patientDiagnosis" + i + "'><td style='color:white'>" +
+                                    patientDiagnosisData.icd10 + ' - ' + patientDiagnosisData.diagnosisName + "</td>" +
+                                    "<td>" + patientDiagnosisData.diagnosisType + "</td>" +
+                                    "<td>" + patientDiagnosisData.diagnosisUser + "</td>" +
+                                    "<td>" + patientDiagnosisData.diagnosisDate + "</td>" +
+                                    "<td><button class='inpatientBtn btn-danger' onclick='PolyclinicMethods.deletePatientDiagnosis(\"patientDiagnosis" + i + "\")'>Delete</button></td>" +
+                                    "<td>Can\'t Update</td>" +
+                                    "</tr>")
                             } else {
                                 $('.polDiagnosisHistoryTable > tbody').empty();
                             }
                         });
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Patient diagnosis history couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
                     }
@@ -5771,12 +5745,12 @@ var
                         contentType: 'application/json',
                         datatype: "json",
                         url: '/polExamAnamnesis/savePolExamAnamnesis',
-                        success: function () {
+                        success: function() {
                             toastr.success('Patient polyclinic exam successfully saved!', 'Save!');
                             // PolyclinicExamMethods.findPatientHistory();
                             // findPatientLabRadHistory function will come here
                         },
-                        error: function (e) {
+                        error: function(e) {
                             toastr.error('Patient polyclinic exam couldnt save! \n' + e, 'Error!')
                             console.log("ERROR: ", e);
                         }
@@ -5801,11 +5775,11 @@ var
                 contentType: 'application/json',
                 datatype: "json",
                 url: '/polExamAnamnesis/updatePolExamAnamnesis',
-                success: function () {
+                success: function() {
                     toastr.success('Anamnesis updated!', 'Anamnesis Update!');
                     PolyclinicMethods.fillPatientExamHistoryTable();
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Anamnesis couldnt update! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -5819,24 +5793,23 @@ var
                 anamnezArea = $('#anamnezArea').val(),
                 muayeneArea = $('#muayeneArea').val();
 
-            if (patientProtocol == null
-                || patientProtocol == 'null'
-                || patientProtocol == undefined
-                || patientProtocol == 'undefined') {
+            if (patientProtocol == null ||
+                patientProtocol == 'null' ||
+                patientProtocol == undefined ||
+                patientProtocol == 'undefined') {
                 toastr.error('Please choose a patient from patient list!', 'Patient Anamnesis Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: "GET",
                     url: "/polExamAnamnesis/findPatientAnamnesisByProtocol",
                     data: { patientProtocolNo: patientProtocol },
-                    success: function (result) {
+                    success: function(result) {
 
                         $('#oykusuArea').val('');
                         $('#anamnezArea').val('');
                         $('#muayeneArea').val('');
                         polExamSave.innerHTML = 'Save';
-                        $.each(result, function (i, patientAnamnesisData) {
+                        $.each(result, function(i, patientAnamnesisData) {
                             i++
                             $('#oykusuArea').val(patientAnamnesisData.patientStory);
                             $('#anamnezArea').val(patientAnamnesisData.patientAnamnesis);
@@ -5844,7 +5817,7 @@ var
                             polExamSave.innerHTML = 'Update';
                         });
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Patient Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
                     }
@@ -5859,18 +5832,18 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/fillPatientExamHistoryTable",
                 data: { patientIdNo: $.cookie("patientPersonalIdNumber") },
-                success: function (result) {
-                    $.each(result, function (i, patientData) {
+                success: function(result) {
+                    $.each(result, function(i, patientData) {
                         i++;
                         $("#patientHistoryTable> tbody").append(
-                            "<tr class='patientHistory' id='patientHistory" + i + "' title='' onmouseover ='PolyclinicMethods.getPatientExamAnamnesisInTooltip(\"patientHistory" + i + "\")'><td >"
-                            + i + "</td><td>" + patientData.patientProtocolNo + "</td><td>"
-                            + patientData.patientPolExamDate + "</td><td>"
-                            + patientData.polyclinicSelect + "</td><td>"
-                            + patientData.doctorSelector + "</td></tr>");
+                            "<tr class='patientHistory' id='patientHistory" + i + "' title='' onmouseover ='PolyclinicMethods.getPatientExamAnamnesisInTooltip(\"patientHistory" + i + "\")'><td >" +
+                            i + "</td><td>" + patientData.patientProtocolNo + "</td><td>" +
+                            patientData.patientPolExamDate + "</td><td>" +
+                            patientData.polyclinicSelect + "</td><td>" +
+                            patientData.doctorSelector + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient polyclinic history couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5885,23 +5858,23 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/fillPatientLabRadHistoryTable",
                 data: { patientIdNo: $.cookie("patientPersonalIdNumber") },
-                success: function (result) {
-                    $.each(result, function (i, testData) {
+                success: function(result) {
+                    $.each(result, function(i, testData) {
                         i++;
                         if (testData.result == '') {
                             testData.result = 'No Result';
                         }
                         $("#patientLabRadHistoryTable> tbody").append(
-                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='"
-                            + testData.result + "' ><td >"
-                            + i + "</td><td>"
-                            + testData.patientProtocolNo + "</td><td>"
-                            + testData.testName + "</td><td>"
-                            + testData.saveDate + "</td><td>"
-                            + testData.testLab + "</td></tr>");
+                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='" +
+                            testData.result + "' ><td >" +
+                            i + "</td><td>" +
+                            testData.patientProtocolNo + "</td><td>" +
+                            testData.testName + "</td><td>" +
+                            testData.saveDate + "</td><td>" +
+                            testData.testLab + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Lab. / Rad. history couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5917,23 +5890,23 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/fillPatientLabRadHistoryTable",
                 data: { patientProtocolNo: $.cookie("patientProtocol"), testType: testType },
-                success: function (result) {
-                    $.each(result, function (i, testData) {
+                success: function(result) {
+                    $.each(result, function(i, testData) {
                         i++;
                         if (testData.result == '') {
                             testData.result = 'No Result';
                         }
                         $('#' + tableId + ' > tbody').append(
-                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='"
-                            + testData.result + "' ><td >"
-                            + i + "</td><td>"
-                            + testData.testCode + "</td><td>"
-                            + testData.testName + "</td><td>"
-                            + testData.saveDate + "</td><td>"
-                            + testData.testLab + "</td></tr>");
+                            "<tr class='patientLabRadHistory' id='patientLabRadHistory" + i + "' title='" +
+                            testData.result + "' ><td >" +
+                            i + "</td><td>" +
+                            testData.testCode + "</td><td>" +
+                            testData.testName + "</td><td>" +
+                            testData.saveDate + "</td><td>" +
+                            testData.testLab + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Lab. / Rad. history couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -5948,14 +5921,14 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/getPatientExamAnamnesisInTooltip",
                 data: { patientProtocolNo: patientProtocol },
-                success: function (result) {
+                success: function(result) {
                     if (result.length > 0) {
-                        s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;">'
-                            + '<tr><td>Protocol No: ' + patientProtocol + '</td></tr>'
-                            + '<tr style="border-style:dotted;"><td valign="top"> Story : '
-                            + result[0].patientStory + '</td></tr>'
-                            + '<tr style="border-style:dotted;"><td>Anamnesis : ' + result[0].patientAnamnesis + '</td></tr>'
-                            + '<tr><td>Examination : ' + result[0].patientExamination + '</td></tr></table>';
+                        s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;">' +
+                            '<tr><td>Protocol No: ' + patientProtocol + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td valign="top"> Story : ' +
+                            result[0].patientStory + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Anamnesis : ' + result[0].patientAnamnesis + '</td></tr>' +
+                            '<tr><td>Examination : ' + result[0].patientExamination + '</td></tr></table>';
 
                         $('#' + examRowId + '').tooltip({
                             content: s,
@@ -5970,12 +5943,12 @@ var
                             }
                         });
                     } else {
-                        s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;"'
-                            + ' style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">'
-                            + '<tr><td>Protocol No: ' + patientProtocol + '</td></tr>'
-                            + '<tr style="border-style:dotted;"><td> Story : No Data</td></tr>'
-                            + '<tr style="border-style:dotted;"><td>Anamnesis : No Data</td></tr>'
-                            + '<tr><td>Examination : No Data</td></tr></table>';
+                        s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;"' +
+                            ' style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">' +
+                            '<tr><td>Protocol No: ' + patientProtocol + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td> Story : No Data</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Anamnesis : No Data</td></tr>' +
+                            '<tr><td>Examination : No Data</td></tr></table>';
 
                         $('#' + examRowId + '').tooltip({
                             content: s,
@@ -5991,7 +5964,7 @@ var
                         });
                     }
                 },
-                error: function (e) {
+                error: function(e) {
                     toastr.error('Patient Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
                 }
@@ -6028,8 +6001,7 @@ var
 
             if (myData.bedId == 'null' || myData.bedId == null) {
                 toastr.warning('Please select a bed! \n', 'Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: 'POST',
                     data: JSON.stringify(myData),
@@ -6037,10 +6009,10 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/polExamAnamnesis/hospitalizationProcedure',
-                    success: function () {
+                    success: function() {
                         toastr.success('Patient hospitalization successfully saved!', 'Save!');
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Patient hospitalization couldn\'t save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
                     }
@@ -6059,15 +6031,14 @@ var
                 hospitalizationSave.disabled = true;
                 hospitalizationSave.style.backgroundColor = 'grey';
                 toastr.error('Please choose a patient from patient list!', 'Patient Data Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: "GET",
                     url: "/polExamAnamnesis/checkProtocolInpatients",
                     data: { patientProtocolNo: patientProtocol },
-                    success: function (result) {
+                    success: function(result) {
                         if (result.length > 0) {
-                            $.each(result, function (i, patientHospitalizationData) {
+                            $.each(result, function(i, patientHospitalizationData) {
                                 i++
                                 console.log(patientHospitalizationData.patientNameSurname, patientHospitalizationData.clinicSelect, patientHospitalizationData.doctorSelect)
                                 $('#patientProtocolNo').val(patientHospitalizationData.patientProtocolNo);
@@ -6084,7 +6055,7 @@ var
                         }
 
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Patient Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
                         console.log("ERROR: ", e.responseText);
                     }
@@ -6092,8 +6063,7 @@ var
             }
         },
 
-        patientProtocolandNameFromCookieForConsultation: function patientProtocolandNameFromCookieForConsultation
-            (protocolInputId, nameInputId) {
+        patientProtocolandNameFromCookieForConsultation: function patientProtocolandNameFromCookieForConsultation(protocolInputId, nameInputId) {
             var patientProtocol = $.cookie('patientProtocol'),
                 patientNameSurname = $.cookie('patientNameSurname');
 
@@ -6133,8 +6103,7 @@ var
 
             if (patientProtocol == 'null' || patientProtocol == null) {
                 toastr.warning('Please select a patient! \n', 'Error!')
-            }
-            else {
+            } else {
                 $.ajax({
                     type: 'POST',
                     data: JSON.stringify(myData),
@@ -6142,12 +6111,12 @@ var
                     contentType: 'application/json',
                     datatype: "json",
                     url: '/polExamAnamnesis/saveConsultation',
-                    success: function () {
+                    success: function() {
                         toastr.success('Patient consultation successfully saved!', 'Save!');
                         PolyclinicMethods.fillConsultationHistoryTable();
                         $('#konsNote').val('');
                     },
-                    error: function (e) {
+                    error: function(e) {
                         toastr.error('Patient consultation couldn\'t save! \n' + e, 'Error!')
                         console.log("ERROR: ", e);
                     }
@@ -6162,20 +6131,20 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/fillConsultationHistoryTable",
                 data: { patientIdNo: $.cookie("patientPersonalIdNumber") },
-                success: function (result) {
-                    $.each(result, function (i, consultationData) {
+                success: function(result) {
+                    $.each(result, function(i, consultationData) {
                         i++;
                         $("#consultationHistoryTable> tbody").append(
-                            "<tr class='patientConsHistory' id='patientConsHistory" + i + "'>"
-                            + "</td><td>" + consultationData.patientProtocolNo + "</td><td>"
-                            + consultationData.doctorSelect + "</td><td>"
-                            + consultationData.clinicSelect + "</td><td>"
-                            + consultationData.consultationDate + "</td><td>"
-                            + consultationData.acceptDate + "</td><td>"
-                            + consultationData.consultationNote + "</td></tr>");
+                            "<tr class='patientConsHistory' id='patientConsHistory" + i + "'>" +
+                            "</td><td>" + consultationData.patientProtocolNo + "</td><td>" +
+                            consultationData.doctorSelect + "</td><td>" +
+                            consultationData.clinicSelect + "</td><td>" +
+                            consultationData.consultationDate + "</td><td>" +
+                            consultationData.acceptDate + "</td><td>" +
+                            consultationData.consultationNote + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Patient consultation history couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -6186,10 +6155,10 @@ var
         savePatientRadLabExaminations: function savePatientRadLabExaminations(requestTableTbody, myTestType) {
             var selectedCheckboxesRowIds = [];
 
-            $('#' + requestTableTbody + ' input:checked').each(function () {
+            $('#' + requestTableTbody + ' input:checked').each(function() {
                 selectedCheckboxesRowIds.push($(this).closest('tr').attr('id'));
             });
-            $.each(selectedCheckboxesRowIds, function (i) {
+            $.each(selectedCheckboxesRowIds, function(i) {
                 var myCheckBox = $('#' + selectedCheckboxesRowIds[i] + ' td:first input:checkbox'),
                     myTestCode = $('#' + selectedCheckboxesRowIds[i] + ' td:nth-child(2)').text(),
                     myTestName = $('#' + selectedCheckboxesRowIds[i] + ' td:nth-child(3)').text(),
@@ -6218,8 +6187,7 @@ var
                 // console.log(myTestCode, myTestName, myTestLab, myTestQuantity, mySaveDate,myData.saveUser)
                 if (patientProtocol == 'null' || patientProtocol == null) {
                     toastr.warning('Please select a patient! \n', 'Error!')
-                }
-                else {
+                } else {
                     $.ajax({
                         type: 'POST',
                         data: JSON.stringify(myData),
@@ -6227,11 +6195,11 @@ var
                         contentType: 'application/json',
                         datatype: "json",
                         url: '/polExamAnamnesis/savePatientRadLabExaminations',
-                        success: function () {
+                        success: function() {
                             toastr.success(myTestCode + ' - ' + myTestName + ' successfully saved!', 'Save!');
                             myCheckBox.removeAttr('checked');
                         },
-                        error: function (e) {
+                        error: function(e) {
                             toastr.error(myTestCode + ' - ' + myTestName + ' couldn\'t save! \n' + e, 'Error!')
                             console.log("ERROR: ", e);
                         }
@@ -6250,17 +6218,17 @@ var
                     appointmentDate: $('#examDate').val(),
                     appointmentPolyclinic: $("#polyclinicSelector option:selected").val()
                 },
-                success: function (result) {
-                    $.each(result, function (i, appData) {
+                success: function(result) {
+                    $.each(result, function(i, appData) {
                         i++;
                         $("#patientAppointmentStatusTable> tbody").append(
-                            "<tr class='patientApp' id='patientApp" + i + "'>"
-                            + "<td>" + appData.patientName + ' ' + appData.patientSurname + "</td><td>"
-                            + appData.appointmentDate + ' - ' + appData.appointmentHour + "</td><td>"
-                            + appData.appointmentDoctor + "</td></tr>");
+                            "<tr class='patientApp' id='patientApp" + i + "'>" +
+                            "<td>" + appData.patientName + ' ' + appData.patientSurname + "</td><td>" +
+                            appData.appointmentDate + ' - ' + appData.appointmentHour + "</td><td>" +
+                            appData.appointmentDoctor + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillAppointmentStatusTable couldnt find! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -6278,15 +6246,15 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate, polyclinicSelect: myPolyclinicSelect },
                 url: "/polExamAnamnesis/fillPatientHealtInsuranceTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $('#' + tableId + ' > tbody').append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"]["insuranceSelect"]
-                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='patientData'>" +
+                            docs[i]["_id"]["insuranceSelect"] +
+                            "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillPatientHealtInsuranceTable couldnt fetch! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -6304,15 +6272,15 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate, polyclinicSelect: myPolyclinicSelect },
                 url: "/polExamAnamnesis/fillPatientGenderTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $('#' + tableId + ' > tbody').append(
-                            "<tr class='userStatisticsRow'><td class='patientData'>"
-                            + docs[i]["_id"]["patientGender"]
-                            + "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='patientData'>" +
+                            docs[i]["_id"]["patientGender"] +
+                            "</td><td class='polyclinicCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillPatientGenderTable couldnt fetch! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -6330,16 +6298,16 @@ var
                 type: "GET",
                 data: { patientPolExamDate: polExamDate, polyclinicSelect: myPolyclinicSelect },
                 url: "/polExamAnamnesis/fillDoctorPatientTable",
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
                         $('#' + tableId + ' > tbody').append(
-                            "<tr class='userStatisticsRow'><td class='doctorSelector'>"
-                            + docs[i]["_id"]["doctorSelector"]
-                            + "</td><td class='polyclinicSelect'>" + docs[i]["_id"]["polyclinicSelect"]
-                            + "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
+                            "<tr class='userStatisticsRow'><td class='doctorSelector'>" +
+                            docs[i]["_id"]["doctorSelector"] +
+                            "</td><td class='polyclinicSelect'>" + docs[i]["_id"]["polyclinicSelect"] +
+                            "</td><td class='patientCount'>" + docs[i]["count"] + "</td></tr>");
                     });
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('Polyclinic patients couldnt count! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -6348,7 +6316,10 @@ var
         },
 
         fillAgePercentageTable: function fillAgePercentageTable(dateId, polyclinicSelectId, tableId) {
-            var oldPatient = 0, total = 0, percentageOld = 0, patientAge,
+            var oldPatient = 0,
+                total = 0,
+                percentageOld = 0,
+                patientAge,
                 polExamDate = $('#' + dateId).val(),
                 myPolyclinicSelect = $('#' + polyclinicSelectId + ' option:selected').val();
             $('#' + tableId + ' > tbody').empty();
@@ -6357,14 +6328,23 @@ var
                 type: "GET",
                 url: "/polExamAnamnesis/fillAgePercentageTable",
                 data: { patientPolExamDate: polExamDate, polyclinicSelect: myPolyclinicSelect },
-                success: function (docs) {
-                    $.each(docs, function (i) {
+                success: function(docs) {
+                    $.each(docs, function(i) {
+
                         patientAge = AdministrationMethods.calculateAge(docs[i].patientBirthDate);
-                        $('#' + tableId + ' > tbody').append(
-                            "<tr class='userStatisticsRow'><td class='oldPatientList'>"
-                            + docs[i].patientNameSurname
-                            + "</td><td class='patientCount'>" + patientAge + "</td></tr>");
-                        total += i;
+
+                        if (patientAge >= 65) {
+                            $('#' + tableId + ' > tbody').append(
+                                "<tr class='userStatisticsRow'><td class='oldPatientList'>" +
+                                docs[i].patientNameSurname +
+                                "</td><td class='patientCount'>" + patientAge + "</td></tr>");
+                        }
+                        i++
+                        total++;
+
+                        if (docs.length <= 1) {
+                            total = 1;
+                        }
 
                         if (patientAge >= 65) {
                             oldPatient++;
@@ -6376,7 +6356,7 @@ var
                     document.getElementById('oldPatient').innerHTML = 'Old Patient Total= ' + oldPatient;
                     document.getElementById('oldPatientPercentage').innerHTML = 'Old Patient percentage = % ' + Math.round(percentageOld);
                 },
-                error: function (e) {
+                error: function(e) {
                     jQueryMethods.toastrOptions();
                     toastr.error('fillCanceledValidAppointmentTable couldnt fetch! \n\n\n' + e.responseText, 'Error!')
                     console.log("ERROR: ", e.responseText);
@@ -6436,8 +6416,7 @@ var
                     myLeftNavBarDiv.style.position = 'relative';
                     myLeftNavBarDiv.style.right = '20px';
                     cardBtn.style.width = '70px';
-                }
-                else {
+                } else {
                     header.classList.remove("sticky");
                 }
 
@@ -6455,8 +6434,7 @@ var
                     myLeftSide.style.margin = '0px -25px 10px -10px';
                     myTitle.style.backgroundSize = '90% 100%';
                     myNavTitle.style.width = '100%';
-                }
-                else if (CheckAndClearMethods.isMobile() == true && x < mySticky) {
+                } else if (CheckAndClearMethods.isMobile() == true && x < mySticky) {
                     myLeftNavBarDiv.style.top = '-40px';
                     myLeftNavBarDiv.style.right = '10px';
                     cardBtn.style.width = '43px';
@@ -6465,8 +6443,7 @@ var
                     myLeftSide.style.margin = '0px 10px 10px -10px';
                     myTitle.style.backgroundSize = '100% 100%';
                     myNavTitle.style.width = '120%';
-                }
-                else {
+                } else {
                     header.style.top = '0';
                     header.style.width = '100%';
                     myLeftNavBarDiv.style.top = '-5px';
@@ -6501,8 +6478,7 @@ var
             var x = document.querySelector('#leftSideNavName');
             if (CheckAndClearMethods.isMobile() == true) {
                 x.style.color = 'transparent';
-            }
-            else {
+            } else {
                 x.style.color = 'black';
             }
         },
@@ -6536,171 +6512,169 @@ var
                 mystabledColors = document.getElementById('stabledColors'),
                 mycardP = document.querySelectorAll('.cardP'),
                 mycardLink = document.querySelectorAll('.cardLink')
-            myColumns = document.querySelectorAll('.column')
-                ;
+            myColumns = document.querySelectorAll('.column');
 
             // myLanguageChangeSelect.style.display = 'flex';
             // myGoogleTranslate.style.display = 'none';
-            selectElem.addEventListener('change', function () {
+            selectElem.addEventListener('change', function() {
 
-                var index = selectElem.selectedIndex;
-                if (index == 1) { // turkish
-                    myTitle.innerHTML = 'Hastane Bilgi Yönetim Sistemi<a id="engTitle" onclick="location.reload()"> - Primum non nocere!</a>';
-                    myList.innerHTML = '<i id="listeI" class="fa fa-ellipsis-v"></i> Liste';
-                    myCards.innerHTML = '<i class="fa fa-th"></i> Kart';
-                    myLgnBtn.innerHTML = 'Giriş';
-                    mySideMenu.innerHTML = 'Yan Menu';
-                    myAnnouncements.innerHTML = 'Duyurular';
-                    mytopScroolAnnouncement.innerHTML = 'Seviyorum seni ekmeği tuza bançinp yer gibi Seviyorum seni ekmeği tuza banıp yer gibi Seviyorum seni ekmeği tuza banıp yer gibi Seviyorum seni ekmeği tuza banıp yer gibi ';
-                    mylblColorSelect.innerHTML = 'Renk düzenini seçiniz';
-                    mycolorPalette[0].innerHTML = 'Açık renkler';
-                    mycolorPalette[1].innerHTML = 'Koyu renkler';
-                    mycolorPalette[2].innerHTML = 'Tüm renkler';
-                    mycolorPalette[3].innerHTML = 'Gece Modu';
-                    mylblColorChk.innerHTML = 'Renk sürekli değişsin';
-                    mystabledColors[0].innerHTML = 'Renkli';
-                    mystabledColors[1].innerHTML = 'Yeşil';
-                    mystabledColors[2].innerHTML = 'Kırmızı';
-                    mystabledColors[3].innerHTML = 'Mavi';
-                    mylblLanguageChange.innerHTML = 'Dil seçiniz..............';
-                    mySideMenuPopups[0].innerHTML = 'Hakkımızda';
-                    mySideMenuPopups[1].innerHTML = 'Servislerimiz';
-                    mySideMenuPopups[2].innerHTML = 'Müşterilerimiz';
-                    mySideMenuPopups[3].innerHTML = 'İletişim';
-                    mypopAboutHeaderText.innerHTML = 'Hakkımızda';
-                    mypopServicesHeaderText.innerHTML = 'Servislerimiz';
-                    mypopClientsHeaderText.innerHTML = 'Müşterilerimiz';
-                    mypopContactsHeaderText.innerHTML = 'İletişim';
-                    for (let myi = 0; myi < mymodulLinks.length; myi++) {
-                        mymodulLinks[myi].innerHTML = 'Modul için tıklayınız';
+                    var index = selectElem.selectedIndex;
+                    if (index == 1) { // turkish
+                        myTitle.innerHTML = 'Hastane Bilgi Yönetim Sistemi<a id="engTitle" onclick="location.reload()"> - Primum non nocere!</a>';
+                        myList.innerHTML = '<i id="listeI" class="fa fa-ellipsis-v"></i> Liste';
+                        myCards.innerHTML = '<i class="fa fa-th"></i> Kart';
+                        myLgnBtn.innerHTML = 'Giriş';
+                        mySideMenu.innerHTML = 'Yan Menu';
+                        myAnnouncements.innerHTML = 'Duyurular';
+                        mytopScroolAnnouncement.innerHTML = 'Seviyorum seni ekmeği tuza bançinp yer gibi Seviyorum seni ekmeği tuza banıp yer gibi Seviyorum seni ekmeği tuza banıp yer gibi Seviyorum seni ekmeği tuza banıp yer gibi ';
+                        mylblColorSelect.innerHTML = 'Renk düzenini seçiniz';
+                        mycolorPalette[0].innerHTML = 'Açık renkler';
+                        mycolorPalette[1].innerHTML = 'Koyu renkler';
+                        mycolorPalette[2].innerHTML = 'Tüm renkler';
+                        mycolorPalette[3].innerHTML = 'Gece Modu';
+                        mylblColorChk.innerHTML = 'Renk sürekli değişsin';
+                        mystabledColors[0].innerHTML = 'Renkli';
+                        mystabledColors[1].innerHTML = 'Yeşil';
+                        mystabledColors[2].innerHTML = 'Kırmızı';
+                        mystabledColors[3].innerHTML = 'Mavi';
+                        mylblLanguageChange.innerHTML = 'Dil seçiniz..............';
+                        mySideMenuPopups[0].innerHTML = 'Hakkımızda';
+                        mySideMenuPopups[1].innerHTML = 'Servislerimiz';
+                        mySideMenuPopups[2].innerHTML = 'Müşterilerimiz';
+                        mySideMenuPopups[3].innerHTML = 'İletişim';
+                        mypopAboutHeaderText.innerHTML = 'Hakkımızda';
+                        mypopServicesHeaderText.innerHTML = 'Servislerimiz';
+                        mypopClientsHeaderText.innerHTML = 'Müşterilerimiz';
+                        mypopContactsHeaderText.innerHTML = 'İletişim';
+                        for (let myi = 0; myi < mymodulLinks.length; myi++) {
+                            mymodulLinks[myi].innerHTML = 'Modul için tıklayınız';
+                        }
+
+                        // module names
+
+                        myModules[0].innerHTML = 'Hasta Kimlik Kayit Modulu';
+                        myModules[1].innerHTML = 'Poliklinik Muayene Kayit Modulu';
+                        myModules[2].innerHTML = 'Randevu Kayit Modulu';
+                        myModules[3].innerHTML = 'Randevu Sorgulama Modulu';
+                        myModules[4].innerHTML = 'Poliklinik Defteri ';
+                        myModules[5].innerHTML = 'Diyet Modulu';
+                        myModules[6].innerHTML = 'Duyuru Modulu';
+                        myModules[7].innerHTML = 'Servis Modulu';
+                        myModules[8].innerHTML = 'Laboratuar Modulu';
+                        myModules[9].innerHTML = 'Radyoloji ve Görüntüleme Modulu';
+
+                        // end of module names
+
+                        // tooltip titles
+
+                        myColumns[0].title = 'Bu modül hastanın Kimlik bilgilerinin girildiği yerdir.'
+                        myColumns[1].title = 'Kimlik, muayene bilgilerinin alınarak gerektiğinde tetkik işlenmesi ve muayene kayıtlarının oluşturulması ve hastanın tek bir protokol numarası ile sistemde takibini amaçlar.'
+                        myColumns[2].title = 'Bu modülün amacı hastaların muayene ve hastaneye gelişlerini randevu sistemi ile takip edebilmektir.'
+                        myColumns[3].title = 'Bu modülün amacı hastaların randevularini takip edebilmektir.'
+                        myColumns[4].title = 'Bu modül hasta muayene bilgilerinin kullanicilar tarafından programa girilmesini amaçlar.'
+                        myColumns[5].title = 'Bu modül hasta diyet bilgilerinin kullanicilar tarafından programa girilmesini amaçlar.'
+                        myColumns[6].title = 'Bu modül duyuru olusturulmasini ve sistemde yayinlanmasini amaçlar.'
+                        myColumns[7].title = 'Bu modül, yatan hastaların sisteme kaydı, takibi ve taburcu işlemlerinin yapılmasını amaçlar.'
+                        myColumns[8].title = 'Bu modül, Yatarak ve Ayaktan tedavi olan hastalara yapılacak laboratuvar tetkiklerinin takibi, onay, barkod, sonuç yazdırma, rapor ve istatistik işlemlerinin yapılmasını amaçlar.'
+                        myColumns[9].title = 'Bu modül, Yatarak ve Ayaktan tedavi olan hastalara yapılacak radyoloji ve görüntüleme tetkiklerinin takibi, onay, barkod, sonuç yazdırma, rapor ve istatistik işlemlerinin yapılmasını amaçlar.'
+
+                        //end of tooltip titles
+
+                        // cards back side explanations
+                        mycardP[0].innerHTML = 'Hastalarinizin kimlik bilgilerini bu modul uzerinden girip takip edebilirsiniz.';
+
+                        // end of cards back side explanations
+
+                        // cards link
+                        for (let index = 0; index < mycardLink.length; index++) {
+                            mycardLink[index].innerHTML = 'Modul için tıklayınız';
+                        }
+                        // end of cards link
+
+                        mybottomScrollP4Text.innerHTML =
+                            "Hastaneniz hakkında haberler burada görünür...... --- Bu bir mobil cihaz değil.";
+                    } else { // for english
+                        myTitle.innerHTML = 'Hospital Medical Record System<a id="engTitle" onclick="location.reload()"> (Hastane Bilgi Yönetim Sistemi)</a>';
+                        myList.innerHTML = '<i id="listeI" class="fa fa-ellipsis-v"></i> List';
+                        myCards.innerHTML = '<i class="fa fa-th"></i> Cards';
+                        myLgnBtn.innerHTML = 'Login';
+                        mySideMenu.innerHTML = 'Side Menu';
+                        myAnnouncements.innerHTML = 'Announcements';
+                        mytopScroolAnnouncement.innerHTML = '<!-- lorem ipsum --> !!! This is a test announcement !!! <br> __________________________________________ <br> <br>Lorem ipsum dolor sit amet, consectetur adipiscing elit.Integer vel purus finibus, facilisis lectus id, lacinia felis.Etiam et turpis accumsan, dapibus metus rhoncus, scelerisque lacus.Donec sit amet tortor ut orci commodo aliquet eu vitae ligula.Etiam et orci ut ante scelerisque molestie nec nec ligula.Fusce pellentesque lectus sit amet molestie blandit.Ut egestas diam quis velit dapibus iaculis.Nullam id dolor et elit feugiat vehicula eu sed diam. <br>Praesent a nisi et tellus rutrum congue.Pellentesque elementum eros non diam tempus, ut lacinia metus cursus.Nullam eget purus quis enim consequat lacinia.Nulla sit amet sem fringilla, suscipit lacus eget, accumsan tortor.Nulla gravida velit consectetur, consectetur lectus sit amet, lobortis eros.Fusce aliquam ligula eget congue fringilla.Donec accumsan purus ac nunc rutrum, quis cursus neque hendrerit.Nam ut neque nec metus pretium tempor et sit amet lorem.Pellentesque vulputate purus non metus accumsan tempor.Proin ac ipsum viverra, tristique est eu, rhoncus arcu.Praesent congue est sit amet lorem eleifend, ut aliquet velit fringilla.';
+                        mylblColorSelect.innerHTML = 'Choose a color palette';
+                        mycolorPalette[0].innerHTML = 'Light colors';
+                        mycolorPalette[1].innerHTML = 'Dark colors';
+                        mycolorPalette[2].innerHTML = 'All colors';
+                        mycolorPalette[3].innerHTML = 'Night Mode';
+                        mylblColorChk.innerHTML = 'Change color everytime';
+                        mystabledColors[0].innerHTML = 'Colorful';
+                        mystabledColors[1].innerHTML = 'Green';
+                        mystabledColors[2].innerHTML = 'Red';
+                        mystabledColors[3].innerHTML = 'Blue';
+                        mylblLanguageChange.innerHTML = 'Choose language';
+                        mySideMenuPopups[0].innerHTML = 'About us';
+                        mySideMenuPopups[1].innerHTML = 'Services';
+                        mySideMenuPopups[2].innerHTML = 'Clients';
+                        mySideMenuPopups[3].innerHTML = 'Contacts';
+                        mypopAboutHeaderText.innerHTML = 'About us';
+                        mypopServicesHeaderText.innerHTML = 'Services';
+                        mypopClientsHeaderText.innerHTML = 'Clients';
+                        mypopContactsHeaderText.innerHTML = 'Contacts';
+                        for (let myi = 0; myi < mymodulLinks.length; myi++) {
+                            mymodulLinks[myi].innerHTML = 'Click For Module';
+                        }
+
+                        // module names
+
+                        myModules[0].innerHTML = 'Patient Info Module';
+                        myModules[1].innerHTML = 'Polyclinic Examination Registration Module';
+                        myModules[2].innerHTML = 'Appointment Registration Module';
+                        myModules[3].innerHTML = 'Appointment Search Module';
+                        myModules[4].innerHTML = 'Polyclinic Module';
+                        myModules[5].innerHTML = 'Diet Module';
+                        myModules[6].innerHTML = 'Announcement Module';
+                        myModules[7].innerHTML = 'Inpatient Module';
+                        myModules[8].innerHTML = 'Laboratory Module';
+                        myModules[9].innerHTML = 'Imagine and Radiology Module';
+
+                        // end of module names
+
+                        // tooltip titles
+
+                        myColumns[0].title = 'Manage all your Inpatients and Outpatients. Patients are quickly accessible by typing parts of their name.'
+                        myColumns[1].title = 'This module is the first place where the patient’s information is entered. Identity aims to obtain the information of the examination, to process the examination when necessary and to establish the records of the examination and to follow up the patient with a single protocol number.'
+                        myColumns[2].title = 'With this module, it provides the required date and doctor appointment registration by taking necessary information from the patient.'
+                        myColumns[3].title = 'Keep track of your appointments. With Checkins, always know which patients are in the Waiting Room and how late they are.Bu modülün amacı hastaların randevularini takip edebilmektir.'
+                        myColumns[4].title = 'This module aims to enter patient examination information into the program by doctors.'
+                        myColumns[5].title = 'This module aims to enter patient diet information into the program by doctors.'
+                        myColumns[6].title = 'Make your own announcemenets and updates for users.'
+                        myColumns[7].title = 'Registration, follow-up and discharge of the patients to whom the doctor gives admission.'
+                        myColumns[8].title = 'This module aims to follow up laboratory tests, approval, barcodes, print results, reports and statistics of inpatients and outpatients.'
+                        myColumns[9].title = 'This module aims to follow up radiology and x-ray tests, approval, barcodes, print results, reports and statistics of inpatients and outpatients.'
+
+                        // end of tooltip titles
+
+                        // cards back side explanations
+
+                        mycardP[0].innerHTML = 'Manage all your Inpatients and Outpatients. Patients are quickly accessible by typing parts of their name.';
+
+                        // end of cards back side explanations
+
+                        // cards link
+                        for (let index = 0; index < mycardLink.length; index++) {
+                            mycardLink[index].innerHTML = 'Click For Module';
+                        }
+                        // end of cards link
+
+                        mybottomScrollP4Text.innerHTML = "News about your hospital --- it's not a mobile device.";
                     }
-
-                    // module names
-
-                    myModules[0].innerHTML = 'Hasta Kimlik Kayit Modulu';
-                    myModules[1].innerHTML = 'Poliklinik Muayene Kayit Modulu';
-                    myModules[2].innerHTML = 'Randevu Kayit Modulu';
-                    myModules[3].innerHTML = 'Randevu Sorgulama Modulu';
-                    myModules[4].innerHTML = 'Poliklinik Defteri ';
-                    myModules[5].innerHTML = 'Diyet Modulu';
-                    myModules[6].innerHTML = 'Duyuru Modulu';
-                    myModules[7].innerHTML = 'Servis Modulu';
-                    myModules[8].innerHTML = 'Laboratuar Modulu';
-                    myModules[9].innerHTML = 'Radyoloji ve Görüntüleme Modulu';
-
-                    // end of module names
-
-                    // tooltip titles
-
-                    myColumns[0].title = 'Bu modül hastanın Kimlik bilgilerinin girildiği yerdir.'
-                    myColumns[1].title = 'Kimlik, muayene bilgilerinin alınarak gerektiğinde tetkik işlenmesi ve muayene kayıtlarının oluşturulması ve hastanın tek bir protokol numarası ile sistemde takibini amaçlar.'
-                    myColumns[2].title = 'Bu modülün amacı hastaların muayene ve hastaneye gelişlerini randevu sistemi ile takip edebilmektir.'
-                    myColumns[3].title = 'Bu modülün amacı hastaların randevularini takip edebilmektir.'
-                    myColumns[4].title = 'Bu modül hasta muayene bilgilerinin kullanicilar tarafından programa girilmesini amaçlar.'
-                    myColumns[5].title = 'Bu modül hasta diyet bilgilerinin kullanicilar tarafından programa girilmesini amaçlar.'
-                    myColumns[6].title = 'Bu modül duyuru olusturulmasini ve sistemde yayinlanmasini amaçlar.'
-                    myColumns[7].title = 'Bu modül, yatan hastaların sisteme kaydı, takibi ve taburcu işlemlerinin yapılmasını amaçlar.'
-                    myColumns[8].title = 'Bu modül, Yatarak ve Ayaktan tedavi olan hastalara yapılacak laboratuvar tetkiklerinin takibi, onay, barkod, sonuç yazdırma, rapor ve istatistik işlemlerinin yapılmasını amaçlar.'
-                    myColumns[9].title = 'Bu modül, Yatarak ve Ayaktan tedavi olan hastalara yapılacak radyoloji ve görüntüleme tetkiklerinin takibi, onay, barkod, sonuç yazdırma, rapor ve istatistik işlemlerinin yapılmasını amaçlar.'
-
-                    //end of tooltip titles
-
-                    // cards back side explanations
-                    mycardP[0].innerHTML = 'Hastalarinizin kimlik bilgilerini bu modul uzerinden girip takip edebilirsiniz.';
-
-                    // end of cards back side explanations
-
-                    // cards link
-                    for (let index = 0; index < mycardLink.length; index++) {
-                        mycardLink[index].innerHTML = 'Modul için tıklayınız';
-                    }
-                    // end of cards link
-
-                    mybottomScrollP4Text.innerHTML =
-                        "Hastaneniz hakkında haberler burada görünür...... --- Bu bir mobil cihaz değil.";
-                }
-                else { // for english
-                    myTitle.innerHTML = 'Hospital Medical Record System<a id="engTitle" onclick="location.reload()"> (Hastane Bilgi Yönetim Sistemi)</a>';
-                    myList.innerHTML = '<i id="listeI" class="fa fa-ellipsis-v"></i> List';
-                    myCards.innerHTML = '<i class="fa fa-th"></i> Cards';
-                    myLgnBtn.innerHTML = 'Login';
-                    mySideMenu.innerHTML = 'Side Menu';
-                    myAnnouncements.innerHTML = 'Announcements';
-                    mytopScroolAnnouncement.innerHTML = '<!-- lorem ipsum --> !!! This is a test announcement !!! <br> __________________________________________ <br> <br>Lorem ipsum dolor sit amet, consectetur adipiscing elit.Integer vel purus finibus, facilisis lectus id, lacinia felis.Etiam et turpis accumsan, dapibus metus rhoncus, scelerisque lacus.Donec sit amet tortor ut orci commodo aliquet eu vitae ligula.Etiam et orci ut ante scelerisque molestie nec nec ligula.Fusce pellentesque lectus sit amet molestie blandit.Ut egestas diam quis velit dapibus iaculis.Nullam id dolor et elit feugiat vehicula eu sed diam. <br>Praesent a nisi et tellus rutrum congue.Pellentesque elementum eros non diam tempus, ut lacinia metus cursus.Nullam eget purus quis enim consequat lacinia.Nulla sit amet sem fringilla, suscipit lacus eget, accumsan tortor.Nulla gravida velit consectetur, consectetur lectus sit amet, lobortis eros.Fusce aliquam ligula eget congue fringilla.Donec accumsan purus ac nunc rutrum, quis cursus neque hendrerit.Nam ut neque nec metus pretium tempor et sit amet lorem.Pellentesque vulputate purus non metus accumsan tempor.Proin ac ipsum viverra, tristique est eu, rhoncus arcu.Praesent congue est sit amet lorem eleifend, ut aliquet velit fringilla.';
-                    mylblColorSelect.innerHTML = 'Choose a color palette';
-                    mycolorPalette[0].innerHTML = 'Light colors';
-                    mycolorPalette[1].innerHTML = 'Dark colors';
-                    mycolorPalette[2].innerHTML = 'All colors';
-                    mycolorPalette[3].innerHTML = 'Night Mode';
-                    mylblColorChk.innerHTML = 'Change color everytime';
-                    mystabledColors[0].innerHTML = 'Colorful';
-                    mystabledColors[1].innerHTML = 'Green';
-                    mystabledColors[2].innerHTML = 'Red';
-                    mystabledColors[3].innerHTML = 'Blue';
-                    mylblLanguageChange.innerHTML = 'Choose language';
-                    mySideMenuPopups[0].innerHTML = 'About us';
-                    mySideMenuPopups[1].innerHTML = 'Services';
-                    mySideMenuPopups[2].innerHTML = 'Clients';
-                    mySideMenuPopups[3].innerHTML = 'Contacts';
-                    mypopAboutHeaderText.innerHTML = 'About us';
-                    mypopServicesHeaderText.innerHTML = 'Services';
-                    mypopClientsHeaderText.innerHTML = 'Clients';
-                    mypopContactsHeaderText.innerHTML = 'Contacts';
-                    for (let myi = 0; myi < mymodulLinks.length; myi++) {
-                        mymodulLinks[myi].innerHTML = 'Click For Module';
-                    }
-
-                    // module names
-
-                    myModules[0].innerHTML = 'Patient Info Module';
-                    myModules[1].innerHTML = 'Polyclinic Examination Registration Module';
-                    myModules[2].innerHTML = 'Appointment Registration Module';
-                    myModules[3].innerHTML = 'Appointment Search Module';
-                    myModules[4].innerHTML = 'Polyclinic Module';
-                    myModules[5].innerHTML = 'Diet Module';
-                    myModules[6].innerHTML = 'Announcement Module';
-                    myModules[7].innerHTML = 'Inpatient Module';
-                    myModules[8].innerHTML = 'Laboratory Module';
-                    myModules[9].innerHTML = 'Imagine and Radiology Module';
-
-                    // end of module names
-
-                    // tooltip titles
-
-                    myColumns[0].title = 'Manage all your Inpatients and Outpatients. Patients are quickly accessible by typing parts of their name.'
-                    myColumns[1].title = 'This module is the first place where the patient’s information is entered. Identity aims to obtain the information of the examination, to process the examination when necessary and to establish the records of the examination and to follow up the patient with a single protocol number.'
-                    myColumns[2].title = 'With this module, it provides the required date and doctor appointment registration by taking necessary information from the patient.'
-                    myColumns[3].title = 'Keep track of your appointments. With Checkins, always know which patients are in the Waiting Room and how late they are.Bu modülün amacı hastaların randevularini takip edebilmektir.'
-                    myColumns[4].title = 'This module aims to enter patient examination information into the program by doctors.'
-                    myColumns[5].title = 'This module aims to enter patient diet information into the program by doctors.'
-                    myColumns[6].title = 'Make your own announcemenets and updates for users.'
-                    myColumns[7].title = 'Registration, follow-up and discharge of the patients to whom the doctor gives admission.'
-                    myColumns[8].title = 'This module aims to follow up laboratory tests, approval, barcodes, print results, reports and statistics of inpatients and outpatients.'
-                    myColumns[9].title = 'This module aims to follow up radiology and x-ray tests, approval, barcodes, print results, reports and statistics of inpatients and outpatients.'
-
-                    // end of tooltip titles
-
-                    // cards back side explanations
-
-                    mycardP[0].innerHTML = 'Manage all your Inpatients and Outpatients. Patients are quickly accessible by typing parts of their name.';
-
-                    // end of cards back side explanations
-
-                    // cards link
-                    for (let index = 0; index < mycardLink.length; index++) {
-                        mycardLink[index].innerHTML = 'Click For Module';
-                    }
-                    // end of cards link
-
-                    mybottomScrollP4Text.innerHTML = "News about your hospital --- it's not a mobile device.";
-                }
-            })
-            // }
-            // else {// if browser is online or on desktop show google translate
-            //     myLanguageChangeSelect.style.display = 'none';
-            //     myGoogleTranslate.style.display = 'flex';
-            //     myGoogleTranslateSelect[0].style.width = '210px';
-            // }
+                })
+                // }
+                // else {// if browser is online or on desktop show google translate
+                //     myLanguageChangeSelect.style.display = 'none';
+                //     myGoogleTranslate.style.display = 'flex';
+                //     myGoogleTranslateSelect[0].style.width = '210px';
+                // }
         },
 
         generalSuccesAlert: function generalSuccesAlert(myContent) {
@@ -6723,7 +6697,7 @@ var
             }
             myNotifyType.classList.toggle("generalSuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("generalActive");
                 }
@@ -6740,7 +6714,7 @@ var
             }
             myNotifyType.classList.toggle("generalFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("generalActive");
                 }
@@ -6758,7 +6732,7 @@ var
             }
             myNotifyType.classList.toggle("success");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("active");
                 }
@@ -6775,7 +6749,7 @@ var
             }
             myNotifyType.classList.toggle("failure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("active");
                 }
@@ -6791,20 +6765,17 @@ var
                     mybutton.style.display = "block";
                     mybutton.style.bottom = "40px";
                     mybutton.style.right = "60px";
-                }
-                else {
+                } else {
                     mybutton.style.display = "none";
                 }
-            }
-            else {
+            } else {
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                     mybutton.style.display = "block";
                     mybutton.style.animation = "scaleUp 0.6s";
                     mybutton.style.webkitAnimation = "scaleUp 0.6s";
-                }
-                else {
+                } else {
                     mybutton.style.animation = "scaleDown 0.6s";
-                    setTimeout(function () {
+                    setTimeout(function() {
                         $(mybutton).css('display', 'none');
                     }, 200);
                 }
@@ -6826,7 +6797,7 @@ var
             }
             myNotifyType.classList.toggle("polyclinicSuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("polyclinicActive");
                 }
@@ -6843,7 +6814,7 @@ var
             }
             myNotifyType.classList.toggle("polyclinicFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("polyclinicActive");
                 }
@@ -6861,7 +6832,7 @@ var
             }
             myNotifyType.classList.toggle("polyclinicExamSuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("polyclinicExamActive");
                 }
@@ -6878,7 +6849,7 @@ var
             }
             myNotifyType.classList.toggle("polyclinicExamFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("polyclinicExamActive");
                 }
@@ -6896,7 +6867,7 @@ var
             }
             myNotifyType.classList.toggle("hastaKimlikSuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("hastaKimlikActive");
                 }
@@ -6913,7 +6884,7 @@ var
             }
             myNotifyType.classList.toggle("hastaKimlikFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("hastaKimlikActive");
                 }
@@ -6931,7 +6902,7 @@ var
             }
             myNotifyType.classList.toggle("appointmentRegSuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("appointmentRegActive");
                 }
@@ -6948,7 +6919,7 @@ var
             }
             myNotifyType.classList.toggle("appointmentRegFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("appointmentRegActive");
                 }
@@ -6966,7 +6937,7 @@ var
             }
             myNotifyType.classList.toggle("appointmentSearchSuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("appointmentSearchActive");
                 }
@@ -6983,7 +6954,7 @@ var
             }
             myNotifyType.classList.toggle("appointmentSearchFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("appointmentSearchActive");
                 }
@@ -7001,7 +6972,7 @@ var
             }
             myNotifyType.classList.toggle("inpatientSuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("inpatientActive");
                 }
@@ -7018,7 +6989,7 @@ var
             }
             myNotifyType.classList.toggle("inpatientFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("inpatientActive");
                 }
@@ -7036,7 +7007,7 @@ var
             }
             myNotifyType.classList.toggle("laboratorySuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("laboratoryActive");
                 }
@@ -7053,7 +7024,7 @@ var
             }
             myNotifyType.classList.toggle("laboratoryFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("laboratoryActive");
                 }
@@ -7071,7 +7042,7 @@ var
             }
             myNotifyType.classList.toggle("announcementSuccess");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("announcementActive");
                 }
@@ -7088,7 +7059,7 @@ var
             }
             myNotifyType.classList.toggle("announcementFailure");
 
-            setTimeout(function () {
+            setTimeout(function() {
                 for (let i2 = 0; i2 < myNotify.length; i2++) {
                     myNotify[i2].classList.remove("announcementActive");
                 }
@@ -7099,7 +7070,7 @@ var
         openInNewTabAndAdjust: function openInNewTabAndAdjust(pageId) {
             var win = window.open('/public/htmls/' + pageId + '.html');
 
-            win.addEventListener('load', function () {
+            win.addEventListener('load', function() {
                 win.document.body.style.background = 'linear-gradient(90deg,' +
                     ColorAndAdjustmentMethods.randomDarkColor() +
                     ',' + ColorAndAdjustmentMethods.getSoftColor() + ')';
@@ -7126,7 +7097,7 @@ var
         },
 
         myStickHeader: function myStickHeader(subHeadDivId) {
-            window.onscroll = function () { stickHeader() };
+            window.onscroll = function() { stickHeader() };
             var path = window.location.pathname,
                 page = path.split("/").pop();
 
@@ -7163,6 +7134,7 @@ var
 
         socialMediaNewTab: function socialMediaNewTab(btnId) {
             document.getElementById(btnId).addEventListener("click", redirectFunction(btnId));
+
             function redirectFunction(par) {
                 switch (par) {
                     case 'facebookBtn':
@@ -7235,20 +7207,15 @@ var
 
             if (tabName == "b1") {
                 ColorAndAdjustmentMethods.closeBtnStyleTopchange("myCloseBtnB1", "540px");
-            }
-            else if (tabName == "b2") {
+            } else if (tabName == "b2") {
                 ColorAndAdjustmentMethods.closeBtnStyleTopchange("myCloseBtnB2", "540px");
-            }
-            else if (tabName == "b3") {
+            } else if (tabName == "b3") {
                 ColorAndAdjustmentMethods.closeBtnStyleTopchange("myCloseBtnB3", "690px");
-            }
-            else if (tabName == "b4") {
+            } else if (tabName == "b4") {
                 ColorAndAdjustmentMethods.closeBtnStyleTopchange("myCloseBtnB4", "690px");
-            }
-            else if (tabName == "b5") {
+            } else if (tabName == "b5") {
                 ColorAndAdjustmentMethods.closeBtnStyleTopchange("myCloseBtnB5", "700px");
-            }
-            else if (tabName == "b6") {
+            } else if (tabName == "b6") {
                 ColorAndAdjustmentMethods.closeBtnStyleTopchange("myCloseBtnB6", "690px");
             }
 
@@ -7304,7 +7271,7 @@ var
 
         toolTipFunction: function toolTipFunction() {
 
-            $(function () {
+            $(function() {
                 $(document).tooltip({
                     show: {
                         effect: "slideDown",
@@ -7317,7 +7284,7 @@ var
                     position: {
                         my: "center bottom-20",
                         at: "center top",
-                        using: function (position, feedback) {
+                        using: function(position, feedback) {
                             $(this).css(position);
                             $("<div>")
                                 .addClass("arrow")
@@ -7344,7 +7311,7 @@ var
                 patientBirthPlace = $.cookie('patientBirthPlace'),
                 patientPhotoSrc = $.cookie('patientPhotoSrc');
 
-            $(function () {
+            $(function() {
                 s = '<table style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">';
                 s += '<tr style="border-style:ridge;border:5px solid #761c54;"><img src="' + patientPhotoSrc + '" style="width:200px; height:200px;align-items:center;"/> </td><td valign="top">' + patientNameSurname + '</td></tr>';
                 s += '<td class="Text">' + patientGender + ' - ' + patientAge + ' <br/>' + patientBirthPlace + ' <br/>' + patientPersonalIdNumber + '</td>';
@@ -7401,7 +7368,7 @@ var
             var tabs = $('#' + tabId + '').tabs();
             tabs.find(".ui-tabs-nav").sortable({
                 axis: "x",
-                stop: function () {
+                stop: function() {
                     tabs.tabs("refresh");
                 }
             });
@@ -7415,13 +7382,12 @@ var
 
 
 
-    // window.addEventListener('click', ShowOrHideMethods.closeLeftSideNav, true);
+// window.addEventListener('click', ShowOrHideMethods.closeLeftSideNav, true);
 
-    // for google translate
+// for google translate
 
-    // function googleTranslateElementInit() {
-    //     new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
-    // }
+// function googleTranslateElementInit() {
+//     new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+// }
 
-    // end of for google translate
-
+// end of for google translat

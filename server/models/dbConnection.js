@@ -4,7 +4,7 @@ var myMongoose = require('mongoose'),
 myMongoose.Promise = require('bluebird');
 myMongoose.set('useCreateIndex', true);
 
-myMongoose.connect(myMongoDb, { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
+myMongoose.connect(myMongoDb, { useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
     if (err) {
         console.log('Couldnt connected...: ' + err.error)
     } else {

@@ -51,16 +51,13 @@ module.exports.savePolExamAnamnesis = (req, res) => {
 };
 
 module.exports.updatePolExamAnamnesis = (req, res) => {
-    myPolExamAnamnesisModel.findOneAndUpdate(
-        { patientProtocolNo: req.body.patientProtocolNo },
-        {
+    myPolExamAnamnesisModel.findOneAndUpdate({ patientProtocolNo: req.body.patientProtocolNo }, {
             $set: {
                 patientStory: req.body.patientStory,
                 patientAnamnesis: req.body.patientAnamnesis,
                 patientExamination: req.body.patientExamination
             }
-        },
-        { useFindAndModify: false })
+        }, { useFindAndModify: false })
         .then(patientAnamnesisData => {
             res.send(patientAnamnesisData);
             // console.log("Patient data updated! = " + patientAnamnesisData);
@@ -156,17 +153,14 @@ module.exports.deletePatientDiagnosis = (req, res) => {
 };
 
 module.exports.updateDiagnosisType = (req, res) => {
-    myPatientdiagnosisModel.findOneAndUpdate(
-        {
+    myPatientdiagnosisModel.findOneAndUpdate({
             patientProtocolNo: req.body.patientProtocolNo,
             icd10: req.body.icd10
-        },
-        {
+        }, {
             $set: {
                 diagnosisType: req.body.diagnosisType
             }
-        },
-        { useFindAndModify: false })
+        }, { useFindAndModify: false })
         .then(diagnosisData => {
             res.send(diagnosisData);
             // console.log("diagnosisData updated! = " + diagnosisData);
@@ -178,41 +172,36 @@ module.exports.updateDiagnosisType = (req, res) => {
 };
 
 module.exports.getPatientPersonalIdNo = (req, res) => {
-    myPolExamModel.aggregate
-        ([
-            {
-                $match:
-                    { patientProtocolNo: +req.query.patientProtocolNo }
-            },
-            {
-                $lookup:
-                {
-                    from: 'patients',
-                    localField: 'patientIdNo',
-                    foreignField: 'patientIdNo',
-                    as: 'patientData'
-                }
+    myPolExamModel.aggregate([{
+            $match: { patientProtocolNo: +req.query.patientProtocolNo }
+        },
+        {
+            $lookup: {
+                from: 'patients',
+                localField: 'patientIdNo',
+                foreignField: 'patientIdNo',
+                as: 'patientData'
             }
-        ]).then(patientData => {
-            res.send(patientData);
-            // console.log("patient found! = " + patientData);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
+        }
+    ]).then(patientData => {
+        res.send(patientData);
+        // console.log("patient found! = " + patientData);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
         });
+    });
 };
 
 module.exports.getPatientDataToCookie = (req, res) => {
-    myPatientsModel.find
-        (req.query).then(patientData => {
-            res.send(patientData);
-            // console.log("patient found! = " + patientData);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
+    myPatientsModel.find(req.query).then(patientData => {
+        res.send(patientData);
+        // console.log("patient found! = " + patientData);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
         });
+    });
 };
 
 module.exports.findPatientAnamnesisByProtocol = (req, res) => {
@@ -303,26 +292,25 @@ module.exports.fillAppointmentStatusTable = (req, res) => {
 };
 
 module.exports.fillPatientHealtInsuranceTable = (req, res) => {
-    myPolExamModel.aggregate([
-        {
-            $match: {
-                patientPolExamDate: (req.query.patientPolExamDate),
-                polyclinicSelect: (req.query.polyclinicSelect),
-                statusSelect: 'Valid'
+    myPolExamModel.aggregate([{
+                $match: {
+                    patientPolExamDate: (req.query.patientPolExamDate),
+                    polyclinicSelect: (req.query.polyclinicSelect),
+                    statusSelect: 'Valid'
+                }
+            },
+            {
+                $group: {
+                    '_id': {
+                        insuranceSelect: "$insuranceSelect"
+                    },
+                    'count': { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
             }
-        },
-        {
-            $group: {
-                '_id': {
-                    insuranceSelect: "$insuranceSelect"
-                },
-                'count': { $sum: 1 }
-            }
-        },
-        {
-            $sort: { _id: 1 }
-        }
-    ])
+        ])
         .then(insuranceData => {
             res.send(insuranceData);
             // console.log('insuranceData = ' + insuranceData)
@@ -347,20 +335,19 @@ module.exports.getBeds = (req, res) => {
 
 module.exports.countFullandEmptyBeds = (req, res) => {
 
-    myInpatientsModel.aggregate([
-        {
-            $match: {
-                'clinicSelect': req.query.clinicSelect,
-                'exitDate': ''
+    myInpatientsModel.aggregate([{
+                $match: {
+                    'clinicSelect': req.query.clinicSelect,
+                    'exitDate': ''
+                }
+            },
+            {
+                $group: {
+                    '_id': "$clinicSelect",
+                    'count': { $sum: 1 }
+                }
             }
-        },
-        {
-            $group: {
-                '_id': "$clinicSelect",
-                'count': { $sum: 1 }
-            }
-        }
-    ])
+        ])
         .then(bedData => {
             res.send(bedData);
             // console.log("bedData found! = " + bedData);
@@ -410,8 +397,7 @@ module.exports.saveConsultation = (req, res) => {
 };
 
 module.exports.getConsultationCount = (req, res) => {
-    myConsultationsModel.aggregate([
-        {
+    myConsultationsModel.aggregate([{
             "$facet": {
                 "Total": [
                     { "$match": { "clinicSelect": req.query.unitName } },
@@ -499,23 +485,22 @@ module.exports.fillPatientAppointmentStatusTable = (req, res) => {
 };
 
 module.exports.fillPolyclinicPatientCountTable = (req, res) => {
-    myPolExamModel.aggregate([
-        {
-            $match: {
-                patientPolExamDate: (req.query.patientPolExamDate),
-                statusSelect: 'Valid'
+    myPolExamModel.aggregate([{
+                $match: {
+                    patientPolExamDate: (req.query.patientPolExamDate),
+                    statusSelect: 'Valid'
+                }
+            },
+            {
+                $group: {
+                    '_id': "$polyclinicSelect",
+                    'count': { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
             }
-        },
-        {
-            $group: {
-                '_id': "$polyclinicSelect",
-                'count': { $sum: 1 }
-            }
-        },
-        {
-            $sort: { _id: 1 }
-        }
-    ])
+        ])
         .then(polData => {
             res.send(polData);
         }).catch(err => {
@@ -526,26 +511,25 @@ module.exports.fillPolyclinicPatientCountTable = (req, res) => {
 };
 
 module.exports.fillPatientGenderTable = (req, res) => {
-    myPolExamModel.aggregate([
-        {
-            $match: {
-                patientPolExamDate: (req.query.patientPolExamDate),
-                polyclinicSelect: (req.query.polyclinicSelect),
-                statusSelect: 'Valid'
+    myPolExamModel.aggregate([{
+                $match: {
+                    patientPolExamDate: (req.query.patientPolExamDate),
+                    polyclinicSelect: (req.query.polyclinicSelect),
+                    statusSelect: 'Valid'
+                }
+            },
+            {
+                $group: {
+                    '_id': {
+                        patientGender: "$patientGender"
+                    },
+                    'count': { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
             }
-        },
-        {
-            $group: {
-                '_id': {
-                    patientGender: "$patientGender"
-                },
-                'count': { $sum: 1 }
-            }
-        },
-        {
-            $sort: { _id: 1 }
-        }
-    ])
+        ])
         .then(polData => {
             res.send(polData);
             // console.log(polData)
@@ -557,27 +541,26 @@ module.exports.fillPatientGenderTable = (req, res) => {
 };
 
 module.exports.fillDoctorPatientTable = (req, res) => {
-    myPolExamModel.aggregate([
-        {
-            $match: {
-                patientPolExamDate: (req.query.patientPolExamDate),
-                polyclinicSelect: (req.query.polyclinicSelect),
-                statusSelect: 'Valid'
+    myPolExamModel.aggregate([{
+                $match: {
+                    patientPolExamDate: (req.query.patientPolExamDate),
+                    polyclinicSelect: (req.query.polyclinicSelect),
+                    statusSelect: 'Valid'
+                }
+            },
+            {
+                $group: {
+                    '_id': {
+                        doctorSelector: "$doctorSelector",
+                        polyclinicSelect: "$polyclinicSelect"
+                    },
+                    'count': { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
             }
-        },
-        {
-            $group: {
-                '_id': {
-                    doctorSelector: "$doctorSelector",
-                    polyclinicSelect: "$polyclinicSelect"
-                },
-                'count': { $sum: 1 }
-            }
-        },
-        {
-            $sort: { _id: 1 }
-        }
-    ])
+        ])
         .then(doctorData => {
             res.send(doctorData);
             // console.log('fillDoctorPatientTable= ', doctorData)

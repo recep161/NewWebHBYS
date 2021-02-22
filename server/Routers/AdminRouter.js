@@ -9,7 +9,7 @@ var express = require('express'),
     path = require('path');
 
 
-router.use(function (req, res, next) {
+router.use(function(req, res, next) {
     console.log('adminRouter answer: ' + "/" + req.method, req.url);
     next();
 });
@@ -45,6 +45,7 @@ router.get('/staff/getMaxStaffId', controllerStaff.getMaxStaffId);
 router.get('/staff/fillStaffStatisticsTable', controllerStaff.fillStaffStatisticsTable);
 router.get('/staff/countTableAndRows', controllerStaff.countTableAndRows);
 router.get('/staff/fillStafOnLeaveTable', controllerStaff.fillStafOnLeaveTable);
+router.get('/staff/fetchStaff', controllerStaff.fetchStaff);
 
 // units routes
 router.get('/units', controllerUnits.redirectToUnitTab);
