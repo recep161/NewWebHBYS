@@ -4,6 +4,7 @@ var routerIndex = require('./IndexRouter'),
     routerPolExamAnamnesis = require('./polExamAnamnesisRouter'),
     routerAppointment = require('./appointmentRouter'),
     routerAnnouncement = require('./announcementRouter'),
+    routerDiet = require('./dietRouter'),
     routerAdmin = require('./AdminRouter');
 
 module.exports = function(app) {
@@ -14,4 +15,5 @@ module.exports = function(app) {
     app.use('/polExamAnamnesis', routerPolExamAnamnesis);
     app.use('/appSave', routerAppointment);
     app.use('/announcement', routerAnnouncement);
+    app.use('/diet', routerDiet);
 };

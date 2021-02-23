@@ -60,8 +60,9 @@ module.exports.announcementsToBottomAndTopScroll = (req, res) => {
     var today = myMoment().format('DD-MM-YYYY');
 
     myAnnouncementModel.find({
-        announcementActivePasive: 'Active', announcementEndDate: { $gte: today }
-    })
+            announcementActivePasive: 'Active',
+            announcementEndDate: { $gte: today }
+        })
         .then(announcementData => {
             res.send(announcementData);
             // console.log("announcementData found! = " + announcementData);
@@ -85,9 +86,7 @@ module.exports.findByAnnouncementId = (req, res) => {
 };
 
 module.exports.updateAnnouncementData = (req, res) => {
-    myAnnouncementModel.findOneAndUpdate(
-        { announcementId: req.body.announcementId },
-        {
+    myAnnouncementModel.findOneAndUpdate({ announcementId: req.body.announcementId }, {
             $set: {
                 announcementTitle: req.body.announcementTitle,
                 announcementUserGroup: req.body.announcementUserGroup,
@@ -99,8 +98,7 @@ module.exports.updateAnnouncementData = (req, res) => {
                 announcementActivePasive: req.body.announcementActivePasive,
                 announcementText: req.body.announcementText
             }
-        },
-        { useFindAndModify: false })
+        }, { useFindAndModify: false })
         .then(announcement => {
             res.send(announcement);
             // console.log("Patient data updated! = " + patient);
@@ -113,15 +111,14 @@ module.exports.updateAnnouncementData = (req, res) => {
 };
 
 module.exports.fillAnnouncementStatusTable = (req, res) => {
-    myAnnouncementModel.aggregate([
-        {
-            $group: {
-                '_id': "$announcementActivePasive",
-                'count': { $sum: 1 }
-            }
-        },
-        { $sort: { _id: 1 } }
-    ])
+    myAnnouncementModel.aggregate([{
+                $group: {
+                    '_id': "$announcementActivePasive",
+                    'count': { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ])
         .then(announcement => {
             res.send(announcement);
             // console.log('announcement = '+ announcement);
@@ -133,15 +130,14 @@ module.exports.fillAnnouncementStatusTable = (req, res) => {
 };
 
 module.exports.fillAnnouncementUserGroupTable = (req, res) => {
-    myAnnouncementModel.aggregate([
-        {
-            $group: {
-                '_id': "$announcementUserGroup",
-                'count': { $sum: 1 }
-            }
-        },
-        { $sort: { _id: 1 } }
-    ])
+    myAnnouncementModel.aggregate([{
+                $group: {
+                    '_id': "$announcementUserGroup",
+                    'count': { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ])
         .then(announcement => {
             res.send(announcement);
             // console.log('announcement = '+ announcement);
@@ -153,15 +149,14 @@ module.exports.fillAnnouncementUserGroupTable = (req, res) => {
 };
 
 module.exports.fillAnnouncementMajorDisciplineTable = (req, res) => {
-    myAnnouncementModel.aggregate([
-        {
-            $group: {
-                '_id': "$announcementUserMajorDiscipline",
-                'count': { $sum: 1 }
-            }
-        },
-        { $sort: { _id: 1 } }
-    ])
+    myAnnouncementModel.aggregate([{
+                $group: {
+                    '_id': "$announcementUserMajorDiscipline",
+                    'count': { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ])
         .then(announcement => {
             res.send(announcement);
             // console.log('announcement = '+ announcement);
@@ -173,15 +168,14 @@ module.exports.fillAnnouncementMajorDisciplineTable = (req, res) => {
 };
 
 module.exports.fillAnnouncementClinicPolyclinicTable = (req, res) => {
-    myAnnouncementModel.aggregate([
-        {
-            $group: {
-                '_id': "$announcementUserClinic",
-                'count': { $sum: 1 }
-            }
-        },
-        { $sort: { _id: 1 } }
-    ])
+    myAnnouncementModel.aggregate([{
+                $group: {
+                    '_id': "$announcementUserClinic",
+                    'count': { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ])
         .then(announcement => {
             res.send(announcement);
             // console.log('announcement = '+ announcement);
@@ -195,10 +189,10 @@ module.exports.fillAnnouncementClinicPolyclinicTable = (req, res) => {
 module.exports.fillAnnouncementExpirationDateTable = (req, res) => {
     var today = myMoment().format('DD-MM-YYYY');
 
-    myAnnouncementModel.find({ announcementEndDate: { $lte: today } })
+    myAnnouncementModel.find({ 'announcementEndDate': { $lte: today } })
         .then(announcement => {
             res.send(announcement);
-            // console.log("announcement found! = " + announcement);
+            // console.log("announcement found! = " + announcement, today);
         }).catch(err => {
             res.status(500).send({
                 message: err.message

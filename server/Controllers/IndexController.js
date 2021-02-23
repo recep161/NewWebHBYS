@@ -12,32 +12,36 @@ var path = require('path'),
     myip = require('quick-local-ip'),
     computerName = require('computer-name');
 
-module.exports.indexControllerGet = function (req, res) {
+module.exports.indexControllerGet = function(req, res) {
     // res.sendFile(path.join(__dirname, '../public/htmls', 'index.html'))
     res.render('index');
 };
 
-module.exports.indexRedirectToHastaKimlik = function (req, res) {
+module.exports.indexRedirectToHastaKimlik = function(req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'hastaKimlik.html'))
 };
 
-module.exports.indexRedirectToPolExam = function (req, res) {
+module.exports.indexRedirectToPolExam = function(req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'polyclinic-examination.html'))
 };
 
-module.exports.indexRedirectToPolExamAnamnesis = function (req, res) {
+module.exports.indexRedirectToPolExamAnamnesis = function(req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'polyclinic.html'))
 };
 
-module.exports.indexRedirectToAnnouncement = function (req, res) {
+module.exports.indexRedirectToDiet = function(req, res) {
+    res.sendFile(path.join(__dirname, '../../public/htmls', 'diet.html'))
+};
+
+module.exports.indexRedirectToAnnouncement = function(req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'announcement.html'))
 };
 
-module.exports.indexRedirectToAppointmentSave = function (req, res) {
+module.exports.indexRedirectToAppointmentSave = function(req, res) {
     res.sendFile(path.join(__dirname, '../../public/htmls', 'appointment-save.html'))
 };
 
-module.exports.indexRedirectToAdmin = function (req, res) {
+module.exports.indexRedirectToAdmin = function(req, res) {
     res.render('../views/adminModule')
 };
 
@@ -85,14 +89,11 @@ module.exports.closeUserLoginSession = (req, res) => {
     var myUserName = req.body.userName,
         mySessionEndDate = myMoment(Date.now()).format('MM/DD/YYYY HH:mm:ss').toString();
 
-    myUserLoginSessionModel.findOneAndUpdate(
-        { userName: myUserName, sessionEndDate: '' },
-        {
+    myUserLoginSessionModel.findOneAndUpdate({ userName: myUserName, sessionEndDate: '' }, {
             $set: {
                 "sessionEndDate": mySessionEndDate
             }
-        },
-        { useFindAndModify: false })
+        }, { useFindAndModify: false })
         .then(closedUserSession => {
             res.send(closedUserSession);
             // console.log("User session closed! = " + closedUserSession);
@@ -152,9 +153,7 @@ module.exports.changeUserPassword = (req, res) => {
         myComputerName = computerName(),
         myPasswordChangeDate = myMoment(Date.now()).format('DD/MM/YYYY hh:mm:ss');
 
-    myUsersModel.findOneAndUpdate(
-        { userName: myUserName },
-        {
+    myUsersModel.findOneAndUpdate({ userName: myUserName }, {
             $set: {
                 'password': myUserNewPassword,
                 'userOldPassword': myUserOldPassword,
@@ -162,9 +161,7 @@ module.exports.changeUserPassword = (req, res) => {
                 'passwordChangeMachineName': myComputerName,
                 'passwordChangeMachineIp': myIpAdress
             }
-        },
-        { useFindAndModify: false }
-    )
+        }, { useFindAndModify: false })
         .then(user => {
             res.send(user);
             // console.log("Password changed! = " + user);

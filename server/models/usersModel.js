@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
         userGroup: String,
         userPhotoSrc: String,
         userOldPassword: String,
-        passwordChangeDate: Date,
+        passwordChangeDate: String,
         passwordChangeMachineName: String,
         passwordChangeMachineIp: String
     }),

@@ -3605,6 +3605,61 @@ var
         }
     },
 
+    DietMethods = {
+        bodyMassIndex: function bodyMassIndex() {
+
+            var patientGender = $.cookie('patientGender');
+            console.log(patientGender)
+            if (patientGender == 'Male') {
+                document.getElementById('bodyMassIndexMan').style.display = 'block'
+                document.getElementById('bodyMassIndexMan').style.margin = '-37px 10px'
+                document.getElementById('bodyMassIndexMan').style.width = '290px'
+                document.getElementById('bodyMassIndexWoman').style.display = 'none'
+            } else {
+                document.getElementById('bodyMassIndexWoman').style.display = 'block'
+                document.getElementById('bodyMassIndexMan').style.display = 'none'
+            }
+        },
+
+        findPatientList: function findPatientList() {
+            jQueryMethods.toastrOptions();
+            if ($.cookie('username') == null ||
+                $.cookie('username') == 'null' ||
+                $.cookie('username') == undefined ||
+                $.cookie('username') == 'undefined') {
+                toastr.error('Please login from Main page!', 'Login error!')
+            } else {
+                var polExamDate = $('#examDate').val(),
+                    myPolyclinicSelectValue = $("#polyclinicSelector option:selected").val();
+
+                $('#patientTable > tbody').empty();
+
+                $.ajax({
+                    type: "GET",
+                    url: "/diet/findPatientList",
+                    data: { polyclinicSelect: myPolyclinicSelectValue, statusSelect: 'Valid', patientPolExamDate: polExamDate },
+                    success: function(result) {
+                        $.each(result, function(i, patientData) {
+                            i++;
+                            var patientAppStatusId = 'patientAppStatus' + i;
+                            $("#patientTable> tbody").append(
+                                "<tr class='patientList' id='patient" + i +
+                                "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable();PolyclinicMethods.fillPatientLabRadHistoryTable();DietMethods.bodyMassIndex();' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>" +
+                                patientData.patientProtocolNo + "</td><td>" +
+                                patientData.patientNameSurname + "</td><td id='patientAppStatus" + i +
+                                "' style='background-color:#e77474;'>Without Appointment</td></tr>");
+                            PolyclinicMethods.checkPatientAppointmentStatus(patientAppStatusId, patientData.patientIdNo)
+                        });
+                    },
+                    error: function(e) {
+                        toastr.error('Patient list couldnt find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
+            }
+        }
+    },
+
     HastaKimlikMethods = {
 
         changePatientPhoto: function changePatientPhoto(inputFileId, patientPhotoId) {

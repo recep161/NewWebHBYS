@@ -486,6 +486,7 @@ input:read-only {
 
 .left-side {
     margin: 0px 10px 10px -10px;
+    width: 65%;
 }
 
 .right-side {
@@ -514,6 +515,7 @@ input:read-only {
 
 .subLeftSide {
     overflow: hidden;
+    width: 88%;
 }
 
 #clock {
@@ -2721,7 +2723,8 @@ th {
 }
 
 #labIstemTable {
-    width: 100%;
+    width: 99%;
+    max-width: 99%;
     cursor: pointer;
     font-family: inherit;
     border-collapse: collapse;
@@ -2782,7 +2785,8 @@ th {
 }
 
 #radiologyIstemTable {
-    width: 100%;
+    width: 99%;
+    max-width: 99%;
     cursor: pointer;
     font-family: inherit;
     border-collapse: collapse;
@@ -4311,6 +4315,34 @@ th {
 
 /*========================================== Diet====================================*/
 
+#dietBody #polyclinicSelector {
+    height: 35px;
+    padding: 0px 0px 0px 47% !important;
+}
+
+#dietBody #examDate {
+    height: 35px;
+}
+
+#dietBody #refresh {
+    height: 35px;
+}
+
+#workoutStyle {
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    border: 2px solid white;
+    outline: none;
+    color: black;
+    white-space: nowrap;
+    box-shadow: 0 8px 6px -6px #555;
+    border-radius: 8px;
+    margin: 3px 0px;
+    height: 35px;
+    width: 95%;
+}
+
 .dietSpecsLabels {
     margin-right: 5px;
 }
@@ -4326,13 +4358,12 @@ select {
 }
 
 .bodyMassIndex {
-    width: 200px;
-    height: 200px;
+    width: 305px;
+    height: 390px;
     box-shadow: 2px 2px 10px #555;
     border-radius: 8px;
 }
 
-#dietKaydet,
 #poylclinicAnamnesisSave {
     margin: 5px 0px 5px 5px;
     width: 100% !important;
@@ -6504,7 +6535,7 @@ select {
 
 #showUserPasswordSpanViewer {
     position: relative !important;
-    margin: -38px 145px !important;
+    margin: -38px 130px !important;
     float: right !important;
     cursor: pointer;
 }

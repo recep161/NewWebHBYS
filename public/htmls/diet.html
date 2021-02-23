@@ -7,8 +7,7 @@
     <title>Diet Module</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript"
-        src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
@@ -18,8 +17,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
-    <link rel="stylesheet" media="all"
-        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -28,19 +26,35 @@
 
     <link rel="stylesheet" href="/public/css/all-pages-style.css">
     <link rel="shortcut icon" href="/public/images/diet_3.png">
+
+    <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
 </head>
 
-<body id="polyclinicBody" onload="ShowOrHideMethods.myStickHeader('subHeadDiv');
-PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');
-                                  AnnouncementMethods.announcementsToBottomAndTopScroll(); 
-                                  jQueryMethods.setCalenderValueToday('clinicDate');
-                                  jQueryMethods.setCalenderValueToday('examDate');
-                                  jQueryMethods.setCalenderValueToday('konsDate');
-                                  jQueryMethods.getJqueryDatePicker();
-                                  jQueryMethods.toolTipFunction();
-                                  InpatientMethods.colorSelectedPatient();
-                                  ShowOrHideMethods.showBackTotopButton();
-                                  jQueryMethods.getPatientPhotoAndInfos('patientRecep');">
+<body id="dietBody" onload="
+                            LoginProcess.checkIfThereIsAUserLoggedIn('refreshPatientList', 'poylclinicAnamnesisSave');
+                            AdministrationMethods.takeUserInfoFromCookie();
+                            AdministrationMethods.fetchUnits('Polyclinic', 'polyclinicSelector');
+                            AnnouncementMethods.announcementsToBottomAndTopScroll(); 
+                            // ShowOrHideMethods.myStickHeader('subHeadDiv');
+                            InpatientMethods.colorSelectedPatient();
+                            jQueryMethods.setCalenderValueToday('clinicDate');
+                            jQueryMethods.setCalenderValueToday('examDate');
+                            jQueryMethods.setCalenderValueToday('konsDate');
+                            jQueryMethods.getJqueryDatePicker();
+                            jQueryMethods.toolTipFunction();
+                            jQueryMethods.bottomUserMenuDrag();
+                            myClockMethods.myClock();
+                            PolyclinicMethods.flipCardsByTime('polExamStatics1', 'polExamStatics2', 'polExamStatics3','polExamStatics4','polExamStatics5');
+                            // PolyclinicMethods.fillAppointmentStatusTable();
+                            // PolyclinicMethods.fillPatientHealtInsuranceTable('examDate','polyclinicSelector','patientHealtInsuranceTable');
+                            // PolyclinicMethods.fillPatientGenderTable('examDate','polyclinicSelector','patientGenderTable');
+                            // PolyclinicMethods.fillDoctorPatientTable('examDate','polyclinicSelector','doctorPatientTable');
+                            // PolyclinicMethods.fillAgePercentageTable('examDate','polyclinicSelector','oldPatientTable');
+                            // PolyclinicMethods.findPatientList();
+                            ShowOrHideMethods.showBackTotopButton();
+                            ShowOrHideMethods.adjustHtmlsBackground('dietBody');">
     <div class="polyclinicNotify" id="polyclinicNotify">
         <span id="polyclinicNotifyType" class=""></span>
     </div>
@@ -52,15 +66,20 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     <div class="mainContainer" id="mainContainer">
         <div class="headerDiv" id="headerDiv">
             <div class="subHeadDiv" id="subHeadDiv">
-                <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('diet')"
-                    title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab"
-                        src="/public/images/open-new-tab.png" alt=""></div>
+                <div id="newTabButton" onclick="window.open('\http:\/\/localhost:1609/diet', '_blank');" title="Click for open in new tab.">
+                    <img class="openInNewTab" id="openInNewTab" src="/public/images/open-new-tab.png" alt="">
+                </div>
                 <div id="modulNameText"> Diet Module </div>
                 <div>
-                    <img class="modulAvatar" src="/public/images/diet_3.png" title="Anasayfa için tıklayınız."
-                        onclick="window.location.href='/public/htmls/index.html'">
+                    <img class="modulAvatar" src="/public/images/diet_3.png" title="Anasayfa için tıklayınız." onclick="window.location.href='/public/htmls/index.html'">
                 </div>
             </div>
+
+            <hUserName id="hUserName" class="historyHeaders" onmouseover="LoginProcess.showUserDataOnHover();" style="margin: 10px ;cursor: default;" title="">Please Login from main page!
+            </hUserName>
+            <p id="clock" title="Know the true value of time!" style="margin: -20px 10px 0px 1250px !important;">Time!
+            </p>
+
             <select name="polyclinicSelect" id="polyclinicSelector" class="polyclinicPalette">
                 <option value="pol1">Diet -1 Pol.</option>
                 <option value="pol2">Diet -2 Pol.</option>
@@ -69,159 +88,114 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
 
             <!-- <input type="date" id="examDate" name="examDate"> -->
             <input type="text" id="examDate">
-            <button class="polyclinicButtons btn--swap" id="refresh">Refresh<span>Refresh the patients'
-                    list.</span></button>
+            <button class="polyclinicButtons btn--swap" id="refresh" onclick="DietMethods.findPatientList()">Refresh
+                <span>Refresh the patients' list.</span></button>
         </div>
 
         <div class="bottomScrool">
-            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
-                Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
-                'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
-                yayımladı... &#164;&#164; it's not a mobile device.</p>
+            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı; 'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ
+                VE TANI' adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
         </div>
 
         <div class="subMainContainer" id="subMainContainer">
 
             <div class="patientContainer" id="patientContainer">
                 <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patient List</h10>
-                <input class="searchInputs" type="text" id="searchInput"
-                    onkeydown="PolyclinicMethods.searchInTable('searchInput', 'patientTable')"
-                    placeholder="Search for patients..."
-                    title="Search patients by name, surname, protocol or appointment status.">
+                <input class="searchInputs" type="text" id="searchInput" onkeydown="PolyclinicMethods.searchInTable('searchInput', 'patientTable')" placeholder="Search for patients..." title="Search patients by name, surname, protocol or appointment status.">
                 <table id="patientTable">
-                    <tr id="tableHeader">
-                        <th>Protocol No.</th>
-                        <th>Name Surname</th>
-                        <th>Appointment</th>
-                    </tr>
-                    <tr title="" id="patientRecep">
-                        <td>12345</td>
-                        <td>Recep CELiK</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="Cinsiyeti: Erkek, Yas: 34, Dogum yeri: Diyarbakir">
-                        <td>45678</td>
-                        <td>Adnan YILDIRIM</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="Cinsiyeti: Erkek, Yas: 44, Dogum yeri: Ankara">
-                        <td>91011</td>
-                        <td>Onder KARABULUT</td>
-                        <td>No</td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="Cinsiyeti: Kadin, Yas: 22, Dogum yeri: Istanbul">
-                        <td>12131</td>
-                        <td>Ayse GENC</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="Cinsiyeti: Erkek, Yas: 3, Dogum yeri: Malatya">
-                        <td>14151</td>
-                        <td>Ahmet MEHMET</td>
-                        <td>No</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                            <td>Protocol No.</td>
+                            <td>Name Surname</td>
+                            <td>Appointment Status</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
 
             <div class="anamnezContainer" id="anamnezContainer">
                 Story
 
-                <textarea name="oykusuArea" id="oykusuArea" cols="30" rows="10" placeholder="Story" data-html="true"
-                    data-toggle="tooltip" title="Write story of disease."></textarea>
-
-                Anamnesis <br>
-                <textarea name="anamnezArea" id="anamnezArea" cols="30" rows="10" placeholder="Anamnesis"
-                    data-toggle="tooltip" title="Write anamnesis of disease."></textarea>
-
-                Examination <br>
-                <textarea name="muayeneArea" id="muayeneArea" cols="30" rows="10" placeholder="Examination"
-                    data-toggle="tooltip" title="Write examination result."></textarea>
+                <textarea name="oykusuArea" id="oykusuArea" cols="30" rows="10" placeholder="Story" data-html="true" data-toggle="tooltip" title="Write story of disease."></textarea> Anamnesis <br>
+                <textarea name="anamnezArea" id="anamnezArea" cols="30" rows="10" placeholder="Anamnesis" data-toggle="tooltip" title="Write anamnesis of disease."></textarea> Examination <br>
+                <textarea name="muayeneArea" id="muayeneArea" cols="30" rows="10" placeholder="Examination" data-toggle="tooltip" title="Write examination result."></textarea>
                 <br><br>
                 <div class="dietSpecsDiv" style="display: flex;">
                     <div class="dietSpecsLabels">
-                        <label for="boy">Boy:</label><br><br>
-                        <label for="kilo">Kilo (kg):</label><br><br>
-                        <label for="workoutStyle">Calisma Sekli:</label><br><br>
-                        <label for="almasiGereken">Gunluk Almasi Gereken Kalori:</label><br><br>
-                        <label for="kutleindexi">Vucut Kutle Indeksi:</label><br><br>
-                        <label for="idealKilo">Ideal Kilo:</label><br><br>
-                        <label for="bmr">BMR Katsayi:</label>
+                        <label for="boy">Height:</label><br><br>
+                        <label for="kilo">Weight (kg):</label><br><br>
+                        <label for="workoutStyle">Daily way of working:</label><br><br>
+                        <label for="almasiGereken">Calories Needed Daily:</label><br><br>
+                        <label for="kutleindexi">Body mass index:</label><br><br>
+                        <label for="idealKilo">Ideal weight:</label><br><br>
+                        <label for="bmr">BMR Coefficient:</label>
                     </div>
 
                     <div class="dietSpecsInputs">
-                        <input type="text" name="boy" id="boy"><br><br>
-                        <input type="text" name="kilo" id="kilo"><br><br>
+                        <input type="number" name="boy" id="boy"><br><br>
+                        <input type="number" name="kilo" id="kilo"><br><br>
                         <select name="workoutStyle" id="workoutStyle">
-                            <option value="1">Egzersiz yok veya çok az.</option>
-                            <option value="2">Hafif egzersiz (haftada 1–3 gün) yapıyor.</option>
-                            <option value="3">Orta derecede egzersiz (haftada 3–5 gün) yapıyor.</option>
-                            <option value="4">Ağır egzersiz (haftada 6-7 gün spor ) yapıyor.</option>
-                            <option value="5">Aşırı düzeyde (2 günde 1 , çok fazla ağırlık ile) spor yapıyor.</option>
+                            <option value="1">No or little exercise.</option>
+                            <option value="2">Light exercise (1-3 days a week).</option>
+                            <option value="3">Exercises moderately (3-5 days a week).</option>
+                            <option value="4">Heavy exercise (exercise 6-7 days a week).</option>
+                            <option value="5">Exercising excessively (1 in 2 days, very heavy)</option>
                         </select><br><br>
-                        <input type="text" name="almasiGereken" id="almasiGereken"><br><br>
+                        <input type="number" name="almasiGereken" id="almasiGereken"><br><br>
                         <input type="text" name="kutleindexi" id="kutleindexi"><br><br>
-                        <input type="text" name="idealKilo" id="idealKilo"><br><br>
+                        <input type="number" name="idealKilo" id="idealKilo"><br><br>
                         <input type="text" name="bmr" id="bmr"><br>
                     </div>
 
                     <div class="bodyType">
-                        <img class="bodyMassIndex" src="/public/images/woman-body-index.jpg" alt=""><br><br>
-                        <img class="bodyMassIndex" src="/public/images/man-body-index.jpg" alt=""><br><br>
+                        <img class="bodyMassIndex" id="bodyMassIndexWoman" src="/public/images/woman-body-index.jpg" alt="woman" style="display: none;"><br><br>
+                        <img class="bodyMassIndex" id="bodyMassIndexMan" src="/public/images/man-body-index.jpg" alt="man" style="display: none;"><br><br>
                     </div>
 
                 </div>
 
                 <div class="dropdown">
-                    <button onclick="InpatientMethods.showDropDownInside('polMuayeneTani')"
-                        class="polyclinicButtons btn--swap" id="polMuayeneTaniBtn">Tanilar <span>ICD-10 Tani
-                            Listesi</span></button>
-                    <div id="polMuayeneTani" class="dropdown-content">
-                        <input type="text" placeholder="Search.." id="polMuayeneTaniSearch" autofocus
-                            onkeyup="InpatientMethods.filterTaniDropdown('polMuayeneTaniSearch', 'polMuayeneTani')">
-                        <a href="">A00.0 - Kolera, Vibrio cholorea 01, biovar kolera’ya bağlı</a>
-                        <a href="">A23.0 - Bruselloz, Brucella melitensis’e bağlı</a>
-                        <a href="">B01.0 - Varisella menenjiti (G02.0*)</a>
-                        <a href="">B05.0 - Kızamık, ensefalit komplikasyonlu (G05.1*)</a>
-                        <a href="">B18.1 - Kronik viral hepatit B, delta ajansız</a>
-                        <a href="">B50.8 - Plasmodium falciparum sıtması, diğer ağır ve komplikasyonlu</a>
-                        <a href="">B90.0 - Merkezi sinir sistemi tüberkülozu sekelleri</a>
-                        <a href="">B91.0 - Merkezi sinir sistemi tüberkülozu sekelleri (Tanimlanmamis)</a>
+                    <button onclick="InpatientMethods.showDropDownInside('polDiagnosis');PolyclinicMethods.fillDiagnosisDropDown();" class="polyclinicButtons btn--swap" id="polMuayeneTaniBtn" style="width: 771px;margin: 25px 0px 10px 6px;">Diagnosis <span>ICD-10 Diagnosis
+                            List</span></button>
+                    <div id="polDiagnosis" class="dropdown-content">
+                        <input type="text" placeholder="Search.." id="polDiagnosisSearch" autofocus onkeyup="InpatientMethods.filterTaniDropdown('polDiagnosisSearch', 'polDiagnosis')">
                     </div>
                 </div>
                 <br><br>
-                <div class="hastaTaniHistoryDiv">
-                    <h10 class="historyHeaders" style="margin-bottom: 10px;">Hasta Tani Gecmisi</h10>
-                    <table class="hastaTaniHistory">
-                        <th>ICD-10</th>
-                        <th>Tani Tipi</th>
-                        <th>Tani Adi</th>
-                        <th>Kullanici</th>
-                        <tr>
-                            <td>B05.0</td>
-                            <td>On tani</td>
-                            <td>- Kızamık, ensefalit komplikasyonlu (G05.1*)</td>
-                            <td>Dr. Ahmet MEHMET</td>
-                        </tr>
+                <div class="polDiagnosisHistoryDiv">
+                    <h10 class="historyHeaders" style="margin-bottom: 10px;">Patient Diagnosis</h10>
+                    <table class="polDiagnosisHistoryTable">
+                        <thead>
+                            <tr id="tableHeader" style="background-color:#49A681 !important;color:white">
+                                <td>ICD-10 Diagnosis Name</td>
+                                <td>Diagnosis Type</td>
+                                <td>User</td>
+                                <td>Date</td>
+                                <td>Delete</td>
+                                <td>Update</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
                     </table>
                 </div>
                 <br><br>
 
-                <button class="anamnezBtns btn-success" id="dietKaydet"
-                    onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip"
-                    title="Verilerinizi kaydetmek icin tiklayin.">Save</button>
+                <button class="anamnezBtns btn-success" id="poylclinicAnamnesisSave" onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button>
             </div>
 
             <div class="buttonContainer" id="buttonContainer" style="width: 25%;border-style: ridge;">
-                <button id="yatisIslemleriBtn" onclick="ShowOrHideMethods.showPopUpModal('yatisEkrani');"
-                    class="polyclinicButtons btn--swap">Yatis islemleri <span>Primum non nocere.</span></button>
+                <button id="yatisIslemleriBtn" onclick="ShowOrHideMethods.showPopUpModal('yatisEkrani');" class="polyclinicButtons btn--swap">Yatis islemleri <span>Primum non nocere.</span></button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('konsultasyonEkrani');"
-                    class="polyclinicButtons btn--swap">Konsultasyon <span>Primum non nocere.</span></button>
+                <button onclick="ShowOrHideMethods.showPopUpModal('konsultasyonEkrani');" class="polyclinicButtons btn--swap">Konsultasyon <span>Primum non nocere.</span></button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');"
-                    class="polyclinicButtons btn--swap">Laboratuar Istem <span>Primum non nocere.</span></button>
+                <button onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');" class="polyclinicButtons btn--swap">Laboratuar Istem <span>Primum non nocere.</span></button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');"
-                    class="polyclinicButtons btn--swap">Radyoloji Istem<span>Primum non nocere.</span></button>
+                <button onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');" class="polyclinicButtons btn--swap">Radyoloji Istem<span>Primum non nocere.</span></button>
 
                 <button class="polyclinicButtons btn--swap">Button 5 <span>Primum non nocere.</span></button>
                 <button class="polyclinicButtons btn--swap">Button 6 <span>Primum non nocere.</span></button>
@@ -235,97 +209,37 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
         <div class="patientHistoryMainContainer" id="patientHistoryMainContainer">
             <div class="patientHistoryContainer" id="patientHistoryContainer">
                 <h10 class="historyHeaders"> Patient History</h10>
-                <table id="patientHistoryTable">
-                    <tr>
-                        <th>No.</th>
-                        <th>Protocol No.</th>
-                        <th>Date</th>
-                        <th>Polyclinic</th>
-                    </tr>
-                    <tr title="Oykusu: Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus.
-                    
-                    Anamnez: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi.
-                    ">
-                        <td>1</td>
-                        <td>12345</td>
-                        <td>01/03/2019</td>
-                        <td>Diet Pol.</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>45678</td>
-                        <td>15/01/2020</td>
-                        <td>Cardiology Pol.</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>91011</td>
-                        <td>22/02/2020</td>
-                        <td>Urology Pol.</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>12131</td>
-                        <td>04/03/2020</td>
-                        <td>Emergency Pol.</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>14151</td>
-                        <td>18/04/2020</td>
-                        <td>Urology Pol.</td>
-                    </tr>
+                <table id="patientHistoryTable" class="patientTable">
+                    <thead>
+                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                            <td>No.</td>
+                            <td>Protocol No.</td>
+                            <td>Date</td>
+                            <td>Polyclinic</td>
+                            <td>Doctor</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+
                 </table>
             </div>
 
             <div class="patientLabHistoryContainer" id="patientLabHistoryContainer" style="text-align: center;">
                 <h10 class="historyHeaders">
                     Patient Laboratory and Radiology History</h10>
-                <table id="patientLabHistoryTable">
-                    <tr>
+                <table id="patientLabRadHistoryTable">
+                    <thead id="tableHeader" style="background-color: #49A681 !important; color: white;">
                         <th>No.</th>
                         <th>Protocol No.</th>
+                        <th>Examination</th>
                         <th>Date</th>
                         <th>Lab. / Rad. </th>
-                    </tr>
-                    <tr title="WBC : 5.6 
-                                RBC: 6.2
-                                HGB: 13.1
-                                HCT: 39.9
-                                MCV: 30.1
-                                MCHC: 34.6
-                                RDW: 13.8
-                                PLT: 322">
-                        <td>1</td>
-                        <td>12345</td>
-                        <td>01/03/2019</td>
-                        <td>Hematology Lab.</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>45678</td>
-                        <td>15/01/2020</td>
-                        <td>Ultrasound - 1</td>
-                    </tr>
-                    <tr
-                        title="ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non dui sapien.">
-                        <td>3</td>
-                        <td>91011</td>
-                        <td>22/02/2020</td>
-                        <td>ESWL - 2</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>12131</td>
-                        <td>04/03/2020</td>
-                        <td>Biochemistry Lab.</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>14151</td>
-                        <td>18/04/2020</td>
-                        <td>Serology Lab.</td>
-                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
 
@@ -334,9 +248,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
         <div class="statics">
             <!-- cards -->
             <div class="card-container" id="poly-card-container">
-                <div class="baseCard" id="statics1"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics1" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard1">
                         <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-1.png');
                             background-size: cover;">
@@ -349,20 +261,15 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Randevulu hasta vs Normal Hasta"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Randevulu hasta vs Normal Hasta"></button>
                             <p class="cardP">
-                                Hastalarin basvuru turune gore istatistik. <br><br>
-                                Randevulu hasta : 4 <br>
-                                Normal hasta : 12
+                                Hastalarin basvuru turune gore istatistik. <br><br> Randevulu hasta : 4 <br> Normal hasta : 12
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics2"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics2" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard2">
                         <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-2.png');
                             background-size: cover; background-color: cornflowerblue;">
@@ -375,21 +282,15 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Kurum Turu"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Kurum Turu"></button>
                             <p class="cardP">
-                                Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
-                                Yesilkart : 4 <br>
-                                SGK : 12 <br>
-                                Ucretli : 1
+                                Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br> Yesilkart : 4 <br> SGK : 12 <br> Ucretli : 1
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics3"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics3" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard3">
                         <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-3.png');
                             background-size: cover; background-color: cornflowerblue;">
@@ -402,20 +303,15 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Cinsiyet Dagilimi"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Cinsiyet Dagilimi"></button>
                             <p class="cardP">
-                                Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                Kadin : 4 <br>
-                                Erkek : 8
+                                Hastalarin cinsiyetlerine gore istatistik. <br><br> Kadin : 4 <br> Erkek : 8
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics4"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics4" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard4">
                         <div id="analytcStatics4" class="front" style="background-image: url('/public/images/statics-4.png');
                         background-size: cover; background-color: cornflowerblue;">
@@ -428,21 +324,15 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Yas Dagilimi"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Yas Dagilimi"></button>
                             <p class="cardP">
-                                Hastalarin yaslarina gore istatistik. <br><br>
-                                0 - 12 : 3 <br>
-                                12 - 18 : 5 <br>
-                                18+ : 4
+                                Hastalarin yaslarina gore istatistik. <br><br> 0 - 12 : 3 <br> 12 - 18 : 5 <br> 18+ : 4
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics5"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics5" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard5">
                         <div id="analytcStatics5" class="front" style="background-image: url('/public/images/statics-5.png');
                         background-size: cover; background-color: cornflowerblue;">
@@ -455,12 +345,10 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Yas Dagilimi"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Yas Dagilimi"></button>
                             <p class="cardP">
-                                Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br>
-                                Muayene olan : 4 <br>
-                                Bekleyen : 6
+                                Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br> Muayene olan : 4
+                                <br> Bekleyen : 6
                             </p>
                         </div>
                     </div>
@@ -475,8 +363,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     <div id="yatisEkrani" class="modal" style="padding: 60px;">
         <form id="modal-content" class="yatisEkraniContent animate" action="?action=add" method="post">
             <div id="yatisImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('yatisEkrani').style.display='none'" id="yatisCloseBtn"
-                    class="close" title="Close Modal">&times;</span>
+                <span onclick="document.getElementById('yatisEkrani').style.display='none'" id="yatisCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="myAvatar" src="/public/images/Medical-icons/nurse.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> Yatis islemleri</h11>
@@ -498,11 +385,9 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                     </div>
 
                     <div class="yatisEkraniInputs">
-                        <input type="text" id="patientProtocol" name="patientProtocol" placeholder="Patient Protocol No"
-                            autofocus required>
+                        <input type="text" id="patientProtocol" name="patientProtocol" placeholder="Patient Protocol No" autofocus required>
                         <br>
-                        <input type="text" id="patientName" name="patientName" placeholder="Patient Name Surname"
-                            autofocus required>
+                        <input type="text" id="patientName" name="patientName" placeholder="Patient Name Surname" autofocus required>
                         <br>
                         <select name="doctorSelect" id="polExamDoctorSelector" class="doctorSelect">
                             <option value="clinic1">Prof. Dr. Ahmet SAYLAN</option>
@@ -522,32 +407,21 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                 </div>
 
                 <div class="beds">
-                    <img id="bed1" onclick="AdministrationMethods.bedSelect('bed1');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed2" onclick="AdministrationMethods.bedSelect('bed2');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed3" onclick="AdministrationMethods.bedSelect('bed3');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed4" onclick="AdministrationMethods.bedSelect('bed4');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed5" onclick="AdministrationMethods.bedSelect('bed5');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed6" onclick="AdministrationMethods.bedSelect('bed6');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed7" onclick="AdministrationMethods.bedSelect('bed7');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed8" onclick="AdministrationMethods.bedSelect('bed8');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed9" onclick="AdministrationMethods.bedSelect('bed9');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed10" onclick="AdministrationMethods.bedSelect('bed10');" class="bedImages"
-                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed1" onclick="AdministrationMethods.bedSelect('bed1');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed2" onclick="AdministrationMethods.bedSelect('bed2');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed3" onclick="AdministrationMethods.bedSelect('bed3');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed4" onclick="AdministrationMethods.bedSelect('bed4');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed5" onclick="AdministrationMethods.bedSelect('bed5');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed6" onclick="AdministrationMethods.bedSelect('bed6');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed7" onclick="AdministrationMethods.bedSelect('bed7');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed8" onclick="AdministrationMethods.bedSelect('bed8');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed9" onclick="AdministrationMethods.bedSelect('bed9');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed10" onclick="AdministrationMethods.bedSelect('bed10');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
 
                     <img id="bed11" onclick="AdministrationMethods.bedSelect('bed11');" class="bedImages" title="Protocol: 3333
                     Hasta: Tuncay CELIK
                     Yatis Tarihi: 11/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
-                    <img id="bed12" onclick="AdministrationMethods.bedSelect('bed12');" class="bedImages"
-                        style="background-color: #f2ace0;" title="Protocol: 4444
+                    <img id="bed12" onclick="AdministrationMethods.bedSelect('bed12');" class="bedImages" style="background-color: #f2ace0;" title="Protocol: 4444
                     Hasta: Sibel GECE
                     Yatis Tarihi: 10/06/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
                     <img id="bed13" onclick="AdministrationMethods.bedSelect('bed13');" class="bedImages" title="Protocol: 5555
@@ -556,8 +430,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                     <img id="bed14" onclick="AdministrationMethods.bedSelect('bed14');" class="bedImages" title="Protocol: 6666
                     Hasta: Davut YILDIZ
                     Yatis Tarihi: 08/05/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
-                    <img id="bed15" onclick="AdministrationMethods.bedSelect('bed15');" class="bedImages"
-                        style="background-color: #f2ace0;" title="Protocol: 7777
+                    <img id="bed15" onclick="AdministrationMethods.bedSelect('bed15');" class="bedImages" style="background-color: #f2ace0;" title="Protocol: 7777
                     Hasta: Adile NASIT
                     Yatis Tarihi: 01/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
                     <img id="bed16" onclick="AdministrationMethods.bedSelect('bed16');" class="bedImages" title="Protocol: 8888
@@ -569,12 +442,10 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                     <img id="bed18" onclick="AdministrationMethods.bedSelect('bed18');" class="bedImages" title="Protocol: 1001
                     Hasta: Hamza GUCLU
                     Yatis Tarihi: 11/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
-                    <img id="bed19" onclick="AdministrationMethods.bedSelect('bed19');" class="bedImages"
-                        style="background-color: #f2ace0;" title="Protocol: 1002
+                    <img id="bed19" onclick="AdministrationMethods.bedSelect('bed19');" class="bedImages" style="background-color: #f2ace0;" title="Protocol: 1002
                     Hasta: Hayriye BAL
                     Yatis Tarihi: 23/06/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
-                    <img id="bed20" onclick="AdministrationMethods.bedSelect('bed20');" class="bedImages"
-                        style="background-color: #f2ace0;" title="Protocol: 1103
+                    <img id="bed20" onclick="AdministrationMethods.bedSelect('bed20');" class="bedImages" style="background-color: #f2ace0;" title="Protocol: 1103
                     Hasta: Hanim BIR
                     Yatis Tarihi: 11/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
                 </div>
@@ -595,9 +466,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="yatisKaydet"
-                        onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip"
-                        title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="yatisKaydet" onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
             </div>
         </form>
     </div>
@@ -605,8 +474,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     <div id="konsultasyonEkrani" class="modal" style="padding: 60px;">
         <form id="kons-modal-content" class="konsultasyonEkraniContent animate" action="?action=add" method="post">
             <div id="konsultasyonImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('konsultasyonEkrani').style.display='none'" id="konsCloseBtn"
-                    class="close" title="Close Modal">&times;</span>
+                <span onclick="document.getElementById('konsultasyonEkrani').style.display='none'" id="konsCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="myAvatar" src="/public/images/Medical-icons/cons-doctor.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> Konsultasyon islemleri</h11>
@@ -623,18 +491,15 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         <br>
                         <label id="konsDateLbl" for="konsDate">Date:</label>
                         <br>
-                        <label id="konsClinicLbl" for="konsClinicSelector"
-                            style="margin: 10px 0px 25px;">Clinic:</label>
+                        <label id="konsClinicLbl" for="konsClinicSelector" style="margin: 10px 0px 25px;">Clinic:</label>
                         <br>
                         <label id="konsNoteLbl" for="konsNote" style="margin: 10px 0px 40px;">Consultation Note:</label>
                     </div>
 
                     <div class="konsultasyonEkraniInputs">
-                        <input type="text" id="konsProtocol" name="konsPatientProtocol"
-                            placeholder="Patient Protocol No" autofocus required>
+                        <input type="text" id="konsProtocol" name="konsPatientProtocol" placeholder="Patient Protocol No" autofocus required>
                         <br>
-                        <input type="text" id="konsPatientName" name="konsPatientName"
-                            placeholder="Patient Name Surname" autofocus required>
+                        <input type="text" id="konsPatientName" name="konsPatientName" placeholder="Patient Name Surname" autofocus required>
                         <br>
                         <select name="konsDoctorSelect" id="konsDoctorSelector" class="konsDoctorSelect">
                             <option value="clinic1">Prof. Dr. Ahmet SAYLAN</option>
@@ -671,9 +536,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="konsultasyonKaydet"
-                        onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip"
-                        title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="konsultasyonKaydet" onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
             </div>
         </form>
     </div>
@@ -681,14 +544,11 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     <div id="labIstemEkrani" class="modal" style="padding: 60px;">
         <form id="labIstem-modal-content" class="labIstemEkraniContent animate" action="none" method="none">
             <div id="labIstemImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('labIstemEkrani').style.display='none'" id="labIstemCloseBtn"
-                    class="close" title="Close Modal">&times;</span>
+                <span onclick="document.getElementById('labIstemEkrani').style.display='none'" id="labIstemCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="myAvatar" src="/public/images/Medical-icons/microscope.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;">Lab tetkis istem</h11>
-            <input class="searchInputs" type="text" id="tetkikAra"
-                onkeydown="PolyclinicMethods.searchInTable('tetkikAra', 'labIstemTable')"
-                placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
+            <input class="searchInputs" type="text" id="tetkikAra" onkeydown="PolyclinicMethods.searchInTable('tetkikAra', 'labIstemTable')" placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
             <div id="labIstemEkraniContainer" class="labIstemEkraniContainer">
                 <table id="labIstemTable">
                     <tr id="tableHeader">
@@ -700,58 +560,48 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                     </tr>
                     <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
                         <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck1"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck1', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
+                            <input type="checkbox" class="labIstemChckbx" id="customCheck1" onchange="PolyclinicMethods.tetkikSelect('customCheck1', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
                         </td>
                         <td>901620</td>
                         <td>Hemogram</td>
                         <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity1" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="labQuantity" id="labQuantity1" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                     <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
                         <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck2"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck2', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
+                            <input type="checkbox" class="labIstemChckbx" id="customCheck2" onchange="PolyclinicMethods.tetkikSelect('customCheck2', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
                         </td>
                         <td>72524</td>
                         <td>Aspartat transaminaz (AST)</td>
                         <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity2" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="labQuantity" id="labQuantity2" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                     <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
                         <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck3"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck3', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
+                            <input type="checkbox" class="labIstemChckbx" id="customCheck3" onchange="PolyclinicMethods.tetkikSelect('customCheck3', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
                         </td>
                         <td>72525</td>
                         <td>Alanin transaminaz (ALT)</td>
                         <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity3" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="labQuantity" id="labQuantity3" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                     <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
                         <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck4"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck4', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
+                            <input type="checkbox" class="labIstemChckbx" id="customCheck4" onchange="PolyclinicMethods.tetkikSelect('customCheck4', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
                         </td>
                         <td>72526</td>
                         <td id="tetkikAdi">Alkalen fosfataz (ALP)</td>
                         <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity4" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="labQuantity" id="labQuantity4" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                     <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
                         <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck5"
-                                onchange="PolyclinicMethods.tetkikSelect('customCheck5', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
+                            <input type="checkbox" class="labIstemChckbx" id="customCheck5" onchange="PolyclinicMethods.tetkikSelect('customCheck5', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
                         </td>
                         <td>72520</td>
                         <td>Gama-glutamiltransferaz (GGT)</td>
                         <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity5" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="labQuantity" id="labQuantity5" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                 </table>
             </div>
@@ -767,9 +617,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="labTetkikKaydet"
-                        onclick="PolyclinicMethods.checkBeforeSaveExaminations()" data-toggle="tooltip"
-                        title="Tetkikleri kaydetmek icin tiklayin.">Save</button></div>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="labTetkikKaydet" onclick="PolyclinicMethods.checkBeforeSaveExaminations()" data-toggle="tooltip" title="Tetkikleri kaydetmek icin tiklayin.">Save</button></div>
             </div>
         </form>
     </div>
@@ -777,15 +625,11 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     <div id="radiologyIstemEkrani" class="modal" style="padding: 60px;">
         <form id="radiology-modal-content" class="radiologyIstemEkraniContent animate" action="none" method="none">
             <div id="radiologyIstemImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('radiologyIstemEkrani').style.display='none'"
-                    id="radiologyIstemCloseBtn" class="close" title="Close Modal">&times;</span>
-                <img id="myRadiologyAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico" alt="Avatar"
-                    class="avatar">
+                <span onclick="document.getElementById('radiologyIstemEkrani').style.display='none'" id="radiologyIstemCloseBtn" class="close" title="Close Modal">&times;</span>
+                <img id="myRadiologyAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;">Lab tetkis istem</h11>
-            <input class="searchInputs" type="text" id="radiologyTetkikAra"
-                onkeydown="PolyclinicMethods.searchInTable('radiologyTetkikAra', 'radiologyIstemTable')"
-                placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
+            <input class="searchInputs" type="text" id="radiologyTetkikAra" onkeydown="PolyclinicMethods.searchInTable('radiologyTetkikAra', 'radiologyIstemTable')" placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
             <div id="radiologyIstemEkraniContainer" class="radiologyIstemEkraniContainer">
                 <table id="radiologyIstemTable">
                     <tr id="tableHeader">
@@ -795,62 +639,50 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         <th>Laboratory</th>
                         <th>Quantity</th>
                     </tr>
-                    <tr data-toggle="tooltip"
-                        title="SUT Kısıtları: Nükleer Tıp Uzman hekiminin yer aldığı üç imzalı rapor ile tıbbi gerekçe belirtilmelidir.">
+                    <tr data-toggle="tooltip" title="SUT Kısıtları: Nükleer Tıp Uzman hekiminin yer aldığı üç imzalı rapor ile tıbbi gerekçe belirtilmelidir.">
                         <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck1"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck1', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
+                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck1" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck1', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
                         </td>
                         <td>800640</td>
                         <td>Akciğer perfüzyon sintigrafisi, SPECT</td>
                         <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity1" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity1" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                     <tr data-toggle="tooltip" title="SUT Kısıtları: Akciğer perfüzyon sintigrafisi, Planar'a eklenir.">
                         <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck2"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck2', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
+                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck2" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck2', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
                         </td>
                         <td>800661</td>
                         <td>Akciğer ventilasyon sintigrafisi, SPECT (Aerosol)</td>
                         <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity2" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity2" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                     <tr data-toggle="tooltip" title="SUT Kısıtları: Dinamik ve/veya statik">
                         <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck3"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck3', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
+                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck3" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck3', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
                         </td>
                         <td>800710</td>
                         <td>Konvansiyonel beyin sintigrafisi</td>
                         <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity3" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity3" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                     <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
                         <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck4"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck4', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
+                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck4" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck4', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
                         </td>
                         <td>800690</td>
                         <td>Beyin PET</td>
                         <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity4" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity4" min="1" value="1" style="text-align: center;"></td>
                     </tr>
-                    <tr data-toggle="tooltip"
-                        title="SUT Kısıtları: PET sırasında attenuasyon düzeltmesi ve anotomik haritalama amacıyla çekilen BT/MR ayrıca puanlandırılmaz.">
+                    <tr data-toggle="tooltip" title="SUT Kısıtları: PET sırasında attenuasyon düzeltmesi ve anotomik haritalama amacıyla çekilen BT/MR ayrıca puanlandırılmaz.">
                         <td>
-                            <input type="checkbox" class="labIstemChckbx" id="radiologyCustomCheck5"
-                                onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck5', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
+                            <input type="checkbox" class="labIstemChckbx" id="radiologyCustomCheck5" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck5', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
                         </td>
                         <td>800755</td>
                         <td>Miyokard sempatik innervasyon sintigrafisi (I-123 MIBG)</td>
                         <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity5" min="1" value="1"
-                                style="text-align: center;"></td>
+                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity5" min="1" value="1" style="text-align: center;"></td>
                     </tr>
                 </table>
             </div>
@@ -866,9 +698,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="radiologyTetkikKaydet"
-                        onclick="PolyclinicMethods.checkBeforeSaveExaminations()" data-toggle="tooltip"
-                        title="Tetkikleri kaydetmek icin tiklayin.">Save</button></div>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="radiologyTetkikKaydet" onclick="PolyclinicMethods.checkBeforeSaveExaminations()" data-toggle="tooltip" title="Tetkikleri kaydetmek icin tiklayin.">Save</button></div>
             </div>
         </form>
     </div>
@@ -882,32 +712,28 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
             <!-- Social buttons -->
             <ul class="list-unstyled list-inline text-center">
                 <li class="list-inline-item">
-                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
+                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page" onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
                         <a class="btn-floating btn-fb fa-2x">
                             <i class="fa fa-facebook-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
+                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page" onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
                         <a class="btn-floating btn-tw fa-2x">
                             <i class="fa fa-twitter-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
+                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page" onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
                         <a id="googlePlusBtn" class="btn-floating btn-gplus fa-2x">
                             <i class="fa fa-google-plus-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
+                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page" onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
                         <a id="linkedinBtn" class="btn-floating btn-li fa-2x">
                             <i class=" fa fa-linkedin-square"> </i>
                         </a>
@@ -921,8 +747,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
         <!-- Copyright -->
         <div class="footer-copyright text-center" style="font-size: large;color: black;padding: 10px;">
             © since 2020 Copyright:
-            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')"
-                title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
+            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')" title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
                 <span class="nameLetters">R</span>
                 <span class="nameLetters">e</span>
                 <span class="nameLetters">c</span>
@@ -940,18 +765,15 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     </footer>
 
     <div class="bottomScrool">
-        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
-            Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
-            'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
-            yayımladı... &#164;&#164; it's not a mobile device.</p>
+        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı; 'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ
+            VE TANI' adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
     </div>
     <!-- end of Footer -->
 
     <div id="userStatistics" class="modal" style="padding: 60px;">
         <div id="userStatistics-modal-content" class="userStatisticsContent animate" action="?action=add" method="post">
             <div id="userStatisticsImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userStatistics').style.display='none'"
-                    id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userStatistics').style.display='none'" id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/statistics-12.png" alt="Avatar" class="avatar">
             </div>
             <div id="userStatisticsContainer" class="userStatisticsContainer">
@@ -971,8 +793,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                     </tr>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24 - 192.168.1.11</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -997,8 +818,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     <div id="userTraining" class="modal" style="padding: 60px;">
         <div id="userTraining-modal-content" class="userTrainingContent animate" action="?action=add" method="post">
             <div id="userTrainingImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn"
-                    class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/training-4.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Incoming Trainings</h11>
@@ -1017,8 +837,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         <td>01.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a id="documentOpenLink1" class="modulLink"
-                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                            <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -1027,8 +846,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         <td>12.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                target="_blank">Open File</a>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                 </table>
@@ -1049,8 +867,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         <td>01.03.2020 09:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a id="documentOpenLink1" class="modulLink"
-                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                            <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -1059,8 +876,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                         <td>12.01.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                target="_blank">Open File</a>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                 </table>
@@ -1071,36 +887,23 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     <div id="userSettings" class="modal" style="padding: 60px;">
         <div id="userSettings-modal-content" class="userSettingsContent animate" action="?action=add" method="post">
             <div id="userSettingsImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn"
-                    class="close" title="Close!">&times;</span>
-                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar"
-                    class="avatar">
+                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn" class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Settings</h11>
             <div id="userSettingsContainer" class="userSettingsContainer">
                 Old Password: <br>
-                <input type="password" name="userOldPassword" id="userOldPassword"
-                    placeholder="Please enter your current password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
-                <br>
-                New Password: <br>
-                <input type="password" name="userNewPassword" id="userNewPassword"
-                    placeholder="Please enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
+                <input type="password" name="userOldPassword" id="userOldPassword" placeholder="Please enter your current password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
+                <br> New Password: <br>
+                <input type="password" name="userNewPassword" id="userNewPassword" placeholder="Please enter your new password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)">
                 <span for='userNewPassword' class="p-viewer">
                     <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
                         onclick="ShowOrHideMethods.showPassword('userNewPassword','showPasswordIcon1')">
                     </i>
                 </span>
-                <br>
-                New Password Repeat: <br>
-                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
-                    placeholder="Please re-enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event),
+                <br> New Password Repeat: <br>
+                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat" placeholder="Please re-enter your new password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator', event),
                     CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator')">
                 <span for='userNewPasswordRepeat' class="p-viewer">
                     <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
@@ -1111,9 +914,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                 <br>
                 <pCapsLockIndicator id="pCapsLockIndicator">WARNING! Caps lock is ON.</pCapsLockIndicator>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')" title="Change password!">Change
                     Password
                 </button>
             </div>
@@ -1123,8 +924,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
     <div id="userMessaging" class="modal" style="padding: 60px;">
         <div id="userMessaging-modal-content" class="userMessagingContent animate">
             <div id="userMessagingImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn"
-                    class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/message-2.png" alt="Avatar" class="avatar">
             </div>
             <div id="userMessageSubContainer">
@@ -1145,8 +945,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                                 <td>01.03.2020 09:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a id="documentOpenLink1" class="modulLink"
-                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                    <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -1156,8 +955,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                        target="_blank">Open Message</a>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open Message</a>
                                 </td>
                             </tr>
                         </table>
@@ -1178,8 +976,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                                 <td>01.03.2020 09:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a id="documentOpenLink1" class="modulLink"
-                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                    <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -1189,8 +986,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                        target="_blank">Open Message</a>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open Message</a>
                                 </td>
                             </tr>
                         </table>
@@ -1199,22 +995,17 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
 
                 <div id="userNewMessageDiv">
                     <h11 class="historyHeaders" style="margin: 5px;color: white;">Send Message</h11>
-                    <br><br>
-                    Subject: <br>
+                    <br><br> Subject: <br>
                     <input type="text" name="userMessageSubject" id="userMessageSubject">
-                    <br>
-                    To: <br>
+                    <br> To: <br>
                     <input type="text" name="userMessageTo" id="userMessageTo">
                     <br>
                     <!-- kisiler -->
                     <div class="dropdown">
-                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')"
-                            class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
+                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')" class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
                                 style="font-size: 16px;">Add person!</span></button>
-                        <div id="userMessagePerson" class="dropdown-content"
-                            onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
-                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus
-                                onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
+                        <div id="userMessagePerson" class="dropdown-content" onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
+                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
                             <a>Recep CELIK</a>
                             <a>Adnan YILDIRIM</a>
                             <a>Onder KARABULUT</a>
@@ -1225,8 +1016,7 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                     Message: <br>
                     <textarea name="userMessageBody" id="userMessageBody" cols="87" rows="7"></textarea>
                     <br>
-                    <button class="inpatientBtn btn-primary" id="userMessageSend"
-                        onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
+                    <button class="inpatientBtn btn-primary" id="userMessageSend" onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
                     </button>
                     <br>
                 </div>
@@ -1249,12 +1039,9 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
                 LoginProcess.userLoginStatistics();
                 LoginProcess.getLastPasswordChangeStatistics();">
                 <i class="fa fa-bar-chart"></i> </a>
-            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i
-                    class='fa fa-file-text'></i></a>
-            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i
-                    class="fa fa-cog   fa-fw"></i> </a>
-            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i
-                    class="fa fa-envelope"></i> </a>
+            <a class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
+            <a class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
+            <a class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
             <a class="menu-item"> <i class="fa fa-cog"></i> </a>
 
         </nav>
@@ -1284,6 +1071,18 @@ PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3'
         </svg>
     </div>
     <!-- end of bottom user menu  -->
+
+    <!--back to top button -->
+    <button onclick="ShowOrHideMethods.backtoTopFunction();" id="goTotop" title="Go to top"></button>
+    <!--end of back to top button -->
+
+
+    <!-- -----------scripts----------------------------- -->
+
+    <script type=" text/javascript" src="/public/functions/functions.js"></script>
+
+    <!-- -----------end of scripts----------------------------- -->
+
 
     <!--back to top button -->
     <button onclick="ShowOrHideMethods.backtoTopFunction();" id="goTotop" title="Go to top"></button>
