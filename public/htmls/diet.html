@@ -33,7 +33,7 @@
 </head>
 
 <body id="dietBody" onload="
-                            LoginProcess.checkIfThereIsAUserLoggedIn('refreshPatientList', 'poylclinicAnamnesisSave');
+                            LoginProcess.checkIfThereIsAUserLoggedIn('refresh', 'poylclinicAnamnesisSave');
                             AdministrationMethods.takeUserInfoFromCookie();
                             AdministrationMethods.fetchUnits('Polyclinic', 'polyclinicSelector');
                             AnnouncementMethods.announcementsToBottomAndTopScroll(); 
@@ -118,36 +118,27 @@
 
             <div class="anamnezContainer" id="anamnezContainer">
                 Story
-
                 <textarea name="oykusuArea" id="oykusuArea" cols="30" rows="10" placeholder="Story" data-html="true" data-toggle="tooltip" title="Write story of disease."></textarea> Anamnesis <br>
                 <textarea name="anamnezArea" id="anamnezArea" cols="30" rows="10" placeholder="Anamnesis" data-toggle="tooltip" title="Write anamnesis of disease."></textarea> Examination <br>
                 <textarea name="muayeneArea" id="muayeneArea" cols="30" rows="10" placeholder="Examination" data-toggle="tooltip" title="Write examination result."></textarea>
                 <br><br>
                 <div class="dietSpecsDiv" style="display: flex;">
-                    <div class="dietSpecsLabels">
-                        <label for="boy">Height:</label><br><br>
-                        <label for="kilo">Weight (kg):</label><br><br>
-                        <label for="workoutStyle">Daily way of working:</label><br><br>
-                        <label for="almasiGereken">Calories Needed Daily:</label><br><br>
-                        <label for="kutleindexi">Body mass index:</label><br><br>
-                        <label for="idealKilo">Ideal weight:</label><br><br>
-                        <label for="bmr">BMR Coefficient:</label>
-                    </div>
-
                     <div class="dietSpecsInputs">
-                        <input type="number" name="boy" id="boy"><br><br>
-                        <input type="number" name="kilo" id="kilo"><br><br>
-                        <select name="workoutStyle" id="workoutStyle">
+                        Height (cm):<br>
+                        <input type="number" name="boy" id="boy"><br><br> Weight (kg):</label><br>
+                        <input type="number" name="kilo" id="kilo"><br><br> Daily way of working: <br>
+                        <select name="workoutStyle" id="workoutStyle" onchange="DietMethods.bmrCaloriCalculate()">
                             <option value="1">No or little exercise.</option>
                             <option value="2">Light exercise (1-3 days a week).</option>
                             <option value="3">Exercises moderately (3-5 days a week).</option>
                             <option value="4">Heavy exercise (exercise 6-7 days a week).</option>
                             <option value="5">Exercising excessively (1 in 2 days, very heavy)</option>
-                        </select><br><br>
-                        <input type="number" name="almasiGereken" id="almasiGereken"><br><br>
-                        <input type="text" name="kutleindexi" id="kutleindexi"><br><br>
-                        <input type="number" name="idealKilo" id="idealKilo"><br><br>
-                        <input type="text" name="bmr" id="bmr"><br>
+                        </select><br><br> Calories Needed Daily <br>
+                        <input type="number" name="almasiGereken" id="almasiGereken" style="background-color: gray; color: white; font-size: medium;" disabled><br><br> Body mass index:
+                        <br>
+                        <input type="text" name="kutleindexi" id="kutleindexi" style="background-color: gray; color: white; font-size: medium;" disabled><br><br> Ideal weight: <br>
+                        <input type="number" name="idealKilo" id="idealKilo" style="background-color: gray; color: white; font-size: medium;" disabled><br><br> BMR Coefficient: <br>
+                        <input type="text" name="bmr" id="bmr" style="background-color: gray; color: white; font-size: medium;" disabled><br>
                     </div>
 
                     <div class="bodyType">
@@ -185,17 +176,28 @@
                 </div>
                 <br><br>
 
-                <button class="anamnezBtns btn-success" id="poylclinicAnamnesisSave" onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button>
+                <button class="anamnezBtns btn-success" id="poylclinicAnamnesisSave" onclick="DietMethods.saveDietAnamneses()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button>
             </div>
 
             <div class="buttonContainer" id="buttonContainer" style="width: 25%;border-style: ridge;">
-                <button id="yatisIslemleriBtn" onclick="ShowOrHideMethods.showPopUpModal('yatisEkrani');" class="polyclinicButtons btn--swap">Yatis islemleri <span>Primum non nocere.</span></button>
+                <button id="yatisIslemleriBtn" onclick="ShowOrHideMethods.showPopUpModal('yatisEkrani');
+                    AdministrationMethods.fetchUnits('Clinic', 'clinicSelector');
+                    AdministrationMethods.fetchStaff('Doctor', 'polExamDoctorSelector');
+                    AdministrationMethods.getBeds();PolyclinicMethods.patientDataForHospitalization()" class="polyclinicButtons btn--swap">Hospitalization Procedure <span>Primum
+                        non nocere.</span></button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('konsultasyonEkrani');" class="polyclinicButtons btn--swap">Konsultasyon <span>Primum non nocere.</span></button>
+                <button onclick="ShowOrHideMethods.showPopUpModal('konsultasyonEkrani');
+                    AdministrationMethods.fetchUnits('Polyclinic', 'konsPolyclinicSelector');
+                    AdministrationMethods.fetchStaff('Doctor', 'konsDoctorSelector');
+                    PolyclinicMethods.patientProtocolandNameFromCookieForConsultation('konsPatientProtocol', 'konsPatientName');
+                    AdministrationMethods.getConsultationCount('konsPolyclinicSelector');
+                    PolyclinicMethods.fillConsultationHistoryTable()" class="polyclinicButtons btn--swap">Consultation
+                    <span>Primum non nocere.</span>
+                </button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');" class="polyclinicButtons btn--swap">Laboratuar Istem <span>Primum non nocere.</span></button>
+                <button onclick="ShowOrHideMethods.showPopUpModal('labIstemEkrani');AdministrationMethods.fetchTests('Laboratory', 'labIstemTable');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('labTodaysRequestTable','Laboratory');" class="polyclinicButtons btn--swap">Laboratuary <span>Primum non nocere.</span></button>
 
-                <button onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');" class="polyclinicButtons btn--swap">Radyoloji Istem<span>Primum non nocere.</span></button>
+                <button onclick="ShowOrHideMethods.showPopUpModal('radiologyIstemEkrani');AdministrationMethods.fetchTests('Radiology', 'radiologyIstemTable');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('radTodaysRequestTable','Radiology');" class="polyclinicButtons btn--swap">Imaging and Radiology<span>Primum non nocere.</span></button>
 
                 <button class="polyclinicButtons btn--swap">Button 5 <span>Primum non nocere.</span></button>
                 <button class="polyclinicButtons btn--swap">Button 6 <span>Primum non nocere.</span></button>
@@ -361,12 +363,12 @@
     <button onclick="ShowOrHideMethods.backtoTopFunction();" id="goTotop" title="Go to top"></button>
 
     <div id="yatisEkrani" class="modal" style="padding: 60px;">
-        <form id="modal-content" class="yatisEkraniContent animate" action="?action=add" method="post">
+        <div id="modal-content" class="yatisEkraniContent animate">
             <div id="yatisImgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('yatisEkrani').style.display='none'" id="yatisCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="myAvatar" src="/public/images/Medical-icons/nurse.png" alt="Avatar" class="avatar">
             </div>
-            <h11 class="historyHeaders" style="margin: 5px;color: white;"> Yatis islemleri</h11>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;">Hospitalization Procedure</h11>
             <div id="yatisEkraniContainer" class="yatisEkraniContainer">
 
                 <div class="inputsAndLabels">
@@ -374,7 +376,7 @@
                         <label id="patientProtocolLbl" for="patientProtocol">Patient
                             Protocol No:</label>
                         <br>
-                        <label id="patientNameLbl" for="patientName">Patient Name
+                        <label id="patientNameLbl" for="patientNameSurname">Patient Name
                             Surname:</label>
                         <br>
                         <label id="doctorLbl" for="doctor">Doctor:</label>
@@ -385,43 +387,50 @@
                     </div>
 
                     <div class="yatisEkraniInputs">
-                        <input type="text" id="patientProtocol" name="patientProtocol" placeholder="Patient Protocol No" autofocus required>
+                        <input type="text" id="patientProtocol" name="patientProtocol" placeholder="Patient Protocol No" autofocus required disabled style="background-color: lightgrey;">
                         <br>
-                        <input type="text" id="patientName" name="patientName" placeholder="Patient Name Surname" autofocus required>
+                        <input type="text" id="patientNameSurname" name="patientNameSurname" placeholder="Patient Name Surname" autofocus required disabled style="background-color: lightgrey;">
                         <br>
                         <select name="doctorSelect" id="polExamDoctorSelector" class="doctorSelect">
-                            <option value="clinic1">Prof. Dr. Ahmet SAYLAN</option>
-                            <option value="clinic2">Doc. Dr. Huseyin IKIRCIKLI</option>
-                            <option value="clinic3">Uzm. Dr. Hulya BULUT</option>
+                            <option value="ProfDrAhmetSAYLAN">Prof. Dr. Ahmet SAYLAN</option>
+                            <option value="DocDrHuseyinIKIRCIKLI">Doc. Dr. Huseyin IKIRCIKLI</option>
+                            <option value="UzmDrHulyaBULUT">Uzm. Dr. Hulya BULUT</option>
                         </select>
                         <br>
                         <input type="text" id="clinicDate">
                         <br>
-                        <select name="clinicSelect" id="clinicSelector" class="clinicSelect">
-                            <option value="clinic1">General Surgery Clinic</option>
-                            <option value="clinic2">Orthopedic Clinic</option>
-                            <option value="clinic3">Cardiology Clinic</option>
-                            <option value="clinic4">Urology Clinic</option>
+                        <select name="clinicSelect" id="clinicSelector" class="clinicSelect" onchange="AdministrationMethods.getBeds()">
                         </select>
                     </div>
                 </div>
 
-                <div class="beds">
-                    <img id="bed1" onclick="AdministrationMethods.bedSelect('bed1');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed2" onclick="AdministrationMethods.bedSelect('bed2');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed3" onclick="AdministrationMethods.bedSelect('bed3');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed4" onclick="AdministrationMethods.bedSelect('bed4');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed5" onclick="AdministrationMethods.bedSelect('bed5');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed6" onclick="AdministrationMethods.bedSelect('bed6');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed7" onclick="AdministrationMethods.bedSelect('bed7');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed8" onclick="AdministrationMethods.bedSelect('bed8');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed9" onclick="AdministrationMethods.bedSelect('bed9');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
-                    <img id="bed10" onclick="AdministrationMethods.bedSelect('bed10');" class="bedImages" src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                <div class="beds" id="bedsDiv">
+                    <!-- <img id="bed1" onclick="AdministrationMethods.bedSelect('bed1');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed2" onclick="AdministrationMethods.bedSelect('bed2');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed3" onclick="AdministrationMethods.bedSelect('bed3');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed4" onclick="AdministrationMethods.bedSelect('bed4');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed5" onclick="AdministrationMethods.bedSelect('bed5');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed6" onclick="AdministrationMethods.bedSelect('bed6');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed7" onclick="AdministrationMethods.bedSelect('bed7');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed8" onclick="AdministrationMethods.bedSelect('bed8');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed9" onclick="AdministrationMethods.bedSelect('bed9');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
+                    <img id="bed10" onclick="AdministrationMethods.bedSelect('bed10');" class="bedImages"
+                        src="/public/images/Medical-icons/empty bed.png" alt="bed">
 
                     <img id="bed11" onclick="AdministrationMethods.bedSelect('bed11');" class="bedImages" title="Protocol: 3333
                     Hasta: Tuncay CELIK
                     Yatis Tarihi: 11/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
-                    <img id="bed12" onclick="AdministrationMethods.bedSelect('bed12');" class="bedImages" style="background-color: #f2ace0;" title="Protocol: 4444
+                    <img id="bed12" onclick="AdministrationMethods.bedSelect('bed12');" class="bedImages"
+                        style="background-color: #f2ace0;" title="Protocol: 4444
                     Hasta: Sibel GECE
                     Yatis Tarihi: 10/06/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
                     <img id="bed13" onclick="AdministrationMethods.bedSelect('bed13');" class="bedImages" title="Protocol: 5555
@@ -430,7 +439,8 @@
                     <img id="bed14" onclick="AdministrationMethods.bedSelect('bed14');" class="bedImages" title="Protocol: 6666
                     Hasta: Davut YILDIZ
                     Yatis Tarihi: 08/05/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
-                    <img id="bed15" onclick="AdministrationMethods.bedSelect('bed15');" class="bedImages" style="background-color: #f2ace0;" title="Protocol: 7777
+                    <img id="bed15" onclick="AdministrationMethods.bedSelect('bed15');" class="bedImages"
+                        style="background-color: #f2ace0;" title="Protocol: 7777
                     Hasta: Adile NASIT
                     Yatis Tarihi: 01/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
                     <img id="bed16" onclick="AdministrationMethods.bedSelect('bed16');" class="bedImages" title="Protocol: 8888
@@ -442,12 +452,14 @@
                     <img id="bed18" onclick="AdministrationMethods.bedSelect('bed18');" class="bedImages" title="Protocol: 1001
                     Hasta: Hamza GUCLU
                     Yatis Tarihi: 11/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
-                    <img id="bed19" onclick="AdministrationMethods.bedSelect('bed19');" class="bedImages" style="background-color: #f2ace0;" title="Protocol: 1002
+                    <img id="bed19" onclick="AdministrationMethods.bedSelect('bed19');" class="bedImages"
+                        style="background-color: #f2ace0;" title="Protocol: 1002
                     Hasta: Hayriye BAL
                     Yatis Tarihi: 23/06/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
-                    <img id="bed20" onclick="AdministrationMethods.bedSelect('bed20');" class="bedImages" style="background-color: #f2ace0;" title="Protocol: 1103
+                    <img id="bed20" onclick="AdministrationMethods.bedSelect('bed20');" class="bedImages"
+                        style="background-color: #f2ace0;" title="Protocol: 1103
                     Hasta: Hanim BIR
-                    Yatis Tarihi: 11/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed">
+                    Yatis Tarihi: 11/07/2020" src="/public/images/Medical-icons/full bed.png" alt="bed"> -->
                 </div>
             </div>
 
@@ -455,157 +467,143 @@
                 <div class="tableDiv">
                     <table id="bedTable">
                         <tr id="tableHeader">
-                            <th>Total Bed</th>
-                            <th>Empty Bed</th>
-                            <th>Full Bed</th>
+                            <td>Total Bed</td>
+                            <td style="border-top: none;border-left-style: dotted;border-right-style: dotted;">Empty Bed
+                            </td>
+                            <td>Full Bed</td>
                         </tr>
                         <tr>
-                            <td>20</td>
-                            <td id="emptyBedCount" style="background-color: palevioletred;">10</td>
-                            <td id="fullBedCount" style="background-color: cornflowerblue;">10</td>
+                            <td id="totalBedCount">0</td>
+                            <td id="emptyBedCount" style="background-color: palevioletred;">0</td>
+                            <td id="fullBedCount" style="background-color: cornflowerblue;">0</td>
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="yatisKaydet" onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="hospitalizationSave" onclick="PolyclinicMethods.hospitalizationProcedure()" data-toggle="tooltip" title="Click for save.">Save</button></div>
             </div>
-        </form>
+        </div>
     </div>
 
-    <div id="konsultasyonEkrani" class="modal" style="padding: 60px;">
-        <form id="kons-modal-content" class="konsultasyonEkraniContent animate" action="?action=add" method="post">
-            <div id="konsultasyonImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('konsultasyonEkrani').style.display='none'" id="konsCloseBtn" class="close" title="Close Modal">&times;</span>
-                <img id="myAvatar" src="/public/images/Medical-icons/cons-doctor.png" alt="Avatar" class="avatar">
-            </div>
-            <h11 class="historyHeaders" style="margin: 5px;color: white;"> Konsultasyon islemleri</h11>
-            <div id="konsultasyonEkraniContainer" class="konsultasyonEkraniContainer">
-                <div class="konsultasyonInputsAndLabels">
-                    <div class="konsultasyonEkraniLbls">
-                        <label id="konstProtocolLbl" for="konsProtocol">Patient
-                            Protocol No:</label>
-                        <br>
-                        <label id="konsPatientNameLbl" for="konsPatientName">Patient Name
-                            Surname:</label>
-                        <br>
-                        <label id="konsDoctorLbl" for="konsDoctor">Doctor:</label>
-                        <br>
-                        <label id="konsDateLbl" for="konsDate">Date:</label>
-                        <br>
-                        <label id="konsClinicLbl" for="konsClinicSelector" style="margin: 10px 0px 25px;">Clinic:</label>
-                        <br>
-                        <label id="konsNoteLbl" for="konsNote" style="margin: 10px 0px 40px;">Consultation Note:</label>
+    <div id="konsultasyonEkrani" class="modal" style="padding: 10px;">
+        <div id="konsultasyonImgcontainer" class="imgcontainer">
+            <span onclick="document.getElementById('konsultasyonEkrani').style.display='none'" id="konsCloseBtn" class="close" title="Close Modal" style="bottom: -115px;">&times;</span>
+            <img id="myAvatar" src="/public/images/Medical-icons/cons-doctor.png" alt="Avatar" class="avatar" style="margin:75px 0px -20px 0px; width: 6%;">
+        </div>
+        <div id="kons-modal-content" class="konsultasyonEkraniContent animate">
+            <div id="consultationDataDiv" style="padding: 10px;">
+                <h11 class="historyHeaders" style="margin: 5px;color: white;"> Colsultation Procedure</h11>
+                <div id="konsultasyonEkraniContainer" class="konsultasyonEkraniContainer">
+                    <div class="konsultasyonInputsAndLabels">
+                        <div class="konsultasyonEkraniInputs">
+                            Protocol No:
+                            <input type="text" id="konsPatientProtocol" name="konsPatientProtocol" placeholder="Patient Protocol No" autofocus required> Patient Name Surname:<br>
+                            <input type="text" id="konsPatientName" name="konsPatientName" placeholder="Patient Name Surname" autofocus required> Doctor:
+                            <br>
+                            <select name="konsDoctorSelect" id="konsDoctorSelector" class="konsDoctorSelect">
+                                <option value="ProfDrAhmetSAYLAN">Prof. Dr. Ahmet SAYLAN</option>
+                                <option value="DocDrHuseyinIKIRCIKLI">Doc. Dr. Huseyin IKIRCIKLI</option>
+                                <option value="UzmDrHulyaBULUT">Uzm. Dr. Hulya BULUT</option>
+                            </select> Date:
+                            <br>
+                            <input type="text" id="konsDate"> Polyclinic / Clinic<br>
+                            <select name="konsPolyclinicSelector" id="konsPolyclinicSelector" class="konsClinicSelect" onchange="AdministrationMethods.getConsultationCount('konsPolyclinicSelector')">
+                            </select> Consultation Note:<br>
+                            <textarea name="konsNote" id="konsNote" cols="50" rows="10"></textarea>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="konsultasyonEkraniInputs">
-                        <input type="text" id="konsProtocol" name="konsPatientProtocol" placeholder="Patient Protocol No" autofocus required>
-                        <br>
-                        <input type="text" id="konsPatientName" name="konsPatientName" placeholder="Patient Name Surname" autofocus required>
-                        <br>
-                        <select name="konsDoctorSelect" id="konsDoctorSelector" class="konsDoctorSelect">
-                            <option value="clinic1">Prof. Dr. Ahmet SAYLAN</option>
-                            <option value="clinic2">Doc. Dr. Huseyin IKIRCIKLI</option>
-                            <option value="clinic3">Uzm. Dr. Hulya BULUT</option>
-                        </select>
-                        <br>
-                        <input type="text" id="konsDate">
-                        <br>
-                        <select name="konsClinicSelect" id="konsClinicSelector" class="konsClinicSelect">
-                            <option value="clinic1">General Surgery Clinic</option>
-                            <option value="clinic2">Orthopedic Clinic</option>
-                            <option value="clinic3">Cardiology Clinic</option>
-                            <option value="clinic4">Urology Clinic</option>
-                        </select>
-                        <br>
-                        <textarea name="konsNote" id="konsNote" cols="50" rows="10"></textarea>
+                <div id="konsultasyonContainerBottom" class="konsultasyonContainerBottom">
+                    <div class="tableDiv">
+                        <table id="konsultasyonTable">
+                            <thead>
+                                <tr id="tableHeader">
+                                    <td>Total Patient</td>
+                                    <td style="border-top: none;border-left-style: dotted;border-right-style: dotted;">
+                                        Waiting for consultation</td>
+                                    <td>Done</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="totalCons">0</td>
+                                    <td id="waitingCons" style="background-color: palevioletred;">0</td>
+                                    <td id="doneCons" style="background-color: cornflowerblue;">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                    <div class="buttonDiv"><button class="anamnezBtns btn-success" id="consultationSave" onclick="PolyclinicMethods.saveConsultation()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
                 </div>
             </div>
 
-            <div id="konsultasyonContainerBottom" class="konsultasyonContainerBottom">
-                <div class="tableDiv">
-                    <table id="konsultasyonTable">
-                        <tr id="tableHeader">
-                            <th>Total Patient</th>
-                            <th>Waiting for consultation</th>
-                            <th>Done</th>
+            <div id="consultationHistoryDiv" style="padding: 67px 10px 20px 10px; width: 100%;">
+                <h11 class="historyHeaders" style="margin: 5px;color: white;"> Colsultation History</h11><br><br>
+                <table id="consultationHistoryTable" class="patientTable">
+                    <thead>
+                        <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                            <td>Protocol</td>
+                            <td>Doctor</td>
+                            <td>Polyclinic / Clinic</td>
+                            <td>Consultation Request Date</td>
+                            <td>Consultation Accept Date</td>
+                            <td>Consultation Note</td>
                         </tr>
-                        <tr>
-                            <td>20</td>
-                            <td id="waitingCons" style="background-color: palevioletred;">10</td>
-                            <td id="doneCons" style="background-color: cornflowerblue;">10</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="konsultasyonKaydet" onclick="ShowOrHideMethods.polyclinicShowSuccesAlert()" data-toggle="tooltip" title="Verilerinizi kaydetmek icin tiklayin.">Save</button></div>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
             </div>
-        </form>
+        </div>
     </div>
 
     <div id="labIstemEkrani" class="modal" style="padding: 60px;">
-        <form id="labIstem-modal-content" class="labIstemEkraniContent animate" action="none" method="none">
+        <div id="labIstem-modal-content" class="labIstemEkraniContent animate">
             <div id="labIstemImgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('labIstemEkrani').style.display='none'" id="labIstemCloseBtn" class="close" title="Close Modal">&times;</span>
-                <img id="myAvatar" src="/public/images/Medical-icons/microscope.png" alt="Avatar" class="avatar">
+                <img id="myAvatar" src="/public/images/Medical-icons/microscope.png" alt="Avatar" class="avatar" style="width: 8%;">
             </div>
-            <h11 class="historyHeaders" style="margin: 5px;color: white;">Lab tetkis istem</h11>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;">Laboratory Test Request</h11>
+            <h11 id="labPatientData" class="historyHeaders" style="margin: 5px 0px 5px 65%;color: white;"></h11>
             <input class="searchInputs" type="text" id="tetkikAra" onkeydown="PolyclinicMethods.searchInTable('tetkikAra', 'labIstemTable')" placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
-            <div id="labIstemEkraniContainer" class="labIstemEkraniContainer">
-                <table id="labIstemTable">
-                    <tr id="tableHeader">
-                        <th>No.</th>
-                        <th>SUT Code</th>
-                        <th>Examination Name</th>
-                        <th>Laboratory</th>
-                        <th>Quantity</th>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck1" onchange="PolyclinicMethods.tetkikSelect('customCheck1', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>901620</td>
-                        <td>Hemogram</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity1" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck2" onchange="PolyclinicMethods.tetkikSelect('customCheck2', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>72524</td>
-                        <td>Aspartat transaminaz (AST)</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity2" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck3" onchange="PolyclinicMethods.tetkikSelect('customCheck3', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>72525</td>
-                        <td>Alanin transaminaz (ALT)</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity3" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck4" onchange="PolyclinicMethods.tetkikSelect('customCheck4', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>72526</td>
-                        <td id="tetkikAdi">Alkalen fosfataz (ALP)</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity4" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="customCheck5" onchange="PolyclinicMethods.tetkikSelect('customCheck5', 'labIstemChckbx', 'selectedExamTable', 'totalExam')">
-                        </td>
-                        <td>72520</td>
-                        <td>Gama-glutamiltransferaz (GGT)</td>
-                        <td>Biochemistry Lab.</td>
-                        <td><input type="number" name="labQuantity" id="labQuantity5" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                </table>
-            </div>
 
+            <div style="display: flex;">
+                <div id="labIstemEkraniContainer" class="labIstemEkraniContainer">
+                    <table id="labIstemTable">
+                        <thead>
+                            <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                <th>No.</th>
+                                <th>SUT Code</th>
+                                <th>Examination Name</th>
+                                <th>Laboratory</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="labIstemTableTbody">
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="labIstemEkraniTodayReqContainer">
+                    <h11 class="historyHeaders" style="margin: 5px;color: white;">Requested Tests For Today</h11><br>
+                    <table id="labTodaysRequestTable">
+                        <thead>
+                            <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                <th>No.</th>
+                                <th>SUT Code</th>
+                                <th>Examination Name</th>
+                                <th>Laboratory</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="labTodaysRequestTableBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div id="labTetkikContainerBottom" class="labTetkikContainerBottom">
                 <div class="tableDiv">
                     <table id="selectedExamTable">
@@ -617,74 +615,59 @@
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="labTetkikKaydet" onclick="PolyclinicMethods.checkBeforeSaveExaminations()" data-toggle="tooltip" title="Tetkikleri kaydetmek icin tiklayin.">Save</button></div>
+                <div class="buttonDiv">
+                    <button class="anamnezBtns btn-success" id="labTetkikKaydet" onclick="PolyclinicMethods.checkAndSaveExaminations('totalExam','labTetkikKaydet'); PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('labTodaysRequestTable','Laboratory');" data-toggle="tooltip"
+                        title="Click for save examinations.">Save</button>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 
     <div id="radiologyIstemEkrani" class="modal" style="padding: 60px;">
-        <form id="radiology-modal-content" class="radiologyIstemEkraniContent animate" action="none" method="none">
+        <div id="radiology-modal-content" class="radiologyIstemEkraniContent animate">
             <div id="radiologyIstemImgcontainer" class="imgcontainer">
                 <span onclick="document.getElementById('radiologyIstemEkrani').style.display='none'" id="radiologyIstemCloseBtn" class="close" title="Close Modal">&times;</span>
-                <img id="myRadiologyAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico" alt="Avatar" class="avatar">
+                <img id="myRadiologyAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico" alt="Avatar" class="avatar" style="width: 8%;">
             </div>
-            <h11 class="historyHeaders" style="margin: 5px;color: white;">Lab tetkis istem</h11>
-            <input class="searchInputs" type="text" id="radiologyTetkikAra" onkeydown="PolyclinicMethods.searchInTable('radiologyTetkikAra', 'radiologyIstemTable')" placeholder="Search for examinations..." title="Search for examinations by name, code or Laboratory.">
-            <div id="radiologyIstemEkraniContainer" class="radiologyIstemEkraniContainer">
-                <table id="radiologyIstemTable">
-                    <tr id="tableHeader">
-                        <th>No.</th>
-                        <th>SUT Code</th>
-                        <th>Examination Name</th>
-                        <th>Laboratory</th>
-                        <th>Quantity</th>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Nükleer Tıp Uzman hekiminin yer aldığı üç imzalı rapor ile tıbbi gerekçe belirtilmelidir.">
-                        <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck1" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck1', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800640</td>
-                        <td>Akciğer perfüzyon sintigrafisi, SPECT</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity1" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Akciğer perfüzyon sintigrafisi, Planar'a eklenir.">
-                        <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck2" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck2', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800661</td>
-                        <td>Akciğer ventilasyon sintigrafisi, SPECT (Aerosol)</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity2" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Dinamik ve/veya statik">
-                        <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck3" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck3', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800710</td>
-                        <td>Konvansiyonel beyin sintigrafisi</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity3" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: Ayaktan hastalara günde sadece 1 kez istenebilir.">
-                        <td>
-                            <input type="checkbox" class="radiologyIstemChckbx" id="radiologyCustomCheck4" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck4', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800690</td>
-                        <td>Beyin PET</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity4" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                    <tr data-toggle="tooltip" title="SUT Kısıtları: PET sırasında attenuasyon düzeltmesi ve anotomik haritalama amacıyla çekilen BT/MR ayrıca puanlandırılmaz.">
-                        <td>
-                            <input type="checkbox" class="labIstemChckbx" id="radiologyCustomCheck5" onchange="PolyclinicMethods.tetkikSelect('radiologyCustomCheck5', 'radiologyIstemChckbx', 'selectedRadiologyExamTable', 'totalRadiologyExam')">
-                        </td>
-                        <td>800755</td>
-                        <td>Miyokard sempatik innervasyon sintigrafisi (I-123 MIBG)</td>
-                        <td>Nükleer tip görüntüleme ve tedavi</td>
-                        <td><input type="number" name="radiologyQuantity" id="radiologyQuantity5" min="1" value="1" style="text-align: center;"></td>
-                    </tr>
-                </table>
+            <h11 class="historyHeaders" style="margin: 5px;color: white;">Radiology and Imaging Request
+            </h11>
+            <h11 id="radPatientData" class="historyHeaders" style="margin: 5px 0px 5px 65%;color: white;"></h11>
+            <input class="searchInputs" type="text" id="radiologyTetkikAra" onkeydown="PolyclinicMethods.searchInTable('radiologyTetkikAra', 'radiologyIstemTable')" placeholder="Search for examinations..." title="Search for examinations by name or code.">
+            <div style="display: flex;">
+                <div id="radiologyIstemEkraniContainer" class="radiologyIstemEkraniContainer">
+                    <table id="radiologyIstemTable">
+                        <thead>
+                            <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                <td>No.</td>
+                                <td>SUT Code</td>
+                                <td>Examination Name</td>
+                                <td>Laboratory</td>
+                                <td>Quantity</td>
+                            </tr>
+                            <tbody id="radiologyIstemTableTBody">
+
+                            </tbody>
+                        </thead>
+                    </table>
+                </div>
+
+                <div id="radIstemEkraniTodayReqContainer">
+                    <h11 class="historyHeaders" style="margin: 5px;color: white;">Requested Tests For Today</h11><br>
+                    <table id="radTodaysRequestTable">
+                        <thead>
+                            <tr id="tableHeader" style="background-color: #49A681 !important; color: white;">
+                                <th>No.</th>
+                                <th>SUT Code</th>
+                                <th>Examination Name</th>
+                                <th>Laboratory</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="radTodaysRequestTableBody">
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div id="radiologyTetkikContainerBottom" class="radiologyTetkikContainerBottom">
@@ -698,9 +681,10 @@
                         </tr>
                     </table>
                 </div>
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="radiologyTetkikKaydet" onclick="PolyclinicMethods.checkBeforeSaveExaminations()" data-toggle="tooltip" title="Tetkikleri kaydetmek icin tiklayin.">Save</button></div>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="radiologyTetkikKaydet" onclick="PolyclinicMethods.checkAndSaveExaminations('totalRadiologyExam','radiologyTetkikKaydet');PolyclinicMethods.fillPatientTodaysLabRadHistoryTable('radTodaysRequestTable','Radiology');"
+                        data-toggle="tooltip" title="Click for save.">Save</button></div>
             </div>
-        </form>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -779,18 +763,18 @@
             <div id="userStatisticsContainer" class="userStatisticsContainer">
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Login Statistics</h11>
                 <table id="userLoginStatsTable">
-                    <tr id="tableHeader">
-                        <th>#</th>
-                        <th>Ip Adress</th>
-                        <th>Login Date</th>
-                        <th>Login Duration</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>192.168.1.11</td>
-                        <td>03.09.2020 14:10</td>
-                        <td>22 minutes 17 seconds</td>
-                    </tr>
+                    <thead>
+                        <tr id="tableHeader">
+                            <td>#</td>
+                            <td>Ip Adress</td>
+                            <td>Login Date</td>
+                            <td>Login Date</td>
+                            <td>Login Duration</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24 - 192.168.1.11</h11>

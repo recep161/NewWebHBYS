@@ -1959,6 +1959,7 @@ h4 {
     border-radius: 8px;
     box-shadow: 0 8px 6px -6px #555;
     margin: 5px;
+    color: black;
 }
 
 #polMuayeneTaniBtn {
@@ -2036,6 +2037,10 @@ h4 {
 #refreshPatientList span {
     top: 8px;
     font-size: 13px;
+}
+
+#polyclinicBody .polyclinicButtons {
+    font-size: 20px !important;
 }
 
 .polyclinicButtons {
@@ -4328,6 +4333,16 @@ th {
     height: 35px;
 }
 
+#dietBody #polDiagnosis {
+    width: 774px;
+    min-width: 774px;
+    margin: 0px 5px;
+}
+
+#dietBody .polyclinicButtons {
+    font-size: 20px !important;
+}
+
 #workoutStyle {
     font-size: 15px;
     cursor: pointer;
@@ -4358,8 +4373,8 @@ select {
 }
 
 .bodyMassIndex {
-    width: 305px;
-    height: 390px;
+    width: 436px;
+    height: 530px;
     box-shadow: 2px 2px 10px #555;
     border-radius: 8px;
 }

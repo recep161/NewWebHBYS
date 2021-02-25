@@ -1,4 +1,4 @@
-const dietSaveSchema = require('../models/dietModel');
+const polExamAnamnesisSaveSchema = require('../models/polExamAnamnesisModel');
 const polExamSaveSchema = require('../models/polExamModel');
 const appointmentSaveSchema = require('../models/appointmentModel');
 const patientDiagnosisSaveSchema = require('../models/diagnosisModel');
@@ -12,7 +12,7 @@ const myMoment = require('moment');
 
 myMongoose.connect('mongodb://localhost:27017/WebHBYS', { useFindAndModify: false });
 
-var myDietModel = myMongoose.model('diet');
+var myPolExamAnamnesisModel = myMongoose.model('polyclinicanamneses');
 var myPolExamModel = myMongoose.model('polyclinicExam');
 var myPatientsModel = myMongoose.model('patients');
 var myInpatientsModel = myMongoose.model('inpatients');
@@ -24,9 +24,9 @@ var myPatientdiagnosisModel = myMongoose.model('patientdiagnoses');
 var allDiagnosisModel = myMongoose.model('diagnosistables');
 var labRadTestModel = myMongoose.model('patientradlabtest');
 
-module.exports.savePolExamAnamnesis = (req, res) => {
+module.exports.saveDietAnamneses = (req, res) => {
 
-    const newPolExamAnamnesis = new dietSaveSchema({
+    const newPolExamAnamnesisSaveSchema = new polExamAnamnesisSaveSchema({
         patientProtocolNo: req.body.patientProtocolNo,
         patientId: req.body.patientId,
         patientIdNo: req.body.patientIdNo,
@@ -35,13 +35,21 @@ module.exports.savePolExamAnamnesis = (req, res) => {
         patientStory: req.body.patientStory,
         patientAnamnesis: req.body.patientAnamnesis,
         patientExamination: req.body.patientExamination,
+        patientHeight: req.body.patientHeight,
+        patientWeight: req.body.patientWeight,
+        patientWorkoutStyle: req.body.patientWorkoutStyle,
+        patientAlmasiGereken: req.body.patientAlmasiGereken,
+        patientKutleindexi: req.body.patientKutleindexi,
+        patientIdealKilo: req.body.patientIdealKilo,
+        patientBmr: req.body.patientBmr,
         patientSavedUser: req.body.patientSavedUser,
         saveDate: req.body.saveDate,
         polyclinicSelect: req.body.polyclinicSelect
     })
-    newPolExamAnamnesis.save()
+    newPolExamAnamnesisSaveSchema.save()
         .then(polExam => {
             res.send(polExam);
+            // console.log(polExam)
         }).catch(err => {
             res.status(500).send({
                 message: err.message,
@@ -50,12 +58,19 @@ module.exports.savePolExamAnamnesis = (req, res) => {
         });
 };
 
-module.exports.updatePolExamAnamnesis = (req, res) => {
-    myDietModel.findOneAndUpdate({ patientProtocolNo: req.body.patientProtocolNo }, {
+module.exports.updateDietAnamnesis = (req, res) => {
+    myPolExamAnamnesisModel.findOneAndUpdate({ patientProtocolNo: req.body.patientProtocolNo }, {
             $set: {
                 patientStory: req.body.patientStory,
                 patientAnamnesis: req.body.patientAnamnesis,
-                patientExamination: req.body.patientExamination
+                patientExamination: req.body.patientExamination,
+                patientWeight: req.body.patientWeight,
+                patientHeight: req.body.patientHeight,
+                patientWorkoutStyle: req.body.patientWorkoutStyle,
+                patientAlmasiGereken: req.body.patientAlmasiGereken,
+                patientKutleindexi: req.body.patientKutleindexi,
+                patientIdealKilo: req.body.patientIdealKilo,
+                patientBmr: req.body.patientBmr
             }
         }, { useFindAndModify: false })
         .then(patientAnamnesisData => {
@@ -80,132 +95,8 @@ module.exports.findPatientList = (req, res) => {
         });
 };
 
-module.exports.checkPatientAppointmentStatus = (req, res) => {
-    myAppointmentModel.find(req.query)
-        .then(patientData => {
-            res.send(patientData);
-            // console.log("patient found! = " + patientData);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
-};
-
-module.exports.diagnosisList = (req, res) => {
-    allDiagnosisModel.find().sort({ 'icd10': 1 })
-        .then(diagnosisData => {
-            res.send(diagnosisData);
-            // console.log("All diagnosis data: " + diagnosisData);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
-};
-
-module.exports.savePolExamDiagnosis = (req, res) => {
-    const newPatientDiagnosisSaveSchema = new patientDiagnosisSaveSchema({
-        patientProtocolNo: req.body.patientProtocolNo,
-        patientIdNo: req.body.patientIdNo,
-        patientId: req.body.patientId,
-        icd10: req.body.icd10,
-        diagnosisType: req.body.diagnosisType1,
-        diagnosisName: req.body.diagnosisName1,
-        diagnosisUser: req.body.diagnosisUser1,
-        diagnosisDate: req.body.diagnosisDate1
-    });
-    newPatientDiagnosisSaveSchema.save()
-        .then(polExam => {
-            res.send(polExam);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message,
-                myerr: console.log(err.message)
-            });
-        });
-};
-
-module.exports.findPatientDiagnosisHistory = (req, res) => {
-    myPatientdiagnosisModel.find(req.query)
-        .then(patientDiagnosisData => {
-            res.send(patientDiagnosisData);
-            // console.log("patient diagnosis found! = " + patientDiagnosisData);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
-};
-
-module.exports.deletePatientDiagnosis = (req, res) => {
-
-    myPatientdiagnosisModel.deleteOne(req.query)
-        .then(diagnosis => {
-            res.send(diagnosis);
-            // console.log("Diagnosis deleted! ");
-            // console.log(req.query);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
-};
-
-module.exports.updateDiagnosisType = (req, res) => {
-    myPatientdiagnosisModel.findOneAndUpdate({
-            patientProtocolNo: req.body.patientProtocolNo,
-            icd10: req.body.icd10
-        }, {
-            $set: {
-                diagnosisType: req.body.diagnosisType
-            }
-        }, { useFindAndModify: false })
-        .then(diagnosisData => {
-            res.send(diagnosisData);
-            // console.log("diagnosisData updated! = " + diagnosisData);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
-};
-
-module.exports.getPatientPersonalIdNo = (req, res) => {
-    myPolExamModel.aggregate([{
-            $match: { patientProtocolNo: +req.query.patientProtocolNo }
-        },
-        {
-            $lookup: {
-                from: 'patients',
-                localField: 'patientIdNo',
-                foreignField: 'patientIdNo',
-                as: 'patientData'
-            }
-        }
-    ]).then(patientData => {
-        res.send(patientData);
-        // console.log("patient found! = " + patientData);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message
-        });
-    });
-};
-
-module.exports.getPatientDataToCookie = (req, res) => {
-    myPatientsModel.find(req.query).then(patientData => {
-        res.send(patientData);
-        // console.log("patient found! = " + patientData);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message
-        });
-    });
-};
-
 module.exports.findPatientAnamnesisByProtocol = (req, res) => {
-    myDietModel.find(req.query)
+    myPolExamAnamnesisModel.find(req.query)
         .then(patientAnamnesisData => {
             res.send(patientAnamnesisData);
             // console.log("patient found! = " + patientAnamnesisData);
@@ -217,7 +108,7 @@ module.exports.findPatientAnamnesisByProtocol = (req, res) => {
 };
 
 module.exports.getPatientExamAnamnesisInTooltip = (req, res) => {
-    myDietModel.find(req.query)
+    myPolExamAnamnesisModel.find(req.query)
         .then(patientAnamnesisData => {
             res.send(patientAnamnesisData);
             // console.log("getPatientExamAnamnesisInTooltip found! = " + patientAnamnesisData);

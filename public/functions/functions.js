@@ -3607,17 +3607,64 @@ var
 
     DietMethods = {
         bodyMassIndex: function bodyMassIndex() {
-
             var patientGender = $.cookie('patientGender');
-            console.log(patientGender)
+
             if (patientGender == 'Male') {
                 document.getElementById('bodyMassIndexMan').style.display = 'block'
                 document.getElementById('bodyMassIndexMan').style.margin = '-37px 10px'
-                document.getElementById('bodyMassIndexMan').style.width = '290px'
+                document.getElementById('bodyMassIndexMan').style.width = '436px'
                 document.getElementById('bodyMassIndexWoman').style.display = 'none'
             } else {
                 document.getElementById('bodyMassIndexWoman').style.display = 'block'
                 document.getElementById('bodyMassIndexMan').style.display = 'none'
+            }
+        },
+
+        findPatientAnamnesisByProtocol: function findPatientAnamnesisByProtocol() {
+            var polExamSave = document.getElementById('poylclinicAnamnesisSave'),
+                patientProtocol = $.cookie('patientProtocol');
+
+            if (patientProtocol == null ||
+                patientProtocol == 'null' ||
+                patientProtocol == undefined ||
+                patientProtocol == 'undefined') {
+                toastr.error('Please choose a patient from patient list!', 'Patient Anamnesis Error!')
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: "/diet/findPatientAnamnesisByProtocol",
+                    data: { patientProtocolNo: patientProtocol },
+                    success: function(result) {
+
+                        $('#oykusuArea').val('');
+                        $('#anamnezArea').val('');
+                        $('#muayeneArea').val('');
+                        $('#boy').val('');
+                        $('#kilo').val('');
+                        $('#almasiGereken').val('');
+                        $('#kutleindexi').val('');
+                        $('#idealKilo').val('');
+                        $('#bmr').val('');
+                        polExamSave.innerHTML = 'Save';
+                        $.each(result, function(i, patientAnamnesisData) {
+                            i++
+                            $('#oykusuArea').val(patientAnamnesisData.patientStory);
+                            $('#anamnezArea').val(patientAnamnesisData.patientAnamnesis);
+                            $('#muayeneArea').val(patientAnamnesisData.patientExamination);
+                            $('#boy').val(patientAnamnesisData.patientHeight);
+                            $('#kilo').val(patientAnamnesisData.patientWeight);
+                            $('#almasiGereken').val(patientAnamnesisData.patientAlmasiGereken);
+                            $('#kutleindexi').val(patientAnamnesisData.patientKutleindexi);
+                            $('#idealKilo').val(patientAnamnesisData.patientIdealKilo);
+                            $('#bmr').val(patientAnamnesisData.patientBmr);
+                            polExamSave.innerHTML = 'Update';
+                        });
+                    },
+                    error: function(e) {
+                        toastr.error('Patient Diet Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
+                        console.log("ERROR: ", e.responseText);
+                    }
+                });
             }
         },
 
@@ -3644,7 +3691,7 @@ var
                             var patientAppStatusId = 'patientAppStatus' + i;
                             $("#patientTable> tbody").append(
                                 "<tr class='patientList' id='patient" + i +
-                                "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();PolyclinicMethods.findPatientAnamnesisByProtocol();PolyclinicMethods.fillPatientExamHistoryTable();PolyclinicMethods.fillPatientLabRadHistoryTable();DietMethods.bodyMassIndex();' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>" +
+                                "' title='' onclick='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");PolyclinicMethods.findPatientDiagnosisHistory();DietMethods.findPatientAnamnesisByProtocol();DietMethods.fillPatientExamHistoryTable();PolyclinicMethods.fillPatientLabRadHistoryTable();DietMethods.bodyMassIndex();' onmouseover ='PolyclinicMethods.getPatientPersonalIdNo(\"patient" + i + "\");jQueryMethods.getPatientPhotoAndInfos(\"patient" + i + "\")'><td style='color:white'>" +
                                 patientData.patientProtocolNo + "</td><td>" +
                                 patientData.patientNameSurname + "</td><td id='patientAppStatus" + i +
                                 "' style='background-color:#e77474;'>Without Appointment</td></tr>");
@@ -3656,6 +3703,227 @@ var
                         console.log("ERROR: ", e.responseText);
                     }
                 });
+            }
+        },
+
+        bmrCaloriCalculate: function bmrCaloriCalculate() {
+            var gender = $.cookie('patientGender'),
+                age = $.cookie('patientAge'),
+                height = $('#boy').val(),
+                weight = $('#kilo').val(),
+                almasiGereken = $('#almasiGereken').val(),
+                workoutStyle = $('#workoutStyle option:selected').index(),
+                activityLevel = 0,
+                bmr = 0;
+
+            switch (workoutStyle) {
+                case 0:
+                    activityLevel = 1.2;
+                    break;
+                case 1:
+                    activityLevel = 1.375;
+                    break;
+                case 2:
+                    activityLevel = 1.55;
+                    break;
+                case 3:
+                    activityLevel = 1.725;
+                    break;
+                case 4:
+                    activityLevel = 1.9;
+                    break;
+            };
+
+            if (weight == '' || height == '') {
+                toastr.error('Weight or Height can\'t be empty!', 'Weight or Height');
+            }
+
+            if (gender == 'Male') {
+                bmr = 66 + (9, 6 * weight) + (1, 7 * height) - (4, 7 * age);
+                $('#almasiGereken').val(Math.round(bmr * activityLevel));
+            } else {
+                bmr = 665 + (9, 6 * weight) + (1, 7 * height) - (4, 7 * age);
+                $('#almasiGereken').val(Math.round(bmr * activityLevel));
+            }
+
+            $('#kutleindexi').val(Math.round(weight / (height / 100 * height / 100)));
+            $('#bmr').val(bmr);
+            $('#idealKilo').val(Math.round(height - 100 - [(height - 150) / 4]));
+        },
+
+        fillPatientExamHistoryTable: function fillPatientExamHistoryTable() {
+            $('#patientHistoryTable > tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/diet/fillPatientExamHistoryTable",
+                data: { patientIdNo: $.cookie("patientPersonalIdNumber") },
+                success: function(result) {
+                    $.each(result, function(i, patientData) {
+                        i++;
+                        $("#patientHistoryTable> tbody").append(
+                            "<tr class='patientHistory' id='patientHistory" + i + "' title='' onmouseover ='DietMethods.getPatientExamAnamnesisInTooltip(\"patientHistory" + i + "\")'><td >" +
+                            i + "</td><td>" + patientData.patientProtocolNo + "</td><td>" +
+                            patientData.patientPolExamDate + "</td><td>" +
+                            patientData.polyclinicSelect + "</td><td>" +
+                            patientData.doctorSelector + "</td></tr>");
+                    });
+                },
+                error: function(e) {
+                    jQueryMethods.toastrOptions();
+                    toastr.error('Patient polyclinic history couldnt find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        getPatientExamAnamnesisInTooltip: function getPatientExamAnamnesisInTooltip(examRowId) {
+            var patientProtocol = $('#' + examRowId + ' td:nth-child(2)').text();
+
+            $.ajax({
+                type: "GET",
+                url: "/diet/getPatientExamAnamnesisInTooltip",
+                data: { patientProtocolNo: patientProtocol },
+                success: function(result) {
+                    if (result.length > 0) {
+                        s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;">' +
+                            '<tr><td>Protocol No: ' + patientProtocol + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td valign="top"> Story : ' + result[0].patientStory + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Anamnesis : ' + result[0].patientAnamnesis + '</td></tr>' +
+                            '<tr><td>Examination : ' + result[0].patientExamination +
+                            '<tr style="border-style:dotted;"><td>Weight : ' + result[0].patientWeight + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Height : ' + result[0].patientHeight + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Workout Style : ' + result[0].patientWorkoutStyle + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Calories Needed Daily : ' + result[0].patientAlmasiGereken + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Body mass index : ' + result[0].patientKutleindexi + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Ideal Weight : ' + result[0].patientIdealKilo + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>BMR Coefficient : ' + result[0].patientBmr + '</td></tr>' +
+                            '</td></tr></table>';
+
+                        $('#' + examRowId + '').tooltip({
+                            content: s,
+                            position: {
+                                my: "center top",
+                                at: "center bottom-5",
+                            },
+                            show: {
+                                effect: "slideDown",
+                                delay: 250,
+                                track: true
+                            }
+                        });
+                    } else {
+                        s = '<table id="patientAnamnesisTooltipTable" style="text-align: left !important;"' +
+                            ' style="border-style:hidden;width:200px;box-shadow:0px 0px 15px 3px white;">' +
+                            '<tr><td>Protocol No: ' + patientProtocol + '</td></tr>' +
+                            '<tr style="border-style:dotted;"><td> Story : No Data</td></tr>' +
+                            '<tr style="border-style:dotted;"><td>Anamnesis : No Data</td></tr>' +
+                            '<tr><td>Examination : No Data</td></tr></table>';
+
+                        $('#' + examRowId + '').tooltip({
+                            content: s,
+                            position: {
+                                my: "center top",
+                                at: "center bottom-5",
+                            },
+                            show: {
+                                effect: "slideDown",
+                                delay: 250,
+                                track: true
+                            }
+                        });
+                    }
+                },
+                error: function(e) {
+                    toastr.error('Patient Anamnesis By Protocol couldn\'t find! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        updateDietAnamnesis: function updateDietAnamnesis() {
+            var clickedPatientProtocol = $.cookie('patientProtocol'),
+                myData = {
+                    patientProtocolNo: clickedPatientProtocol,
+                    patientStory: $("#oykusuArea").val(),
+                    patientAnamnesis: $("#anamnezArea").val(),
+                    patientExamination: $("#muayeneArea").val(),
+                    patientWeight: $("#kilo").val(),
+                    patientHeight: $("#boy").val(),
+                    patientWorkoutStyle: $("#workoutStyle option:selected").val(),
+                    patientAlmasiGereken: $("#almasiGereken").val(),
+                    patientKutleindexi: $("#kutleindexi").val(),
+                    patientIdealKilo: $("#idealKilo").val(),
+                    patientBmr: $("#bmr").val()
+                };
+
+            $.ajax({
+                type: 'PUT',
+                data: JSON.stringify(myData),
+                cache: false,
+                contentType: 'application/json',
+                datatype: "json",
+                url: '/diet/updateDietAnamnesis',
+                success: function() {
+                    toastr.success('Anamnesis updated!', 'Anamnesis Update!');
+                    PolyclinicMethods.fillPatientExamHistoryTable();
+                },
+                error: function(e) {
+                    toastr.error('Anamnesis couldnt update! \n\n\n' + e.responseText, 'Error!')
+                    console.log("ERROR: ", e.responseText);
+                }
+            });
+        },
+
+        saveDietAnamneses: function saveDietAnamneses() {
+            var polExamSave = document.getElementById('poylclinicAnamnesisSave'),
+                myDate = new Date(),
+                mySaveDate = myDate.toLocaleString("en-US"),
+                myData = {
+                    patientProtocolNo: $.cookie("patientProtocol"),
+                    patientId: $.cookie("patientId"),
+                    patientIdNo: $.cookie("patientPersonalIdNumber"),
+                    patientNameSurname: $.cookie("patientNameSurname"),
+                    appointmentStatus: '',
+                    patientStory: $("#oykusuArea").val(),
+                    patientAnamnesis: $("#anamnezArea").val(),
+                    patientExamination: $("#muayeneArea").val(),
+                    patientHeight: $("#boy").val(),
+                    patientWeight: $("#kilo").val(),
+                    patientWorkoutStyle: $("#workoutStyle option:selected").text(),
+                    patientAlmasiGereken: $("#almasiGereken").val(),
+                    patientKutleindexi: $("#kutleindexi").val(),
+                    patientIdealKilo: $("#idealKilo").val(),
+                    patientBmr: $("#bmr").val(),
+                    patientSavedUser: $.cookie('username'),
+                    saveDate: mySaveDate,
+                    polyclinicSelect: $("#polyclinicSelector option:selected").val()
+                };
+
+            if (polExamSave.innerHTML == 'Update') {
+                DietMethods.updateDietAnamnesis();
+            } else {
+                if (myData.patientStory == '' && myData.patientAnamnesis == '' && myData.patientExamination == '') {
+                    toastr.warning('Please fill at least one of Story, Anamnesis or Examination area! \n', 'Error!')
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        data: JSON.stringify(myData),
+                        cache: false,
+                        contentType: 'application/json',
+                        datatype: "json",
+                        url: '/diet/saveDietAnamneses',
+                        success: function() {
+                            toastr.success('Patient diet exam successfully saved!', 'Save!');
+                            // PolyclinicExamMethods.findPatientHistory();
+                            // findPatientLabRadHistory function will come here
+                        },
+                        error: function(e) {
+                            toastr.error('Patient diet exam couldn\'t save! \n' + e, 'Error!')
+                            console.log("ERROR: ", e);
+                        }
+                    });
+                }
             }
         }
     },
