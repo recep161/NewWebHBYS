@@ -2,8 +2,7 @@
     "extension": "linecounter",
     "version": "0.2.7",
     "workspace": "d:\\Desktop\\Created_by_me\\WebHBYS",
-    "linecount": [
-        {
+    "linecount": [{
             "version": "0.2.7",
             "counttime": "2020-11-04 12:42:12",
             "filesum": 1367,
@@ -107,8 +106,7 @@
                     "blank": 44
                 }
             },
-            "filelist": [
-                {
+            "filelist": [{
                     "blank": 0,
                     "code": 12,
                     "comment": 0,
@@ -9167,8 +9165,7 @@
                     "blank": 16
                 }
             },
-            "filelist": [
-                {
+            "filelist": [{
                     "blank": 0,
                     "code": 12,
                     "comment": 0,

@@ -23,7 +23,7 @@ var myAppointmentModel = myMongoose.model('appointments');
 var myPatientdiagnosisModel = myMongoose.model('patientdiagnoses');
 var allDiagnosisModel = myMongoose.model('diagnosistables');
 var labRadTestModel = myMongoose.model('patientradlabtest');
-
+//
 module.exports.saveDietAnamneses = (req, res) => {
 
     const newPolExamAnamnesisSaveSchema = new polExamAnamnesisSaveSchema({
