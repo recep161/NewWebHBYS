@@ -6300,7 +6300,7 @@ var
         },
 
         patientDataForHospitalization: function patientDataForHospitalization() {
-            var patientProtocol = $.cookie('patientProtocol').substr(1),
+            var patientProtocol = $.cookie('patientProtocol'),
                 patientNameSurname = $.cookie('patientNameSurname');
 
             $('#patientProtocol').val(patientProtocol);
@@ -6309,7 +6309,7 @@ var
         },
 
         hospitalizationProcedure: function hospitalizationProcedure() {
-            var patientProtocol = $.cookie('patientProtocol').substr(1),
+            var patientProtocol = $.cookie('patientProtocol'),
                 patientNameSurname = $.cookie('patientNameSurname'),
                 myDate = new Date(),
                 mySaveDate = myDate.toLocaleString("en-US"),
@@ -6375,6 +6375,7 @@ var
                                 $('#hospitalizationDate').val(patientHospitalizationData.hospitalizationDate);
                                 $('#clinicSelector').val(patientHospitalizationData.clinicSelect);
                                 hospitalizationSave.disabled = true;
+                                hospitalizationSave.title = 'You have sent patient to clinics already!';
                                 hospitalizationSave.style.backgroundColor = 'grey';
                             });
                         } else {
