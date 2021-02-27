@@ -3697,6 +3697,11 @@ var
                                 "' style='background-color:#e77474;'>Without Appointment</td></tr>");
                             PolyclinicMethods.checkPatientAppointmentStatus(patientAppStatusId, patientData.patientIdNo)
                         });
+                        PolyclinicMethods.fillAppointmentStatusTable();
+                        PolyclinicMethods.fillPatientHealtInsuranceTable('examDate', 'polyclinicSelector', 'patientHealtInsuranceTable');
+                        PolyclinicMethods.fillPatientGenderTable('examDate', 'polyclinicSelector', 'patientGenderTable');
+                        PolyclinicMethods.fillDoctorPatientTable('examDate', 'polyclinicSelector', 'doctorPatientTable');
+                        PolyclinicMethods.fillAgePercentageTable('examDate', 'polyclinicSelector', 'oldPatientTable');
                     },
                     error: function(e) {
                         toastr.error('Patient list couldnt find! \n\n\n' + e.responseText, 'Error!')
