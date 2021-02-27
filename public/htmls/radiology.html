@@ -9,8 +9,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript"
-        src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
@@ -24,8 +23,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy">
-    <link rel="stylesheet" media="all"
-        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -35,9 +33,12 @@
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-    <link id="themecss" rel="stylesheet" type="text/css"
-        href="//www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css" />
+    <link id="themecss" rel="stylesheet" type="text/css" href="//www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css" />
     <script type="text/javascript" src="/public/plugins/shieldui.1.7.41/js/shieldui-all.min.js"></script>
+
+    <link rel="stylesheet" href="../../public/plugins/CodeSeven-toastr/build/toastr.min.css">
+    <script src="../../public/plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="../../public/plugins/jquery-cookie/jquery.cookie.js"></script>
 
 </head>
 
@@ -65,13 +66,10 @@
     <div class="mainContainer" id="mainContainer">
         <div class="headerDiv" id="headerDiv">
             <div class="subHeadDiv" id="subHeadDiv">
-                <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('radiology')"
-                    title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab"
-                        src="/public/images/open-new-tab.png" alt=""></div>
+                <div id="newTabButton" onclick="ShowOrHideMethods.openInNewTabAndAdjust('radiology')" title="Click for open in new tab."><img class="openInNewTab" id="openInNewTab" src="/public/images/open-new-tab.png" alt=""></div>
                 <div id="modulNameText"> Imaging and Radiology Module </div>
                 <div style="margin-top: -8px;">
-                    <img class="modulAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico"
-                        title="Anasayfa için tıklayınız." onclick="window.location.href='/public/htmls/index.html'">
+                    <img class="modulAvatar" src="/public/images/Medical-icons/X-Ray_Hand.ico" title="Anasayfa için tıklayınız." onclick="window.location.href='/public/htmls/index.html'">
                 </div>
             </div>
             <select name="polyclinicSelect" id="polyclinicSelector" class="polyclinicPalette">
@@ -86,10 +84,8 @@
         </div>
 
         <div class="bottomScrool">
-            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
-                Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
-                'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
-                yayımladı... &#164;&#164; it's not a mobile device.</p>
+            <p id="bottomScrollP4">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı; 'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ
+                VE TANI' adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
         </div>
 
         <div class="inpatientSubMainContainer" id="inpatientSubMainContainer">
@@ -108,12 +104,9 @@
                 </div>
 
                 <div id="Awaiting" class="w3-container w3-border patientListTab">
-                    <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patients Awaiting Laboratory
-                        Admission</h10>
-                    <input class="searchInputs" type="text" id="searchInput1"
-                        onkeydown="PolyclinicMethods.searchInTable('searchInput1', 'patientTable1')"
-                        placeholder="Search for patients..."
-                        title="Search patients by name, surname, protocol or appointment status.">
+                    <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patients Awaiting Laboratory Admission
+                    </h10>
+                    <input class="searchInputs" type="text" id="searchInput1" onkeydown="PolyclinicMethods.searchInTable('searchInput1', 'patientTable1')" placeholder="Search for patients..." title="Search patients by name, surname, protocol or appointment status.">
                     <table id="patientTable1" class="patientTable">
                         <tr id="tableHeader">
                             <th>Protocol No.</th>
@@ -151,10 +144,7 @@
                 <div id="Accepted" class="w3-container w3-border patientListTab" style="display:none">
                     <h10 class="historyHeaders" style="margin-bottom: 10px;">Patients Accepted to Laboratory
                     </h10>
-                    <input class="searchInputs" type="text" id="searchInput2"
-                        onkeydown="PolyclinicMethods.searchInTable('searchInput2', 'patientTable2')"
-                        placeholder="Search for patients..."
-                        title="Search patients by name, surname, protocol or appointment status.">
+                    <input class="searchInputs" type="text" id="searchInput2" onkeydown="PolyclinicMethods.searchInTable('searchInput2', 'patientTable2')" placeholder="Search for patients..." title="Search patients by name, surname, protocol or appointment status.">
                     <table id="patientTable2" class="patientTable">
                         <tr id="tableHeader">
                             <th>Protocol No.</th>
@@ -185,12 +175,9 @@
                 </div>
 
                 <div id="AwaitingForConfirmations" class="w3-container w3-border patientListTab" style="display:none">
-                    <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patients Awaiting for
-                        Confirmations</h10>
-                    <input class="searchInputs" type="text" id="searchInput3"
-                        onkeydown="PolyclinicMethods.searchInTable('searchInput3', 'patientTable3')"
-                        placeholder="Search for patients..."
-                        title="Search patients by name, surname, protocol or appointment status.">
+                    <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patients Awaiting for Confirmations
+                    </h10>
+                    <input class="searchInputs" type="text" id="searchInput3" onkeydown="PolyclinicMethods.searchInTable('searchInput3', 'patientTable3')" placeholder="Search for patients..." title="Search patients by name, surname, protocol or appointment status.">
                     <table id="patientTable3" class="patientTable">
                         <tr id="tableHeader">
                             <th>Protocol No.</th>
@@ -217,10 +204,7 @@
 
                 <div id="Confirmed" class="w3-container w3-border patientListTab" style="display:none">
                     <h10 class="historyHeaders" style="margin-bottom: 10px;"> Patients Confirmed</h10>
-                    <input class="searchInputs" type="text" id="searchInput4"
-                        onkeydown="PolyclinicMethods.searchInTable('searchInput4', 'patientTable4')"
-                        placeholder="Search for patients..."
-                        title="Search patients by name, surname, protocol or appointment status.">
+                    <input class="searchInputs" type="text" id="searchInput4" onkeydown="PolyclinicMethods.searchInTable('searchInput4', 'patientTable4')" placeholder="Search for patients..." title="Search patients by name, surname, protocol or appointment status.">
                     <table id="patientTable4" class="patientTable">
                         <tr id="tableHeader">
                             <th>Protocol No.</th>
@@ -247,34 +231,26 @@
                     <ul id="tabs-nav">
                         <li onclick="ShowOrHideMethods.showDiv('imagingRadiologyConfirmationBtnDiv','block')">
                             <a href="#th-tab-one" class="current" title="Patient tests.">
-                                <img src="/public/images/Medical-icons/stethoscope_no_sh.png" alt=""
-                                    style="width: 30px;height: 30px;">
-                                Tests
+                                <img src="/public/images/Medical-icons/stethoscope_no_sh.png" alt="" style="width: 30px;height: 30px;"> Tests
                             </a>
                         </li>
                         <li onclick="ShowOrHideMethods.hideDiv('imagingRadiologyConfirmationBtnDiv')">
                             <a href="#th-tab-two" title="Patient Laboratory and Radiology detailed history.">
-                                <img src="/public/images/Medical-icons/microscopesp.png" alt=""
-                                    style="width: 30px;height: 30px;">
-                                Detailed History
+                                <img src="/public/images/Medical-icons/microscopesp.png" alt="" style="width: 30px;height: 30px;"> Detailed History
                             </a>
                         </li>
                         <li onclick="ShowOrHideMethods.hideDiv('imagingRadiologyConfirmationBtnDiv')">
                             <a href="#th-tab-three" title="Notes and alerts about patient.">
-                                <img src="/public/images/Medical-icons/BiologicalHazard_Symbol_Triangle.ico" alt=""
-                                    style="width: 30px;height: 30px;">
-                                Notes and Alerts
+                                <img src="/public/images/Medical-icons/BiologicalHazard_Symbol_Triangle.ico" alt="" style="width: 30px;height: 30px;"> Notes and Alerts
                             </a>
                         </li>
                         <li onclick="ShowOrHideMethods.hideDiv('imagingRadiologyConfirmationBtnDiv')">
                             <a href="#th-tab-four" title="Graphics based on patient's results.">
-                                <img src="/public/images/statics-7.png" alt="" style="width: 30px;height: 30px;">
-                                Graphics
+                                <img src="/public/images/statics-7.png" alt="" style="width: 30px;height: 30px;"> Graphics
                             </a>
                         </li>
                         <li>
-                            <img src="/public/images/add-plus.png" alt="add button" title="Click and add your own tab !"
-                                style="width:40px; height:40px;cursor: pointer;" onclick="InpatientMethods.addNewTab()">
+                            <img src="/public/images/add-plus.png" alt="add button" title="Click and add your own tab !" style="width:40px; height:40px;cursor: pointer;" onclick="InpatientMethods.addNewTab()">
                         </li>
                     </ul>
                     <div style="clear:both;"></div>
@@ -287,17 +263,12 @@
 
                             <h10 class="historyHeaders" id="labTestTableName" style="margin-bottom: 10px;">Tests</h10>
                             <br>
-                            <input class="searchInputs" type="text" id="searchInputTest"
-                                onkeydown=" LaboratoryMethods.labSearchInTables('searchInputTest')"
-                                placeholder="Search tests by name, code, device or Requesting Unit."
-                                title="Search tests by name, code, device or Requesting Unit.">
+                            <input class="searchInputs" type="text" id="searchInputTest" onkeydown=" LaboratoryMethods.labSearchInTables('searchInputTest')" placeholder="Search tests by name, code, device or Requesting Unit." title="Search tests by name, code, device or Requesting Unit.">
                             <br>
                             <table id="testTable">
                                 <tr id="tableHeader" class="testTableHeader">
                                     <th>#</th>
-                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1"
-                                            id="checkboxSelectAll1"
-                                            onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll1')">
+                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1" id="checkboxSelectAll1" onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll1')">
                                     </th>
                                     <th>Code</th>
                                     <th>Test Name</th>
@@ -307,21 +278,18 @@
                                     <th>Requesting Unit</th>
                                     <th>Confirmed</th>
                                 </tr>
-                                <tr id="testRow1" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow1','resultCell1','resultText1')">
+                                <tr id="testRow1" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow1','resultCell1','resultText1')">
                                     <td>1</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row1" id="checkbox1"></th>
                                     <td>801.561</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow1')"> Kemik yaşı
-                                        tayini</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow1')"> Kemik yaşı tayini
+                                    </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell1" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell1" value="1" min="0" style="display: none;">
                                         <textarea name="resultText1" id="resultText1" cols="30" rows="5"></textarea>
                                     </td>
                                     <td>
-                                        <button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                        <button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button>
                                     </td>
@@ -329,20 +297,16 @@
                                     <td>Emergency Polyclinic</td>
                                     <td class="notConfirmedTest">&#10008;</td>
                                 </tr>
-                                <tr id="testRow2" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow2','resultCell2','resultText2')">
+                                <tr id="testRow2" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow2','resultCell2','resultText2')">
                                     <td>2</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row2" id="checkbox2"></th>
                                     <td>801.690</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow2')">Akciğer
-                                        grafisi (İki yön)</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow2')">Akciğer grafisi (İki yön)</td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell2" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell2" value="1" min="0" style="display: none;">
                                         <textarea name="resultText2" id="resultText2" cols="30" rows="5"></textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button>
 
@@ -351,59 +315,50 @@
                                     <td>Emergency Polyclinic</td>
                                     <td class="notConfirmedTest">&#10008;</td>
                                 </tr>
-                                <tr id="testRow3" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow3','resultCell3','resultText3')">
+                                <tr id="testRow3" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow3','resultCell3','resultText3')">
                                     <td>3</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row3" id="checkbox3"></th>
                                     <td>803.320</td>
                                     <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow3')">Boyun US</td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell3" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell3" value="1" min="0" style="display: none;">
                                         <textarea name="resultText3" id="resultText3" cols="30" rows="5"></textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Ultrasonografik tetkikler</td>
                                     <td>Emergency Polyclinic</td>
                                     <td class="notConfirmedTest">&#10008;</td>
                                 </tr>
-                                <tr id="testRow4" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow4','resultCell4','resultText4')">
+                                <tr id="testRow4" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow4','resultCell4','resultText4')">
                                     <td>4</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row4" id="checkbox4"></th>
                                     <td>803.910</td>
                                     <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow4')">BT, beyin
                                     </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell4" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell4" value="1" min="0" style="display: none;">
                                         <textarea name="resultText4" id="resultText4" cols="30" rows="5"></textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Bilgisayarlı tomografiler </td>
                                     <td>Emergency Polyclinic</td>
                                     <td class="notConfirmedTest">&#10008;</td>
                                 </tr>
-                                <tr id="testRow5" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow5','resultCell5','resultText5')">
+                                <tr id="testRow5" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow5','resultCell5','resultText5')">
                                     <td>5</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row5" id="checkbox5"></th>
                                     <td>804.180</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow5')">MR, abdomen,
-                                        alt</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow5')">MR, abdomen, alt
+                                    </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell5" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell5" value="1" min="0" style="display: none;">
                                         <textarea name="resultText5" id="resultText5" cols="30" rows="5"></textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Manyetik Rezonans Görüntüleme </td>
@@ -416,9 +371,7 @@
                             <table id="acceptedTestTable">
                                 <tr id="tableHeader" class="testTableHeader">
                                     <th>#</th>
-                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1"
-                                            id="checkboxSelectAll2"
-                                            onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll1')">
+                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1" id="checkboxSelectAll2" onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll1')">
                                     </th>
                                     <th>Code</th>
                                     <th>Test Name</th>
@@ -428,21 +381,18 @@
                                     <th>Requesting Unit</th>
                                     <th>Confirmed</th>
                                 </tr>
-                                <tr id="testRow6" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow6','resultCell6','resultText6')">
+                                <tr id="testRow6" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow6','resultCell6','resultText6')">
                                     <td>1</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row6" id="checkbox6"></th>
                                     <td>801.561</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow6')"> Kemik yaşı
-                                        tayini</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow6')"> Kemik yaşı tayini
+                                    </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell6" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell6" value="1" min="0" style="display: none;">
                                         <textarea name="resultText6" id="resultText6" cols="30" rows="5"></textarea>
                                     </td>
                                     <td>
-                                        <button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                        <button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button>
                                     </td>
@@ -450,20 +400,16 @@
                                     <td>Emergency Polyclinic</td>
                                     <td class="notConfirmedTest">&#10008;</td>
                                 </tr>
-                                <tr id="testRow7" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow7','resultCell7','resultText7')">
+                                <tr id="testRow7" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow7','resultCell7','resultText7')">
                                     <td>2</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row7" id="checkbox7"></th>
                                     <td>801.690</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow7')">Akciğer
-                                        grafisi (İki yön)</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow7')">Akciğer grafisi (İki yön)</td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell7" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell7" value="1" min="0" style="display: none;">
                                         <textarea name="resultText7" id="resultText7" cols="30" rows="5"></textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button>
 
@@ -472,59 +418,50 @@
                                     <td>Emergency Polyclinic</td>
                                     <td class="notConfirmedTest">&#10008;</td>
                                 </tr>
-                                <tr id="testRow8" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow8','resultCell8','resultText8')">
+                                <tr id="testRow8" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow8','resultCell8','resultText8')">
                                     <td>3</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row8" id="checkbox8"></th>
                                     <td>803.320</td>
                                     <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow8')">Boyun US</td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell8" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell8" value="1" min="0" style="display: none;">
                                         <textarea name="resultText8" id="resultText8" cols="30" rows="5"></textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Ultrasonografik tetkikler</td>
                                     <td>Emergency Polyclinic</td>
                                     <td class="notConfirmedTest">&#10008;</td>
                                 </tr>
-                                <tr id="testRow9" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow9','resultCell9','resultText9')">
+                                <tr id="testRow9" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow9','resultCell9','resultText9')">
                                     <td>4</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row9" id="checkbox9"></th>
                                     <td>803.910</td>
                                     <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow9')">BT, beyin
                                     </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell9" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell9" value="1" min="0" style="display: none;">
                                         <textarea name="resultText9" id="resultText9" cols="30" rows="5"></textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Bilgisayarlı tomografiler </td>
                                     <td>Emergency Polyclinic</td>
                                     <td class="notConfirmedTest">&#10008;</td>
                                 </tr>
-                                <tr id="testRow10" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow10','resultCell10','resultText10')">
+                                <tr id="testRow10" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow10','resultCell10','resultText10')">
                                     <td>5</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row10" id="checkbox10"></th>
                                     <td>804.180</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow10')">MR, abdomen,
-                                        alt</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow10')">MR, abdomen, alt
+                                    </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell10" value="1" min="0"
-                                            style="display: none;">
+                                        <input type="number" name="resultCell" id="resultCell10" value="1" min="0" style="display: none;">
                                         <textarea name="resultText10" id="resultText10" cols="30" rows="5"></textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Manyetik Rezonans Görüntüleme </td>
@@ -537,9 +474,7 @@
                             <table id="resultedTestTable">
                                 <tr id="tableHeader" class="testTableHeader">
                                     <th>#</th>
-                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1"
-                                            id="checkboxSelectAll3"
-                                            onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll3')">
+                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1" id="checkboxSelectAll3" onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll3')">
                                     </th>
                                     <th>Code</th>
                                     <th>Test Name</th>
@@ -549,22 +484,18 @@
                                     <th>Requesting Unit</th>
                                     <th>Confirmed</th>
                                 </tr>
-                                <tr id="testRow11" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow11','resultCell11','resultText11')">
+                                <tr id="testRow11" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow11','resultCell11','resultText11')">
                                     <td>1</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row11" id="checkbox11"></th>
                                     <td>801.561</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow11')"> Kemik yaşı
-                                        tayini</td>
-                                    <td>
-                                        <input type="number" name="resultCell" id="resultCell11" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText11"
-                                            id="resultText11" cols="30" rows="5">Result lorem ipsum</textarea>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow11')"> Kemik yaşı tayini
                                     </td>
                                     <td>
-                                        <button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                        <input type="number" name="resultCell" id="resultCell11" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText11" id="resultText11" cols="30" rows="5">Result lorem ipsum</textarea>
+                                    </td>
+                                    <td>
+                                        <button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button>
                                     </td>
@@ -572,21 +503,16 @@
                                     <td>Emergency Polyclinic</td>
                                     <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
                                 </tr>
-                                <tr id="testRow12" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow12','resultCell12','resultText12')">
+                                <tr id="testRow12" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow12','resultCell12','resultText12')">
                                     <td>2</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row12" id="checkbox12"></th>
                                     <td>801.690</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow12')">Akciğer
-                                        grafisi (İki yön)</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow12')">Akciğer grafisi (İki yön)</td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell12" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText12"
-                                            id="resultText12" cols="30" rows="5">Result lorem ipsum</textarea>
+                                        <input type="number" name="resultCell" id="resultCell12" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText12" id="resultText12" cols="30" rows="5">Result lorem ipsum</textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button>
 
@@ -595,63 +521,51 @@
                                     <td>Emergency Polyclinic</td>
                                     <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
                                 </tr>
-                                <tr id="testRow13" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow13','resultCell13','resultText13')">
+                                <tr id="testRow13" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow13','resultCell13','resultText13')">
                                     <td>3</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row13" id="checkbox13"></th>
                                     <td>803.320</td>
                                     <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow13')">Boyun US
                                     </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell13" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText13"
-                                            id="resultText13" cols="30" rows="5">Result lorem ipsum</textarea>
+                                        <input type="number" name="resultCell" id="resultCell13" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText13" id="resultText13" cols="30" rows="5">Result lorem ipsum</textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Ultrasonografik tetkikler</td>
                                     <td>Emergency Polyclinic</td>
                                     <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
                                 </tr>
-                                <tr id="testRow14" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow14','resultCell14','resultText14')">
+                                <tr id="testRow14" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow14','resultCell14','resultText14')">
                                     <td>4</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row14" id="checkbox14"></th>
                                     <td>803.910</td>
                                     <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow14')">BT, beyin
                                     </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell14" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText14"
-                                            id="resultText14" cols="30" rows="5">Result lorem ipsum</textarea>
+                                        <input type="number" name="resultCell" id="resultCell14" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText14" id="resultText14" cols="30" rows="5">Result lorem ipsum</textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Bilgisayarlı tomografiler </td>
                                     <td>Emergency Polyclinic</td>
                                     <td class="resultedTest" title="Not confirmed result!">&#10037;</td>
                                 </tr>
-                                <tr id="testRow15" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow15','resultCell15','resultText15')">
+                                <tr id="testRow15" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow15','resultCell15','resultText15')">
                                     <td>5</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row15" id="checkbox15"></th>
                                     <td>804.180</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow15')">MR, abdomen,
-                                        alt</td>
-                                    <td>
-                                        <input type="number" name="resultCell" id="resultCell15" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText15"
-                                            id="resultText15" cols="30" rows="5">Result lorem ipsum</textarea>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow15')">MR, abdomen, alt
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell15" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText15" id="resultText15" cols="30" rows="5">Result lorem ipsum</textarea>
+                                    </td>
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Manyetik Rezonans Görüntüleme </td>
@@ -664,9 +578,7 @@
                             <table id="confirmedTestTable">
                                 <tr id="tableHeader" class="testTableHeader">
                                     <th>#</th>
-                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1"
-                                            id="checkboxSelectAll4"
-                                            onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll4')">
+                                    <th>Select All<br><input type="checkbox" class="testCheckbox" name="row1" id="checkboxSelectAll4" onchange="LaboratoryMethods.selectAndUnselectAllCheckboxes('checkboxSelectAll4')">
                                     </th>
                                     <th>Code</th>
                                     <th>Test Name</th>
@@ -676,22 +588,18 @@
                                     <th>Requesting Unit</th>
                                     <th>Confirmed</th>
                                 </tr>
-                                <tr id="testRow16" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow16','resultCell16','resultText16')">
+                                <tr id="testRow16" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow16','resultCell16','resultText16')">
                                     <td>1</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row16" id="checkbox16"></th>
                                     <td>801.561</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow16')"> Kemik yaşı
-                                        tayini</td>
-                                    <td>
-                                        <input type="number" name="resultCell" id="resultCell16" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText16"
-                                            id="resultText16" cols="30" rows="5">Result lorem ipsum</textarea>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow16')"> Kemik yaşı tayini
                                     </td>
                                     <td>
-                                        <button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                        <input type="number" name="resultCell" id="resultCell16" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText16" id="resultText16" cols="30" rows="5">Result lorem ipsum</textarea>
+                                    </td>
+                                    <td>
+                                        <button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button>
                                     </td>
@@ -700,21 +608,16 @@
                                     <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 17.08.2020 19:45
                                     Confirmation 2: Dr. Ayse HAZAL - 17.08.2020 20:01">&#10004;</td>
                                 </tr>
-                                <tr id="testRow17" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow17','resultCell17','resultText17')">
+                                <tr id="testRow17" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow17','resultCell17','resultText17')">
                                     <td>2</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row17" id="checkbox17"></th>
                                     <td>801.690</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow17')">Akciğer
-                                        grafisi (İki yön)</td>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow17')">Akciğer grafisi (İki yön)</td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell17" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText17"
-                                            id="resultText17" cols="30" rows="5">Result lorem ipsum</textarea>
+                                        <input type="number" name="resultCell" id="resultCell17" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText17" id="resultText17" cols="30" rows="5">Result lorem ipsum</textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button>
 
@@ -724,21 +627,17 @@
                                     <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 17.08.2020 19:45
                                     Confirmation 2: Dr. Ayse HAZAL - 17.08.2020 20:01">&#10004;</td>
                                 </tr>
-                                <tr id="testRow18" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow18','resultCell18','resultText18')">
+                                <tr id="testRow18" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow18','resultCell18','resultText18')">
                                     <td>3</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row18" id="checkbox18"></th>
                                     <td>803.320</td>
                                     <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow18')">Boyun US
                                     </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell18" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText18"
-                                            id="resultText18" cols="30" rows="5">Result lorem ipsum</textarea>
+                                        <input type="number" name="resultCell" id="resultCell18" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText18" id="resultText18" cols="30" rows="5">Result lorem ipsum</textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Ultrasonografik tetkikler</td>
@@ -746,21 +645,17 @@
                                     <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 17.08.2020 19:45
                                     Confirmation 2: Dr. Ayse HAZAL - 17.08.2020 20:01">&#10004;</td>
                                 </tr>
-                                <tr id="testRow19" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow19','resultCell19','resultText19')">
+                                <tr id="testRow19" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow19','resultCell19','resultText19')">
                                     <td>4</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row19" id="checkbox19"></th>
                                     <td>803.910</td>
                                     <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow19')">BT, beyin
                                     </td>
                                     <td>
-                                        <input type="number" name="resultCell" id="resultCell19" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText19"
-                                            id="resultText19" cols="30" rows="5">Result lorem ipsum</textarea>
+                                        <input type="number" name="resultCell" id="resultCell19" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText19" id="resultText19" cols="30" rows="5">Result lorem ipsum</textarea>
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Bilgisayarlı tomografiler </td>
@@ -768,21 +663,17 @@
                                     <td class="ConfirmedTest" title="Confirmation 1: Lab. Ahmet MEHMET - 17.08.2020 19:45
                                     Confirmation 2: Dr. Ayse HAZAL - 17.08.2020 20:01">&#10004;</td>
                                 </tr>
-                                <tr id="testRow20" title="Click test name for add extra information!"
-                                    oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow20','resultCell20','resultText20')">
+                                <tr id="testRow20" title="Click test name for add extra information!" oncontextmenu="LaboratoryMethods.textOrNumberResult('testRow20','resultCell20','resultText20')">
                                     <td>5</td>
                                     <th><input type="checkbox" class="testCheckbox" name="row20" id="checkbox20"></th>
                                     <td>804.180</td>
-                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow20')">MR, abdomen,
-                                        alt</td>
-                                    <td>
-                                        <input type="number" name="resultCell" id="resultCell20" value="1" min="0"
-                                            style="display: none;">
-                                        <textarea readonly class="readonlyTextarea" name="resultText20"
-                                            id="resultText20" cols="30" rows="5">Result lorem ipsum</textarea>
+                                    <td onclick="LaboratoryMethods.addExtraInformationForTest('testRow20')">MR, abdomen, alt
                                     </td>
-                                    <td><button class="polyclinicButtons btn--swap"
-                                            onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
+                                    <td>
+                                        <input type="number" name="resultCell" id="resultCell20" value="1" min="0" style="display: none;">
+                                        <textarea readonly class="readonlyTextarea" name="resultText20" id="resultText20" cols="30" rows="5">Result lorem ipsum</textarea>
+                                    </td>
+                                    <td><button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonSec');">Sablonlarim
                                             <span>Tanimli Sablonlar</span>
                                         </button></td>
                                     <td>Manyetik Rezonans Görüntüleme </td>
@@ -833,8 +724,7 @@
                                                     MCV: 30.1
                                                     MCHC: 34.6
                                                     RDW: 13.8
-                                                    PLT: 322"
-                                            onclick="InpatientMethods.showDetailTable('labHistoryDetails','radHistoryDetails')">
+                                                    PLT: 322" onclick="InpatientMethods.showDetailTable('labHistoryDetails','radHistoryDetails')">
                                             <td>1</td>
                                             <td>12345</td>
                                             <td>01/03/2019</td>
@@ -846,8 +736,7 @@
                                             <td>15/01/2020</td>
                                             <td>Ultrasound - 1</td>
                                         </tr>
-                                        <tr onclick="InpatientMethods.showDetailTable('radHistoryDetails','labHistoryDetails')"
-                                            title="ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non dui sapien.">
+                                        <tr onclick="InpatientMethods.showDetailTable('radHistoryDetails','labHistoryDetails')" title="ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non dui sapien.">
                                             <td>3</td>
                                             <td>91011</td>
                                             <td>22/02/2020</td>
@@ -965,20 +854,15 @@
                                         <th>Test</th>
                                         <th>Result</th>
                                     </tr>
-                                    <tr
-                                        title="Onaylayan Kullanici: Dr. Fidan GENC.
+                                    <tr title="Onaylayan Kullanici: Dr. Fidan GENC.
 
                                     SUT Kısıtları: SUT'un 2.4.4.A maddesine bakınız. İşlem puanlarına, tedavi sırasında yapılan tetkik,  tahlil ve röntgen için kullanılan ilaç ve her türlü malzeme bedeli dâhil olup, bunlar için ayrıca bir ödeme yapılmayacaktır">
                                         <td>1</td>
                                         <td>12345</td>
                                         <td>01/03/2019</td>
                                         <td>P618640</td>
-                                        <td>ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed,
-                                            faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam
-                                            libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent
-                                            eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in
-                                            lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non
+                                        <td>ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero.
+                                            In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non
                                             dui sapien. </td>
                                     </tr>
                                 </table>
@@ -987,8 +871,8 @@
 
                         <li id="th-tab-three" class="tab-content" onload="ShowOrHideMethods.hideDiv()">
                             <div class="alertNoteMainDiv">
-                                <h10 class="historyHeaders" style="margin: 0px 0px 5px 35%;">Notes and Alerts for
-                                    Patient</h10>
+                                <h10 class="historyHeaders" style="margin: 0px 0px 5px 35%;">Notes and Alerts for Patient
+                                </h10>
                                 <br>
                                 <div class="alertNoteDiv" id="alertNoteDiv">
                                     <h10 class="historyHeaders">Notes</h10>
@@ -1004,8 +888,7 @@
                                             <button class="polyclinicButtons btn--swap" id="notesSablonBtn2">Benim
                                                 Sablonum
                                                 2 <span>Kullanici tanimli sablon.</span></button>
-                                            <button onclick="ShowOrHideMethods.showPopUpModal('sablonOlustur');"
-                                                class="polyclinicButtons btn--swap" id="noteCreateSablon">Sablon
+                                            <button onclick="ShowOrHideMethods.showPopUpModal('sablonOlustur');" class="polyclinicButtons btn--swap" id="noteCreateSablon">Sablon
                                                 tanimlama ve duzenleme <span>Kullanici tanimli sablon
                                                     olusturma.</span></button>
                                         </div>
@@ -1024,8 +907,7 @@
                                             <button class="polyclinicButtons btn--swap" id="alertSablonBtn2">Benim
                                                 Sablonum
                                                 2 <span>Kullanici tanimli sablon.</span></button>
-                                            <button onclick="ShowOrHideMethods.showPopUpModal('sablonOlustur');"
-                                                class="polyclinicButtons btn--swap" id="alertCreateSablon">Sablon
+                                            <button onclick="ShowOrHideMethods.showPopUpModal('sablonOlustur');" class="polyclinicButtons btn--swap" id="alertCreateSablon">Sablon
                                                 tanimlama ve duzenleme <span>Kullanici tanimli sablon
                                                     olusturma.</span></button>
                                         </div>
@@ -1041,8 +923,7 @@
                                 </div>
 
                                 <div class="patientNoteAndAlertHistoryDiv">
-                                    <h10 class="historyHeaders" style="margin-bottom: 10px;">Patient Note And Alert
-                                        History
+                                    <h10 class="historyHeaders" style="margin-bottom: 10px;">Patient Note And Alert History
                                     </h10>
                                     <table class="patientNoteAndAlertHistory">
                                         <tr class="testTableHeader">
@@ -1077,12 +958,8 @@
                                     </table>
                                 </div>
                                 <div class="alertNoteBtnDiv">
-                                    <button class="labConfirmationBtn btn-danger" id="deleteAlertNote"
-                                        onclick="ShowOrHideMethods.generalFailureAlert('Alert or Note deleted!');"
-                                        title="Delete alert or note!">Delete</button>
-                                    <button class="labConfirmationBtn btn-success" id="alertNoteSave"
-                                        onclick="ShowOrHideMethods.generalSuccesAlert('Alert or Note saved!');"
-                                        title="Save alert or note!">Save</button>
+                                    <button class="labConfirmationBtn btn-danger" id="deleteAlertNote" onclick="ShowOrHideMethods.generalFailureAlert('Alert or Note deleted!');" title="Delete alert or note!">Delete</button>
+                                    <button class="labConfirmationBtn btn-success" id="alertNoteSave" onclick="ShowOrHideMethods.generalSuccesAlert('Alert or Note saved!');" title="Save alert or note!">Save</button>
                                 </div>
                             </div>
                         </li>
@@ -1099,16 +976,10 @@
                 </div>
 
                 <div class="imagingRadiologyConfirmationBtnDiv" id="imagingRadiologyConfirmationBtnDiv">
-                    <button class="labConfirmationBtn btn-danger" id="yeniHasta"
-                        title="Cancel Confirmation according to your authorization!"
-                        onclick="ShowOrHideMethods.generalFailureAlert('Confirmation canceled!');">Cancel
+                    <button class="labConfirmationBtn btn-danger" id="yeniHasta" title="Cancel Confirmation according to your authorization!" onclick="ShowOrHideMethods.generalFailureAlert('Confirmation canceled!');">Cancel
                         Confirmations</button>
-                    <button class="labConfirmationBtn btn-info" id="guncelle"
-                        onclick="ShowOrHideMethods.generalSuccesAlert('Succesfully confirmed first Confirmation!')"
-                        title="Confirm results as lab technician.">Confirmation 1</button>
-                    <button class="labConfirmationBtn btn-success" id="kaydet"
-                        onclick="ShowOrHideMethods.generalSuccesAlert('Succesfully confirmed second Confirmation!')"
-                        title="Confirm results as laboratory supervisor or responsible doctor.">Confirmation 2</button>
+                    <button class="labConfirmationBtn btn-info" id="guncelle" onclick="ShowOrHideMethods.generalSuccesAlert('Succesfully confirmed first Confirmation!')" title="Confirm results as lab technician.">Confirmation 1</button>
+                    <button class="labConfirmationBtn btn-success" id="kaydet" onclick="ShowOrHideMethods.generalSuccesAlert('Succesfully confirmed second Confirmation!')" title="Confirm results as laboratory supervisor or responsible doctor.">Confirmation 2</button>
                 </div>
             </div>
 
@@ -1122,8 +993,7 @@
                 <button class="polyclinicButtons btn--swap">Button 7 <span>Primum non nocere.</span></button>
                 <button class="polyclinicButtons btn--swap">Button 8 <span>Primum non nocere.</span></button>
                 <button class="polyclinicButtons btn--swap">Button 9 <span>Primum non nocere.</span></button>
-                <button class="polyclinicButtons btn--swap"
-                    onclick="ShowOrHideMethods.showPopUpModal('sablonOlustur');">Sablon Tanimlama<span>Sonuclar icin
+                <button class="polyclinicButtons btn--swap" onclick="ShowOrHideMethods.showPopUpModal('sablonOlustur');">Sablon Tanimlama<span>Sonuclar icin
                         sablon tanimlama.</span></button>
             </div>
         </div>
@@ -1203,8 +1073,7 @@
                         <td>15/01/2020</td>
                         <td>Ultrasound - 1</td>
                     </tr>
-                    <tr
-                        title="ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non dui sapien.">
+                    <tr title="ESWL Sonucu: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie laoreet mi. Donec ex diam, faucibus ac dolor sed, faucibus suscipit quam. Proin elementum tincidunt porta. Mauris a diam libero. In nunc nibh, cursus eu placerat in, commodo nec metus. Praesent eu urna pretium, rhoncus ipsum eget, vulputate neque. Pellentesque in lorem sem. Pellentesque rhoncus nisi ac faucibus scelerisque. Morbi non dui sapien.">
                         <td>3</td>
                         <td>91011</td>
                         <td>22/02/2020</td>
@@ -1230,9 +1099,7 @@
         <div class="statics">
             <!-- cards -->
             <div class="card-container" id="poly-card-container">
-                <div class="baseCard" id="statics1"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics1" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard1">
                         <div id="analytcStatics1" class="front" style="background-image: url('/public/images/statics-1.png');
                             background-size: cover;">
@@ -1245,20 +1112,15 @@
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Randevulu hasta vs Normal Hasta"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Randevulu hasta vs Normal Hasta"></button>
                             <p class="cardP">
-                                Hastalarin basvuru turune gore istatistik. <br><br>
-                                Randevulu hasta : 4 <br>
-                                Normal hasta : 12
+                                Hastalarin basvuru turune gore istatistik. <br><br> Randevulu hasta : 4 <br> Normal hasta : 12
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics2"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics2" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard2">
                         <div id="analytcStatics2" class="front" style="background-image: url('/public/images/statics-2.png');
                             background-size: cover; background-color: cornflowerblue;">
@@ -1271,21 +1133,15 @@
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Kurum Turu"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Kurum Turu"></button>
                             <p class="cardP">
-                                Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br>
-                                Yesilkart : 4 <br>
-                                SGK : 12 <br>
-                                Ucretli : 1
+                                Hastalarin saglik sigorta kurumlarina gore istatistik. <br><br> Yesilkart : 4 <br> SGK : 12 <br> Ucretli : 1
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics3"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics3" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard3">
                         <div id="analytcStatics3" class="front" style="background-image: url('/public/images/statics-3.png');
                             background-size: cover; background-color: cornflowerblue;">
@@ -1298,20 +1154,15 @@
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Cinsiyet Dagilimi"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Cinsiyet Dagilimi"></button>
                             <p class="cardP">
-                                Hastalarin cinsiyetlerine gore istatistik. <br><br>
-                                Kadin : 4 <br>
-                                Erkek : 8
+                                Hastalarin cinsiyetlerine gore istatistik. <br><br> Kadin : 4 <br> Erkek : 8
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics4"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics4" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard4">
                         <div id="analytcStatics4" class="front" style="background-image: url('/public/images/statics-4.png');
                         background-size: cover; background-color: cornflowerblue;">
@@ -1324,21 +1175,15 @@
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Yas Dagilimi"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Yas Dagilimi"></button>
                             <p class="cardP">
-                                Hastalarin yaslarina gore istatistik. <br><br>
-                                0 - 12 : 3 <br>
-                                12 - 18 : 5 <br>
-                                18+ : 4
+                                Hastalarin yaslarina gore istatistik. <br><br> 0 - 12 : 3 <br> 12 - 18 : 5 <br> 18+ : 4
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="baseCard" id="statics5"
-                    onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');"
-                    onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
+                <div class="baseCard" id="statics5" onmouseover="return PolyclinicMethods.stopAnimationsOnHover('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');" onmouseout="return PolyclinicMethods.flipCardsByTime('staticsCard1', 'staticsCard2', 'staticsCard3','staticsCard4', 'staticsCard5');">
                     <div class="card" id="staticsCard5">
                         <div id="analytcStatics5" class="front" style="background-image: url('/public/images/statics-5.png');
                         background-size: cover; background-color: cornflowerblue;">
@@ -1351,12 +1196,9 @@
                             </div>
                         </div>
                         <div class="back">
-                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip"
-                                title="Hasta Yas Dagilimi"></button>
+                            <button class="helpButtons fa fa-question-circle" data-toggle="tooltip" title="Hasta Yas Dagilimi"></button>
                             <p class="cardP">
-                                Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br>
-                                Muayene olan : 4 <br>
-                                Bekleyen : 6
+                                Muayene olan hastalarin ve bekleyen hastalarin istatistigi. <br><br> Muayene olan : 4 <br> Bekleyen : 6
                             </p>
                         </div>
                     </div>
@@ -1372,10 +1214,8 @@
     <div id="sablonOlustur" class="modal" style="padding: 60px;">
         <form id="sablonOlustur-modal-content" class="sablonOlusturContent animate" action="none" method="none">
             <div id="sablonOlusturImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('sablonOlustur').style.display='none'" id="sablonOlusturCloseBtn"
-                    class="close" title="Close Modal">&times;</span>
-                <img id="mysablonOlusturAvatar" src="/public/images/template-header-icon.png" alt="Avatar"
-                    class="avatar">
+                <span onclick="document.getElementById('sablonOlustur').style.display='none'" id="sablonOlusturCloseBtn" class="close" title="Close Modal">&times;</span>
+                <img id="mysablonOlusturAvatar" src="/public/images/template-header-icon.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;">Sablon Olusturma</h11>
             <br><br>
@@ -1402,8 +1242,7 @@
             </div>
 
             <div id="sablonOlusturBottom" class="sablonOlusturBottom">
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="sablonOlusturKaydet"
-                        title="Sablonu kaydetmek icin tiklayin.">Save</button>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="sablonOlusturKaydet" title="Sablonu kaydetmek icin tiklayin.">Save</button>
                 </div>
             </div>
         </form>
@@ -1412,8 +1251,7 @@
     <div id="sablonSec" class="modal" style="padding: 60px;">
         <form id="sablonSec-modal-content" class="sablonSecContent animate" action="none" method="none">
             <div id="sablonSecImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('sablonSec').style.display='none'" id="sablonSecCloseBtn"
-                    class="close" title="Close Modal">&times;</span>
+                <span onclick="document.getElementById('sablonSec').style.display='none'" id="sablonSecCloseBtn" class="close" title="Close Modal">&times;</span>
                 <img id="sablonSecAvatar" src="/public/images/template-header-icon.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;">Sablon Secme Ekrani</h11>
@@ -1434,12 +1272,8 @@
                             </td>
                             <td>USG -1</td>
                             <td>Ultrasound</td>
-                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum.
+                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </td>
                         </tr>
                         <tr>
@@ -1448,12 +1282,8 @@
                             </td>
                             <td>MRI</td>
                             <td>MRI</td>
-                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum.
+                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </td>
                         </tr>
                         <tr>
@@ -1462,12 +1292,8 @@
                             </td>
                             <td>Lung graphic</td>
                             <td>Lung graphic</td>
-                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum.
+                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </td>
                         </tr>
                         <tr>
@@ -1476,12 +1302,8 @@
                             </td>
                             <td>Lung graphic</td>
                             <td>Lung graphic</td>
-                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum.
+                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </td>
                         </tr>
                     </table>
@@ -1489,8 +1311,7 @@
             </div>
 
             <div id="sablonOlusturBottom" class="sablonOlusturBottom">
-                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="sablonAktar"
-                        title="Secili sablonu aktarmak icin tiklayin.">Export selected template</button>
+                <div class="buttonDiv"><button class="anamnezBtns btn-success" id="sablonAktar" title="Secili sablonu aktarmak icin tiklayin.">Export selected template</button>
                 </div>
             </div>
         </form>
@@ -1513,32 +1334,28 @@
             <!-- Social buttons -->
             <ul class="list-unstyled list-inline text-center">
                 <li class="list-inline-item">
-                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
+                    <button id="facebookBtn" class="socialMedBtns" title="Hospital's Facebook Page" onclick="ShowOrHideMethods.socialMediaNewTab('facebookBtn');">
                         <a class="btn-floating btn-fb fa-2x">
                             <i class="fa fa-facebook-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
+                    <button id="twitterBtn" class="socialMedBtns" title="Hospital's Twitter Page" onclick="ShowOrHideMethods.socialMediaNewTab('twitterBtn');">
                         <a class="btn-floating btn-tw fa-2x">
                             <i class="fa fa-twitter-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
+                    <button id="googlePlusBtn" class="socialMedBtns" title="Hospital's Google Plus Page" onclick="ShowOrHideMethods.socialMediaNewTab('googlePlusBtn');">
                         <a id="googlePlusBtn" class="btn-floating btn-gplus fa-2x">
                             <i class="fa fa-google-plus-square"> </i>
                         </a>
                     </button>
                 </li>
                 <li class="list-inline-item">
-                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page"
-                        onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
+                    <button id="linkedinBtn" class="socialMedBtns" title="Hospital's LinkedIn Page" onclick="ShowOrHideMethods.socialMediaNewTab('linkedinBtn');">
                         <a id="linkedinBtn" class="btn-floating btn-li fa-2x">
                             <i class=" fa fa-linkedin-square"> </i>
                         </a>
@@ -1552,8 +1369,7 @@
         <!-- Copyright -->
         <div class="footer-copyright text-center" style="font-size: large;color: black;padding: 10px;">
             © since 2020 Copyright:
-            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')"
-                title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
+            <div class="shadows" onclick="window.open('https://www.linkedin.com/in/recep-celik-poland/?locale=en_US')" title="This web application has been created in 2 weeks. Click for developer's LinkedIn page.">
                 <span class="nameLetters">R</span>
                 <span class="nameLetters">e</span>
                 <span class="nameLetters">c</span>
@@ -1572,17 +1388,14 @@
     <!-- end of Footer -->
 
     <div class="bottomScrool">
-        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen
-            Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı;
-            'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ VE TANI' adlı kitapçık duyuru
-            yayımladı... &#164;&#164; it's not a mobile device.</p>
+        <p id="bottomScrollP5">Sağlık Bakanlığı; Yurt Dışına Çıkışlarda Gideceği Ülke Tarafından PCR Testi İstenen Kişilere Yapılacak Test Uygulamaları hakkında duyuru yayımladı... &#164;&#164; Sağlık Bakanlığı; 'COVID-19 (SARS-CoV-2 ENFEKSİYONU) GENEL BİLGİLER,EPİDEMİOLOJİ
+            VE TANI' adlı kitapçık duyuru yayımladı... &#164;&#164; it's not a mobile device.</p>
     </div>
 
     <div id="userStatistics" class="modal" style="padding: 60px;">
         <div id="userStatistics-modal-content" class="userStatisticsContent animate" action="?action=add" method="post">
             <div id="userStatisticsImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userStatistics').style.display='none'"
-                    id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userStatistics').style.display='none'" id="userStatisticsCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/statistics-12.png" alt="Avatar" class="avatar">
             </div>
             <div id="userStatisticsContainer" class="userStatisticsContainer">
@@ -1602,8 +1415,7 @@
                     </tr>
                 </table>
                 <br><br>
-                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24
-                    - 192.168.1.11</h11>
+                <h11 class="historyHeaders" style="margin: 5px;color: white;">Last password change: 14.07.2020 10:02:24 - 192.168.1.11</h11>
                 <br><br>
                 <h11 class="historyHeaders" style="margin: 5px;color: white;">User Message Statistics</h11>
                 <br>
@@ -1628,8 +1440,7 @@
     <div id="userTraining" class="modal" style="padding: 60px;">
         <div id="userTraining-modal-content" class="userTrainingContent animate" action="?action=add" method="post">
             <div id="userTrainingImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn"
-                    class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userTraining').style.display='none'" id="userTrainingCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/training-4.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Incoming Trainings</h11>
@@ -1648,8 +1459,7 @@
                         <td>01.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a id="documentOpenLink1" class="modulLink"
-                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                            <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -1658,8 +1468,7 @@
                         <td>12.10.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                target="_blank">Open File</a>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                 </table>
@@ -1680,8 +1489,7 @@
                         <td>01.03.2020 09:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a id="documentOpenLink1" class="modulLink"
-                                href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
+                            <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                     <tr>
@@ -1690,8 +1498,7 @@
                         <td>12.01.2020 14:00</td>
                         <td>Central Conferece Room</td>
                         <td>
-                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                target="_blank">Open File</a>
+                            <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open File</a>
                         </td>
                     </tr>
                 </table>
@@ -1702,36 +1509,23 @@
     <div id="userSettings" class="modal" style="padding: 60px;">
         <div id="userSettings-modal-content" class="userSettingsContent animate" action="?action=add" method="post">
             <div id="userSettingsImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn"
-                    class="close" title="Close!">&times;</span>
-                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar"
-                    class="avatar">
+                <span onclick="document.getElementById('userSettings').style.display='none'" id="userSettingsCloseBtn" class="close" title="Close!">&times;</span>
+                <img id="myAvatar" src="/public/images/Bagg-Boxes-Icons-001/configuration-Bagg.png" alt="Avatar" class="avatar">
             </div>
             <h11 class="historyHeaders" style="margin: 5px;color: white;"> User Settings</h11>
             <div id="userSettingsContainer" class="userSettingsContainer">
                 Old Password: <br>
-                <input type="password" name="userOldPassword" id="userOldPassword"
-                    placeholder="Please enter your current password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
-                <br>
-                New Password: <br>
-                <input type="password" name="userNewPassword" id="userNewPassword"
-                    placeholder="Please enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <input type="password" name="userOldPassword" id="userOldPassword" placeholder="Please enter your current password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
+                <br> New Password: <br>
+                <input type="password" name="userNewPassword" id="userNewPassword" placeholder="Please enter your new password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)">
                 <span for='userNewPassword' class="p-viewer">
                     <i id="showPasswordIcon1" class="fa fa-eye" aria-hidden="true" style="color: black;"
                         title="Show password!"
                         onclick="ShowOrHideMethods.showPassword('userNewPassword','showPasswordIcon1')">
                     </i>
                 </span>
-                <br>
-                New Password Repeat: <br>
-                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat"
-                    placeholder="Please re-enter your new password."
-                    onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)"
-                    onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
+                <br> New Password Repeat: <br>
+                <input type="password" name="userNewPasswordRepeat" id="userNewPasswordRepeat" placeholder="Please re-enter your new password." onclick="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event)" onkeyup="ShowOrHideMethods.showCapsLockOnWarning('pCapsLockIndicator1', event),
                     CheckAndClearMethods.checkIfTextsAreSame('userNewPassword', 'userNewPasswordRepeat', 'pCapsLockIndicator1')">
                 <span for='userNewPasswordRepeat' class="p-viewer">
                     <i id="showPasswordIcon2" class="fa fa-eye" aria-hidden="true" style="color: black;"
@@ -1742,9 +1536,7 @@
                 <br>
                 <pCapsLockIndicator1 id="pCapsLockIndicator1">WARNING! Caps lock is ON.</pCapsLockIndicator1>
                 <br>
-                <button class="inpatientBtn btn-success" id="changePassword"
-                    onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')"
-                    title="Change password!">Change Password
+                <button class="inpatientBtn btn-success" id="changePassword" onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Changed!')" title="Change password!">Change Password
                 </button>
             </div>
         </div>
@@ -1753,8 +1545,7 @@
     <div id="userMessaging" class="modal" style="padding: 60px;">
         <div id="userMessaging-modal-content" class="userMessagingContent animate">
             <div id="userMessagingImgcontainer" class="imgcontainer">
-                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn"
-                    class="close" title="Close!">&times;</span>
+                <span onclick="document.getElementById('userMessaging').style.display='none'" id="userMessagingCloseBtn" class="close" title="Close!">&times;</span>
                 <img id="myAvatar" src="/public/images/message-2.png" alt="Avatar" class="avatar">
             </div>
             <div id="userMessageSubContainer">
@@ -1775,8 +1566,7 @@
                                 <td>01.03.2020 09:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a id="documentOpenLink1" class="modulLink"
-                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                    <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -1786,8 +1576,7 @@
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                        target="_blank">Open Message</a>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open Message</a>
                                 </td>
                             </tr>
                         </table>
@@ -1808,8 +1597,7 @@
                                 <td>01.03.2020 09:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a id="documentOpenLink1" class="modulLink"
-                                        href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
+                                    <a id="documentOpenLink1" class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open
                                         Message</a>
                                 </td>
                             </tr>
@@ -1819,8 +1607,7 @@
                                 <td>12.01.2020 14:00</td>
                                 <td>Central Conferece Room</td>
                                 <td>
-                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf"
-                                        target="_blank">Open Message</a>
+                                    <a class="modulLink" href="/ViewerJS/#../public/documents/test-file.pdf" target="_blank">Open Message</a>
                                 </td>
                             </tr>
                         </table>
@@ -1829,22 +1616,17 @@
 
                 <div id="userNewMessageDiv">
                     <h11 class="historyHeaders" style="margin: 5px;color: white;">Send Message</h11>
-                    <br><br>
-                    Subject: <br>
+                    <br><br> Subject: <br>
                     <input type="text" name="userMessageSubject" id="userMessageSubject">
-                    <br>
-                    To: <br>
+                    <br> To: <br>
                     <input type="text" name="userMessageTo" id="userMessageTo">
                     <br>
                     <!-- kisiler -->
                     <div class="dropdown">
-                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')"
-                            class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
+                        <button onclick="InpatientMethods.showDropDownInside('userMessagePerson')" class="polyclinicButtons btn--swap" id="userMessagePersonBtn">Phone Book <span
                                 style="font-size: 16px;">Add person!</span></button>
-                        <div id="userMessagePerson" class="dropdown-content"
-                            onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
-                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus
-                                onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
+                        <div id="userMessagePerson" class="dropdown-content" onclick="AdministrationMethods.showSelectedElementInDropdown('userMessagePerson', 'userMessageTo')">
+                            <input type="text" placeholder="Search.." id="userMessagePersonSearch" autofocus onkeyup="InpatientMethods.filterTaniDropdown('userMessagePersonSearch', 'userMessagePerson')">
                             <a>Recep CELIK</a>
                             <a>Adnan YILDIRIM</a>
                             <a>Onder KARABULUT</a>
@@ -1855,8 +1637,7 @@
                     Message: <br>
                     <textarea name="userMessageBody" id="userMessageBody" cols="87" rows="7"></textarea>
                     <br>
-                    <button class="inpatientBtn btn-primary" id="userMessageSend"
-                        onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
+                    <button class="inpatientBtn btn-primary" id="userMessageSend" onclick="ShowOrHideMethods.generalSuccesAlert('Successfully Sent!')" title="Send message!">Send
                     </button>
                     <br>
                 </div>
@@ -1874,14 +1655,10 @@
                 <span class="hamburger hamburger-3"></span>
             </label>
 
-            <a href="#" class="menu-item" title="User Statistics."
-                onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
-            <a href="#" class="menu-item" title="User Trainings."
-                onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
-            <a href="#" class="menu-item" title="User Settings."
-                onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
-            <a href="#" class="menu-item" title="User Messages."
-                onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
+            <a href="#" class="menu-item" title="User Statistics." onclick="ShowOrHideMethods.showPopUpModal('userStatistics')"> <i class="fa fa-bar-chart"></i> </a>
+            <a href="#" class="menu-item" title="User Trainings." onclick="ShowOrHideMethods.showPopUpModal('userTraining')"> <i class='fa fa-file-text'></i></a>
+            <a href="#" class="menu-item" title="User Settings." onclick="ShowOrHideMethods.showPopUpModal('userSettings')"> <i class="fa fa-cog   fa-fw"></i> </a>
+            <a href="#" class="menu-item" title="User Messages." onclick="ShowOrHideMethods.showPopUpModal('userMessaging')"> <i class="fa fa-envelope"></i> </a>
             <a href="#" class="menu-item"> <i class="fa fa-cog"></i> </a>
 
         </nav>
