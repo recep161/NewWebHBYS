@@ -8,6 +8,6 @@ myMongoose.connect(myMongoDb, { useNewUrlParser: true, useUnifiedTopology: true 
     if (err) {
         console.log('Couldnt connected...: ' + err.error)
     } else {
-        console.log('Connected to...: ' + myMongoDb)
+        console.log('Connected to...: ' + myMongoDb) 
     }
 })

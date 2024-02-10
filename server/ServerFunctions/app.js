@@ -2,6 +2,8 @@ const cookieParser = require('cookie-parser');
 const { popper } = require('popper.js');
 const { JSDOM } = require("jsdom");
 const { window } = new JSDOM("");
+const { document } = (new JSDOM('')).window;
+global.document = document;
 const $ = require('jquery');
 
 

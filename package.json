@@ -7,30 +7,32 @@
     "dependencies": {
         "@popperjs/core": "^2.5.3",
         "async": "^3.2.0",
+        "bluebird": "^3.7.2",
         "body-parser": "^1.19.0",
         "buffer": "^5.6.0",
         "computer-name": "^0.1.0",
         "connect-flash": "^0.1.1",
         "cookie-parser": "^1.4.5",
-        "ejs": "^3.1.5",
+        "ejs": "^3.1.5", 
         "express": "4.17.1",
         "express-ejs-layouts": "^2.5.0",
         "express-session": "^1.17.1",
         "express-toastr": "^2.0.2",
         "extend": "^3.0.2",
-        "jQuery": "^1.7.4",
+        "jquery": "^3.7.1",
         "jquery-toasts": "0.0.1",
         "loadsh": "0.0.4",
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.32",
-        "mongoose": "^5.11.17",
+        "mongoose": "^5.13.22",
         "popper.js": "^1.16.1",
         "pug": "^3.0.0",
         "quick-local-ip": "^1.0.7",
-        "toastr": "^2.1.4"
+        "toastr": "^2.1.4",
+        "xmlhttprequest": "^1.8.0"
     },
     "devDependencies": {
-        "jsdom": "16.4.0",
+        "jsdom": "^16.4.0",
         "jsdom-global": "3.0.2",
         "nodemon": "^2.0.7"
     }
